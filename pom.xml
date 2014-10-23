@@ -11,7 +11,15 @@
 		<maven.resource.plugin.version>2.7</maven.resource.plugin.version>
 		<maven.version.plugin.version>2.1</maven.version.plugin.version>
 
+		<maven.jetty.plugin.version>9.2.3.v20140905</maven.jetty.plugin.version>
+
+		<javax.servlet-api>3.1.0</javax.servlet-api>
 		<spring.version>4.1.1.RELEASE</spring.version>
+
+		<hibernate.version>4.3.6.Final</hibernate.version>
+		<mysql.connector.version>5.1.29</mysql.connector.version>
+		<druid.version>1.0.9</druid.version>
+
 	</properties>
 
 	<build>
@@ -43,10 +51,24 @@
 				<version>${maven.version.plugin.version}</version>
 			</plugin>
 
+			<plugin>
+				<groupId>org.eclipse.jetty</groupId>
+				<artifactId>jetty-maven-plugin</artifactId>
+				<version>${maven.jetty.plugin.version}</version>
+				<!-- <configuration> <jettyXml>jetty-http.xml</jettyXml> </configuration> -->
+			</plugin>
+
 		</plugins>
 	</build>
 
 	<dependencies>
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>javax.servlet-api</artifactId>
+			<version>${javax.servlet-api}</version>
+			<scope>provided</scope>
+		</dependency>
+
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-core</artifactId>
@@ -93,6 +115,25 @@
 			<version>${spring.version}</version>
 			<scope>test</scope>
 		</dependency>
+
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-core</artifactId>
+			<version>${hibernate.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+			<version>${mysql.connector.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.alibaba</groupId>
+			<artifactId>druid</artifactId>
+			<version>${druid.version}</version>
+		</dependency>
+
 	</dependencies>
 
 </project>
