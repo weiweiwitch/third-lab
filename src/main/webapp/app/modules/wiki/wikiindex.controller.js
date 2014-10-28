@@ -1,0 +1,132 @@
+'use strict';
+
+angular.module('mylabApp')
+  .config(['$stateProvider',
+    function($stateProvider) {
+      $stateProvider
+        .state('wiki', {
+          url: '/wiki',
+          templateUrl: 'modules/wiki/wikiindex.html',
+          controller: 'WikiIndexCtrl',
+          resolve: {
+            posts: ['PostRes',
+              function(PostRes) {
+                console.log('查询列表');
+                var p = PostRes.getList();
+                return p;
+              }
+            ]
+          }
+        });
+    }
+  ])
+  .directive('collection', function() {
+    return {
+      restrict: 'E',
+      replace: true,
+      scope: {
+        collection: '='
+      },
+      templateUrl: 'modules/wiki/collection-tpl.html'
+    };
+  })
+  .directive('member', function($compile) {
+    return {
+      restrict: 'E',
+      replace: true,
+      scope: {
+        member: '=member'
+      },
+      templateUrl: 'modules/wiki/exp-member.html',
+      controller: function($scope) {
+        $scope.collapsed = false;
+        $scope.showThisPost = function(post) {
+          console.log(post);
+        };
+      },
+
+      link: function(scope, element) {
+        scope.toggle = function() {
+          scope.member.collapsed = !scope.member.collapsed;
+          scope.collapsed = scope.member.collapsed;
+        };
+
+        scope.collapsed = scope.member.collapsed;
+
+        if (angular.isArray(scope.member.nodes)) {
+          var st = '<div ng-show="!collapsed"><collection collection="member.nodes"></collection></div>';
+
+          var ddd = $compile(st); // 这里返回的是的link function
+
+          ddd(scope, function(cloned) {
+            element.append(cloned);
+          }); // 手动触发link！
+
+        }
+      }
+    };
+  })
+  .factory('LabShareData', function() {
+    console.log('factory LabShareData');
+    return {};
+  })
+  .controller('WikiIndexCtrl', ['$scope', '$location', 'LabShareData', 'PostRes', 'posts',
+    function($scope, $location, LabShareData, PostRes, posts) {
+      console.log('WikiIndexCtrl');
+      console.log(posts);
+      $scope.addNewPost = function() {
+        delete LabShareData.parantId;
+        $location.path('/wiki/new');
+      };
+
+      $scope.$on('wikipostchg', function() {
+        console.log('监听到保存');
+
+        // 临时保存树的展开状态。
+        var oldPosts = $scope.posts;
+        var oldList = [];
+        var oldMap = {};
+
+        // 生成原文章的列表
+        var generatePostList = function(pList, pMap, ps) {
+
+          for (var j = 0; j < ps.length; j++) {
+            var eachP = ps[j];
+          
+            eachP.collapsed = true;
+
+            pList.push(eachP);
+            pMap[eachP.id] = eachP;
+            if (eachP.nodes !== undefined && eachP.nodes !== null) {
+              generatePostList(pList, pMap, eachP.nodes);
+            }
+          }
+        };
+
+        generatePostList(oldList, oldMap, oldPosts);
+
+        // 请求新的数据
+        PostRes.getList().then(function(updatedPosts) {
+
+          $scope.posts = updatedPosts;
+
+          // 重新设置树的展开状态
+          var newList = [];
+          var newMap = {};
+          generatePostList(newList, newMap, $scope.posts);
+
+          for (var eachIndex = 0; eachIndex < newList.length; eachIndex++) {
+            var eachNewPost = newList[eachIndex];
+            var samePost = oldMap[eachNewPost.id];
+            if (samePost !== undefined && samePost.collapsed === false) {
+              eachNewPost.collapsed = samePost.collapsed;
+            } else {
+              eachNewPost.collapsed = true;
+            }
+          }
+        });
+      });
+
+      $scope.posts = posts;
+    }
+  ]);

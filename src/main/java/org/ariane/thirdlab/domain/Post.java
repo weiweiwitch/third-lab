@@ -31,7 +31,16 @@ public class Post implements Serializable {
 	@Column(name = "v")
 	private long v;
 
-	@Column(name = "title", nullable = true, length = 150)
+	@Column(name = "parantId")
+	private long parantId;
+
+	@Column(name = "mgId", nullable = false, length = 150)
+	private String mgId;
+
+	@Column(name = "mgParantId", length = 150)
+	private String mgParantId;
+
+	@Column(name = "title", nullable = false, length = 150)
 	private String title;
 
 	@Column(name = "post", length = 256000)
@@ -57,6 +66,30 @@ public class Post implements Serializable {
 
 	public void setV(long v) {
 		this.v = v;
+	}
+
+	public long getParantId() {
+		return parantId;
+	}
+
+	public void setParantId(long parantId) {
+		this.parantId = parantId;
+	}
+
+	public String getMgId() {
+		return mgId;
+	}
+
+	public void setMgId(String mgId) {
+		this.mgId = mgId;
+	}
+
+	public String getMgParantId() {
+		return mgParantId;
+	}
+
+	public void setMgParantId(String mgParantId) {
+		this.mgParantId = mgParantId;
 	}
 
 	public String getTitle() {

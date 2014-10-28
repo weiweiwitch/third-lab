@@ -1,6 +1,7 @@
 package org.ariane.thirdlab.service.impl;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.transaction.Transactional;
 
@@ -22,13 +23,50 @@ public class PostServiceImpl implements PostService {
 	}
 
 	@Override
-	public void createNewPost() {
+	public List<Post> findAllPosts() {
+		return postDao.findAll();
+	}
+
+	@Override
+	public Post findSpecPost(long id) {
+		Post post = postDao.findById(id);
+		return post;
+	}
+
+	@Override
+	public Post updatePost(long id, long parantId, String title, String postData) {
+		Post post = postDao.findById(id);
+		if (post != null) {
+			post.setParantId(parantId);
+			post.setTitle(title);
+			post.setPost(postData);
+			post.setLastModifiedTime(new Date());
+		}
+		return post;
+	}
+
+	@Override
+	public Post createPost(long parantId, String title, String postData) {
 		Post post = new Post();
-		post.setTitle("1");
-		post.setPost("1");
+		post.setMgId("" + System.currentTimeMillis());
+		post.setMgParantId("");
+		post.setParantId(parantId);
+		post.setTitle(title);
+		post.setPost(postData);
 		post.setCreateTime(new Date());
 		post.setLastModifiedTime(new Date());
 		postDao.save(post);
+
+		return post;
+	}
+
+	@Override
+	public int deletePost(long id) {
+		Post post = postDao.findById(id);
+		if (post != null) {
+			postDao.delete(post);
+		}
+		return 0;
 	}
 
 }

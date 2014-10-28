@@ -1,0 +1,4 @@
+<li ui-sref-active="active" class="labtree-node">
+  <span class="fa" ng-click="toggle()" ng-class="{'fa-plus-square-o': collapsed, 'fa-minus-square-o': !collapsed}"></span>
+  <a ui-sref="wiki.id({id:member.id})" class="labtree-node-text"><span>{{member.title}}</span></a>
+</li>

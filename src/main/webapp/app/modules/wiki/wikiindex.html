@@ -1,0 +1,17 @@
+<div ng-include="'modules/components/navbar/navbar.html'"></div>
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md-3 labtree">
+      <div class="labtree-btn">
+        <button class="btn btn-primary" ng-click="addNewPost()">添加新文章</button>
+      </div>
+      <div>
+        <collection collection='posts'></collection>
+      </div>
+
+    </div>
+    <div class="col-md-9">
+      <div ui-view></div>
+    </div>
+  </div>
+</div>

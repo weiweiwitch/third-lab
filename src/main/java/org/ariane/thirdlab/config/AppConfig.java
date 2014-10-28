@@ -39,7 +39,7 @@ public class AppConfig {
 		localSessionFactoryBuilder.scanPackages("org.ariane.thirdlab.domain");
 
 		Properties properties = new Properties();
-		//properties.put("hibernate.hbm2ddl.auto", "create");
+//		properties.put("hibernate.hbm2ddl.auto", "create");
 		properties.put("hibernate.dialect", "org.hibernate.dialect.MySQLDialect");
 		properties.put("hibernate.show_sql", true);
 		properties.put("hibernate.format_sql", false);
