@@ -60,7 +60,7 @@ angular.module('mylabApp').run(['$templateCache', function($templateCache) {
 
 
   $templateCache.put('modules/wiki/wikiedit.html',
-    "<div class=container-fluid><div class=row><div class=col-md-12><div>编辑<form role=form><div class=form-group><label>ID：</label><input class=form-control ng-model=post.id readonly></div><div class=form-group><label>标题：</label><input class=form-control ng-model=post.title></div><div class=form-group><label>上级：</label><input class=form-control ng-model=post.parantId></div><div class=form-group><label>内容：</label><div class=form-control ng-model=post.post ui-ace=\"{useWrapMode : true, mode: 'markdown'}\"></div></div><div class=form-group><button class=\"btn btn-default\" ng-show=!isNew() ng-click=saveUpdate()>更新</button> <button class=\"btn btn-default\" ng-show=isNew() ng-click=saveNew()>保存</button></div></form></div></div></div></div>"
+    "<div class=container-fluid><div class=row><div class=col-md-12><div>编辑<form role=form><div class=form-group><label>ID：</label><input class=form-control ng-model=post.id readonly></div><div class=form-group><label>标题：</label><input class=form-control ng-model=post.title></div><div class=form-group><label>上级：</label><input class=form-control ng-model=post.parantId></div><div class=form-group><label>内容：</label><div class=form-control ng-model=post.postText ui-ace=\"{useWrapMode : true, mode: 'markdown', onChange: aceChanged}\"></div></div><div class=form-group><button class=\"btn btn-default\" ng-show=!isNew() ng-click=saveUpdate()>更新</button> <button class=\"btn btn-default\" ng-show=isNew() ng-click=saveNew()>保存</button></div></form></div></div></div></div>"
   );
 
 
@@ -70,7 +70,7 @@ angular.module('mylabApp').run(['$templateCache', function($templateCache) {
 
 
   $templateCache.put('modules/wiki/wikipost.html',
-    "<div class=container-fluid><div class=row><div class=col-md-12><div><a class=\"btn btn-primary\" href=/wiki/edit/{{post.id}}>编辑</a> <button class=\"btn btn-default\" ng-click=delete()>删除</button> <button class=\"btn btn-default\" ng-click=createSubPost()>添加子文章</button></div><div class=topic_header><span class=topic_full_title>{{post.title}}</span></div><div class=inner_topic><div class=markdown-text ng-bind-html=ppp></div></div></div></div></div>"
+    "<div class=container-fluid><div class=row><div class=col-md-12><div><a class=\"btn btn-primary\" ui-sref=wiki.editid({id:post.id})>编辑</a> <button class=\"btn btn-default\" ng-click=delete()>删除</button> <button class=\"btn btn-default\" ng-click=createSubPost()>添加子文章</button></div><div class=topic_header><span class=topic_full_title>{{post.title}}</span></div><div class=inner_topic><div class=markdown-text ng-bind-html=ppp></div></div></div></div></div>"
   );
 
 }]);

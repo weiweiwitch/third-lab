@@ -19,17 +19,18 @@ angular.module('mylabApp')
         });
     }
   ])
-  .controller('WikiPostCtrl', ['$scope', '$sce', '$location', 'LabShareData', 'PostRes', 'post',
-    function($scope, $sce, $location, LabShareData, PostRes, post) {
+  .controller('WikiPostCtrl', ['$scope', '$sce', '$location', 'LabShareData', 'PostRes', 'post', 'marked',
+    function($scope, $sce, $location, LabShareData, PostRes, post, marked) {
       $scope.post = post;
 
       var t = post.mkPost;
 
-      $scope.ppp = $sce.trustAsHtml(t);
-
+      // $scope.ppp = $sce.trustAsHtml(t);
+      $scope.ppp = marked(post.postText);
+      
       $scope.delete = function() {
 
-        PostRes.delete({}, post, function() {
+        $scope.post.remove().then(function() {
           console.log('successful');
 
           // 刷新树

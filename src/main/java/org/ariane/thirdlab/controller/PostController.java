@@ -31,7 +31,7 @@ public class PostController {
 
 		// 建立临时表
 		List<PostData> pDatas = new ArrayList<PostData>();
-		Map<String, PostData> pMap = new HashMap<String, PostData>();
+		Map<Long, PostData> pMap = new HashMap<Long, PostData>();
 		for (Post post : posts) {
 			PostData postData = new PostData();
 			postData.id = post.getId();
@@ -41,19 +41,19 @@ public class PostController {
 			postData.parantId = post.getParantId();
 			postData.parant = post.getMgParantId();
 
-			pMap.put(postData._id, postData);
+			pMap.put(postData.id, postData);
 			pDatas.add(postData);
 		}
 
 		// 整理出根元素
 		List<PostData> rootDatas = new ArrayList<PostData>();
 		for (PostData postData : pDatas) {
-			if ("".equals(postData.parant)) {
+			if (postData.parantId == 0L) {
 				rootDatas.add(postData);
-			} else if (pMap.get(postData.parant) == null) {
+			} else if (pMap.get(postData.parantId) == null) {
 				rootDatas.add(postData);
 			} else {
-				PostData parantData = pMap.get(postData.parant);
+				PostData parantData = pMap.get(postData.parantId);
 				if (parantData.nodes == null) {
 					parantData.nodes = new ArrayList<PostController.PostData>();
 				}

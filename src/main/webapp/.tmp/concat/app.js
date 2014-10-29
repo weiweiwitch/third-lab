@@ -380,15 +380,17 @@ angular.module('mylabApp')
 
 console.log('post service');
 angular.module('mylabApp')
-  .factory('PostRes', function($resource) {
+  .factory('PostRes', function(Restangular) {
     console.log('PostRes init');
-    return $resource('/api/posts/:id', {
-      id: '@_id', // 动态参数
-    }, {
-      update: {
-        method: 'PUT'
-      }
-    });
+    var PostRest = Restangular.all('api/posts');
+    return PostRest;
+    // return $resource('/api/posts/:id', {
+    //   id: '@_id', // 动态参数
+    // }, {
+    //   update: {
+    //     method: 'PUT'
+    //   }
+    // });
   });
 
 'use strict';
@@ -481,10 +483,11 @@ angular.module('mylabApp')
 angular.module('mylabApp')
   .filter('toMark', function($sce) {
     return function(data) {
-      var t = marked(data);
-      var ht = $sce.trustAsHtml(t);
-      var rrr = ht.$$unwrapTrustedValue();
-      return rrr;
+      return data;
+      // var t = marked(data);
+      // var ht = $sce.trustAsHtml(t);
+      // var rrr = ht.$$unwrapTrustedValue();
+      // return rrr;
     };
   })
   .config(['$stateProvider',
@@ -497,9 +500,7 @@ angular.module('mylabApp')
           resolve: {
             post: ['$stateParams', 'PostRes',
               function($stateParams, PostRes) {
-                return PostRes.get({
-                  id: $stateParams.id
-                }).$promise;
+                return PostRes.get($stateParams.id);
               }
             ]
           }
@@ -511,22 +512,28 @@ angular.module('mylabApp')
         });
     }
   ])
-  .controller('WikiPostEditCtrl', ['$scope', '$location', '$filter', 'PostRes', 'post',
-    function($scope, $location, $filter, PostRes, post) {
+  .controller('WikiPostEditCtrl', ['$scope', '$location', '$filter', 'PostRes', 'post', 'Restangular',
+    function($scope, $location, $filter, PostRes, post, Restangular) {
       $scope.text = '这是文章的编辑页';
 
-      $scope.post = post;
-      if (post.post !== '') {
-        $scope.markedPost = $filter('toMark')(post.post);
-      }
+      $scope.post = Restangular.copy(post);
+      // if (post.post !== '') {
+      //   $scope.markedPost = $filter('toMark')(post.post);
+      // }
 
       $scope.isNew = function() {
         return false;
       };
 
+      $scope.aceChanged = function(e) {
+        console.log(e);
+      };
+
       $scope.saveUpdate = function() {
-        console.log('测试保存更新 ' + $scope.post.post);
-        PostRes.update(post, function() {
+        console.log('测试保存更新 ' + $scope.post.postText);
+        console.log($scope.post);
+        $scope.post.ddd = 'sfsfsdfsdfsdfsdfsdfsdfsfdsfsfsdf';
+        $scope.post.put().then(function() {
           console.log('successful');
 
           // 刷新树
@@ -549,7 +556,7 @@ angular.module('mylabApp')
       $scope.post = {
         user: 'aaa',
         title: '',
-        post: '',
+        postText: '',
         parantId: 0
       };
 
@@ -557,13 +564,18 @@ angular.module('mylabApp')
         $scope.post.parantId = LabShareData.parantId;
       }
 
+      $scope.aceChanged = function(e) {
+        console.log(e);
+      };
+
       $scope.isNew = function() {
         return true;
       };
 
       $scope.saveNew = function() {
-        console.log('测试保存 ' + $scope.post.post);
-        PostRes.save($scope.post, function() {
+        console.log('测试保存 ' + $scope.post.postText);
+        $scope.post.postText = 'sd';
+        PostRes.post($scope.post).then(function() {
           console.log('successful');
 
           // 刷新树
@@ -594,10 +606,7 @@ angular.module('mylabApp')
             posts: ['PostRes',
               function(PostRes) {
                 console.log('查询列表');
-                var p = PostRes.query().then(function(datas) {
-                  console.log('datas ');
-                  console.log(datas);
-                });
+                var p = PostRes.getList();
                 return p;
               }
             ]
@@ -664,6 +673,20 @@ angular.module('mylabApp')
         $location.path('/wiki/new');
       };
 
+      // 初始化列表
+      var initPostList = function(posts) {
+        for (var j = 0; j < posts.length; j++) {
+          var eachP = posts[j];
+
+          eachP.collapsed = true;
+
+          if (eachP.nodes !== undefined && eachP.nodes !== null) {
+            initPostList(eachP.nodes);
+          }
+        }
+      };
+      initPostList(posts);
+
       $scope.$on('wikipostchg', function() {
         console.log('监听到保存');
 
@@ -674,11 +697,9 @@ angular.module('mylabApp')
 
         // 生成原文章的列表
         var generatePostList = function(pList, pMap, ps) {
-          console.log(ps);
-          for (var i in ps) {
-            var eachP = ps[i];
-            console.log('eTitle: ' + eachP.title);
-            eachP.collapsed = true;
+
+          for (var j = 0; j < ps.length; j++) {
+            var eachP = ps[j];
 
             pList.push(eachP);
             pMap[eachP.id] = eachP;
@@ -687,25 +708,26 @@ angular.module('mylabApp')
             }
           }
         };
-
         generatePostList(oldList, oldMap, oldPosts);
 
         // 请求新的数据
-        PostRes.query({}, function(updatedPosts) {
+        PostRes.getList().then(function(updatedPosts) {
+          // 设置scope中的post 列表
           $scope.posts = updatedPosts;
 
-          // 重新设置树的展开状态
           var newList = [];
           var newMap = {};
-          generatePostList(newList, newMap, $scope.posts);
+          generatePostList(newList, newMap, updatedPosts);
 
-          for (var eachIndex in newList) {
+          // 初始化树
+          initPostList(newList);
+
+          // 更新节点状态
+          for (var eachIndex = 0; eachIndex < newList.length; eachIndex++) {
             var eachNewPost = newList[eachIndex];
             var samePost = oldMap[eachNewPost.id];
             if (samePost !== undefined && samePost.collapsed === false) {
               eachNewPost.collapsed = samePost.collapsed;
-            } else {
-              eachNewPost.collapsed = true;
             }
           }
         });
@@ -729,26 +751,25 @@ angular.module('mylabApp')
             post: ['$stateParams', 'PostRes',
               function($stateParams, PostRes) {
                 console.log($stateParams.id);
-                return PostRes.get({
-                  id: $stateParams.id
-                }).$promise;
+                return PostRes.get($stateParams.id);
               }
             ]
           }
         });
     }
   ])
-  .controller('WikiPostCtrl', ['$scope', '$sce', '$location', 'LabShareData', 'PostRes', 'post',
-    function($scope, $sce, $location, LabShareData, PostRes, post) {
+  .controller('WikiPostCtrl', ['$scope', '$sce', '$location', 'LabShareData', 'PostRes', 'post', 'marked',
+    function($scope, $sce, $location, LabShareData, PostRes, post, marked) {
       $scope.post = post;
 
       var t = post.mkPost;
 
-      $scope.ppp = $sce.trustAsHtml(t);
-
+      // $scope.ppp = $sce.trustAsHtml(t);
+      $scope.ppp = marked(post.postText);
+      
       $scope.delete = function() {
 
-        PostRes.delete({}, post, function() {
+        $scope.post.remove().then(function() {
           console.log('successful');
 
           // 刷新树

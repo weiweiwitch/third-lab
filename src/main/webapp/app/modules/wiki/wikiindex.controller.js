@@ -79,6 +79,20 @@ angular.module('mylabApp')
         $location.path('/wiki/new');
       };
 
+      // 初始化列表
+      var initPostList = function(posts) {
+        for (var j = 0; j < posts.length; j++) {
+          var eachP = posts[j];
+
+          eachP.collapsed = true;
+
+          if (eachP.nodes !== undefined && eachP.nodes !== null) {
+            initPostList(eachP.nodes);
+          }
+        }
+      };
+      initPostList(posts);
+
       $scope.$on('wikipostchg', function() {
         console.log('监听到保存');
 
@@ -92,8 +106,6 @@ angular.module('mylabApp')
 
           for (var j = 0; j < ps.length; j++) {
             var eachP = ps[j];
-          
-            eachP.collapsed = true;
 
             pList.push(eachP);
             pMap[eachP.id] = eachP;
@@ -102,26 +114,26 @@ angular.module('mylabApp')
             }
           }
         };
-
         generatePostList(oldList, oldMap, oldPosts);
 
         // 请求新的数据
         PostRes.getList().then(function(updatedPosts) {
-
+          // 设置scope中的post 列表
           $scope.posts = updatedPosts;
 
-          // 重新设置树的展开状态
           var newList = [];
           var newMap = {};
-          generatePostList(newList, newMap, $scope.posts);
+          generatePostList(newList, newMap, updatedPosts);
 
+          // 初始化树
+          initPostList(newList);
+
+          // 更新节点状态
           for (var eachIndex = 0; eachIndex < newList.length; eachIndex++) {
             var eachNewPost = newList[eachIndex];
             var samePost = oldMap[eachNewPost.id];
             if (samePost !== undefined && samePost.collapsed === false) {
               eachNewPost.collapsed = samePost.collapsed;
-            } else {
-              eachNewPost.collapsed = true;
             }
           }
         });
