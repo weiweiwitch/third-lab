@@ -172,6 +172,10 @@ module.exports = function(grunt) {
 
           // https://github.com/taptapship/wiredep#configuration
         }
+      },
+      sass: {
+        src: ['<%= yeoman.client %>/styles/{,*/}*.{scss,sass}'],
+        ignorePath: /(\.\.\/){1,2}bower_components\//
       }
     },
 
@@ -181,7 +185,7 @@ module.exports = function(grunt) {
         files: {
           src: [
             '<%= yeoman.dist %>/{,*/}*.js',
-            '<%= yeoman.dist %>/{,*/}*.css',
+            '<%= yeoman.dist %>/styles/{,*/}*.css',
             '<%= yeoman.dist %>/assets/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}',
             '<%= yeoman.dist %>/assets/fonts/*'
           ]
@@ -189,20 +193,23 @@ module.exports = function(grunt) {
       }
     },
 
+    uglify: {
+      options: {
+        mangle: false
+      }
+    },
+
     // Reads HTML for usemin blocks to enable smart builds that automatically
     // concat, minify and revision files. Creates configurations in memory so
     // additional tasks can operate on them
     useminPrepare: {
-      html: ['<%= yeoman.client %>/index.html'],
-      options: {
-        dest: '<%= yeoman.dist %>'
-      }
+      html: ['<%= yeoman.client %>/index.html']
     },
 
     // Performs rewrites based on rev and the useminPrepare configuration
     usemin: {
       html: ['<%= yeoman.dist %>/{,*/}*.html'],
-      css: ['<%= yeoman.dist %>/{,*/}*.css'],
+      css: ['<%= yeoman.dist %>/styles/{,*/}*.css'],
       js: ['<%= yeoman.dist %>/{,*/}*.js'],
       options: {
         assetsDirs: [
@@ -302,7 +309,8 @@ module.exports = function(grunt) {
           src: [
             '*.{ico,png,txt}',
             '.htaccess',
-            '*.html'
+            '*.html',
+            'modules/**/*.html'
             //'bower_components/**/*',
           ]
         }, {
@@ -310,6 +318,16 @@ module.exports = function(grunt) {
           cwd: '.tmp/images',
           dest: '<%= yeoman.dist %>/assets/images',
           src: ['generated/*']
+        }, {
+          expand: true,
+          cwd: '<%= yeoman.client %>',
+          src: 'bower_components/bootstrap-sass-official/assets/fonts/bootstrap/*',
+          dest: '<%= yeoman.dist %>/fonts'
+        }, {
+          expand: true,
+          cwd: '<%= yeoman.client %>/bower_components/components-font-awesome/fonts/',
+          src: '*',
+          dest: '<%= yeoman.dist %>/fonts'
         }]
       },
 
@@ -336,9 +354,39 @@ module.exports = function(grunt) {
         }
       },
       dist: [
+        'compass:dist',
         'imagemin',
         'svgmin'
       ]
+    },
+
+    // Compiles Sass to CSS and generates necessary files if requested
+    compass: {
+      options: {
+        sassDir: '<%= yeoman.client %>/styles',
+        cssDir: '.tmp/styles',
+        generatedImagesDir: '.tmp/images/generated',
+        imagesDir: '<%= yeoman.client %>/images',
+        javascriptsDir: '<%= yeoman.client %>/scripts',
+        fontsDir: '<%= yeoman.client %>/styles/fonts',
+        importPath: './app/bower_components',
+        httpImagesPath: '/images',
+        httpGeneratedImagesPath: '/images/generated',
+        httpFontsPath: '/styles/fonts',
+        relativeAssets: false,
+        assetCacheBuster: false,
+        raw: 'Sass::Script::Number.precision = 10\n'
+      },
+      dist: {
+        options: {
+          generatedImagesDir: '<%= yeoman.dist %>/images/generated'
+        }
+      },
+      server: {
+        options: {
+          debugInfo: true
+        }
+      }
     },
 
     // Test settings
@@ -401,7 +449,7 @@ module.exports = function(grunt) {
       css: {
         options: {
           transform: function(filePath) {
-            filePath = filePath.replace('/client/', '');
+            filePath = filePath.replace('/app/', '');
             filePath = filePath.replace('/.tmp/', '');
             return '<link rel="stylesheet" href="' + filePath + '">';
           },
@@ -420,7 +468,7 @@ module.exports = function(grunt) {
       dist: {
         src: [
           '<%= yeoman.dist %>/{,*/}*.js',
-          '<%= yeoman.dist %>/{,*/}*.css',
+          '<%= yeoman.dist %>/styles/{,*/}*.css',
           '<%= yeoman.dist %>/assets/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}',
           '<%= yeoman.dist %>/assets/fonts/*'
         ]
@@ -435,8 +483,8 @@ module.exports = function(grunt) {
     'injector', // 注入文件的引用到index.html中。
     'useminPrepare',
     'concurrent:dist', // 并行运行任务
-    'autoprefixer', // 自动添加前缀
-    'ngtemplates', // 将angularjs依赖的模板合并成一个js文件
+    //'autoprefixer', // 自动添加前缀
+    //'ngtemplates', // 将angularjs依赖的模板合并成一个js文件
     'concat', // 合并
     'ngAnnotate', // 修正angularjs的注入依赖注解
     'copy:dist', // 复制文件

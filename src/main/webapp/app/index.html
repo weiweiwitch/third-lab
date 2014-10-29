@@ -9,27 +9,24 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <base href="/app/">
+  <!-- <base href="/app/"> -->
   <title></title>
   <meta name="description" content="">
   <meta name="viewport" content="width=device-width">
   <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
 
-  <!-- build:css(app) vendor.css -->
+  <!-- build:css(app) styles/vendor.css -->
   <!-- bower:css -->
-  <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css" />
-  <link rel="stylesheet" href="bower_components/font-awesome/css/font-awesome.css" />
   <link rel="stylesheet" href="bower_components/highlightjs/styles/default.css" />
+  <link rel="stylesheet" href="bower_components/components-font-awesome/css/font-awesome.css" />
   <!-- endbower -->
   <!-- endbuild -->
 
-  <!-- build:css({.tmp,app}) app.css -->
+  <!-- build:css({.tmp,app}) styles/app.css -->
+  <link rel="stylesheet" href="styles/app.css">
+
   <!-- injector:css -->
-  <link rel="stylesheet" href="/app/modules/account/login/login.css">
-  <link rel="stylesheet" href="/app/modules/admin/admin.css">
-  <link rel="stylesheet" href="/app/modules/app.css">
-  <link rel="stylesheet" href="/app/modules/main/main.css">
-  <link rel="stylesheet" href="/app/modules/tomorrow.css">
+
   <!-- endinjector -->
   <!-- endbuild -->
 
@@ -74,19 +71,11 @@
   <script src="app.js"></script>
 
   <!-- injector:js -->
-  <script src="modules/account/account.js"></script>
-  <script src="modules/account/login/login.controller.js"></script>
-  <script src="modules/account/settings/settings.controller.js"></script>
-  <script src="modules/account/signup/signup.controller.js"></script>
-  <script src="modules/admin/admin.controller.js"></script>
-  <script src="modules/admin/admin.js"></script>
   <script src="modules/components/auth/auth.service.js"></script>
   <script src="modules/components/auth/user.service.js"></script>
   <script src="modules/components/model/post.service.js"></script>
   <script src="modules/components/mongoose-error/mongoose-error.directive.js"></script>
   <script src="modules/components/navbar/navbar.controller.js"></script>
-  <script src="modules/main/main.controller.js"></script>
-  <script src="modules/main/main.js"></script>
   <script src="modules/wiki/wikiedit.controller.js"></script>
   <script src="modules/wiki/wikiindex.controller.js"></script>
   <script src="modules/wiki/wikipost.controller.js"></script>

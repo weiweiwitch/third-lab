@@ -13,7 +13,8 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 
 	@Override
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {
-		registry.addResourceHandler("/app/**").addResourceLocations("/app/").setCachePeriod(0);
+		registry.addResourceHandler("/ap/**").addResourceLocations("/app/", "/.tmp/").setCachePeriod(0);
+		registry.addResourceHandler("/p/**").addResourceLocations("/dist/").setCachePeriod(0);
 	}
 
 }
