@@ -73,7 +73,6 @@ angular.module('mylabApp')
   .controller('WikiIndexCtrl', ['$scope', '$location', 'LabShareData', 'PostRes', 'posts',
     function($scope, $location, LabShareData, PostRes, posts) {
       console.log('WikiIndexCtrl');
-      console.log(posts);
       $scope.addNewPost = function() {
         delete LabShareData.parantId;
         $location.path('/wiki/new');

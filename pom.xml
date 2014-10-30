@@ -7,6 +7,7 @@
 	<packaging>war</packaging>
 
 	<properties>
+		<maven.assembly.plugin.version>2.3</maven.assembly.plugin.version>
 		<maven.compiler.plugin.version>3.2</maven.compiler.plugin.version>
 		<maven.resource.plugin.version>2.7</maven.resource.plugin.version>
 		<maven.version.plugin.version>2.1</maven.version.plugin.version>
@@ -24,6 +25,7 @@
 
 	<build>
 		<plugins>
+			
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
@@ -32,6 +34,23 @@
 					<source>1.8</source>
 					<target>1.8</target>
 					<encoding>UTF-8</encoding>
+				</configuration>
+			</plugin>
+			<plugin>
+				<artifactId>maven-war-plugin</artifactId>
+				<version>2.5</version>
+				<configuration>
+					<packagingExcludes>
+					node_modules/**,
+					app/**,
+					.tmp/**,
+					.bowerrc,
+					.jshintrc,
+					.sass-cache/**,
+					bower.json,
+					Gruntfile.js,
+					package.json,
+					</packagingExcludes>
 				</configuration>
 			</plugin>
 

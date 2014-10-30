@@ -3,7 +3,7 @@
 // 下面这个是导航栏的controller。
 // 在这个app里面，通过ng-include，导航栏被嵌入到各个视图的view中。
 angular.module('mylabApp')
-  .controller('NavbarCtrl', function($scope, $location, Auth, $state) {
+  .controller('NavbarCtrl', function($scope, $location, Auth) {
     // 菜单
     $scope.menu = [{
       'title': 'Wiki',

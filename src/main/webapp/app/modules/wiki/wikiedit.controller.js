@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('mylabApp')
-  .filter('toMark', function($sce) {
+  .filter('toMark', function() {
     return function(data) {
       return data;
       // var t = marked(data);

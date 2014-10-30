@@ -250,28 +250,10 @@ angular.module('mylabApp')
 
 'use strict';
 
-/**
- * Removes server error when user updates input
- */
-angular.module('mylabApp')
-    .directive('mongooseError', function() {
-        return {
-            restrict: 'A',
-            require: 'ngModel',
-            link: function(scope, element, attrs, ngModel) {
-                element.on('keydown', function() {
-                    return ngModel.$setValidity('mongoose', true);
-                });
-            }
-        };
-    });
-
-'use strict';
-
 // 下面这个是导航栏的controller。
 // 在这个app里面，通过ng-include，导航栏被嵌入到各个视图的view中。
 angular.module('mylabApp')
-  .controller('NavbarCtrl', function($scope, $location, Auth, $state) {
+  .controller('NavbarCtrl', function($scope, $location, Auth) {
     // 菜单
     $scope.menu = [{
       'title': 'Wiki',
@@ -297,7 +279,7 @@ angular.module('mylabApp')
 'use strict';
 
 angular.module('mylabApp')
-  .filter('toMark', function($sce) {
+  .filter('toMark', function() {
     return function(data) {
       return data;
       // var t = marked(data);
@@ -483,7 +465,6 @@ angular.module('mylabApp')
   .controller('WikiIndexCtrl', ['$scope', '$location', 'LabShareData', 'PostRes', 'posts',
     function($scope, $location, LabShareData, PostRes, posts) {
       console.log('WikiIndexCtrl');
-      console.log(posts);
       $scope.addNewPost = function() {
         delete LabShareData.parantId;
         $location.path('/wiki/new');
@@ -566,7 +547,6 @@ angular.module('mylabApp')
           resolve: {
             post: ['$stateParams', 'PostRes',
               function($stateParams, PostRes) {
-                console.log($stateParams.id);
                 return PostRes.get($stateParams.id);
               }
             ]
@@ -574,17 +554,37 @@ angular.module('mylabApp')
         });
     }
   ])
-  .controller('WikiPostCtrl', ['$scope', '$sce', '$location', 'LabShareData', 'PostRes', 'post', 'marked',
-    function($scope, $sce, $location, LabShareData, PostRes, post, marked) {
+  .controller('WikiPostCtrl', ['$scope', '$location', 'LabShareData', 'PostRes', 'post', 'marked',
+    function($scope, $location, LabShareData, PostRes, post, marked) {
       $scope.post = post;
 
-      var t = post.mkPost;
+      // 生成章节信息
+      $scope.headingList = [];
+      var tokens = marked.lexer(post.postText);
+      console.log(tokens);
+      for (var i = 0; i < tokens.length; i++) {
+        var t = tokens[i];
+        console.log(t.type);
+        if (t === undefined || t.type !== 'heading') {
+          continue;
+        }
 
-      // $scope.ppp = $sce.trustAsHtml(t);
+        var headingData = {
+          depth: t.depth,
+          text: t.text,
+          type: t.type
+        };
+
+        $scope.headingList.push(headingData);
+      }
+      console.log($scope.headingList);
+
+      // 解析文本
       $scope.ppp = marked(post.postText);
-      
-      $scope.delete = function() {
 
+      // 删除方法
+      $scope.delete = function() {
+        // 请求删除
         $scope.post.remove().then(function() {
           console.log('successful');
 
@@ -599,6 +599,7 @@ angular.module('mylabApp')
         });
       };
 
+      // 创建子post 的方法
       $scope.createSubPost = function() {
         LabShareData.parantId = post.id;
         $location.path('/wiki/new');

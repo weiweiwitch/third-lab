@@ -3,73 +3,31 @@
 module.exports = function(grunt) {
 
   // Load grunt tasks automatically, when needed
-  require('jit-grunt')(grunt, {
-    useminPrepare: 'grunt-usemin',
-    ngtemplates: 'grunt-angular-templates',
-    cdnify: 'grunt-google-cdn',
-    protractor: 'grunt-protractor-runner',
-    injector: 'grunt-asset-injector'
-  });
+  // require('jit-grunt')(grunt, {
+  //   useminPrepare: 'grunt-usemin',
+  //   ngtemplates: 'grunt-angular-templates',
+  //   cdnify: 'grunt-google-cdn',
+  //   protractor: 'grunt-protractor-runner',
+  //   injector: 'grunt-asset-injector'
+  // });
+
+  require('load-grunt-tasks')(grunt);
 
   // Time how long tasks take. Can help when optimizing build times
   require('time-grunt')(grunt);
+
+  var appConfig = {
+    // configurable paths
+    client: require('./bower.json').appPath || 'app',
+    project: '.',
+    dist: 'dist'
+  };
 
   // Define the configuration for all the tasks
   grunt.initConfig({
 
     // 工程配置
-    yeoman: {
-      // configurable paths
-      client: require('./bower.json').appPath || 'app',
-      project: require('./bower.json'),
-      dist: 'dist'
-    },
-
-    // 监视
-    watch: {
-      injectJS: {
-        files: [
-          '<%= yeoman.client %>/modules/**/*.js',
-          '!<%= yeoman.client %>/modules/**/*.spec.js',
-          '!<%= yeoman.client %>/modules/**/*.mock.js',
-          '!<%= yeoman.client %>/app/app.js'
-        ],
-        tasks: ['injector:scripts']
-      },
-      injectCss: {
-        files: [
-          '<%= yeoman.client %>/modules/**/*.css'
-        ],
-        tasks: ['injector:css']
-      },
-      mochaTest: {
-        files: ['server/**/*.spec.js'],
-        tasks: ['env:test', 'mochaTest']
-      },
-      jsTest: {
-        files: [
-          '<%= yeoman.client %>/modules/**/*.spec.js',
-          '<%= yeoman.client %>/modules/**/*.mock.js'
-        ],
-        tasks: ['newer:jshint:all', 'karma']
-      },
-      gruntfile: {
-        files: ['Gruntfile.js']
-      },
-      livereload: {
-        files: [
-          '{.tmp,<%= yeoman.client %>}/modules/**/*.css',
-          '{.tmp,<%= yeoman.client %>}/modules/**/*.html',
-          '{.tmp,<%= yeoman.client %>}/modules/**/*.js',
-          '!{.tmp,<%= yeoman.client %>}modules/**/*.spec.js',
-          '!{.tmp,<%= yeoman.client %>}/modules/**/*.mock.js',
-          '<%= yeoman.client %>/assets/images/{,*//*}*.{png,jpg,jpeg,gif,webp,svg}'
-        ],
-        options: {
-          livereload: true
-        }
-      }
-    },
+    yeoman: appConfig,
 
     // Make sure code styles are up to par and there are no obvious mistakes
     jshint: {
@@ -122,40 +80,6 @@ module.exports = function(grunt) {
       }
     },
 
-    // Debugging with node inspector
-    'node-inspector': {
-      custom: {
-        options: {
-          'web-host': 'localhost'
-        }
-      }
-    },
-
-    // Use nodemon to run server in debug mode with an initial breakpoint
-    nodemon: {
-      debug: {
-        script: 'server/app.js',
-        options: {
-          nodeArgs: ['--debug-brk'],
-          env: {
-            PORT: process.env.PORT || 9000
-          },
-          callback: function(nodemon) {
-            nodemon.on('log', function(event) {
-              console.log(event.colour);
-            });
-
-            // opens browser on initial server start
-            nodemon.on('config:update', function() {
-              setTimeout(function() {
-                require('open')('http://localhost:8080/debug?port=5858');
-              }, 500);
-            });
-          }
-        }
-      }
-    },
-
     wiredep: {
       task: {
         // Point to the files that should be updated when
@@ -179,23 +103,9 @@ module.exports = function(grunt) {
       }
     },
 
-    // Renames files for browser caching purposes
-    rev: {
-      dist: {
-        files: {
-          src: [
-            '<%= yeoman.dist %>/{,*/}*.js',
-            '<%= yeoman.dist %>/styles/{,*/}*.css',
-            '<%= yeoman.dist %>/assets/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}',
-            '<%= yeoman.dist %>/assets/fonts/*'
-          ]
-        }
-      }
-    },
-
     uglify: {
       options: {
-        mangle: false
+        mangle: false // 这个参数用于在压缩时不转化变量和函数名。目前有个bug，会导致转换后出现问题
       }
     },
 
@@ -473,7 +383,7 @@ module.exports = function(grunt) {
           '<%= yeoman.dist %>/assets/fonts/*'
         ]
       }
-    },
+    }
   });
 
   // 构建
@@ -483,7 +393,7 @@ module.exports = function(grunt) {
     'injector', // 注入文件的引用到index.html中。
     'useminPrepare',
     'concurrent:dist', // 并行运行任务
-    //'autoprefixer', // 自动添加前缀
+    'autoprefixer', // 自动添加前缀
     //'ngtemplates', // 将angularjs依赖的模板合并成一个js文件
     'concat', // 合并
     'ngAnnotate', // 修正angularjs的注入依赖注解
@@ -498,12 +408,18 @@ module.exports = function(grunt) {
   // 默认任务
   grunt.registerTask('default', [
     'newer:jshint',
-    'test',
+    //'test',
     'build'
   ]);
 
   grunt.registerTask('d', 'debug', function() {
-    var p = require('./bower.json').appPath;
-    grunt.log.debug(p);
+    //var p = require('./bower.json').appPath;
+    var dddd = appConfig.project;
+
+    var s = '';
+    for (var property in dddd) {
+      s = s + '\n' + property + ': ' + dddd[property];
+    }
+    grunt.log.debug(s);
   });
 };
