@@ -329,8 +329,6 @@ angular.module('mylabApp')
 
       $scope.saveUpdate = function() {
         console.log('测试保存更新 ' + $scope.post.postText);
-        console.log($scope.post);
-        $scope.post.ddd = 'sfsfsdfsdfsdfsdfsdfsdfsfdsfsfsdf';
         $scope.post.put().then(function() {
           console.log('successful');
 
@@ -372,7 +370,6 @@ angular.module('mylabApp')
 
       $scope.saveNew = function() {
         console.log('测试保存 ' + $scope.post.postText);
-        $scope.post.postText = 'sd';
         PostRes.post($scope.post).then(function() {
           console.log('successful');
 
@@ -569,9 +566,14 @@ angular.module('mylabApp')
           continue;
         }
 
+        var textPrefix = '';
+        for (var d = 0; d < t.depth; d++) {
+          console.log(t.depth);
+          textPrefix += '*';
+        }
         var headingData = {
           depth: t.depth,
-          text: t.text,
+          text: textPrefix + t.text,
           type: t.type
         };
 
