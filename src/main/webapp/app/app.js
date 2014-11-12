@@ -8,7 +8,8 @@ angular.module('mylabApp', [
     'ui.router',
     'ui.ace',
     'hc.marked',
-    'restangular'
+    'restangular',
+    'mylabApp.post-tree'
   ])
   .config(function($locationProvider, $httpProvider) {
     // 使用html5模式

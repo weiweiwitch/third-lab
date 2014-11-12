@@ -20,52 +20,6 @@ angular.module('mylabApp')
         });
     }
   ])
-  .directive('collection', function() {
-    return {
-      restrict: 'E',
-      replace: true,
-      scope: {
-        collection: '='
-      },
-      templateUrl: 'modules/wiki/collection-tpl.html'
-    };
-  })
-  .directive('member', function($compile) {
-    return {
-      restrict: 'E',
-      replace: true,
-      scope: {
-        member: '=member'
-      },
-      templateUrl: 'modules/wiki/exp-member.html',
-      controller: function($scope) {
-        $scope.collapsed = false;
-        $scope.showThisPost = function(post) {
-          console.log(post);
-        };
-      },
-
-      link: function(scope, element) {
-        scope.toggle = function() {
-          scope.member.collapsed = !scope.member.collapsed;
-          scope.collapsed = scope.member.collapsed;
-        };
-
-        scope.collapsed = scope.member.collapsed;
-
-        if (angular.isArray(scope.member.nodes)) {
-          var st = '<div ng-show="!collapsed"><collection collection="member.nodes"></collection></div>';
-
-          var ddd = $compile(st); // 这里返回的是的link function
-
-          ddd(scope, function(cloned) {
-            element.append(cloned);
-          }); // 手动触发link！
-
-        }
-      }
-    };
-  })
   .factory('LabShareData', function() {
     console.log('factory LabShareData');
     return {};
