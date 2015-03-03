@@ -24,6 +24,11 @@ public class PostController {
 	@Autowired
 	private PostService postService;
 
+	/**
+	 * 获取所有文章
+	 * 
+	 * @return
+	 */
 	@RequestMapping(value = "/posts", method = RequestMethod.GET, produces = "application/json")
 	@ResponseStatus(HttpStatus.OK)
 	public List<PostData> allPost() {
@@ -55,7 +60,7 @@ public class PostController {
 			} else {
 				PostData parantData = pMap.get(postData.parantId);
 				if (parantData.nodes == null) {
-					parantData.nodes = new ArrayList<PostController.PostData>();
+					parantData.nodes = new ArrayList<>();
 				}
 				parantData.nodes.add(postData);
 			}
@@ -74,6 +79,12 @@ public class PostController {
 		return rootDatas;
 	}
 
+	/**
+	 * 获取某一篇文章
+	 * 
+	 * @param id
+	 * @return
+	 */
 	@RequestMapping(value = "/posts/{id}", method = RequestMethod.GET, produces = "application/json")
 	@ResponseStatus(HttpStatus.OK)
 	public PostDetailData specPost(@PathVariable long id) {
@@ -88,6 +99,12 @@ public class PostController {
 
 	}
 
+	/**
+	 * 创建文章
+	 * 
+	 * @param needCreatePost
+	 * @return
+	 */
 	@RequestMapping(value = "/posts", method = RequestMethod.POST, consumes = "application/json", produces = "application/json")
 	@ResponseStatus(HttpStatus.OK)
 	public PostDetailData createPost(@RequestBody PostDetailData needCreatePost) {
@@ -99,6 +116,13 @@ public class PostController {
 		return postDetailData;
 	}
 
+	/**
+	 * 更新文章
+	 * 
+	 * @param id
+	 * @param needUpdatePost
+	 * @return
+	 */
 	@RequestMapping(value = "/posts/{id}", method = RequestMethod.PUT, produces = "application/json")
 	@ResponseStatus(HttpStatus.OK)
 	public PostDetailData updatePost(@PathVariable long id, @RequestBody PostDetailData needUpdatePost) {
@@ -110,6 +134,11 @@ public class PostController {
 		return postDetailData;
 	}
 
+	/**
+	 * 删除文章
+	 * 
+	 * @param id
+	 */
 	@RequestMapping(value = "/posts/{id}", method = RequestMethod.DELETE, produces = "application/json")
 	@ResponseStatus(HttpStatus.OK)
 	public void deletePost(@PathVariable long id) {
@@ -134,6 +163,8 @@ public class PostController {
 		public String user;
 		public String title;
 		public String postText;
+		
+		public String audio; // 可选的音频文件链接
 
 		public long parantId;
 		public String parant;
