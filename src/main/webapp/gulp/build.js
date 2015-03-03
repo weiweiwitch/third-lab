@@ -93,7 +93,7 @@ gulp.task('partials', function() {
     .pipe(gulp.dest('.tmp/inject/'));
 });
 
-gulp.task('html', ['wiredep', 'injector:css', 'injector:js', 'partials'], function() {
+gulp.task('html', ['wiredep', 'injector:css', 'injector:js', 'partials', 'fonts'], function() {
   var htmlFilter = $.filter('*.html');
   var jsFilter = $.filter('**/*.js');
   var cssFilter = $.filter('**/*/css');
@@ -104,60 +104,60 @@ gulp.task('html', ['wiredep', 'injector:css', 'injector:js', 'partials'], functi
     read: false
   });
   return target
-  .pipe($.inject(sources, {
-    starttag: '<!-- inject:partials -->',
-    ignorePath: '.tmp',
-    addRootSlash: false
-  }))
-  .pipe(assets = $.useref.assets())
-  .pipe($.rev())
-  .pipe(jsFilter)
-  .pipe($.ngAnnotate())
-  .pipe($.uglify({
-    preserveComments: $.uglifySaveLicense
-  }))
-  .pipe(jsFilter.restore())
-  .pipe(cssFilter)
-  .pipe($.replace('bower_components/bootstrap-sass-official/assets/fonts/bootstrap', 'fonts'))
-  .pipe($.csso())
-  .pipe(cssFilter.restore())
-  .pipe(assets.restore())
-  .pipe($.useref())
-  .pipe($.revReplace())
-  .pipe(htmlFilter)
-  .pipe($.minifyHtml({
-    empty: true,
-    spare: true,
-    quotes: true
-  }))
-  .pipe(htmlFilter.restore())
-  .pipe(gulp.dest('dist/'))
-  .pipe($.size({
-    title: 'dist/',
-    showFiles: true
-  }));
+    .pipe($.inject(sources, {
+      starttag: '<!-- inject:partials -->',
+      ignorePath: '.tmp',
+      addRootSlash: false
+    }))
+    .pipe(assets = $.useref.assets())
+    .pipe($.rev())
+    .pipe(jsFilter)
+    .pipe($.ngAnnotate())
+    .pipe($.uglify({
+      preserveComments: $.uglifySaveLicense
+    }))
+    .pipe(jsFilter.restore())
+    .pipe(cssFilter)
+    .pipe($.replace('bower_components/bootstrap-sass-official/assets/fonts/bootstrap', 'fonts'))
+    .pipe($.csso())
+    .pipe(cssFilter.restore())
+    .pipe(assets.restore())
+    .pipe($.useref())
+    .pipe($.revReplace())
+    .pipe(htmlFilter)
+    .pipe($.minifyHtml({
+      empty: true,
+      spare: true,
+      quotes: true
+    }))
+    .pipe(htmlFilter.restore())
+    .pipe(gulp.dest('dist/'))
+    .pipe($.size({
+      title: 'dist/',
+      showFiles: true
+    }));
 });
 
 gulp.task('images', function() {
   return gulp.src('app/assets/images/**/*')
-  .pipe($.imagemin({
-    optimizationLevel: 3,
-    progressive: true,
-    interlaced: true
-  }))
-  .pipe(gulp.dest('dist/assets/images/'));
+    .pipe($.imagemin({
+      optimizationLevel: 3,
+      progressive: true,
+      interlaced: true
+    }))
+    .pipe(gulp.dest('dist/assets/images/'));
 });
 
 gulp.task('fonts', function() {
   return gulp.src($.mainBowerFiles())
-  .pipe($.filter('**/*.{eot,svg,ttf,woff}'))
-  .pipe($.flatten())
-  .pipe(gulp.dest('dist/fonts/'));
+    .pipe($.filter('**/*.{eot,svg,ttf,woff}'))
+    .pipe($.flatten())
+    .pipe(gulp.dest('dist/fonts/'));
 });
 
 gulp.task('misc', function() {
   return gulp.src('app/**/*.ico')
-  .pipe(gulp.dest('dist/'));
+    .pipe(gulp.dest('dist/'));
 });
 
 // 清理构建文件
