@@ -8,7 +8,7 @@ angular.module('mylabApp.post-tree', [])
       scope: {
         collection: '='
       },
-      templateUrl: 'modules/components/post-tree/collection-tpl.html'
+      templateUrl: 'components/components/post-tree/collection-tpl.html'
     };
   })
   .directive('member', function($compile) {
@@ -18,7 +18,7 @@ angular.module('mylabApp.post-tree', [])
       scope: {
         member: '=member'
       },
-      templateUrl: 'modules/components/post-tree/exp-member.html',
+      templateUrl: 'components/components/post-tree/exp-member.html',
       controller: function($scope) {
         $scope.collapsed = false;
         $scope.showThisPost = function(post) {

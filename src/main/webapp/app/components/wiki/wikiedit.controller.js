@@ -15,7 +15,7 @@ angular.module('mylabApp')
       $stateProvider
         .state('wiki.editid', {
           url: '/edit/:id',
-          templateUrl: 'modules/wiki/wikiedit.html',
+          templateUrl: 'components/wiki/wikiedit.html',
           controller: 'WikiPostEditCtrl',
           resolve: {
             post: ['$stateParams', 'PostRes',
@@ -27,7 +27,7 @@ angular.module('mylabApp')
         })
         .state('wiki.new', {
           url: '/new',
-          templateUrl: 'modules/wiki/wikiedit.html',
+          templateUrl: 'components/wiki/wikiedit.html',
           controller: 'WikiPostNewCtrl'
         });
     }

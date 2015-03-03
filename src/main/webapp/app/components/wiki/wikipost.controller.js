@@ -6,7 +6,7 @@ angular.module('mylabApp')
       $stateProvider
         .state('wiki.id', {
           url: '/post/:id',
-          templateUrl: 'modules/wiki/wikipost.html',
+          templateUrl: 'components/wiki/wikipost.html',
           controller: 'WikiPostCtrl',
           resolve: {
             post: ['$stateParams', 'PostRes',

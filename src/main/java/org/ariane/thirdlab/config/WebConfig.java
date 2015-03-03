@@ -15,6 +15,8 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {
 		registry.addResourceHandler("/ap/**").addResourceLocations("/app/", "/.tmp/").setCachePeriod(0);
 		registry.addResourceHandler("/p/**").addResourceLocations("/dist/").setCachePeriod(0);
+		registry.addResourceHandler("/bower_components/**").addResourceLocations("/bower_components/")
+				.setCachePeriod(0);
 	}
 
 }
