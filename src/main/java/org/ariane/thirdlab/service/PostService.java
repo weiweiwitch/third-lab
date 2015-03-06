@@ -7,6 +7,8 @@ import org.ariane.thirdlab.domain.Post;
 public interface PostService {
 
 	public List<Post> findAllPosts();
+	
+	public List<Post> findSpecPost(String postParam);
 
 	public Post findSpecPost(long id);
 

@@ -32,6 +32,12 @@ public class PostServiceImpl implements PostService {
 	}
 
 	@Override
+	public List<Post> findSpecPost(String postParam) {
+		List<Post> posts = postDao.findSpecPost(postParam);
+		return posts;
+	}
+
+	@Override
 	public Post findSpecPost(long id) {
 		Post post = postDao.findById(id);
 		return post;

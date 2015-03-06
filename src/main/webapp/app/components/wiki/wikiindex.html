@@ -1,17 +1,36 @@
-<div ng-include="'components/components/navbar/navbar.html'"></div>
-<div class="container-fluid">
-  <div class="row">
-    <div class="col-md-3 labtree">
+<div layout="column">
+  <!-- 标题栏 -->
+  <div ng-include="'components/components/navbar/navbar.html'"></div>
+
+  <!-- 内容视图 -->
+  <div layout="row">
+
+    <div layout="column" flex="20" class="labtree">
+
       <div class="labtree-btn">
-        <button class="btn btn-primary" ng-click="addNewPost()">添加新文章</button>
+        <md-button class="md-raised" ng-click="addNewPost()">添加新文章</md-button>
       </div>
+
       <div>
         <collection collection='posts'></collection>
       </div>
-
     </div>
-    <div class="col-md-9">
+
+    <div flex="*" layout="column" class="lab-main-board">
+      <div layout="row" layout-align="start center">
+        <md-autocomplete flex="35" md-no-cache="true" md-selected-item="searchData.selectedItem" md-search-text="searchData.searchText"
+        md-items="item in search()" md-item-text="item.title" placeholder="标题搜索">
+          <span md-highlight-text="searchText">{{item.title}}</span>
+        </md-autocomplete>
+
+        <md-button class="md-raised md-primary" ng-disabled="searchData.searchText === undefined" ng-click="jump2Post()">显示</md-button>
+      </div>
+
+      <br/>
+
       <div ui-view></div>
     </div>
+
   </div>
+
 </div>

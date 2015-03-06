@@ -1,24 +1,21 @@
-<div class="container-fluid">
+<div layout="column">
 
-  <div class="row">
-    <div class="col-md-12">
-      <div>
-        <a class="btn btn-primary" ui-sref="wiki.editid({id:post.id})">编辑</a>
-        <button class="btn btn-default" ng-click="delete()">删除</button>
-        <button class="btn btn-default" ng-click="createSubPost()">添加子文章</button>
-      </div>
-
-      <ul class="chapter-nodes" >
-        <li ng-repeat="heading in headingList">{{heading.text}}</li>
-      </ul>
-
-      <div class="topic_header">
-        <span class="topic_full_title">{{post.title}}</span>
-      </div>
-      <div class="inner_topic">
-        <div class="markdown-text" ng-bind-html="ppp"></div>
-      </div>
-
+    <div>
+      <md-button class="md-raised md-primary" ui-sref="wiki.editid({id:post.id})">编辑</md-button>
+      <!-- <a class="btn btn-primary" >编辑</a> -->
+      <md-button class="md-raised" ng-click="delete()">删除</md-button>
+      <md-button class="md-raised" ng-click="createSubPost()">添加子文章</md-button>
     </div>
-  </div>
+
+    <ul class="chapter-nodes">
+      <li ng-repeat="heading in headingList">{{heading.text}}</li>
+    </ul>
+
+    <div class="topic_header">
+      <span class="topic_full_title">{{post.title}}</span>
+    </div>
+    <div class="inner_topic">
+      <div class="markdown-text" ng-bind-html="ppp"></div>
+    </div>
+
 </div>

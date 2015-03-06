@@ -24,12 +24,46 @@ angular.module('mylabApp')
     console.log('factory LabShareData');
     return {};
   })
-  .controller('WikiIndexCtrl', ['$scope', '$location', 'LabShareData', 'PostRes', 'posts',
-    function($scope, $location, LabShareData, PostRes, posts) {
+  .controller('WikiIndexCtrl', ['$scope', '$state', '$location', '$http', '$q', 'LabShareData', 'PostRes', 'posts',
+    function($scope, $state, $location, $http, $q, LabShareData, PostRes, posts) {
       console.log('WikiIndexCtrl');
+
       $scope.addNewPost = function() {
         delete LabShareData.parantId;
         $location.path('/wiki/new');
+      };
+
+      $scope.searchData = {};
+
+      $scope.jump2Post = function() {
+        if ($scope.searchData.selectedItem === undefined) {
+          return;
+        }
+
+        $state.go('wiki.id', {
+          id: $scope.searchData.selectedItem.id
+        });
+
+      };
+
+      $scope.search = function() {
+        var query = $scope.searchData.searchText;
+        var deferred = $q.defer();
+
+        $http.get('/api/whichpost', {
+          params: {
+            postParam: query
+          }
+        }).success(function(data) {
+          console.log(data);
+          var postInfos = data.postInfos;
+          deferred.resolve(postInfos);
+
+        }).error(function() {
+          deferred.reject('');
+        });
+
+        return deferred.promise;
       };
 
       // 初始化列表

@@ -16,6 +16,7 @@
     "angular-ui-ace": "~0.1.*",
     "angular-ui-router": "~0.2.11",
     "angular-marked": "~0.0.12",
+    "angular-material": "~0.8.3",
     "restangular": "~1.4.0",
     "highlightjs": "~8.3.0",
     "components-font-awesome": "~4.2.0"

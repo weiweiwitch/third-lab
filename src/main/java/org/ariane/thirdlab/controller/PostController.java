@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -79,6 +80,23 @@ public class PostController {
 		return rootDatas;
 	}
 
+	@RequestMapping(value = "/whichpost", method = RequestMethod.GET, produces = "application/json")
+	@ResponseStatus(HttpStatus.OK)
+	public PostPositionData searchPost(@RequestParam String postParam) {
+		List<Post> posts = postService.findSpecPost(postParam);
+		if (posts.size() > 0) {
+			PostPositionData postPositionData = new PostPositionData();
+			for (Post post : posts) {
+				postPositionData.postInfos.add(new PostInfo(post.getId(), post.getTitle()));
+			}
+			return postPositionData;
+
+		} else {
+			PostPositionData postPositionData = new PostPositionData();
+			return postPositionData;
+		}
+	}
+
 	/**
 	 * 获取某一篇文章
 	 * 
@@ -96,7 +114,6 @@ public class PostController {
 		} else {
 			return null;
 		}
-
 	}
 
 	/**
@@ -157,13 +174,31 @@ public class PostController {
 
 	}
 
+	public static class PostPositionData {
+		public List<PostInfo> postInfos = new ArrayList<>();
+	}
+
+	public static class PostInfo {
+		public long id;
+		public String title;
+
+		public PostInfo() {
+
+		}
+
+		public PostInfo(long id, String title) {
+			this.id = id;
+			this.title = title;
+		}
+	}
+
 	public static class PostDetailData {
 		public long id;
 		public String _id;
 		public String user;
 		public String title;
 		public String postText;
-		
+
 		public String audio; // 可选的音频文件链接
 
 		public long parantId;

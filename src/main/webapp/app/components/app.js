@@ -4,6 +4,7 @@ angular.module('mylabApp', [
     'ngCookies',
     'ngResource',
     'ngSanitize',
+    'ngMaterial',
     'ui.bootstrap',
     'ui.router',
     'ui.ace',

@@ -32,4 +32,17 @@ public class PostDaoImpl extends AbstractDaoImpl<Post> implements PostDao {
 			return null;
 		}
 	}
+
+	@Override
+	public List<Post> findSpecPost(String postParam) {
+		List<Post> posts = (List<Post>) getHibernateTemplate().execute(new HibernateCallback<List<Post>>() {
+			public List<Post> doInHibernate(Session session) throws HibernateException {
+				Query hqlQuery = session.createQuery("from Post p where p.title like :param");
+				hqlQuery.setString("param", "%" + postParam + "%");
+				hqlQuery.setMaxResults(10);
+				return hqlQuery.list();
+			}
+		});
+		return posts;
+	}
 }
