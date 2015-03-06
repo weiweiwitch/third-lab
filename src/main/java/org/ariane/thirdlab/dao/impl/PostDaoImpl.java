@@ -8,8 +8,9 @@ import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.springframework.orm.hibernate4.HibernateCallback;
+import org.springframework.stereotype.Repository;
 
-//@Repository
+@Repository
 public class PostDaoImpl extends AbstractDaoImpl<Post> implements PostDao {
 
 	public PostDaoImpl() {

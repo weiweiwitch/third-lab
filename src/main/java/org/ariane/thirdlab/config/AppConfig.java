@@ -2,10 +2,6 @@ package org.ariane.thirdlab.config;
 
 import java.util.Properties;
 
-import org.ariane.thirdlab.dao.PostDao;
-import org.ariane.thirdlab.dao.impl.PostDaoImpl;
-import org.ariane.thirdlab.service.PostService;
-import org.ariane.thirdlab.service.impl.PostServiceImpl;
 import org.hibernate.SessionFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -17,7 +13,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 import com.alibaba.druid.pool.DruidDataSource;
 
 @Configuration
-@ComponentScan
+@ComponentScan(basePackages = "org.ariane.thirdlab.controller,org.ariane.thirdlab.service,org.ariane.thirdlab.dao")
 @EnableTransactionManagement
 public class AppConfig {
 
@@ -39,7 +35,7 @@ public class AppConfig {
 		localSessionFactoryBuilder.scanPackages("org.ariane.thirdlab.domain");
 
 		Properties properties = new Properties();
-//		properties.put("hibernate.hbm2ddl.auto", "create");
+		// properties.put("hibernate.hbm2ddl.auto", "create");
 		properties.put("hibernate.dialect", "org.hibernate.dialect.MySQLDialect");
 		properties.put("hibernate.show_sql", true);
 		properties.put("hibernate.format_sql", false);
@@ -58,18 +54,4 @@ public class AppConfig {
 		return hibernateTransactionManager;
 	}
 
-	@Bean
-	public PostDao getPostDao() {
-		PostDaoImpl postDaoImpl = new PostDaoImpl();
-		postDaoImpl.setSessionFactory(getSessionFactory());
-		return postDaoImpl;
-	}
-
-	@Bean
-	public PostService getPostService() {
-		PostServiceImpl postServiceImpl = new PostServiceImpl();
-		postServiceImpl.setPostDao(getPostDao());
-		return postServiceImpl;
-	}
-	
 }

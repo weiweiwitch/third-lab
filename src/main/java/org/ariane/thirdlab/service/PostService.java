@@ -1,6 +1,5 @@
 package org.ariane.thirdlab.service;
 
-import java.net.UnknownHostException;
 import java.util.List;
 
 import org.ariane.thirdlab.domain.Post;
@@ -16,7 +15,5 @@ public interface PostService {
 	public Post updatePost(long id, long parantId, String title, String postData);
 
 	public int deletePost(long id);
-
-	public void upgrade() throws UnknownHostException;
 
 }

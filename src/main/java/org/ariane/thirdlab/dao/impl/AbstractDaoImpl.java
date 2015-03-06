@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.util.List;
 
 import org.ariane.thirdlab.dao.AbstractDao;
+import org.hibernate.SessionFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.hibernate4.support.HibernateDaoSupport;
 
 public class AbstractDaoImpl<E extends Serializable> extends HibernateDaoSupport implements AbstractDao<E> {
@@ -12,6 +14,11 @@ public class AbstractDaoImpl<E extends Serializable> extends HibernateDaoSupport
 
 	protected AbstractDaoImpl(Class<E> entityClass) {
 		this.entityClass = entityClass;
+	}
+
+	@Autowired
+	public void setSuperSessionFactory(SessionFactory sessionFactory) {
+		super.setSessionFactory(sessionFactory);
 	}
 
 	@Override
