@@ -1,0 +1,25 @@
+.labtree {
+    background: #fff;
+    border-right: 1px solid #d9d9d9;
+    box-shadow: -1px 1px 6px rgba(0,0,0,0.35);
+    margin: 0 6px;
+}
+.labtree-btn {
+    padding: 10px 15px;
+}
+.labtree-node span {
+    color: #555;
+}
+.labtree-nodes {
+    list-style-type: none;
+    padding-left: 15px;
+}
+.labtree-node-text {
+    transition: padding 0.2s ease-out;
+    color: #555;
+}
+ul li a:hover {
+    padding-left: 10px;
+    color: #08c;
+    text-decoration: none;
+}
