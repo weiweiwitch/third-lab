@@ -17,6 +17,9 @@
 .labtree-node-text {
     transition: padding 0.2s ease-out;
     color: #555;
+    font-size: 14px;
+    font-smoothing: antialiased;
+    font-family: 'Titillium Web', 'Lucida Grande', 'Lucida Sans', sans-serif;
 }
 ul li a:hover {
     padding-left: 10px;

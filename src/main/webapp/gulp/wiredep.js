@@ -2,14 +2,15 @@
 
 var gulp = require('gulp');
 
-gulp.task('wiredep', function() {
-  var wiredep = require('wiredep').stream;
-  var target = gulp.src('app/index.html');
+var paths = gulp.paths;
 
-  return target.pipe(wiredep({
-    directory: 'bower_components', // 依赖目录
-    exclude: [/bootstrap-sass-official/, /bootstrap\.css/, /bootstrap\.css/, /foundation\.css/]
-    //ignorePath: '../bower_components/'
-  }))
-  .pipe(gulp.dest('app'));
+var wiredep = require('wiredep').stream;
+
+// 注入依赖
+gulp.task('wiredep', function() {
+
+  var target = gulp.src(paths.src + '/index.html');
+
+  return target.pipe(wiredep(wiredepOptions))
+    .pipe(gulp.dest(paths.tmp + '/serve'));
 });

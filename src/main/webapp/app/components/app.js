@@ -5,7 +5,7 @@ angular.module('mylabApp', [
     'ngResource',
     'ngSanitize',
     'ngMaterial',
-    'ui.bootstrap',
+    // 'ui.bootstrap',
     'ui.router',
     'ui.ace',
     'hc.marked',
