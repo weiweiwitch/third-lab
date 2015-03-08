@@ -7,6 +7,11 @@
     margin: 8px 0;
     display: inline-block;
 }
+.inner_topic_container {
+  position: absolute;
+  top: 160px;
+  bottom: 20px;
+}
 .inner_topic {
     padding: 10px;
     border-top: 1px solid #7d7d7d;

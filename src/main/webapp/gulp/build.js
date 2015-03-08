@@ -8,6 +8,8 @@ var $ = require('gulp-load-plugins')({
   pattern: ['gulp-*', 'main-bower-files', 'uglify-save-license', 'del']
 });
 
+var debug = require('gulp-debug');
+
 // 合并html 模板
 gulp.task('partials', function() {
   var partialsFiles = gulp.src([
@@ -27,13 +29,8 @@ gulp.task('partials', function() {
     .pipe(gulp.dest(paths.tmp + '/partials/'));
 });
 
-gulp.task('html', ['inject', 'partials', 'fonts'], function() {
-  var htmlFilter = $.filter('*.html');
-  var jsFilter = $.filter('**/*.js');
-  var cssFilter = $.filter('**/*/css');
-  var assets;
-
-  var target = gulp.src([paths.tmp + '/serve/*.html']);
+gulp.task('inject:tpl', ['inject', 'partials', 'fonts'], function() {
+  var target = gulp.src(paths.tmp + '/serve/index.html');
 
   var partialsInjectFile = gulp.src(paths.tmp + '/partials/templateCacheHtml.js', {
     read: false
@@ -47,9 +44,35 @@ gulp.task('html', ['inject', 'partials', 'fonts'], function() {
 
   return target
     .pipe($.inject(partialsInjectFile, partialsInjectOptions))
+    .pipe(gulp.dest(paths.tmp + '/serve'));
+});
+
+gulp.task('html', ['inject:tpl'], function() {
+  var htmlFilter = $.filter('*.html');
+  var jsFilter = $.filter('**/*.js');
+  var cssFilter = $.filter('**/*/css');
+  var assets;
+
+  var target = gulp.src([paths.tmp + '/serve/*.html']);
+
+  // var partialsInjectFile = gulp.src(paths.tmp + '/partials/templateCacheHtml.js', {
+  //   read: false
+  // });
+  //
+  // var partialsInjectOptions = {
+  //   starttag: '<!-- inject:partials -->',
+  //   ignorePath: paths.tmp + '/partials',
+  //   addRootSlash: false
+  // };
+
+  return target
+  .pipe(debug())
+    // .pipe($.inject(partialsInjectFile, partialsInjectOptions))
     .pipe(assets = $.useref.assets())
+    .pipe(debug())
     .pipe($.rev())
     .pipe(jsFilter) // 处理js
+    .pipe(debug())
     .pipe($.ngAnnotate())
     .pipe($.uglify({
       preserveComments: $.uglifySaveLicense
