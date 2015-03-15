@@ -7,10 +7,6 @@
   </div>
 
   <div layout="row">
-    <ul class="chapter-nodes" flex="15">
-      <li ng-repeat="heading in headingList">{{heading.text}}</li>
-    </ul>
-
     <md-content class="inner_topic_container" flex="*">
       <div class="topic_header">
         <span class="topic_full_title">{{post.title}}</span>
@@ -20,6 +16,11 @@
         <div class="markdown-text" ng-bind-html="ppp"></div>
       </div>
     </md-content>
+    <ul class="chapter-nodes" flex="15">
+      <li ng-repeat="heading in headingList">
+        <span class="{{heading.depthcls}}">{{heading.text}}</span>
+      </li>
+    </ul>
   </div>
 
 </div>

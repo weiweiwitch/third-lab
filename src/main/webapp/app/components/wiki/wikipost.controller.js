@@ -33,15 +33,21 @@ angular.module('mylabApp')
           continue;
         }
 
-        var textPrefix = '';
-        for (var d = 0; d < t.depth; d++) {
-          console.log(t.depth);
-          textPrefix += '*';
+        var depthcls = 'tp-p0';
+        if (t.depth === 2) {
+          depthcls = 'tp-p2';
+        } else if (t.depth === 3) {
+          depthcls = 'tp-p3';
+        } else if (t.depth === 4) {
+          depthcls = 'tp-p4';
+        } else if (t.depth === 5) {
+          depthcls = 'tp-p5';
         }
         var headingData = {
           depth: t.depth,
-          text: textPrefix + t.text,
-          type: t.type
+          text: t.text,
+          type: t.type,
+          depthcls: depthcls
         };
 
         $scope.headingList.push(headingData);

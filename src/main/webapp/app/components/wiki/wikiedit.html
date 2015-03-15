@@ -1,33 +1,32 @@
 <div layout="column">
+  <h3>编辑</h3>
 
-  <div>
-    <h3>编辑</h3>
-
-    <form role="form">
-      <div class="form-group">
+  <div role="form">
+    <md-content layout="row">
+      <md-input-container class="form-group" flex="10">
         <label>ID：</label>
         <input type="text" class="form-control" ng-model="post.id" readonly>
-      </div>
-      <div class="form-group">
-        <label>标题：</label>
-        <input type="text" class="form-control" ng-model="post.title">
-      </div>
-      <div class="form-group">
+      </md-input-container>
+      <md-input-container class="form-group" flex="10">
         <label>上级：</label>
         <input type="text" class="form-control" ng-model="post.parantId">
-      </div>
+      </md-input-container>
 
-      <div class="form-group">
-        <label>内容：</label>
-        <div class="form-control" ng-model="post.postText" ui-ace="{useWrapMode : true, mode: 'markdown', onChange: aceChanged}"></div>
-      </div>
+      <md-input-container class="form-group" flex="*">
+        <label>标题：</label>
+        <input type="text" class="form-control" ng-model="post.title">
+      </md-input-container>
+    </md-content>
 
-      <div class="form-group">
-        <md-button class="md-raised" ng-show="!isNew()" ng-click="saveUpdate()">更新</md-button>
-        <md-button class="md-raised" ng-show="isNew()" ng-click="saveNew()">保存</md-button>
-      </div>
-    </form>
+    <div class="form-group">
+      <label>内容：</label>
+      <div class="form-control" ng-model="post.postText" ui-ace="{useWrapMode : true, mode: 'markdown', onChange: aceChanged}"></div>
+    </div>
 
+    <div class="form-group">
+      <md-button class="md-raised" ng-show="!isNew()" ng-click="saveUpdate()">更新</md-button>
+      <md-button class="md-raised" ng-show="isNew()" ng-click="saveNew()">保存</md-button>
+    </div>
   </div>
 
 </div>
