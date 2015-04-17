@@ -27,6 +27,7 @@ angular.module('mylabApp.post-tree', [])
       },
 
       link: function(scope, element) {
+        // 收缩或展开
         scope.toggle = function() {
           scope.member.collapsed = !scope.member.collapsed;
           scope.collapsed = scope.member.collapsed;

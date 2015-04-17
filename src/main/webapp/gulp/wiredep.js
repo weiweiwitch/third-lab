@@ -11,6 +11,10 @@ gulp.task('wiredep', function() {
 
   var target = gulp.src(paths.src + '/index.html');
 
+  var wiredepOptions = {
+    directory: 'bower_components'
+  };
+
   return target.pipe(wiredep(wiredepOptions))
     .pipe(gulp.dest(paths.tmp + '/serve'));
 });
