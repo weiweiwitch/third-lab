@@ -1,0 +1,23 @@
+{
+  "name": "mylab",
+  "version": "0.0.1",
+  "homepage": "https://github.com/weiweiwitch/third-lab",
+  "authors": [
+    "Jack Zhu <weiwei.witch@gmail.com>"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "react": "~0.13.2",
+    "reflux": "~0.2.7",
+    "react-bootstrap": "~0.20.3",
+    "bootstrap": "~3.3.4",
+    "superagent": "~1.2.0"
+  }
+}

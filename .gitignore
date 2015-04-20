@@ -4,3 +4,8 @@ src/main/webapp-old/.sass-cache
 src/main/webapp-old/.tmp
 src/main/webapp-old/node_modules
 src/main/webapp-old/app/bower_components
+src/main/webapp/dist
+src/main/webapp/.sass-cache
+src/main/webapp/.tmp
+src/main/webapp/node_modules
+src/main/webapp/bower_components
