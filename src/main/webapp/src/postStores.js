@@ -17,9 +17,9 @@ var postStore = Reflux.createStore({
     });
   },
   onPostFetchCompleted: function(data) {
-    console.log(data);
-
+    console.log('onPostFetchCompleted');
     this.trigger(data);
+    console.log('onPostFetchCompleted finish');
   },
   onPostFetchFailed: function(error) {
     console.log(error);

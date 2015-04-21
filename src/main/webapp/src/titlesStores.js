@@ -16,8 +16,6 @@ var titleStore = Reflux.createStore({
     });
   },
   onTitlesInitCompleted: function(data) {
-    console.log(data);
-
     this.data = data;
     this.trigger(data);
   },

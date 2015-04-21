@@ -62,7 +62,10 @@ var LabTitleContainer = React.createClass({
 
   handleAddNewRootPost: function() {
     // 切换到编辑页面
-    this.context.router.transitionTo('edit', null, {newPost: true});
+    this.context.router.transitionTo('edit', null, {
+      newPost: true,
+      parantId: 0
+    });
   },
 
   render: function() {
@@ -171,15 +174,45 @@ var LabEdit = React.createClass({
     router: React.PropTypes.func
   },
 
-  getInitialState: function() {
-    console.log('getInitialState');
+  getInitState: function() {
     return {
       post: {
         id: 0,
         title: '',
-        postText: '...'
+        postText: '...',
+        parantId: 0
       }
     };
+  },
+
+  getInitialState: function() {
+    console.log('LabEdit getInitialState');
+    return this.getInitState();
+  },
+
+  componentDidMount: function() {
+    console.log('LabEdit componentDidMount');
+    var newPost = this.context.router.getCurrentQuery().newPost;
+    if (newPost !== 'false') {
+      var parantId = this.context.router.getCurrentQuery().parantId;
+      console.log('newPost mark is true ' + parantId);
+      var state = this.getInitState();
+      state.post.parantId = parantId;
+      this.setState(state);
+    }
+  },
+
+  // 路由切换需要依靠这个方法重置数据
+  componentWillReceiveProps: function(nextProps) {
+    var newPost = this.context.router.getCurrentQuery().newPost;
+    console.log('LabEdit componentWillReceiveProps ' + newPost);
+    console.log(nextProps);
+
+    if (newPost !== 'false') {
+      var state = this.getInitState();
+      state.post.parantId = 0;
+      this.setState(state);
+    }
   },
 
   parantIdChange: function(event) {
@@ -220,7 +253,10 @@ var LabEdit = React.createClass({
   },
 
   render: function() {
-    // 这边是从路由的query中获取参数。
+    console.log('LabEdit render');
+
+    // 这边是从路由的query中获取参数。根据参数来决定如何渲染。
+    // 这里决定显示什么按钮
     var newPost = this.context.router.getCurrentQuery().newPost;
     var updateClass = 'ele-hide';
     var createClass = '';
@@ -229,6 +265,10 @@ var LabEdit = React.createClass({
       createClass = 'ele-hide';
     }
     console.log('new post ' + newPost);
+
+    // 内容部分会根据是否传入post的state来决定如何显示。
+
+    // 新的根文章还是子级文章，通过传入的属性来决定
 
     return (
       <div className="container-fluid">
@@ -280,8 +320,7 @@ var LabContent = React.createClass({
     router: React.PropTypes.func
   },
 
-  getInitialState: function() {
-    console.log('getInitialState');
+  getInitState: function() {
     return {
       post: {
         id: 0,
@@ -289,6 +328,33 @@ var LabContent = React.createClass({
         postText: '...'
       }
     };
+  },
+
+  getInitialState: function() {
+    console.log('getInitialState');
+    return this.getInitState();
+  },
+
+  componentWillMount: function() {
+    console.log('componentWillMount');
+  },
+
+  componentDidMount: function() {
+    console.log('componentDidMount');
+  },
+
+  componentWillReceiveProps: function(nextProps) {
+    console.log('componentWillReceiveProps ');
+    console.log(nextProps);
+
+    this.setState(this.getInitState());
+  },
+
+  shouldComponentUpdate: function(nextProps, nextState) {
+    console.log('shouldComponentUpdate ');
+    console.log(nextProps);
+    console.log(nextState);
+    return true;
   },
 
   handleDelete: function() {
@@ -311,14 +377,25 @@ var LabContent = React.createClass({
     postActions.postFetch(postId);
   },
 
+  handleCreateSubPost: function() {
+    // 切换到编辑页面
+    var postId = this.state.post.id;
+    this.context.router.transitionTo('edit', null, {
+      newPost: true,
+      parantId: postId,
+    });
+  },
+
   render: function() {
+    console.log('render');
+
     var rawMarkup = marked(this.state.post.postText);
     return (
       <div className="container-fluid">
         <div className="row">
           <Button onClick={this.handleStartEdit}>编辑</Button>
           <Button onClick={this.handleDelete}>删除</Button>
-          <Button>添加子文章</Button>
+          <Button onClick={this.handleCreateSubPost}>添加子文章</Button>
         </div>
         <div className="row">
           <div className="inner_topic_container">
