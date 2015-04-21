@@ -2,6 +2,7 @@
 
 var Reflux = require('reflux');
 var postActions = require('./postActions');
+var titlesActions = require('./titlesActions');
 var request = require('superagent');
 
 var postStore = Reflux.createStore({
@@ -17,11 +18,39 @@ var postStore = Reflux.createStore({
   },
   onPostFetchCompleted: function(data) {
     console.log(data);
+
     this.trigger(data);
   },
   onPostFetchFailed: function(error) {
     console.log(error);
-  }
-  });
+  },
+  onPostDelete: function(postId) {
+    request.del('api/posts/' + postId).end(function(error, response) {
+      if (response) {
+        titlesActions.titlesInit();
+      } else {
 
-  module.exports = postStore;
+      }
+    });
+  },
+
+  onPostUpdate: function(post) {
+    request.put('api/posts/' + post.id, post).end(function(error, response) {
+      if (response) {
+        postActions.postUpdateCompleted(response.body);
+      } else {
+        postActions.postUpdateFailed(response.error);
+      }
+    });
+  },
+  onPostUpdateCompleted: function(data) {
+    console.log(data);
+
+    this.trigger(data);
+  },
+  onPostUpdateFailed: function(error) {
+    console.log(error);
+  },
+});
+
+module.exports = postStore;

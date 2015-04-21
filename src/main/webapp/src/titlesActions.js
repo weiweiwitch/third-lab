@@ -5,7 +5,8 @@ var Reflux = require('reflux');
 var titlesActions = Reflux.createActions([
   'titlesInit',
   'titlesInitCompleted',
-  'titlesInitFailed'
+  'titlesInitFailed',
+  'titleCollapse'
 ]);
 
 module.exports = titlesActions;

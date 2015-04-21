@@ -1,7 +1,7 @@
 'use strict';
 
 var Reflux = require('reflux');
-var titlesActions = require('./actions');
+var titlesActions = require('./titlesActions');
 var request = require('superagent');
 
 var titleStore = Reflux.createStore({
@@ -17,10 +17,15 @@ var titleStore = Reflux.createStore({
   },
   onTitlesInitCompleted: function(data) {
     console.log(data);
+
+    this.data = data;
     this.trigger(data);
   },
   onTitlesInitFailed: function(error) {
     console.log(error);
+  },
+  onTitleCollapse: function() {
+    this.trigger(this.data);
   }
 });
 

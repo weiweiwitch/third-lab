@@ -6,13 +6,17 @@ var React = require('react');
 var Reflux = require('reflux');
 var marked = require('marked');
 
-var titlesActions = require('./actions');
-var titleStore = require('./stores');
+var titlesActions = require('./titlesActions');
+var titleStore = require('./titlesStores');
+
 var postActions = require('./postActions');
 var postStore = require('./postStores');
 
+var AceEditor = require('./editor');
+
 var Navbar = ReactBootstrap.Navbar;
 var Button = ReactBootstrap.Button;
+var Input = ReactBootstrap.Input;
 var ListGroup = ReactBootstrap.ListGroup;
 var ListGroupItem = ReactBootstrap.ListGroupItem;
 
@@ -43,7 +47,7 @@ var LabApp = React.createClass({
           </div>
           <div className="col-md-10">
             <LabTestNav></LabTestNav>
-            <RouteHandler key={this.getHandlerKey()} />
+            <RouteHandler  />
           </div>
         </div>
       </div>
@@ -74,20 +78,24 @@ var LabTitleTree = React.createClass({
       titles: []
     }
   },
-  handleClick: function() {
-    console.log('dddddd');
-  },
   render: function() {
-    var treeThis = this;
-    var titles = this.state.titles.map(function(item) {
-      return (
-        <li key={item.id} className="labtree-node" >
-          <a className="labtree-node-text" >
-              <Link to="content" params={{itemId: item.id}}>{item.title}</Link>
-          </a>
-        </li>
-      );
-    });
+    return (
+      <LabTitleTreeContainer titles={this.state.titles}/>
+    );
+  }
+});
+
+var LabTitleTreeContainer = React.createClass({
+  render: function() {
+    var titles = []
+    if (this.props.titles !== null && this.props.titles !== undefined) {
+      titles = this.props.titles.map(function(item) {
+        return (
+          <LabTitleTreeItem key={item.id} post={item}></LabTitleTreeItem>
+        );
+      });
+    }
+
     return (
       <ul className="labtree-nodes">
         {titles}
@@ -96,11 +104,52 @@ var LabTitleTree = React.createClass({
   }
 });
 
+var LabTitleTreeItem = React.createClass({
+  contextTypes: {
+    router: React.PropTypes.func
+  },
+  handleDoClick: function(event) {
+    var iid = this.props.post.id;
+
+    // 切换
+    this.context.router.transitionTo('content', {itemId: iid});
+
+    // 获取数据
+    postActions.postFetch(iid);
+  },
+  handleCollapse: function(title) {
+    if (this.props.post.collapse !== false) {
+      this.props.post.collapse = false;
+    } else {
+      this.props.post.collapse = true;
+    }
+
+    titlesActions.titleCollapse();
+  },
+  render: function() {
+    var post = this.props.post;
+    var classStr = 'labtree-node-hide';
+    if (post.collapse === false) {
+      classStr = '';
+    }
+    return (
+      <li className="labtree-node" >
+        <span onClick={this.handleCollapse}>&rarr;</span>
+        <span onClick={this.handleDoClick}>
+           {post.title}
+        </span >
+        <div className={classStr}>
+          <LabTitleTreeContainer titles={post.nodes}/>
+        </div>
+      </li>
+    );
+  }
+});
+
 var LabTestNav = React.createClass({
   render: function() {
     return (
       <div>
-        <Button><Link to="edit">Edit</Link></Button>
         <li><Link to="index">Index</Link></li>
       </div>
     );
@@ -108,9 +157,70 @@ var LabTestNav = React.createClass({
 });
 
 var LabEdit = React.createClass({
+  mixins: [Reflux.connect(postStore, 'post')],
+  contextTypes: {
+    router: React.PropTypes.func
+  },
+  getInitialState: function() {
+    console.log('getInitialState');
+    return {
+      post: {
+        id: 0,
+        title: '',
+        postText: '...'
+      }
+    };
+  },
+  handleEditorUpdate: function(data) {
+    console.log(data);
+    this.state.post.postText = data;
+  },
+
+  handleUpdate: function() {
+    // 提交更新
+    postActions.postUpdate(this.state.post);
+
+    // 切换到内容视图
+    this.context.router.transitionTo('content', {itemId: this.state.post.id});
+  },
+
   render: function() {
+    // 这边是从路由的query中获取参数。
+    var newPost = this.context.router.getCurrentQuery().newPost;
+    console.log('new post ' + newPost);
+
     return (
-      <div>Edit</div>
+      <div className="container-fluid">
+        <h3>编辑</h3>
+        <div className="row">
+          <form className="form-horizontal">
+
+            <Input type="text" label="ID" value={this.state.post.id} labelClassName='col-xs-2' wrapperClassName='col-xs-2' readOnly />
+
+            <Input type="text" label="上级" value={this.state.post.parantId} labelClassName='col-xs-2' wrapperClassName='col-xs-2' />
+
+            <Input type="text" label="标题" value={this.state.post.title} labelClassName='col-xs-2' wrapperClassName='col-xs-2' />
+
+            <div className="form-group">
+              <label>内容：</label>
+                <AceEditor
+                  mode="markdown"
+                  theme="github"
+                  name="posttext"
+                  height="6em"
+                  onChange={this.handleEditorUpdate}
+                  value={this.state.post.postText}
+                  />
+            </div>
+
+            <div className="form-group">
+              <Button className={newPost === true ? "ele-hide" : ""} onClick={this.handleUpdate}>更新</Button>
+              <Button className={newPost === true ? "" : "ele-hide"} >保存</Button>
+            </div>
+          </form>
+        </div>
+      </div>
+
     );
   }
 });
@@ -128,26 +238,47 @@ var LabContent = React.createClass({
   contextTypes: {
     router: React.PropTypes.func
   },
+
   getInitialState: function() {
+    console.log('getInitialState');
     return {
       post: {
+        id: 0,
         title: '',
         postText: '...'
       }
     };
   },
-  componentDidMount: function() {
-    var iid = this.context.router.getCurrentParams().itemId;
-    console.log('did mount ' + iid);
 
-    postActions.postFetch(iid);
+  handleDelete: function() {
+    var postId = this.state.post.id;
+
+    // 切换到主页
+    this.context.router.transitionTo('index');
+
+    // 删除
+    postActions.postDelete(postId);
   },
+
+  handleStartEdit: function() {
+    var postId = this.state.post.id;
+
+    // 切换到编辑页面
+    this.context.router.transitionTo('edit', {itemId: postId}, {newPost: false});
+
+    // 加载
+    postActions.postFetch(postId);
+  },
+
   render: function() {
-    var iid = this.context.router.getCurrentParams().itemId;
-    console.log('dd ' + iid);
     var rawMarkup = marked(this.state.post.postText);
     return (
       <div className="container-fluid">
+        <div className="row">
+          <Button onClick={this.handleStartEdit}>编辑</Button>
+          <Button onClick={this.handleDelete}>删除</Button>
+          <Button>添加子文章</Button>
+        </div>
         <div className="row">
           <div className="inner_topic_container">
             <div className="topic_header">

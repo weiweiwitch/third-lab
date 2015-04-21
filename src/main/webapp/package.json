@@ -10,6 +10,8 @@
   "license": "ISC",
   "dependencies": {
     "bootstrap": "~3.3.4",
+    "brace": "^0.5.1",
+    "lodash": "^3.7.0",
     "marked": "^0.3.3",
     "react": "^0.13.2",
     "react-bootstrap": "~0.20.3",
