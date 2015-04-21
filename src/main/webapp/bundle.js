@@ -119,10 +119,19 @@
 	});
 	
 	var LabTitleContainer = React.createClass({displayName: "LabTitleContainer",
+	  contextTypes: {
+	    router: React.PropTypes.func
+	  },
+	
+	  handleAddNewRootPost: function() {
+	    // 切换到编辑页面
+	    this.context.router.transitionTo('edit', null, {newPost: true});
+	  },
+	
 	  render: function() {
 	    return (
 	      React.createElement("div", null, 
-	        React.createElement(Button, null, "添加新文章"), 
+	        React.createElement(Button, {onClick: this.handleAddNewRootPost}, "添加新文章"), 
 	        React.createElement("div", {className: "labtree-container"}, 
 	          React.createElement(LabTitleTree, null)
 	        )
@@ -224,6 +233,7 @@
 	  contextTypes: {
 	    router: React.PropTypes.func
 	  },
+	
 	  getInitialState: function() {
 	    console.log('getInitialState');
 	    return {
@@ -234,9 +244,24 @@
 	      }
 	    };
 	  },
+	
+	  parantIdChange: function(event) {
+	    var parantId = event.target.value;
+	
+	    this.state.post.parantId = parantId;
+	    this.setState(this.state.post);
+	  },
+	
+	  titleChange: function(event) {
+	    var title = event.target.value;
+	
+	    this.state.post.title = title;
+	    this.setState(this.state.post);
+	  },
+	
 	  handleEditorUpdate: function(data) {
-	    console.log(data);
 	    this.state.post.postText = data;
+	    this.setState(this.state.post);
 	  },
 	
 	  handleUpdate: function() {
@@ -247,9 +272,25 @@
 	    this.context.router.transitionTo('content', {itemId: this.state.post.id});
 	  },
 	
+	  handleCreate: function() {
+	    // 提交更新
+	    postActions.postCreate(this.state.post);
+	
+	    titlesActions.titlesInit();
+	
+	    // 切换到内容视图
+	    this.context.router.transitionTo('content', {itemId: 0});
+	  },
+	
 	  render: function() {
 	    // 这边是从路由的query中获取参数。
 	    var newPost = this.context.router.getCurrentQuery().newPost;
+	    var updateClass = 'ele-hide';
+	    var createClass = '';
+	    if (newPost === 'false') {
+	      updateClass = '';
+	      createClass = 'ele-hide';
+	    }
 	    console.log('new post ' + newPost);
 	
 	    return (
@@ -260,9 +301,9 @@
 	
 	            React.createElement(Input, {type: "text", label: "ID", value: this.state.post.id, labelClassName: "col-xs-2", wrapperClassName: "col-xs-2", readOnly: true}), 
 	
-	            React.createElement(Input, {type: "text", label: "上级", value: this.state.post.parantId, labelClassName: "col-xs-2", wrapperClassName: "col-xs-2"}), 
+	            React.createElement(Input, {type: "number", label: "上级", value: this.state.post.parantId, onChange: this.parantIdChange, labelClassName: "col-xs-2", wrapperClassName: "col-xs-2"}), 
 	
-	            React.createElement(Input, {type: "text", label: "标题", value: this.state.post.title, labelClassName: "col-xs-2", wrapperClassName: "col-xs-2"}), 
+	            React.createElement(Input, {type: "text", label: "标题", ref: "titleInput", value: this.state.post.title, onChange: this.titleChange, labelClassName: "col-xs-2", wrapperClassName: "col-xs-2"}), 
 	
 	            React.createElement("div", {className: "form-group"}, 
 	              React.createElement("label", null, "内容："), 
@@ -277,8 +318,8 @@
 	            ), 
 	
 	            React.createElement("div", {className: "form-group"}, 
-	              React.createElement(Button, {className: newPost === true ? "ele-hide" : "", onClick: this.handleUpdate}, "更新"), 
-	              React.createElement(Button, {className: newPost === true ? "" : "ele-hide"}, "保存")
+	              React.createElement(Button, {className: updateClass, onClick: this.handleUpdate}, "更新"), 
+	              React.createElement(Button, {className: createClass, onClick: this.handleCreate}, "保存")
 	            )
 	          )
 	        )
@@ -464,7 +505,10 @@
 	  'postDeleteFailed',
 	  'postUpdate',
 	  'postUpdateCompleted',
-	  'postUpdateFailed'
+	  'postUpdateFailed',
+	  'postCreate',
+	  'postCreateCompleted',
+	  'postCreateFailed'
 	]);
 	
 	module.exports = postActions;
@@ -528,6 +572,26 @@
 	    this.trigger(data);
 	  },
 	  onPostUpdateFailed: function(error) {
+	    console.log(error);
+	  },
+	
+	  onPostCreate: function(post) {
+	    request.post('api/posts', post).end(function(error, response) {
+	      if (response) {
+	        console.log('create success');
+	        postActions.postCreateCompleted(response.body);
+	      } else {
+	        console.log('create failed');
+	        postActions.postCreateFailed(response.error);
+	      }
+	    });
+	  },
+	  onPostCreateCompleted: function(data) {
+	    console.log(data);
+	
+	    this.trigger(data);
+	  },
+	  onPostCreateFailed: function(error) {
 	    console.log(error);
 	  },
 	});

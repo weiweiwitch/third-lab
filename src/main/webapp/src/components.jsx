@@ -56,10 +56,19 @@ var LabApp = React.createClass({
 });
 
 var LabTitleContainer = React.createClass({
+  contextTypes: {
+    router: React.PropTypes.func
+  },
+
+  handleAddNewRootPost: function() {
+    // 切换到编辑页面
+    this.context.router.transitionTo('edit', null, {newPost: true});
+  },
+
   render: function() {
     return (
       <div>
-        <Button>添加新文章</Button>
+        <Button onClick={this.handleAddNewRootPost}>添加新文章</Button>
         <div className="labtree-container">
           <LabTitleTree></LabTitleTree>
         </div>
@@ -161,6 +170,7 @@ var LabEdit = React.createClass({
   contextTypes: {
     router: React.PropTypes.func
   },
+
   getInitialState: function() {
     console.log('getInitialState');
     return {
@@ -171,9 +181,24 @@ var LabEdit = React.createClass({
       }
     };
   },
+
+  parantIdChange: function(event) {
+    var parantId = event.target.value;
+
+    this.state.post.parantId = parantId;
+    this.setState(this.state.post);
+  },
+
+  titleChange: function(event) {
+    var title = event.target.value;
+
+    this.state.post.title = title;
+    this.setState(this.state.post);
+  },
+
   handleEditorUpdate: function(data) {
-    console.log(data);
     this.state.post.postText = data;
+    this.setState(this.state.post);
   },
 
   handleUpdate: function() {
@@ -184,9 +209,25 @@ var LabEdit = React.createClass({
     this.context.router.transitionTo('content', {itemId: this.state.post.id});
   },
 
+  handleCreate: function() {
+    // 提交更新
+    postActions.postCreate(this.state.post);
+
+    titlesActions.titlesInit();
+
+    // 切换到内容视图
+    this.context.router.transitionTo('content', {itemId: 0});
+  },
+
   render: function() {
     // 这边是从路由的query中获取参数。
     var newPost = this.context.router.getCurrentQuery().newPost;
+    var updateClass = 'ele-hide';
+    var createClass = '';
+    if (newPost === 'false') {
+      updateClass = '';
+      createClass = 'ele-hide';
+    }
     console.log('new post ' + newPost);
 
     return (
@@ -197,9 +238,9 @@ var LabEdit = React.createClass({
 
             <Input type="text" label="ID" value={this.state.post.id} labelClassName='col-xs-2' wrapperClassName='col-xs-2' readOnly />
 
-            <Input type="text" label="上级" value={this.state.post.parantId} labelClassName='col-xs-2' wrapperClassName='col-xs-2' />
+            <Input type="number" label="上级" value={this.state.post.parantId} onChange={this.parantIdChange} labelClassName='col-xs-2' wrapperClassName='col-xs-2' />
 
-            <Input type="text" label="标题" value={this.state.post.title} labelClassName='col-xs-2' wrapperClassName='col-xs-2' />
+            <Input type="text" label="标题" ref='titleInput' value={this.state.post.title} onChange={this.titleChange} labelClassName='col-xs-2' wrapperClassName='col-xs-2' />
 
             <div className="form-group">
               <label>内容：</label>
@@ -214,8 +255,8 @@ var LabEdit = React.createClass({
             </div>
 
             <div className="form-group">
-              <Button className={newPost === true ? "ele-hide" : ""} onClick={this.handleUpdate}>更新</Button>
-              <Button className={newPost === true ? "" : "ele-hide"} >保存</Button>
+              <Button className={updateClass} onClick={this.handleUpdate}>更新</Button>
+              <Button className={createClass} onClick={this.handleCreate}>保存</Button>
             </div>
           </form>
         </div>

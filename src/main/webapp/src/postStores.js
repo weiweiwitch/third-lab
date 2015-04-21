@@ -51,6 +51,26 @@ var postStore = Reflux.createStore({
   onPostUpdateFailed: function(error) {
     console.log(error);
   },
+
+  onPostCreate: function(post) {
+    request.post('api/posts', post).end(function(error, response) {
+      if (response) {
+        console.log('create success');
+        postActions.postCreateCompleted(response.body);
+      } else {
+        console.log('create failed');
+        postActions.postCreateFailed(response.error);
+      }
+    });
+  },
+  onPostCreateCompleted: function(data) {
+    console.log(data);
+
+    this.trigger(data);
+  },
+  onPostCreateFailed: function(error) {
+    console.log(error);
+  },
 });
 
 module.exports = postStore;

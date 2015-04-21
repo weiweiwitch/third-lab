@@ -11,7 +11,10 @@ var postActions = Reflux.createActions([
   'postDeleteFailed',
   'postUpdate',
   'postUpdateCompleted',
-  'postUpdateFailed'
+  'postUpdateFailed',
+  'postCreate',
+  'postCreateCompleted',
+  'postCreateFailed'
 ]);
 
 module.exports = postActions;
