@@ -1,9 +1,9 @@
 target
-src/main/webapp-old/dist
-src/main/webapp-old/.sass-cache
-src/main/webapp-old/.tmp
-src/main/webapp-old/node_modules
-src/main/webapp-old/app/bower_components
+src/main/webapp/dist
+src/main/webapp/.sass-cache
+src/main/webapp/.tmp
+src/main/webapp/node_modules
+src/main/webapp/app/bower_components
 src/main/webapp-react/dist
 src/main/webapp-react/.sass-cache
 src/main/webapp-react/.tmp
