@@ -1,0 +1,28 @@
+<div class="row">
+  <h3>编辑</h3>
+</div>
+<div class="row">
+  <div class="form-group">
+    <label>ID：</label>
+    <input [(ng-model)]="post.id" class="form-control" readonly type="text">
+  </div>
+  <div class="form-group">
+    <label>上级：</label>
+    <input [(ng-model)]="post.parantId" class="form-control" type="text">
+  </div>
+  <div class="form-group">
+    <label>标题：</label>
+    <input [(ng-model)]="post.title" class="form-control" type="text">
+  </div>
+</div>
+<div class="row">
+  <div class="form-group">
+    <label>内容：</label>
+    <textarea class="form-control" [(ng-model)]="post.postText" row="30"></textarea>
+  </div>
+</div>
+<div class="row">
+  <div class="form-group">
+    <button (click)="update()" class="btn btn-default">更新</button>
+  </div>
+</div>

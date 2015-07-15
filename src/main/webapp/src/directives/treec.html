@@ -1,0 +1,10 @@
+<div class="labtree">
+  <ul class="labtree-nodes">
+    <li *ng-for="var eachitem of itemList">
+      <div *ng-if="!needHide(eachitem)">
+        <post-node (clickpost)="clickSpecPost($event)" class="labtree-node labtree-node-text" [node]="eachitem">
+        </post-node>
+      </div>
+    </li>
+  </ul>
+</div>

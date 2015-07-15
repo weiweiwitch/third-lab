@@ -1,0 +1,18 @@
+<div class="row">
+  <div class="col-md-12">
+    <button class="btn btn-primary" (click)="edit()">编辑</button>
+    <button class="btn btn-default" (click)="delete()">删除</button>
+    <button class="btn btn-default" (click)="createSubPost()">添加子文章</button>
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-10 inner_topic_container">
+    <div class="topic_header">
+      <span class="topic_full_title">{{post.title}}</span>
+    </div>
+    <content></content>
+    <div class="inner_topic">
+      <div class="markdown-text" [inner-html]="postText"></div>
+    </div>
+  </div>
+</div>

@@ -1,9 +1,11 @@
+.DS_Store
 target
 src/main/webapp/dist
 src/main/webapp/.sass-cache
 src/main/webapp/.tmp
 src/main/webapp/node_modules
-src/main/webapp/app/bower_components
+src/main/webapp-a1/node_modules
+src/main/webapp-a1/bower_components
 src/main/webapp-react/dist
 src/main/webapp-react/.sass-cache
 src/main/webapp-react/.tmp

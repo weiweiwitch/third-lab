@@ -1,0 +1,75 @@
+.browsehappy {
+    margin: 0.2em 0;
+    background: #ccc;
+    color: #000;
+    padding: 0.2em 0;
+}
+/* Responsive: Portrait tablets and up */
+@media screen and (min-width: 768px) {
+    .container {
+        max-width: 730px;
+    }
+}
+table,
+td,
+th {
+    border: 1px solid black;
+    padding: 5px;
+}
+
+.labtree {
+    background: #fff;
+    border-right: 1px solid #d9d9d9;
+    //box-shadow: -1px 1px 6px rgba(0,0,0,0.35);
+    margin: 0 6px;
+}
+.labtree-btn {
+    padding: 10px 15px;
+}
+
+.labtree-nodes {
+    list-style-type: none;
+    padding-left: 15px;
+}
+.labtree-node {
+  margin: 5px 0px
+}
+.labtree-node-text {
+    transition: padding 0.2s ease-out;
+    color: #555;
+    font-size: 14px;
+    font-smoothing: antialiased;
+    font-family: 'Titillium Web', 'Lucida Grande', 'Lucida Sans', sans-serif;
+}
+// ul li div span:hover {
+//     //padding-left: 10px;
+//     color: #08c;
+//     // background: #ccc;
+//     text-decoration: none;
+// }
+
+ul li div:hover {
+  color: #08c;
+    background: #ccc;
+    text-decoration: none;
+}
+
+// 节点层深
+.tn-l0 {
+    padding: 0px;
+}
+.tn-l1 {
+    padding: 0px 0px 0px 20px;
+}
+.tn-l2 {
+    padding: 0px 0px 0px 40px;
+}
+.tn-l3 {
+    padding: 0px 0px 0px 60px;
+}
+.tn-l4 {
+    padding: 0px 0px 0px 80px;
+}
+.tn-l5 {
+    padding: 0px 0px 0px 100px;
+}
