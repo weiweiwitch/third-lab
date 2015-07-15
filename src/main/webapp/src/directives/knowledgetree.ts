@@ -1,7 +1,6 @@
 /// <reference path="../../typings/tsd.d.ts" />
 
 import { Component, View, coreDirectives, onChange, EventEmitter } from 'angular2/angular2';
-import { RouteConfig, RouterOutlet, RouterLink, Router } from 'angular2/router';
 
 // 下面的3个指令用于建立tree控件！这类控件之前在angular1中很难实现！
 @Component({
@@ -10,8 +9,7 @@ import { RouteConfig, RouterOutlet, RouterLink, Router } from 'angular2/router';
   events: ['clickpost']
 })
 @View({
-  templateUrl: 'directives/postnode.html',
-  directives: [RouterLink]
+  templateUrl: 'directives/postnode.html'
 })
 export class PostNode {
   node: any;

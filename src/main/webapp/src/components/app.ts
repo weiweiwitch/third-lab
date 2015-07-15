@@ -12,7 +12,6 @@ import { WikiPostCom } from './wiki/wikipost/wikiPost';
 import { WikiEditCom } from './wiki/wikiedit/wikiEdit';
 import { WikiNewCom } from './wiki/wikinew/wikiNew';
 
-import { HttpService } from '../services/httpService';
 import { PostService } from '../services/postService';
 
 @Component({
@@ -31,7 +30,7 @@ import { PostService } from '../services/postService';
 ])
 export class App {
 
-  constructor(private http: Http, public httpService: HttpService, public postService: PostService, public router: Router) {
+  constructor(private http: Http, public postService: PostService, public router: Router) {
   }
   
   onInit() {
