@@ -17,11 +17,20 @@ th {
     padding: 5px;
 }
 
+.air {
+    font-family: 'Lucida Sans Unicode','Lucida Grande',Helvetica,Arial,sans-serif;
+}
+
+.air-nav {
+    border-bottom: 1px solid #eee;
+    margin-bottom: 5px;
+}
+
 .labtree {
     background: #fff;
     border-right: 1px solid #d9d9d9;
     //box-shadow: -1px 1px 6px rgba(0,0,0,0.35);
-    margin: 0 6px;
+    margin: 6px;
 }
 .labtree-btn {
     padding: 10px 15px;
@@ -37,9 +46,7 @@ th {
 .labtree-node-text {
     transition: padding 0.2s ease-out;
     color: #555;
-    font-size: 14px;
-    font-smoothing: antialiased;
-    font-family: 'Titillium Web', 'Lucida Grande', 'Lucida Sans', sans-serif;
+    font-size: 13px;
 }
 // ul li div span:hover {
 //     //padding-left: 10px;
@@ -72,4 +79,72 @@ ul li div:hover {
 }
 .tn-l5 {
     padding: 0px 0px 0px 100px;
+}
+
+.topic_header {
+    padding: 0 10px;
+    margin: 5px 0;
+    border-bottom: 1px solid #eee;
+}
+.topic_full_title {
+    font-size: 24px;
+    font-weight: 700;
+    display: inline-block;
+}
+.inner_topic_container {
+    height: calc(100vh - 60px);
+    border-top: 1px solid #eee;
+    border-bottom: 1px solid #eee;
+    margin-top: 5px;
+}
+.inner_topic {
+    padding: 0 10px;
+}
+
+/* 章节信息 */
+.chapter-nodes {
+    margin: 15px;
+    padding-left: 15px;
+}
+/* markdown */
+.markdown-text pre {
+    font-family: Monaco, Menlo, Consolas, "Courier New", monospace;
+    font-size: 13px;
+    border: 0px;
+    border-left: 3px solid #d5e6b1;
+    background: #f7f7f7;
+    border-radius: 0;
+}
+.markdown-text p {
+    font-family: 'Ubuntu Mono', Monaco;
+    font-size: 12px;
+    line-height: 1.8;
+}
+.markdown-text li {
+    font-family: 'Ubuntu Mono', Monaco;
+    font-size: 12px;
+    line-height: 1.8;
+}
+.markdown-text ul {
+    list-style-type: square;
+    padding-left: 20px;
+}
+.markdown-text h2 {
+    font-size: 18px;
+    padding-bottom: 3px;
+    border-bottom: 1px solid #e5e5e5;
+}
+.markdown-text h3 {
+    padding-bottom: 3px;
+    font-size: 16px;
+    border-bottom: 1px solid #e5e5e5;
+}
+.markdown-text h4 {
+    font-size: 14px;
+}
+.markdown-text h5 {
+    font-size: 12px;
+}
+.ace_editor {
+    height: 300px;
 }
