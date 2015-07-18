@@ -942,6 +942,7 @@ declare module ng {
    */
   class Validators {
     static required;
+    static compose;
   }
   
   class NgValidator {

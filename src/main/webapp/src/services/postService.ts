@@ -26,7 +26,6 @@ export class PostService {
       .toRx()
       .map(res => res.json())
       .subscribe(posts => {
-         console.log(posts);
          this.allPosts = posts;
       });
   }

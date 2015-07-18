@@ -5,6 +5,7 @@ import { RouteConfig, RouterOutlet, RouterLink, Router, RouteParams } from 'angu
 import { FormBuilder, formDirectives, Control, ControlGroup, Validators } from 'angular2/angular2';
 
 import { PostData, PostService } from '../../../services/postService';
+import { ShowError } from '../../../directives/showError';
 
 import * as marked from 'marked';
 
@@ -17,7 +18,7 @@ import * as marked from 'marked';
 })
 @View({
   templateUrl: 'components/wiki/wikinew/wikiNew.html',
-  directives: [coreDirectives, formDirectives]
+  directives: [coreDirectives, formDirectives, ShowError]
 })
 export class WikiNewCom {
 
@@ -29,18 +30,28 @@ export class WikiNewCom {
     this.form = fb.group({
       'id': [0],
       'parantId': [parentId],
-      'title': ['', Validators.required],
+      'title': ['', Validators.compose([Validators.required, this.titleValidator])],
       'postText': ['', Validators.required],
     })
   }
 
   onInit() {
   }
+
+  titleValidator(c: Control): StringMap<string, boolean> {
+    if (c.value.length >= 4) {
+      return null;
+    }
+
+    return {
+      'tooShort': true
+    };
+  }
   
   // 保存更新
   create(event) {
     event.preventDefault();
-    
+
     console.log(this.post);
 
     let formValue = this.form.value;

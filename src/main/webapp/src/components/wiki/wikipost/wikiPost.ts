@@ -1,8 +1,9 @@
 /// <reference path="../../../../typings/tsd.d.ts"/>
 
-import { Component, View, coreDirectives, ElementRef, Http, httpInjectables } from 'angular2/angular2';
+import { Component, View, coreDirectives, Http } from 'angular2/angular2';
 import { RouteConfig, RouterOutlet, RouterLink, Router, RouteParams } from 'angular2/router';
 import { FormBuilder, formDirectives, Control, ControlGroup, Validators } from 'angular2/angular2';
+// import * as hljs from 'highlight';
 
 import { HttpService } from '../../../services/httpService';
 import { PostData, PostService } from '../../../services/postService';
@@ -32,6 +33,13 @@ export class WikiPostCom {
       .map(res => res.json())
       .subscribe(post => {
         this.post = post;
+        marked.setOptions({
+          highlight: (code, lang, callback) => {
+            console.log('try hightlight ' + lang);
+            let afterhl = hljs.highlightAuto(code, [lang]).value;
+            return afterhl;
+          }
+        });
         this.postText = marked(this.post.postText);
       });
   }

@@ -24,13 +24,15 @@ var PATHS = {
     'node_modules/reflect-metadata/Reflect.js',
     'node_modules/reflect-metadata/Reflect.js.map',
     'node_modules/d3/d3.js',
+    'node_modules/highlight.js/styles/solarized_light.css',
     'lib/bootstrap.min.css',
+    'lib/highlight.pack.js',
     'lib/angular2.dev.js',
     'lib/router.dev.js',
     'lib/router.dev.js.map'
   ],
   otherlib: [
-    'node_modules/marked/lib/marked.js',
+    'node_modules/marked/lib/marked.js'
   ]
 };
 
@@ -86,12 +88,12 @@ gulp.task('styles', function () {
 
   var d = target
     .pipe(sass({
-    style: 'expanded'
-  }))
+      style: 'expanded'
+    }))
     .on('error', function handleError(err) {
-    console.error(err.toString());
-    this.emit('end'); // 触发结束事件
-  })
+      console.error(err.toString());
+      this.emit('end'); // 触发结束事件
+    })
     .pipe(autoprefixer())
     .pipe(gulp.dest(PATHS.clientDist));
 
@@ -108,16 +110,16 @@ gulp.task('html', function () {
 gulp.task('libs', function () {
   return gulp.src(PATHS.lib)
     .pipe(size({
-    showFiles: true, gzip: true
-  }))
+      showFiles: true, gzip: true
+    }))
     .pipe(gulp.dest(PATHS.clientDist + '/lib'));
 });
 
 gulp.task('otherlib', function () {
   return gulp.src(PATHS.otherlib)
     .pipe(size({
-    showFiles: true, gzip: true
-  }))
+      showFiles: true, gzip: true
+    }))
     .pipe(gulp.dest(PATHS.clientDist));
 });
 

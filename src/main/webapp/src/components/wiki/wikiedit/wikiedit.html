@@ -2,27 +2,33 @@
   <h3>编辑</h3>
 </div>
 <div class="row">
-  <div class="form-group">
-    <label>ID：</label>
-    <input [(ng-model)]="post.id" class="form-control" readonly type="text">
-  </div>
-  <div class="form-group">
-    <label>上级：</label>
-    <input [(ng-model)]="post.parantId" class="form-control" type="text">
-  </div>
-  <div class="form-group">
-    <label>标题：</label>
-    <input [(ng-model)]="post.title" class="form-control" type="text">
-  </div>
-</div>
-<div class="row">
-  <div class="form-group">
-    <label>内容：</label>
-    <textarea class="form-control" [(ng-model)]="post.postText" row="30"></textarea>
-  </div>
-</div>
-<div class="row">
-  <div class="form-group">
-    <button (click)="update()" class="btn btn-default">更新</button>
+  <div class="col-md-12 form-horizontal">
+    <div class="form-group">
+      <label class="col-md-1 control-label">ID：</label>
+      <div class="col-md-2">
+        <input [(ng-model)]="post.id" class="form-control" readonly type="text">
+      </div>
+      <label class="col-md-1 control-label">上级：</label>
+      <div class="col-md-2">
+        <input [(ng-model)]="post.parantId" class="form-control" type="text">
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-md-1 control-label">标题：</label>
+      <div class="col-md-6">
+        <input [(ng-model)]="post.title" class="form-control" type="text">
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-md-1 control-label">内容：</label>
+      <div class="col-md-11">
+        <textarea class="form-control textarea-height" [(ng-model)]="post.postText"></textarea>
+      </div>
+    </div>
+    <div class="form-group">
+      <div class="col-md-offset-1 col-md-3">
+        <button (click)="update()" class="btn btn-default">更新</button>
+      </div>
+    </div>
   </div>
 </div>

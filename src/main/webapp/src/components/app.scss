@@ -81,6 +81,15 @@ ul li div:hover {
     padding: 0px 0px 0px 100px;
 }
 
+.main-auto-height {
+  height: calc(100vh - 100px);
+  overflow: auto;
+}
+
+.textarea-height {
+    height: calc(100vh - 320px) !important;
+}
+
 .topic_header {
     padding: 0 10px;
     margin: 5px 0;
@@ -92,7 +101,8 @@ ul li div:hover {
     display: inline-block;
 }
 .inner_topic_container {
-    height: calc(100vh - 60px);
+    height: calc(100vh - 100px);
+    overflow: auto;
     border-top: 1px solid #eee;
     border-bottom: 1px solid #eee;
     margin-top: 5px;

@@ -13,6 +13,7 @@
     "angular2": "2.0.0-alpha.31",
     "d3": "^3.5.5",
     "es6-module-loader": "0.16.6",
+    "highlight.js": "^8.6.0",
     "marked": "^0.3.3",
     "reflect-metadata": "^0.1.0",
     "request": "^2.57.0",

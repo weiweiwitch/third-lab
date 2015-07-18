@@ -12,7 +12,7 @@
           <button class="btn btn-primary" [router-link]="['/wikinew', {parentid: 0}]">创建</button>
         </div>
       </div>
-      <div class="row">
+      <div class="row main-auto-height">
         <tree-container (clickpost)="selectSpecPost($event)" [item-tree]="postService.allPosts"></tree-container>
       </div>
     </div>

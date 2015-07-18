@@ -22,6 +22,9 @@
     },
     "marked/marked.d.ts": {
       "commit": "d73cbcb405788eb85cc4a4167b963ef4dd630cdc"
+    },
+    "highlightjs/highlightjs.d.ts": {
+      "commit": "76e1dedf0bada455c0b75abeec3206d3aa5bd892"
     }
   }
 }
