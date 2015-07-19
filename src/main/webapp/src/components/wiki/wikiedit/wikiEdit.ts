@@ -50,6 +50,6 @@ export class WikiEditCom {
       });
       
     // 切换到首页
-    this.router.navigate('/wikipost/' + this.post.id);
+    this.router.navigate('/wiki/wikipost/' + this.post.id);
   }
 }

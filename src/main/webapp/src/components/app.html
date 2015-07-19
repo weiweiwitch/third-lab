@@ -4,21 +4,6 @@
       <a class="navbar-brand" href="#">AIR</a>
     </div>
   </div>
-  <div class="row">
-    <!--知识树-->
-    <div class="col-md-2">
-      <div class="row">
-        <div class="col-md-12">
-          <button class="btn btn-primary" [router-link]="['/wikinew', {parentid: 0}]">创建</button>
-        </div>
-      </div>
-      <div class="row main-auto-height">
-        <tree-container (clickpost)="selectSpecPost($event)" [item-tree]="postService.allPosts"></tree-container>
-      </div>
-    </div>
-    <!--内容-->
-    <div class="col-md-10">
-      <router-outlet></router-outlet>
-    </div>
-  </div>
+  <button class="btn btn-default" >wiki</button>
+  <router-outlet></router-outlet>
 </div>

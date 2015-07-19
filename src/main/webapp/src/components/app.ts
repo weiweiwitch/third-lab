@@ -7,10 +7,7 @@ import { Http } from 'angular2/angular2';
 
 import { TreeContainer } from '../directives/knowledgetree';
 
-import { WikiIndexCom } from './wiki/wikiindex/wikiindex';
-import { WikiPostCom } from './wiki/wikipost/wikiPost';
-import { WikiEditCom } from './wiki/wikiedit/wikiEdit';
-import { WikiNewCom } from './wiki/wikinew/wikiNew';
+import { WikiCom } from './wiki/wiki';
 
 import { PostService } from '../services/postService';
 
@@ -20,13 +17,11 @@ import { PostService } from '../services/postService';
 })
 @View({
   templateUrl: 'components/app.html',
-  directives: [RouterOutlet, RouterLink, coreDirectives, TreeContainer, WikiIndexCom, WikiPostCom]
+  directives: [RouterOutlet, RouterLink, coreDirectives, TreeContainer]
 })
 @RouteConfig([
-  { path: '/', as: 'home', component: WikiIndexCom },
-  { path: '/wikipost/:id', as: 'wikipost', component: WikiPostCom },
-  { path: '/wikiedit/:id', as: 'wikiedit', component: WikiEditCom },
-  { path: '/wikinew/:parentid', as: 'wikinew', component: WikiNewCom },
+  { path: '/', redirectTo: '/wiki/wikiindex' },
+  { path: '/wiki/...', as: 'wiki', component: WikiCom }
 ])
 export class App {
 
@@ -34,12 +29,12 @@ export class App {
   }
   
   onInit() {
-    
+
   }
 
-  selectSpecPost(event) {
-    console.log(event);
+  // selectSpecPost(event) {
+  //   console.log(event);
     
-    this.router.navigate('/wikipost/' + event.id);
-  }
+  //   //this.router.navigate('/wikipost/' + event.id);
+  // }
 }

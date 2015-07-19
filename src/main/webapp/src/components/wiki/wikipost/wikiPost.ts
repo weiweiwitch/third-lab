@@ -53,7 +53,7 @@ export class WikiPostCom {
   // 编辑
   edit() {
     // 切换到编辑页面
-    this.router.navigate('/wikiedit/' + this.post.id);
+    this.router.navigate('/wiki/wikiedit/' + this.post.id);
   }
   
   // 删除
@@ -68,7 +68,7 @@ export class WikiPostCom {
   createSubPost() {
     console.log('createSubPost');
 
-    this.router.navigate('/wikinew/' + this.post.id);
+    this.router.navigate('/wiki/wikinew/' + this.post.id);
   }
   
   transToIndex() {

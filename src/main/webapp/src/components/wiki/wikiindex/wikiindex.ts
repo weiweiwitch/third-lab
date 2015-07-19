@@ -44,6 +44,6 @@ export class WikiIndexCom {
 			return;
 		}
 
-		this.router.navigate('/wikipost/' + this.selectedPost.id);
+		this.router.navigate('/wiki/wikipost/' + this.selectedPost.id);
 	}
 }
