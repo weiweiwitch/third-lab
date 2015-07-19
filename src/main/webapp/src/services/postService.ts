@@ -29,6 +29,19 @@ export class PostService {
          this.allPosts = posts;
       });
   }
+  
+  findSpecPosts(searchParam: string, successCb, exceptionCb) {
+    let params = {
+      postParam: searchParam
+    }
+    this.http.get('/api/whichpost' + this.json2Params(params))
+    .toRx()
+      .map(res => res.json())
+      .subscribe(posts => {
+         //this.allPosts = posts;
+         successCb(posts);
+      });
+  }
 
   getPost(id: number) {
     return this.http.get(this.baseUrl + '/' + id);
@@ -56,6 +69,18 @@ export class PostService {
     return this.http.delete(this.baseUrl + '/' + id, {
       headers: headers
     });
+  }
+  
+  json2Params(data: any) {
+    if (data === null || data.length === 0) {
+      return '';
+    }
+
+    let urlParams: string = Object.keys(data).map(function(k) {
+      return encodeURIComponent(k) + '=' + encodeURIComponent(data[k])
+    }).join('&')
+
+    return '?' + urlParams;
   }
 
 }

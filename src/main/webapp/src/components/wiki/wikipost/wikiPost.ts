@@ -16,13 +16,15 @@ import * as marked from 'marked';
 })
 @View({
   templateUrl: 'components/wiki/wikipost/wikipost.html',
-  directives: [coreDirectives]
+  directives: [coreDirectives, formDirectives]
 })
 export class WikiPostCom {
 
   id: number; // 传入的要显示的文章id。
   post: PostData = new PostData();
   postText: string = '';
+  
+  searchParam: string;
 
   constructor(routeParams: RouteParams, private router: Router, private postService: PostService) {
     this.id = routeParams.params["id"];
@@ -67,5 +69,9 @@ export class WikiPostCom {
     console.log('createSubPost');
 
     this.router.navigate('/wikinew/' + this.post.id);
+  }
+  
+  transToIndex() {
+    this.router.navigate('/');
   }
 }
