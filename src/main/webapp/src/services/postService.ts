@@ -1,6 +1,6 @@
 /// <reference path="../../typings/tsd.d.ts"/>
 
-import { Http, Inject, Headers } from 'angular2/angular2';
+import { Http, Inject, Headers, bind, Injectable } from 'angular2/angular2';
 
 export class PostData {
   id: number = 0;
@@ -9,6 +9,7 @@ export class PostData {
   postText: string = '';
 }
 
+@Injectable()
 export class PostService {
 
   allPosts = [];

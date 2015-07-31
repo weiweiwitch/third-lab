@@ -57,6 +57,7 @@ var clientTsProject = tsc.createProject({
   "noLib": false,
   "listFiles": true,
   "emitDecoratorMetadata": true,
+  "experimentalDecorators": true,
   "sourceMap": true,
   "outDir": "dist/static",
   "typescript": tss

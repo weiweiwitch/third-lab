@@ -1,6 +1,6 @@
 /// <reference path="../../../../typings/tsd.d.ts"/>
 
-import { Component, View, coreDirectives, Http } from 'angular2/angular2';
+import { Component, View, coreDirectives, LifecycleEvent, Http } from 'angular2/angular2';
 import { RouteConfig, RouterOutlet, RouterLink, Router, RouteParams } from 'angular2/router';
 import { FormBuilder, formDirectives, Control, ControlGroup, Validators } from 'angular2/angular2';
 // import * as hljs from 'highlight';
@@ -12,10 +12,10 @@ import * as marked from 'marked';
 
 @Component({
   selector: 'wikipost',
-  lifeCycle: ['onInit']
+  lifecycle: [LifecycleEvent.onInit]
 })
 @View({
-  templateUrl: 'components/wiki/wikipost/wikipost.html',
+  templateUrl: 'components/wiki/wikipost/wikiPost.html',
   directives: [coreDirectives, formDirectives]
 })
 export class WikiPostCom {

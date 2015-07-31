@@ -9,7 +9,7 @@ import { PostService } from '../../../services/postService';
 	selector: 'wikiindex'
 })
 @View({
-	templateUrl: 'components/wiki/wikiindex/wikiindex.html',
+	templateUrl: 'components/wiki/wikiindex/wikiIndex.html',
 	directives: [coreDirectives, formDirectives]
 })
 export class WikiIndexCom {

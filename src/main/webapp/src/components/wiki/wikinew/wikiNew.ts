@@ -1,6 +1,6 @@
 /// <reference path="../../../../typings/tsd.d.ts"/>
 
-import { Component, View, coreDirectives, ElementRef } from 'angular2/angular2';
+import { Component, View, coreDirectives, LifecycleEvent, ElementRef } from 'angular2/angular2';
 import { RouteConfig, RouterOutlet, RouterLink, Router, RouteParams } from 'angular2/router';
 import { FormBuilder, formDirectives, Control, ControlGroup, Validators } from 'angular2/angular2';
 
@@ -11,7 +11,7 @@ import * as marked from 'marked';
 
 @Component({
   selector: 'wikinew',
-  lifeCycle: ['onInit'],
+  lifecycle: [LifecycleEvent.onInit],
   viewInjector: [
     FormBuilder
   ]

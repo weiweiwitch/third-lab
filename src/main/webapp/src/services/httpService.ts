@@ -1,5 +1,8 @@
 /// <reference path="../../typings/tsd.d.ts"/>
 
+import {bind, Inject, Injectable} from 'angular2/angular2';
+
+@Injectable()
 export class HttpService {
 
   constructor() {
