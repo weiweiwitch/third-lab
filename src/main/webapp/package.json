@@ -27,12 +27,14 @@
   "devDependencies": {
     "gulp": "^3.9.0",
     "gulp-autoprefixer": "^2.3.1",
+    "gulp-concat": "^2.5.2",
     "gulp-sass": "^2.0.1",
     "gulp-size": "^1.2.2",
     "gulp-sourcemaps": "^1.5.2",
     "gulp-traceur": "^0.17.1",
     "gulp-tslint": "^3.0.2-beta",
     "gulp-typescript": "^2.7.7",
+    "gulp-watch": "^4.2.4",
     "del": "^1.2.0",
     "file-loader": "^0.8.4",
     "node-sass": "^3.1.2",
@@ -43,6 +45,8 @@
     "brace": "^0.5.1",
     "jwt-decode": "^1.1.1",
     "node-libs-browser": "^0.5.2",
-    "reqwest": "^1.1.5"
+    "reqwest": "^1.1.5",
+    "systemjs-builder": "^0.10.6",
+    "run-sequence": "^1.1.0"
   }
 }

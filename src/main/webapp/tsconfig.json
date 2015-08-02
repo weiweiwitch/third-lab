@@ -7,9 +7,11 @@
     "noImplicitAny": false,
     "removeComments": true,
     "noLib": false,
+    "listFiles": true,
     "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
     "sourceMap": true,
-    "outDir": "public/a2client"
+    "outDir": "dist/static"
   },
   "compileOnSave": false,
   "files": [

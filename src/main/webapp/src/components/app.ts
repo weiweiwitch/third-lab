@@ -28,8 +28,9 @@ import { PostService } from '../services/postService';
 export class App {
 
   constructor() {
+    
   }
-  
+
   onInit() {
 
   }

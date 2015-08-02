@@ -24,6 +24,8 @@ export class WikiNewCom {
 
   form: ControlGroup;
   post: PostData = new PostData();
+  showMarkdown: boolean = true;
+  postView: string = '';
 
   constructor(private routeParams: RouteParams, fb: FormBuilder, private router: Router, private postService: PostService) {
     let parentId = this.routeParams.params['parentid'];
@@ -38,6 +40,30 @@ export class WikiNewCom {
   onInit() {
   }
 
+  // 是否显示markdown源
+  showSource(): boolean {
+    return this.showMarkdown;
+  }
+
+  switchView(change: boolean) {
+    this.showMarkdown = change;
+    if (this.showMarkdown) {
+      return;
+    }
+
+    // 渲染markdown
+    marked.setOptions({
+      highlight: (code, lang, callback) => {
+        console.log('try hightlight ' + lang);
+        let afterhl = hljs.highlightAuto(code, [lang]).value;
+        return afterhl;
+      }
+    });
+
+    let formValue = this.form.value;
+    this.postView = marked(formValue.postText);
+  }
+
   titleValidator(c: Control): StringMap<string, boolean> {
     if (c.value.length >= 4) {
       return null;
@@ -47,7 +73,7 @@ export class WikiNewCom {
       'tooShort': true
     };
   }
-  
+
   // 保存更新
   create(event) {
     event.preventDefault();
@@ -66,7 +92,7 @@ export class WikiNewCom {
         let rt = res.json();
         console.log('create rt ' + rt);
       });
-      
+
     // 切换到首页
     this.router.navigate('/');
   }

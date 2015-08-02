@@ -6,28 +6,63 @@ import { FormBuilder, formDirectives, Control, ControlGroup, Validators } from '
 import { Http } from 'angular2/angular2';
 
 import { PostService } from '../../services/postService';
+import { Todo, TodoStore, TodoFactory } from '../../services/todoStore';
 
 @Component({
-  selector: 'todo',
-  lifecycle: [LifecycleEvent.onInit]
+  selector: 'todo'
 })
 @View({
   templateUrl: 'components/todo/todo.html',
   directives: [RouterOutlet, RouterLink, coreDirectives]
 })
-// @RouteConfig([
-//   { path: '/wikiindex', as: 'wikiindex', component: WikiIndexCom },
-//   { path: '/wikipost/:id', as: 'wikipost', component: WikiPostCom },
-//   { path: '/wikiedit/:id', as: 'wikiedit', component: WikiEditCom },
-//   { path: '/wikinew/:parentid', as: 'wikinew', component: WikiNewCom },
-// ])
 export class TodoCom {
 
-  constructor(private http: Http, public postService: PostService, public router: Router) {
+  todoEdit: Todo = null;
+
+  constructor(public todoStore: TodoStore, public factory: TodoFactory) {
+    console.log(todoStore);
   }
-   
-  onInit() {
-    
+
+  enterTodo(inputElement): void {
+    this.addTodo(inputElement.value);
+    inputElement.value = '';
+  }
+
+  editTodo(todo: Todo): void {
+    this.todoEdit = todo;
+  }
+
+  doneEditing($event, todo: Todo): void {
+    var which = $event.which;
+    var target = $event.target;
+    if (which === 13) {
+      todo.title = target.value;
+      this.todoEdit = null;
+    } else if (which === 27) {
+      this.todoEdit = null;
+      target.value = todo.title;
+    }
+  }
+
+  addTodo(newTitle: string): void {
+    this.todoStore.add(this.factory.create(newTitle, false));
+  }
+
+  completeMe(todo: Todo): void {
+    todo.completed = !todo.completed;
+  }
+
+  deleteMe(todo: Todo): void {
+    this.todoStore.remove(todo);
+  }
+
+  toggleAll($event): void {
+    var isComplete = $event.target.checked;
+    this.todoStore.list.forEach((todo: Todo) => { todo.completed = isComplete; });
+  }
+
+  clearCompleted(): void {
+    this.todoStore.removeBy((todo) => todo.completed);
   }
 
 }

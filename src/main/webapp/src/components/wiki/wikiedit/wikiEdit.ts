@@ -21,9 +21,12 @@ export class WikiEditCom {
   id: number;
   post: PostData = new PostData();
 
+  showMarkdown: boolean = true;
+  postView: string = '';
+
   constructor(routeParams: RouteParams, private router: Router, private postService: PostService) {
     this.id = routeParams.params['id'];
-    
+
     // 使用传入的id加载post。
     this.postService.getPost(this.id)
       .toRx()
@@ -37,7 +40,30 @@ export class WikiEditCom {
 
   onInit() {
   }
-  
+
+  // 是否显示markdown源
+  showSource(): boolean {
+    return this.showMarkdown;
+  }
+
+  switchView(change: boolean) {
+    this.showMarkdown = change;
+    if (this.showMarkdown) {
+      return;
+    }
+
+    // 渲染markdown
+    marked.setOptions({
+      highlight: (code, lang, callback) => {
+        console.log('try hightlight ' + lang);
+        let afterhl = hljs.highlightAuto(code, [lang]).value;
+        return afterhl;
+      }
+    });
+
+    this.postView = marked(this.post.postText);
+  }
+
   // 保存更新
   update() {
     console.log(this.post);
@@ -48,7 +74,7 @@ export class WikiEditCom {
         let rt = res.json();
         console.log(rt);
       });
-      
+
     // 切换到首页
     this.router.navigate('/wiki/wikipost/' + this.post.id);
   }

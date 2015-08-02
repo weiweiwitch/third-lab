@@ -22,7 +22,18 @@
     <div class="form-group">
       <label class="col-md-1 control-label">内容：</label>
       <div class="col-md-11">
-        <textarea class="form-control textarea-height" [(ng-model)]="post.postText"></textarea>
+        <div>
+          <button class="btn btn-primary" (click)="switchView(true)" name="button">源</button>
+          <button class="btn btn-primary" (click)="switchView(false)" name="button">视图</button>
+        </div>
+        <div>
+          <div *ng-if="showSource()">
+            <textarea class="form-control textarea-height edit-text" [(ng-model)]="post.postText"></textarea>
+          </div>
+          <div *ng-if="!showSource()" class="inner_topic">
+            <div class="markdown-text textarea-height" [inner-html]="postView"></div>
+          </div>
+        </div>
       </div>
     </div>
     <div class="form-group">
