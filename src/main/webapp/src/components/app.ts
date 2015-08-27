@@ -1,9 +1,9 @@
 /// <reference path="../../typings/tsd.d.ts"/>
 
-import { Component, View, coreDirectives, LifecycleEvent } from 'angular2/angular2';
-import { RouteConfig, RouterOutlet, RouterLink, Router } from 'angular2/router';
-import { FormBuilder, formDirectives, Control, ControlGroup, Validators } from 'angular2/angular2';
-import { Http } from 'angular2/angular2';
+import { Component, View, CORE_DIRECTIVES, LifecycleEvent } from 'angular2/angular2';
+import { RouteConfig, RouterOutlet, RouterLink, Router, Route } from 'angular2/router';
+import { FormBuilder, FORM_DIRECTIVES, Control, ControlGroup, Validators } from 'angular2/angular2';
+import { Http } from 'http/http';
 
 import { TreeContainer } from '../directives/knowledgetree';
 
@@ -18,17 +18,18 @@ import { PostService } from '../services/postService';
 })
 @View({
   templateUrl: 'components/app.html',
-  directives: [RouterOutlet, RouterLink, coreDirectives, TreeContainer]
+  directives: [RouterOutlet, RouterLink, CORE_DIRECTIVES, TreeContainer]
 })
+
 @RouteConfig([
   { path: '/', redirectTo: '/wiki/wikiindex' },
-  { path: '/wiki/...', as: 'wiki', component: WikiCom },
-  { path: '/todo', as: 'todo', component: TodoCom }
+  { path: '/wiki/...', component: WikiCom, as: 'wiki' },
+  { path: '/todo', component: TodoCom, as: 'todo' }
 ])
 export class App {
 
   constructor() {
-    
+
   }
 
   onInit() {

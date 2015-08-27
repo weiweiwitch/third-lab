@@ -1,8 +1,11 @@
 /// <reference path="../../typings/tsd.d.ts" />
 
-import { Pipe, PipeFactory, NullPipeFactory } from 'angular2/angular2';
+import { Pipe } from 'angular2/angular2';
 
-export class IdPipe implements Pipe {
+@Pipe({
+    name : 'idp'
+})
+export class IdPipe {
   supports(obj) {
     return true;
   }
@@ -13,5 +16,3 @@ export class IdPipe implements Pipe {
     return `${value}${value}`;
   }
 }
-
-export let idPipe = new IdPipe();

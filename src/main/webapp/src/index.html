@@ -17,13 +17,28 @@
 
   <!-- ES6-related imports -->
   <script src="lib/traceur-runtime.js"></script>
-  <script src="lib/es6-module-loader.js"></script>
+  <script src="lib/es6-module-loader-dev.js"></script>
   <script src="lib/Reflect.js"></script>
   <script src="lib/system.js"></script>
   <script src="lib/zone.js"></script>
 
-  <script src="lib/angular2.js"></script>
-  <script src="lib/router.js"></script>
+  <script>
+    System.config({
+      meta: {
+        // meaning [baseURL]/vendor/angular.js when no other rules are present
+        // path is normalized using map and paths configuration
+        'lib/angular2.dev.js': {
+          format: 'global', // load this module as a global
+          exports: 'angular2' // the global property to take as the module value
+        }
+      },
+      defaultJSExtensions: true
+    });
+  </script>
+
+  <script src="lib/angular2.dev.js"></script>
+  <script src="lib/router.dev.js"></script>
+  <script src="lib/http.dev.js"></script>
 
   <!-- <script src="lib/angular2.dev.js"></script>
   <script src="lib/router.dev.js"></script> -->

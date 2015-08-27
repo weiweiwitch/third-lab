@@ -12,18 +12,22 @@ var runSequence = require('run-sequence');
 var concat = require('gulp-concat');
 var watch = require('gulp-watch');
 
+// 变量的定义
 var PATHS = {
   src: {
     html: 'src/**/*.html',
     ts: 'src/**/*.ts',
     scss: 'src/**/*.scss'
   },
-  clientDist: 'dist',
-  tempDir: '.tmp',
+  clientDist: 'dist', // 客户端发布目录
+  tempDir: '.tmp', // 中间文件目录
   lib: [
+    'node_modules/angular2/bundles/angular2.dev.js',
+    'node_modules/angular2/bundles/router.dev.js',
+    'node_modules/angular2/bundles/http.dev.js',
     'node_modules/traceur/bin/traceur-runtime.js',
-    'node_modules/es6-module-loader/dist/es6-module-loader.js',
-    'node_modules/es6-module-loader/dist/es6-module-loader.js.map',
+    'node_modules/es6-module-loader/dist/es6-module-loader-dev.js',
+    'node_modules/es6-module-loader/dist/es6-module-loader-dev.js.map',
     'node_modules/systemjs/dist/system.js',
     'node_modules/systemjs/dist/system.js.map',
     'node_modules/reflect-metadata/Reflect.js',
@@ -32,40 +36,20 @@ var PATHS = {
     'node_modules/d3/d3.js',
     'node_modules/highlight.js/styles/solarized_light.css',
     'lib/bootstrap.min.css',
-    'lib/highlight.pack.js',
-    'lib/angular2.js',
-    'lib/router.js'
+    'lib/highlight.pack.js'
   ],
   otherlib: [
     'node_modules/marked/lib/marked.js'
   ]
 };
 
-var ng2Builder = new Builder({
-  paths: {
-    'angular2/*': 'node_modules/angular2/es6/dev/*.js',
-    rx: 'node_modules/rx/dist/rx.js'
-  },
-  meta: {
-    rx: {
-      format: 'cjs'
-    }
-  }
-});
-
-// build ng2
-gulp.task('build.ng2.dev', function() {
-  ng2Builder.build('angular2/router', 'lib/router.js', {});
-  return ng2Builder.build('angular2/angular2', 'lib/angular2.js', {});
-});
-
 // 清理
-gulp.task('clean', function (done) {
+gulp.task('clean', function(done) {
   del([PATHS.clientDist, PATHS.tempDir], done);
 });
 
 // 检测ts文件
-gulp.task('ts-lint', function () {
+gulp.task('ts-lint', function() {
   return gulp.src(PATHS.src.ts).pipe(tslint()).pipe(tslint.report('prose'));
 });
 
@@ -75,21 +59,8 @@ var tsProject = tsc.createProject('tsconfig.json', {
 
 // 编译客户端ts
 var tss = require('typescript');
-var clientTsProject = tsc.createProject({
-  "target": "es5",
-  "module": "commonjs",
-  "declaration": false,
-  "noImplicitAny": false,
-  "removeComments": true,
-  "noLib": false,
-  "listFiles": true,
-  "emitDecoratorMetadata": true,
-  "experimentalDecorators": true,
-  "sourceMap": true,
-  "outDir": "dist/static",
-  "typescript": tss
-});
-gulp.task('compile-ts', ['ts-lint'], function () {
+
+gulp.task('compile-ts', ['ts-lint'], function() {
   var tsResult = gulp.src(PATHS.src.ts)
     .pipe(sourcemaps.init())
     .pipe(tsc(tsProject));
@@ -99,19 +70,8 @@ gulp.task('compile-ts', ['ts-lint'], function () {
     .pipe(gulp.dest(PATHS.clientDist));
 });
 
-var serverTsProject = tsc.createProject({
-  "target": "es5",
-  "module": "commonjs",
-  "declaration": false,
-  "sourceMap": true,
-  "removeComments": true,
-  "noLib": false,
-  "outDir": "dist",
-  "typescript": tss
-});
-
 // 编译scss
-gulp.task('styles', function () {
+gulp.task('styles', function() {
   var target = gulp.src(PATHS.src.scss);
 
   var d = target
@@ -128,51 +88,54 @@ gulp.task('styles', function () {
   return d;
 });
 
+// 合并css文件
 gulp.task('css-concat', function() {
   gulp.src('.tmp/**/*.css')
-  .pipe(concat('main.css'))
-  .pipe(gulp.dest(PATHS.clientDist));
+    .pipe(concat('main.css'))
+    .pipe(gulp.dest(PATHS.clientDist));
 });
 
 // 复制html
-gulp.task('html', function () {
+gulp.task('html', function() {
   return gulp.src(PATHS.src.html)
     .pipe(gulp.dest(PATHS.clientDist));
 });
 
 // 复制libs
-gulp.task('libs', function () {
+gulp.task('libs', function() {
   return gulp.src(PATHS.lib)
     .pipe(size({
-      showFiles: true, gzip: true
+      showFiles: true,
+      gzip: true
     }))
     .pipe(gulp.dest(PATHS.clientDist + '/lib'));
 });
 
-gulp.task('otherlib', function () {
+gulp.task('otherlib', function() {
   return gulp.src(PATHS.otherlib)
     .pipe(size({
-      showFiles: true, gzip: true
+      showFiles: true,
+      gzip: true
     }))
     .pipe(gulp.dest(PATHS.clientDist));
 });
 
 // 执行默认任务并监视
-gulp.task('play', ['default'], function () {
+gulp.task('play', ['default'], function() {
   gulp.watch(PATHS.src.html, ['html']);
   gulp.watch(PATHS.src.ts, ['compile-ts']);
 });
 
 // 构建
 gulp.task('build', function(done) {
-  runSequence('build.ng2.dev', 'compile-ts', 'styles', 'css-concat', 'html', 'libs', 'otherlib', done);
+  runSequence('compile-ts', 'styles', 'css-concat', 'html', 'libs', 'otherlib', done);
 });
 
 gulp.task('rebuild', function() {
   runSequence('clean', 'build');
 });
 
-gulp.task('default', ['rebuild'], function () {
+gulp.task('default', ['rebuild'], function() {
   watch(['src/**/*.ts', 'src/**/*.html', 'src/**/*.scss'], function() {
     gulp.start('rebuild');
   });

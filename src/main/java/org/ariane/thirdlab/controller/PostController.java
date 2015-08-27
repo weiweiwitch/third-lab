@@ -1,8 +1,11 @@
 package org.ariane.thirdlab.controller;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -18,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 @RestController
 public class PostController {
@@ -160,6 +164,20 @@ public class PostController {
 	@ResponseStatus(HttpStatus.OK)
 	public void deletePost(@PathVariable long id) {
 		postService.deletePost(id);
+	}
+
+	@RequestMapping("/picupload")
+	public String fileUpload2(@RequestParam("file") CommonsMultipartFile file) throws IOException {
+		long startTime = System.currentTimeMillis();
+		System.out.println("fileName：" + file.getOriginalFilename());
+		String path = "./" + new Date().getTime() + file.getOriginalFilename();
+
+		File newFile = new File(path);
+		// 通过CommonsMultipartFile的方法直接写文件（注意这个时候）
+		file.transferTo(newFile);
+		long endTime = System.currentTimeMillis();
+		System.out.println("方法二的运行时间：" + String.valueOf(endTime - startTime) + "ms");
+		return "1";
 	}
 
 	public static class PostData {

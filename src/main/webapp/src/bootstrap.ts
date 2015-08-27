@@ -3,9 +3,9 @@
 import { bootstrap } from 'angular2/angular2';
 
 import { routerInjectables } from 'angular2/router';
-import { httpInjectables } from 'angular2/angular2';
+import { HTTP_BINDINGS } from 'http/http';
 import { appServicesInjectables } from './services/services';
 
 import { App } from './components/app';
 
-bootstrap(App, [routerInjectables, httpInjectables, appServicesInjectables]);
+bootstrap(App, [routerInjectables, HTTP_BINDINGS, appServicesInjectables]);

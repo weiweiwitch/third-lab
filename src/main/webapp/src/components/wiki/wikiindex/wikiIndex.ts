@@ -1,6 +1,6 @@
 /// <reference path="../../../../typings/tsd.d.ts" />
 
-import { Component, View, coreDirectives, formDirectives } from 'angular2/angular2';
+import { Component, View, CORE_DIRECTIVES, FORM_DIRECTIVES } from 'angular2/angular2';
 import { RouteConfig, RouterOutlet, RouterLink, Router } from 'angular2/router';
 
 import { PostService } from '../../../services/postService';
@@ -10,7 +10,7 @@ import { PostService } from '../../../services/postService';
 })
 @View({
 	templateUrl: 'components/wiki/wikiindex/wikiIndex.html',
-	directives: [coreDirectives, formDirectives]
+	directives: [CORE_DIRECTIVES, FORM_DIRECTIVES]
 })
 export class WikiIndexCom {
 

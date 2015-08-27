@@ -1,8 +1,8 @@
 /// <reference path="../../../../typings/tsd.d.ts"/>
 
-import { Component, View, coreDirectives, LifecycleEvent, ElementRef } from 'angular2/angular2';
+import { Component, View, CORE_DIRECTIVES, LifecycleEvent, ElementRef } from 'angular2/angular2';
 import { RouteConfig, RouterOutlet, RouterLink, Router, RouteParams } from 'angular2/router';
-import { FormBuilder, formDirectives, Control, ControlGroup, Validators } from 'angular2/angular2';
+import { FormBuilder, FORM_DIRECTIVES, Control, ControlGroup, Validators } from 'angular2/angular2';
 
 import { PostData, PostService } from '../../../services/postService';
 import { ShowError } from '../../../directives/showError';
@@ -12,13 +12,13 @@ import * as marked from 'marked';
 @Component({
   selector: 'wikinew',
   lifecycle: [LifecycleEvent.onInit],
-  viewInjector: [
+  viewBindings: [
     FormBuilder
   ]
 })
 @View({
   templateUrl: 'components/wiki/wikinew/wikiNew.html',
-  directives: [coreDirectives, formDirectives, ShowError]
+  directives: [CORE_DIRECTIVES, FORM_DIRECTIVES, ShowError]
 })
 export class WikiNewCom {
 

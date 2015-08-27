@@ -1,9 +1,9 @@
 /// <reference path="../../../typings/tsd.d.ts"/>
 
-import { Component, View, coreDirectives, LifecycleEvent } from 'angular2/angular2';
+import { Component, View, CORE_DIRECTIVES, LifecycleEvent } from 'angular2/angular2';
 import { RouteConfig, RouterOutlet, RouterLink, Router } from 'angular2/router';
-import { FormBuilder, formDirectives, Control, ControlGroup, Validators } from 'angular2/angular2';
-import { Http } from 'angular2/angular2';
+import { FormBuilder, FORM_DIRECTIVES, Control, ControlGroup, Validators } from 'angular2/angular2';
+import { Http } from 'http/http';
 
 import { PostService } from '../../services/postService';
 import { Todo, TodoStore, TodoFactory } from '../../services/todoStore';
@@ -13,7 +13,7 @@ import { Todo, TodoStore, TodoFactory } from '../../services/todoStore';
 })
 @View({
   templateUrl: 'components/todo/todo.html',
-  directives: [RouterOutlet, RouterLink, coreDirectives]
+  directives: [RouterOutlet, RouterLink, CORE_DIRECTIVES]
 })
 export class TodoCom {
 

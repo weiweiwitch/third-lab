@@ -15,7 +15,7 @@
 		<maven.jetty.plugin.version>9.2.11.v20150529</maven.jetty.plugin.version>
 
 		<javax.servlet-api>3.1.0</javax.servlet-api>
-		<spring.version>4.1.1.RELEASE</spring.version>
+		<spring.version>4.1.7.RELEASE</spring.version>
 
 		<hibernate.version>4.3.6.Final</hibernate.version>
 		<mysql.connector.version>5.1.29</mysql.connector.version>

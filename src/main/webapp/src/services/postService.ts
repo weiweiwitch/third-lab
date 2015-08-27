@@ -1,6 +1,7 @@
 /// <reference path="../../typings/tsd.d.ts"/>
 
-import { Http, Inject, Headers, bind, Injectable } from 'angular2/angular2';
+import { Inject, bind, Injectable } from 'angular2/angular2';
+import { Http, Headers } from 'http/http';
 
 export class PostData {
   id: number = 0;
@@ -30,7 +31,7 @@ export class PostService {
          this.allPosts = posts;
       });
   }
-  
+
   findSpecPosts(searchParam: string, successCb, exceptionCb) {
     let params = {
       postParam: searchParam
@@ -71,7 +72,7 @@ export class PostService {
       headers: headers
     });
   }
-  
+
   json2Params(data: any) {
     if (data === null || data.length === 0) {
       return '';

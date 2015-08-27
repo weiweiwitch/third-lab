@@ -1,6 +1,6 @@
 /// <reference path="../../typings/tsd.d.ts" />
 
-import { Ancestor, NgFormModel, Component, View, coreDirectives, EventEmitter } from 'angular2/angular2';
+import { Host, NgFormModel, Component, View, CORE_DIRECTIVES, EventEmitter } from 'angular2/angular2';
 
 @Component({
   selector: 'show-error',
@@ -10,14 +10,14 @@ import { Ancestor, NgFormModel, Component, View, coreDirectives, EventEmitter } 
   template: `
     <span *ng-if="errorMessage !== null">{{errorMessage}}</span>
   `,
-  directives: [coreDirectives]
+  directives: [CORE_DIRECTIVES]
 })
 export class ShowError {
   formDir;
   controlPath: string;
   errorTypes: List<string>;
 
-  constructor( @Ancestor() formDir: NgFormModel) { this.formDir = formDir; }
+  constructor( @Host() formDir: NgFormModel) { this.formDir = formDir; }
 
   get errorMessage() {
     var c = this.formDir.form.find(this.controlPath);

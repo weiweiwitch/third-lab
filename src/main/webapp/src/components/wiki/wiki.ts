@@ -1,9 +1,9 @@
 /// <reference path="../../../typings/tsd.d.ts"/>
 
-import { Component, View, coreDirectives, LifecycleEvent } from 'angular2/angular2';
-import { RouteConfig, RouterOutlet, RouterLink, Router } from 'angular2/router';
-import { FormBuilder, formDirectives, Control, ControlGroup, Validators } from 'angular2/angular2';
-import { Http } from 'angular2/angular2';
+import { Component, View, CORE_DIRECTIVES, LifecycleEvent } from 'angular2/angular2';
+import { RouteConfig, RouterOutlet, RouterLink, Router, Route } from 'angular2/router';
+import { FormBuilder, FORM_DIRECTIVES, Control, ControlGroup, Validators } from 'angular2/angular2';
+import { Http } from 'http/http';
 
 import { TreeContainer } from '../../directives/knowledgetree';
 
@@ -20,26 +20,26 @@ import { PostService } from '../../services/postService';
 })
 @View({
   templateUrl: 'components/wiki/wiki.html',
-  directives: [RouterOutlet, RouterLink, coreDirectives, TreeContainer, WikiIndexCom, WikiPostCom]
+  directives: [RouterOutlet, RouterLink, CORE_DIRECTIVES, TreeContainer, WikiIndexCom, WikiPostCom]
 })
 @RouteConfig([
   { path: '/wikiindex', as: 'wikiindex', component: WikiIndexCom },
   { path: '/wikipost/:id', as: 'wikipost', component: WikiPostCom },
   { path: '/wikiedit/:id', as: 'wikiedit', component: WikiEditCom },
-  { path: '/wikinew/:parentid', as: 'wikinew', component: WikiNewCom },
+  { path: '/wikinew/:parentid', as: 'wikinew', component: WikiNewCom }
 ])
 export class WikiCom {
 
   constructor(private router: Router, private postService: PostService) {
   }
-   
+
   onInit() {
-    
+
   }
 
   selectSpecPost(event) {
     console.log(event);
-    
+
     this.router.navigate('/wiki/wikipost/' + event.id);
   }
 }

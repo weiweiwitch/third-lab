@@ -1,6 +1,6 @@
 /// <reference path="../../typings/tsd.d.ts" />
 
-import { Component, View, coreDirectives, LifecycleEvent, EventEmitter } from 'angular2/angular2';
+import { Component, View, CORE_DIRECTIVES, LifecycleEvent, EventEmitter } from 'angular2/angular2';
 
 // 下面的3个指令用于建立tree控件！这类控件之前在angular1中很难实现！
 @Component({
@@ -42,7 +42,7 @@ export class PostNode {
 })
 @View({
   templateUrl: 'directives/treec.html',
-  directives: [PostNode, coreDirectives]
+  directives: [PostNode, CORE_DIRECTIVES]
 })
 export class TreeContainer {
   itemTree: List<any> = [];

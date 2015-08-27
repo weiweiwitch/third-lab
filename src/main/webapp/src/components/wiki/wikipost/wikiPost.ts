@@ -1,8 +1,9 @@
 /// <reference path="../../../../typings/tsd.d.ts"/>
 
-import { Component, View, coreDirectives, LifecycleEvent, Http } from 'angular2/angular2';
+import { Component, View, CORE_DIRECTIVES, LifecycleEvent } from 'angular2/angular2';
+import { Http } from 'http/http';
 import { RouteConfig, RouterOutlet, RouterLink, Router, RouteParams } from 'angular2/router';
-import { FormBuilder, formDirectives, Control, ControlGroup, Validators } from 'angular2/angular2';
+import { FormBuilder, FORM_DIRECTIVES, Control, ControlGroup, Validators } from 'angular2/angular2';
 // import * as hljs from 'highlight';
 
 import { HttpService } from '../../../services/httpService';
@@ -16,14 +17,14 @@ import * as marked from 'marked';
 })
 @View({
   templateUrl: 'components/wiki/wikipost/wikiPost.html',
-  directives: [coreDirectives, formDirectives]
+  directives: [CORE_DIRECTIVES, FORM_DIRECTIVES]
 })
 export class WikiPostCom {
 
   id: number; // 传入的要显示的文章id。
   post: PostData = new PostData();
   postText: string = '';
-  
+
   searchParam: string;
 
   constructor(routeParams: RouteParams, private router: Router, private postService: PostService) {
@@ -49,28 +50,28 @@ export class WikiPostCom {
   onInit() {
 
   }
-  
+
   // 编辑
   edit() {
     // 切换到编辑页面
     this.router.navigate('/wiki/wikiedit/' + this.post.id);
   }
-  
+
   // 删除
   delete() {
     this.postService.deletePost(this.post.id);
-    
+
     // 切换到首页
     this.router.navigate('/');
   }
-  
+
   // 创建子文章
   createSubPost() {
     console.log('createSubPost');
 
     this.router.navigate('/wiki/wikinew/' + this.post.id);
   }
-  
+
   transToIndex() {
     this.router.navigate('/');
   }
