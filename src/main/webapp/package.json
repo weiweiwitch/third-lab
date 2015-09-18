@@ -6,19 +6,19 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "angular2": "^2.0.0-alpha.35",
+    "angular2": "^2.0.0-alpha.37",
     "d3": "^3.5.5",
     "es6-module-loader": "^0.17.6",
     "highlight.js": "^8.6.0",
     "marked": "^0.3.3",
     "reflect-metadata": "^0.1.0",
     "request": "^2.57.0",
-    "rtts_assert": "2.0.0-alpha.35",
+    "rtts_assert": "2.0.0-alpha.37",
     "rx": "2.5.1",
     "systemjs": "^0.18.15",
     "traceur": "0.0.87",
     "whatwg-fetch": "^0.9.0",
-    "zone.js": "^0.5.2"
+    "zone.js": "^0.5.4"
   },
   "devDependencies": {
     "gulp": "^3.9.0",

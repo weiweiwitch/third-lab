@@ -1,6 +1,6 @@
 /// <reference path="../../typings/tsd.d.ts" />
 
-import { Component, View, CORE_DIRECTIVES, LifecycleEvent, EventEmitter } from 'angular2/angular2';
+import { Component, View, CORE_DIRECTIVES, OnChanges, EventEmitter } from 'angular2/angular2';
 
 // 下面的3个指令用于建立tree控件！这类控件之前在angular1中很难实现！
 @Component({
@@ -37,16 +37,15 @@ export class PostNode {
 @Component({
   selector: 'tree-container',
   properties: ['itemTree:item-tree'],
-  lifecycle: [LifecycleEvent.onChange],
   events: ['clickpost']
 })
 @View({
   templateUrl: 'directives/treec.html',
   directives: [PostNode, CORE_DIRECTIVES]
 })
-export class TreeContainer {
-  itemTree: List<any> = [];
-  itemList: List<any> = [];
+export class TreeContainer implements OnChanges {
+  itemTree: Array<any> = [];
+  itemList: Array<any> = [];
 
   clickpost: EventEmitter = new EventEmitter();
 
@@ -82,7 +81,7 @@ export class TreeContainer {
     return false;
   }
 
-  onChange(changes) {
+  onChanges(changes) {
     console.log('onchange');
     console.log(changes);
 

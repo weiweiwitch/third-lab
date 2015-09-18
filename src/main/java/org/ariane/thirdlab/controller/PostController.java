@@ -1,11 +1,11 @@
 package org.ariane.thirdlab.controller;
 
+import java.io.BufferedOutputStream;
 import java.io.File;
-import java.io.IOException;
+import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -19,9 +19,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.commons.CommonsMultipartFile;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 public class PostController {
@@ -166,19 +167,37 @@ public class PostController {
 		postService.deletePost(id);
 	}
 
-	@RequestMapping("/picupload")
-	public String fileUpload2(@RequestParam("file") CommonsMultipartFile file) throws IOException {
-		long startTime = System.currentTimeMillis();
-		System.out.println("fileName：" + file.getOriginalFilename());
-		String path = "./" + new Date().getTime() + file.getOriginalFilename();
-
-		File newFile = new File(path);
-		// 通过CommonsMultipartFile的方法直接写文件（注意这个时候）
-		file.transferTo(newFile);
-		long endTime = System.currentTimeMillis();
-		System.out.println("方法二的运行时间：" + String.valueOf(endTime - startTime) + "ms");
-		return "1";
+	@RequestMapping(value = "/picupload", method = RequestMethod.POST)
+	public @ResponseBody String handleFileUpload(@RequestParam("name") String name,
+			@RequestParam("file") MultipartFile file) {
+		if (!file.isEmpty()) {
+			try {
+				byte[] bytes = file.getBytes();
+				BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(new File(name)));
+				stream.write(bytes);
+				stream.close();
+				return "You successfully uploaded " + name + "!";
+			} catch (Exception e) {
+				return "You failed to upload " + name + " => " + e.getMessage();
+			}
+		} else {
+			return "You failed to upload " + name + " because the file was empty.";
+		}
 	}
+
+//	@RequestMapping("/picupload")
+//	public String fileUpload2(@RequestParam("file") CommonsMultipartFile file) throws IOException {
+//		long startTime = System.currentTimeMillis();
+//		System.out.println("fileName：" + file.getOriginalFilename());
+//		String path = "./" + new Date().getTime() + file.getOriginalFilename();
+//
+//		File newFile = new File(path);
+//		// 通过CommonsMultipartFile的方法直接写文件（注意这个时候）
+//		file.transferTo(newFile);
+//		long endTime = System.currentTimeMillis();
+//		System.out.println("方法二的运行时间：" + String.valueOf(endTime - startTime) + "ms");
+//		return "1";
+//	}
 
 	public static class PostData {
 		public long id;

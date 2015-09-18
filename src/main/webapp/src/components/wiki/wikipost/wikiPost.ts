@@ -1,25 +1,23 @@
 /// <reference path="../../../../typings/tsd.d.ts"/>
 
-import { Component, View, CORE_DIRECTIVES, LifecycleEvent } from 'angular2/angular2';
-import { Http } from 'http/http';
+import { Component, View, CORE_DIRECTIVES, OnInit } from 'angular2/angular2';
+import { Http } from 'angular2/http';
 import { RouteConfig, RouterOutlet, RouterLink, Router, RouteParams } from 'angular2/router';
 import { FormBuilder, FORM_DIRECTIVES, Control, ControlGroup, Validators } from 'angular2/angular2';
 // import * as hljs from 'highlight';
 
-import { HttpService } from '../../../services/httpService';
 import { PostData, PostService } from '../../../services/postService';
 
 import * as marked from 'marked';
 
 @Component({
-  selector: 'wikipost',
-  lifecycle: [LifecycleEvent.onInit]
+  selector: 'wikipost'
 })
 @View({
   templateUrl: 'components/wiki/wikipost/wikiPost.html',
   directives: [CORE_DIRECTIVES, FORM_DIRECTIVES]
 })
-export class WikiPostCom {
+export class WikiPostCom implements OnInit {
 
   id: number; // 传入的要显示的文章id。
   post: PostData = new PostData();

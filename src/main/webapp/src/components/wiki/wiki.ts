@@ -1,9 +1,9 @@
 /// <reference path="../../../typings/tsd.d.ts"/>
 
-import { Component, View, CORE_DIRECTIVES, LifecycleEvent } from 'angular2/angular2';
+import { Component, View, CORE_DIRECTIVES, OnInit } from 'angular2/angular2';
 import { RouteConfig, RouterOutlet, RouterLink, Router, Route } from 'angular2/router';
 import { FormBuilder, FORM_DIRECTIVES, Control, ControlGroup, Validators } from 'angular2/angular2';
-import { Http } from 'http/http';
+import { Http } from 'angular2/http';
 
 import { TreeContainer } from '../../directives/knowledgetree';
 
@@ -15,8 +15,7 @@ import { WikiNewCom } from '../wiki/wikinew/wikiNew';
 import { PostService } from '../../services/postService';
 
 @Component({
-  selector: 'wiki',
-  lifecycle: [LifecycleEvent.onInit]
+  selector: 'wiki'
 })
 @View({
   templateUrl: 'components/wiki/wiki.html',
@@ -28,7 +27,7 @@ import { PostService } from '../../services/postService';
   { path: '/wikiedit/:id', as: 'wikiedit', component: WikiEditCom },
   { path: '/wikinew/:parentid', as: 'wikinew', component: WikiNewCom }
 ])
-export class WikiCom {
+export class WikiCom implements OnInit {
 
   constructor(private router: Router, private postService: PostService) {
   }

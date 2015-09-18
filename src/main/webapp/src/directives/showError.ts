@@ -15,7 +15,7 @@ import { Host, NgFormModel, Component, View, CORE_DIRECTIVES, EventEmitter } fro
 export class ShowError {
   formDir;
   controlPath: string;
-  errorTypes: List<string>;
+  errorTypes: Array<string>;
 
   constructor( @Host() formDir: NgFormModel) { this.formDir = formDir; }
 

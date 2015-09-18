@@ -1,9 +1,9 @@
 /// <reference path="../../../typings/tsd.d.ts"/>
 
-import { Component, View, CORE_DIRECTIVES, LifecycleEvent } from 'angular2/angular2';
+import { Component, View, CORE_DIRECTIVES } from 'angular2/angular2';
 import { RouteConfig, RouterOutlet, RouterLink, Router } from 'angular2/router';
 import { FormBuilder, FORM_DIRECTIVES, Control, ControlGroup, Validators } from 'angular2/angular2';
-import { Http } from 'http/http';
+import { Http } from 'angular2/http';
 
 import { PostService } from '../../services/postService';
 import { Todo, TodoStore, TodoFactory } from '../../services/todoStore';

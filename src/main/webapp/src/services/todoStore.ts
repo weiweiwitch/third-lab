@@ -33,7 +33,7 @@ interface LPredicate<T> {
 // Store manages any generic item that inherits from KeyModel
 @Injectable()
 export class TodoStore {
-  list: List<KeyModel> = [];
+  list: Array<KeyModel> = [];
 
   add(record: KeyModel): void {
     this.list.push(record);
@@ -49,7 +49,7 @@ export class TodoStore {
     this.removeAll(this.list, records);
   }
 
-  removeAll<T>(list: List<T>, items: List<T>) {
+  removeAll<T>(list: Array<T>, items: Array<T>) {
     for (var i = 0; i < items.length; ++i) {
       var index = list.indexOf(items[i]);
       list.splice(index, 1);

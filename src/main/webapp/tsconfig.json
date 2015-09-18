@@ -24,7 +24,6 @@
         "./src/directives/knowledgetree.ts",
         "./src/directives/showError.ts",
         "./src/pipes/idPipe.ts",
-        "./src/services/httpService.ts",
         "./src/services/postService.ts",
         "./src/services/services.ts",
         "./src/services/todoStore.ts",

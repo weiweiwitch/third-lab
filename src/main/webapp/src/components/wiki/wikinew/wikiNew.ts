@@ -1,6 +1,6 @@
 /// <reference path="../../../../typings/tsd.d.ts"/>
 
-import { Component, View, CORE_DIRECTIVES, LifecycleEvent, ElementRef } from 'angular2/angular2';
+import { Component, View, CORE_DIRECTIVES, OnInit, ElementRef } from 'angular2/angular2';
 import { RouteConfig, RouterOutlet, RouterLink, Router, RouteParams } from 'angular2/router';
 import { FormBuilder, FORM_DIRECTIVES, Control, ControlGroup, Validators } from 'angular2/angular2';
 
@@ -11,7 +11,6 @@ import * as marked from 'marked';
 
 @Component({
   selector: 'wikinew',
-  lifecycle: [LifecycleEvent.onInit],
   viewBindings: [
     FormBuilder
   ]
@@ -20,7 +19,7 @@ import * as marked from 'marked';
   templateUrl: 'components/wiki/wikinew/wikiNew.html',
   directives: [CORE_DIRECTIVES, FORM_DIRECTIVES, ShowError]
 })
-export class WikiNewCom {
+export class WikiNewCom implements OnInit {
 
   form: ControlGroup;
   post: PostData = new PostData();
@@ -37,6 +36,7 @@ export class WikiNewCom {
     })
   }
 
+  // 初始化
   onInit() {
   }
 
@@ -45,6 +45,7 @@ export class WikiNewCom {
     return this.showMarkdown;
   }
 
+  // 切换视图
   switchView(change: boolean) {
     this.showMarkdown = change;
     if (this.showMarkdown) {
@@ -64,8 +65,9 @@ export class WikiNewCom {
     this.postView = marked(formValue.postText);
   }
 
+  // 标题验证
   titleValidator(c: Control): StringMap<string, boolean> {
-    if (c.value.length >= 4) {
+    if (c.value.length >= 2) {
       return null;
     }
 

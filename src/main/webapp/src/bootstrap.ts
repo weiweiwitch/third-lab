@@ -2,10 +2,10 @@
 
 import { bootstrap } from 'angular2/angular2';
 
-import { routerInjectables } from 'angular2/router';
-import { HTTP_BINDINGS } from 'http/http';
+import { ROUTER_BINDINGS } from 'angular2/router';
+import { HTTP_BINDINGS } from 'angular2/http';
 import { appServicesInjectables } from './services/services';
 
 import { App } from './components/app';
 
-bootstrap(App, [routerInjectables, HTTP_BINDINGS, appServicesInjectables]);
+bootstrap(App, [ROUTER_BINDINGS, HTTP_BINDINGS, appServicesInjectables]);

@@ -1,6 +1,6 @@
 /// <reference path="../../../../typings/tsd.d.ts"/>
 
-import { Component, View, CORE_DIRECTIVES, LifecycleEvent, ElementRef } from 'angular2/angular2';
+import { Component, View, CORE_DIRECTIVES, OnInit, ElementRef } from 'angular2/angular2';
 import { RouteConfig, RouterOutlet, RouterLink, Router, RouteParams } from 'angular2/router';
 import { FormBuilder, FORM_DIRECTIVES, Control, ControlGroup, Validators } from 'angular2/angular2';
 
@@ -9,14 +9,13 @@ import { PostData, PostService } from '../../../services/postService';
 import * as marked from 'marked';
 
 @Component({
-  selector: 'wikiedit',
-  lifecycle: [LifecycleEvent.onInit]
+  selector: 'wikiedit'
 })
 @View({
   templateUrl: 'components/wiki/wikiedit/wikiEdit.html',
   directives: [CORE_DIRECTIVES, FORM_DIRECTIVES]
 })
-export class WikiEditCom {
+export class WikiEditCom implements OnInit {
 
   id: number;
   post: PostData = new PostData();

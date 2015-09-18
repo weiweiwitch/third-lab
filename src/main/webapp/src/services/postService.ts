@@ -1,7 +1,7 @@
 /// <reference path="../../typings/tsd.d.ts"/>
 
 import { Inject, bind, Injectable } from 'angular2/angular2';
-import { Http, Headers } from 'http/http';
+import { Http, Headers } from 'angular2/http';
 
 export class PostData {
   id: number = 0;
@@ -23,13 +23,17 @@ export class PostService {
     this.baseUrl = '/api/posts';
   }
 
+  // 获取所有的文章
   findAllPosts() {
     this.http.get(this.baseUrl)
       .toRx()
-      .map(res => res.json())
-      .subscribe(posts => {
-         this.allPosts = posts;
-      });
+      .map((res) => {
+      console.log(res);
+      return res.json();
+    })
+      .subscribe((posts) => {
+      this.allPosts = posts;
+    });
   }
 
   findSpecPosts(searchParam: string, successCb, exceptionCb) {
@@ -37,12 +41,12 @@ export class PostService {
       postParam: searchParam
     }
     this.http.get('/api/whichpost' + this.json2Params(params))
-    .toRx()
+      .toRx()
       .map(res => res.json())
       .subscribe(posts => {
-         //this.allPosts = posts;
-         successCb(posts);
-      });
+      //this.allPosts = posts;
+      successCb(posts);
+    });
   }
 
   getPost(id: number) {
