@@ -168,8 +168,9 @@ public class PostController {
 	}
 
 	@RequestMapping(value = "/picupload", method = RequestMethod.POST)
-	public @ResponseBody String handleFileUpload(@RequestParam("name") String name,
+	public @ResponseBody String handleFileUpload(// @RequestParam("name") String name,
 			@RequestParam("file") MultipartFile file) {
+		String name = "dddd.jpg";
 		if (!file.isEmpty()) {
 			try {
 				byte[] bytes = file.getBytes();
