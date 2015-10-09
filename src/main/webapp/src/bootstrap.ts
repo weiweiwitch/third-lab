@@ -1,11 +1,14 @@
 /// <reference path="../typings/tsd.d.ts"/>
 
-import { bootstrap } from 'angular2/angular2';
+import { bootstrap, bind } from 'angular2/angular2';
 
-import { ROUTER_BINDINGS } from 'angular2/router';
+import { ROUTER_BINDINGS, ROUTER_PRIMARY_COMPONENT } from 'angular2/router';
 import { HTTP_BINDINGS } from 'angular2/http';
 import { appServicesInjectables } from './services/services';
 
 import { App } from './components/app';
 
-bootstrap(App, [ROUTER_BINDINGS, HTTP_BINDINGS, appServicesInjectables]);
+bootstrap(App, [ROUTER_BINDINGS,
+    bind(ROUTER_PRIMARY_COMPONENT).toValue(App),
+    HTTP_BINDINGS,
+    appServicesInjectables]);

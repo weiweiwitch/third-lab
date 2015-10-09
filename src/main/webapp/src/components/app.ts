@@ -19,11 +19,10 @@ import { PostService } from '../services/postService';
   templateUrl: 'components/app.html',
   directives: [RouterOutlet, RouterLink, CORE_DIRECTIVES, TreeContainer]
 })
-
 @RouteConfig([
   { path: '/', redirectTo: '/wiki/wikiindex' },
-  { path: '/wiki/...', component: WikiCom, as: 'wiki' },
-  { path: '/todo', component: TodoCom, as: 'todo' }
+  { path: '/wiki/...', component: WikiCom, as: 'Wiki' },
+  { path: '/todo', component: TodoCom, as: 'Todo' }
 ])
 export class App implements OnInit {
 

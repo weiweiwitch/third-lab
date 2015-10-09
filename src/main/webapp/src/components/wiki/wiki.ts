@@ -15,30 +15,30 @@ import { WikiNewCom } from '../wiki/wikinew/wikiNew';
 import { PostService } from '../../services/postService';
 
 @Component({
-  selector: 'wiki'
+    selector: 'wiki'
 })
 @View({
-  templateUrl: 'components/wiki/wiki.html',
-  directives: [RouterOutlet, RouterLink, CORE_DIRECTIVES, TreeContainer, WikiIndexCom, WikiPostCom]
+    templateUrl: 'components/wiki/wiki.html',
+    directives: [RouterOutlet, RouterLink, CORE_DIRECTIVES, TreeContainer, WikiIndexCom, WikiPostCom]
 })
 @RouteConfig([
-  { path: '/wikiindex', as: 'wikiindex', component: WikiIndexCom },
-  { path: '/wikipost/:id', as: 'wikipost', component: WikiPostCom },
-  { path: '/wikiedit/:id', as: 'wikiedit', component: WikiEditCom },
-  { path: '/wikinew/:parentid', as: 'wikinew', component: WikiNewCom }
+    { path: '/wikiindex', as: 'Wikiindex', component: WikiIndexCom },
+    { path: '/wikipost/:id', as: 'Wikipost', component: WikiPostCom },
+    { path: '/wikiedit/:id', as: 'Wikiedit', component: WikiEditCom },
+    { path: '/wikinew/:parentid', as: 'Wikinew', component: WikiNewCom }
 ])
 export class WikiCom implements OnInit {
 
-  constructor(private router: Router, private postService: PostService) {
-  }
+    constructor(private router: Router, private postService: PostService) {
+    }
 
-  onInit() {
+    onInit() {
 
-  }
+    }
 
-  selectSpecPost(event) {
-    console.log(event);
+    selectSpecPost(event) {
+        console.log(event);
 
-    this.router.navigate('/wiki/wikipost/' + event.id);
-  }
+        this.router.navigate(['/Wiki/Wikipost', { id: event.id }]);
+    }
 }
