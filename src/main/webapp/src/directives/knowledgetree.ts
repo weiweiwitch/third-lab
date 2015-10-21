@@ -1,20 +1,19 @@
 /// <reference path="../../typings/tsd.d.ts" />
 
-import { Component, View, CORE_DIRECTIVES, OnChanges, EventEmitter } from 'angular2/angular2';
+import { Component, View, CORE_DIRECTIVES, OnChanges, EventEmitter, Input, Output } from 'angular2/angular2';
 
 // 下面的3个指令用于建立tree控件！这类控件之前在angular1中很难实现！
 @Component({
     selector: 'post-node',
-    properties: ['node:node'],
-    events: ['clickpost']
-})
-@View({
+    // inputs: ['node:node'],
+    // outputs: ['clickpost', 'showhide'],
     templateUrl: 'directives/postnode.html'
 })
 export class PostNode {
-    node: any;
+    @Input() node: any;
 
-    clickpost: EventEmitter = new EventEmitter();
+    @Output() clickpost: EventEmitter = new EventEmitter();
+    @Output() showHide: EventEmitter = new EventEmitter();
 
     constructor() {
 
@@ -26,6 +25,7 @@ export class PostNode {
 
     showOrHide() {
         this.node.hide = !this.node.hide;
+        this.showHide.next(1);
     }
 
     clickSpecPost($event) {
@@ -36,16 +36,13 @@ export class PostNode {
 
 @Component({
     selector: 'tree-container',
-    properties: ['itemTree:item-tree'],
-    events: ['clickpost']
-})
-@View({
+    inputs: ['itemTree:item-tree'],
+    outputs: ['clickpost'],
     templateUrl: 'directives/treec.html',
-    directives: [PostNode, CORE_DIRECTIVES]
+    directives: [PostNode, CORE_DIRECTIVES, TreeContainer]
 })
 export class TreeContainer implements OnChanges {
     itemTree: Array<any> = [];
-    itemList: Array<any> = [];
 
     clickpost: EventEmitter = new EventEmitter();
 
@@ -53,42 +50,17 @@ export class TreeContainer implements OnChanges {
 
     }
 
-    // 转换tree到list
-    trans(targetList, lv, parent) {
-        let itemTree = parent.nodes;
-        let nextLv = lv + 1;
-        for (let itemIndex in itemTree) {
-            let item = itemTree[itemIndex];
-            item.hide = true;
-            item.lv = lv;
-            item.parent = parent;
-            targetList.push(item);
-
-            if (item.nodes !== undefined && item.nodes !== null && item.nodes.length > 0) {
-                this.trans(targetList, nextLv, item);
-            }
-        }
-    }
-
-    needHide(node) {
-        while (node.parent !== undefined) {
-            let parentNode = node.parent;
-            if (parentNode.hide === true) {
-                return true;
-            }
-            node = parentNode;
-        }
-        return false;
-    }
-
     onChanges(changes) {
         this.itemTree = changes.itemTree.currentValue;
-        this.itemList = [];
-        this.trans(this.itemList, 0, { hide: false, nodes: this.itemTree });
     }
 
+    // 当点击特定post时，对外发布点击事件。
     clickSpecPost(event) {
         console.log(event);
         this.clickpost.next(event);
+    }
+
+    showOrHide(event) {
+        console.log('触发某个post的展开或收缩');
     }
 }

@@ -1,0 +1,36 @@
+<div class="row">
+  <div class="col-md-3">
+    <ul>
+      <li [router-link]="['./TryQuery']">
+        <a href="#">Query</a>
+      </li>
+      <li [router-link]="['./TryBind']">
+        <a href="#">Bind</a>
+      </li>
+      <li [router-link]="['./TryDi']">
+        <a href="#">DI</a>
+      </li>
+      <li [router-link]="['./TryCd']">
+        <a href="#">Core Directives</a>
+      </li>
+      <li [router-link]="['./TryTimeout']">
+        <a href="#">Timeout Sort</a>
+      </li>
+      <li [router-link]="['./TryTreeView']">
+        <a href="#">Tree View</a>
+      </li>
+      <li [router-link]="['./TryInput']">
+        <a href="#">Input</a>
+      </li>
+      <li [router-link]="['./TryHttp']">
+        <a href="#">Http</a>
+      </li>
+      <li [router-link]="['./TryPipe']">
+        <a href="#">Pipe</a>
+      </li>
+    </ul>
+  </div>
+  <div class="col-md-9">
+    <router-outlet></router-outlet>
+  </div>
+</div>

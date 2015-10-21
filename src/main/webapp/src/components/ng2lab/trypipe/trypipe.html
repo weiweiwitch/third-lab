@@ -1,0 +1,11 @@
+<div class="row">
+  <div class="col-md-12">
+    <div>{{num | number : '.1-2'}}</div>
+    <div>{{rate | percent : '.2'}}</div>
+    <div>{{date | date:'yMMMMd'}}</div>
+    <div>{{date | date:'yMMdd'}}</div>
+    <div>{{temp | tempConvert : 'celsius' : 1}}</div>
+
+    <p>Async {{ promise | async}}</p>
+  </div>
+</div>

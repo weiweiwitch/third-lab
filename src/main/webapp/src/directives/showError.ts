@@ -4,9 +4,7 @@ import { Host, NgFormModel, Component, View, CORE_DIRECTIVES, EventEmitter } fro
 
 @Component({
     selector: 'show-error',
-    properties: ['controlPath: control', 'errorTypes: errors']
-})
-@View({
+    properties: ['controlPath: control', 'errorTypes: errors'],
     template: `
     <span *ng-if="errorMessage !== null">{{errorMessage}}</span>
   `,
