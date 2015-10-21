@@ -56,7 +56,7 @@ export class WikiPostCom implements OnInit {
 
     // 删除
     delete() {
-        this.postService.deletePost(this.post.id);
+        this.postService.deletePost(this.post.id).subscribe(() => { });;
 
         // 切换到首页
         this.router.navigateByUrl('/');

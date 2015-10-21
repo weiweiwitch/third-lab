@@ -4,95 +4,91 @@ import { Component, View, CORE_DIRECTIVES, OnChanges, EventEmitter } from 'angul
 
 // 下面的3个指令用于建立tree控件！这类控件之前在angular1中很难实现！
 @Component({
-  selector: 'post-node',
-  properties: ['node:node'],
-  events: ['clickpost']
+    selector: 'post-node',
+    properties: ['node:node'],
+    events: ['clickpost']
 })
 @View({
-  templateUrl: 'directives/postnode.html'
+    templateUrl: 'directives/postnode.html'
 })
 export class PostNode {
-  node: any;
+    node: any;
 
-  clickpost: EventEmitter = new EventEmitter();
+    clickpost: EventEmitter = new EventEmitter();
 
-  constructor() {
+    constructor() {
 
-  }
+    }
 
-  show(data) {
-    console.log(data)
-  }
+    show(data) {
+        console.log(data)
+    }
 
-  showOrHide() {
-    this.node.hide = !this.node.hide;
-  }
+    showOrHide() {
+        this.node.hide = !this.node.hide;
+    }
 
-  clickSpecPost($event) {
-    console.log($event);
-    this.clickpost.next(this.node);
-  }
+    clickSpecPost($event) {
+        console.log($event);
+        this.clickpost.next(this.node);
+    }
 }
 
 @Component({
-  selector: 'tree-container',
-  properties: ['itemTree:item-tree'],
-  events: ['clickpost']
+    selector: 'tree-container',
+    properties: ['itemTree:item-tree'],
+    events: ['clickpost']
 })
 @View({
-  templateUrl: 'directives/treec.html',
-  directives: [PostNode, CORE_DIRECTIVES]
+    templateUrl: 'directives/treec.html',
+    directives: [PostNode, CORE_DIRECTIVES]
 })
 export class TreeContainer implements OnChanges {
-  itemTree: Array<any> = [];
-  itemList: Array<any> = [];
+    itemTree: Array<any> = [];
+    itemList: Array<any> = [];
 
-  clickpost: EventEmitter = new EventEmitter();
+    clickpost: EventEmitter = new EventEmitter();
 
-  constructor() {
+    constructor() {
 
-  }
-
-  // 转换tree到list
-  trans(targetList, lv, parent) {
-    let itemTree = parent.nodes;
-    let nextLv = lv + 1;
-    for (let itemIndex in itemTree) {
-      let item = itemTree[itemIndex];
-      item.hide = true;
-      item.lv = lv;
-      item.parent = parent;
-      targetList.push(item);
-
-      if (item.nodes !== undefined && item.nodes !== null && item.nodes.length > 0) {
-        this.trans(targetList, nextLv, item);
-      }
     }
-  }
 
-  needHide(node) {
-    while (node.parent !== undefined) {
-      let parentNode = node.parent;
-      if (parentNode.hide === true) {
-        return true;
-      }
-      node = parentNode;
+    // 转换tree到list
+    trans(targetList, lv, parent) {
+        let itemTree = parent.nodes;
+        let nextLv = lv + 1;
+        for (let itemIndex in itemTree) {
+            let item = itemTree[itemIndex];
+            item.hide = true;
+            item.lv = lv;
+            item.parent = parent;
+            targetList.push(item);
+
+            if (item.nodes !== undefined && item.nodes !== null && item.nodes.length > 0) {
+                this.trans(targetList, nextLv, item);
+            }
+        }
     }
-    return false;
-  }
 
-  onChanges(changes) {
-    console.log('onchange');
-    console.log(changes);
+    needHide(node) {
+        while (node.parent !== undefined) {
+            let parentNode = node.parent;
+            if (parentNode.hide === true) {
+                return true;
+            }
+            node = parentNode;
+        }
+        return false;
+    }
 
-    this.itemTree = changes.itemTree.currentValue;
-    this.itemList = [];
-    this.trans(this.itemList, 0, { hide: false, nodes: this.itemTree });
-    console.log(this.itemList.length);
-  }
+    onChanges(changes) {
+        this.itemTree = changes.itemTree.currentValue;
+        this.itemList = [];
+        this.trans(this.itemList, 0, { hide: false, nodes: this.itemTree });
+    }
 
-  clickSpecPost(event) {
-    console.log(event);
-    this.clickpost.next(event);
-  }
+    clickSpecPost(event) {
+        console.log(event);
+        this.clickpost.next(event);
+    }
 }

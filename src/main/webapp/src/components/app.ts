@@ -9,29 +9,32 @@ import { TreeContainer } from '../directives/knowledgetree';
 
 import { WikiCom } from './wiki/wiki';
 import { TodoCom } from './todo/todo';
+import { TryViewCom } from './ng2lab/view';
 
 import { PostService } from '../services/postService';
 
 @Component({
-  selector: 'app'
+    selector: 'app'
 })
 @View({
-  templateUrl: 'components/app.html',
-  directives: [RouterOutlet, RouterLink, CORE_DIRECTIVES, TreeContainer]
+    templateUrl: 'components/app.html',
+    directives: [RouterOutlet, RouterLink, CORE_DIRECTIVES, TreeContainer]
 })
 @RouteConfig([
-  { path: '/', redirectTo: '/wiki/wikiindex' },
-  { path: '/wiki/...', component: WikiCom, as: 'Wiki' },
-  { path: '/todo', component: TodoCom, as: 'Todo' }
+    { path: '/', redirectTo: '/wiki/wikiindex' },
+    { path: '/wiki/...', component: WikiCom, as: 'Wiki' },
+    { path: '/todo', component: TodoCom, as: 'Todo' },
+    { path: '/try/...', component: TryViewCom, as: 'TryView' }
+
 ])
 export class App implements OnInit {
 
-  constructor() {
+    constructor() {
 
-  }
+    }
 
-  onInit() {
+    onInit() {
 
-  }
+    }
 
 }

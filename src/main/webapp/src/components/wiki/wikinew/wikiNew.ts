@@ -92,7 +92,8 @@ export class WikiNewCom implements OnInit {
             .map(res => {
                 let rt = res.json();
                 console.log('create rt ' + rt);
-            });
+            })
+            .subscribe(() => { });
 
         // 切换到首页
         this.router.navigateByUrl('/');

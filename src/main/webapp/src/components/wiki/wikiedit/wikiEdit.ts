@@ -70,6 +70,9 @@ export class WikiEditCom implements OnInit {
             .map(res => {
                 let rt = res.json();
                 console.log(rt);
+            })
+            .subscribe(() => {
+
             });
 
         // 切换到首页

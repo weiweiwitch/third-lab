@@ -6,7 +6,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "angular2": "^2.0.0-alpha.40",
+    "angular2": "^2.0.0-alpha.44",
     "d3": "^3.5.5",
     "es6-module-loader": "^0.17.6",
     "highlight.js": "^8.6.0",
