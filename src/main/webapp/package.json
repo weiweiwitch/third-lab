@@ -6,7 +6,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "angular2": "^2.0.0-alpha.44",
+    "angular2": "^2.0.0-alpha.45",
     "d3": "^3.5.5",
     "es6-module-loader": "^0.17.6",
     "highlight.js": "^8.6.0",
@@ -16,20 +16,26 @@
     "systemjs": "^0.18.17"
   },
   "devDependencies": {
+    "async": "^1.5.0",
+    "del": "^1.2.0",
     "gulp": "^3.9.0",
     "gulp-autoprefixer": "^2.3.1",
     "gulp-concat": "^2.5.2",
+    "gulp-inject": "^3.0.0",
+    "gulp-load-plugins": "^1.0.0",
     "gulp-sass": "^2.0.1",
     "gulp-size": "^1.2.2",
     "gulp-sourcemaps": "^1.5.2",
     "gulp-traceur": "^0.17.1",
     "gulp-tslint": "^3.0.2-beta",
+    "gulp-tslint-stylish": "^1.1.1",
     "gulp-typescript": "^2.7.7",
     "gulp-watch": "^4.2.4",
-    "del": "^1.2.0",
     "node-sass": "^3.1.2",
-    "typescript": "^1.5.3",
+    "run-sequence": "^1.1.0",
+    "slash": "^1.0.0",
     "systemjs-builder": "^0.13.3",
-    "run-sequence": "^1.1.0"
+    "typescript": "^1.5.3",
+    "yargs": "^3.29.0"
   }
 }

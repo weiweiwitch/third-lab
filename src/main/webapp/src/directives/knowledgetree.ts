@@ -5,8 +5,6 @@ import { Component, View, CORE_DIRECTIVES, OnChanges, EventEmitter, Input, Outpu
 // 下面的3个指令用于建立tree控件！这类控件之前在angular1中很难实现！
 @Component({
     selector: 'post-node',
-    // inputs: ['node:node'],
-    // outputs: ['clickpost', 'showhide'],
     templateUrl: 'directives/postnode.html'
 })
 export class PostNode {
@@ -36,15 +34,13 @@ export class PostNode {
 
 @Component({
     selector: 'tree-container',
-    inputs: ['itemTree:item-tree'],
-    outputs: ['clickpost'],
     templateUrl: 'directives/treec.html',
     directives: [PostNode, CORE_DIRECTIVES, TreeContainer]
 })
 export class TreeContainer implements OnChanges {
-    itemTree: Array<any> = [];
+    @Input() itemTree: Array<any> = [];
 
-    clickpost: EventEmitter = new EventEmitter();
+    @Output() clickpost: EventEmitter = new EventEmitter();
 
     constructor() {
 
