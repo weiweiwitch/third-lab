@@ -51,6 +51,7 @@ public class PostController {
 
 			postData.parantId = post.getParantId();
 			postData.parant = post.getMgParantId();
+			postData.status = post.getStatus();
 
 			pMap.put(postData.id, postData);
 			pDatas.add(postData);
@@ -168,7 +169,8 @@ public class PostController {
 	}
 
 	@RequestMapping(value = "/picupload", method = RequestMethod.POST)
-	public @ResponseBody String handleFileUpload(// @RequestParam("name") String name,
+	public @ResponseBody String handleFileUpload(// @RequestParam("name") String
+													// name,
 			@RequestParam("file") MultipartFile file) {
 		String name = "dddd.jpg";
 		if (!file.isEmpty()) {
@@ -186,19 +188,21 @@ public class PostController {
 		}
 	}
 
-//	@RequestMapping("/picupload")
-//	public String fileUpload2(@RequestParam("file") CommonsMultipartFile file) throws IOException {
-//		long startTime = System.currentTimeMillis();
-//		System.out.println("fileName：" + file.getOriginalFilename());
-//		String path = "./" + new Date().getTime() + file.getOriginalFilename();
-//
-//		File newFile = new File(path);
-//		// 通过CommonsMultipartFile的方法直接写文件（注意这个时候）
-//		file.transferTo(newFile);
-//		long endTime = System.currentTimeMillis();
-//		System.out.println("方法二的运行时间：" + String.valueOf(endTime - startTime) + "ms");
-//		return "1";
-//	}
+	// @RequestMapping("/picupload")
+	// public String fileUpload2(@RequestParam("file") CommonsMultipartFile
+	// file) throws IOException {
+	// long startTime = System.currentTimeMillis();
+	// System.out.println("fileName：" + file.getOriginalFilename());
+	// String path = "./" + new Date().getTime() + file.getOriginalFilename();
+	//
+	// File newFile = new File(path);
+	// // 通过CommonsMultipartFile的方法直接写文件（注意这个时候）
+	// file.transferTo(newFile);
+	// long endTime = System.currentTimeMillis();
+	// System.out.println("方法二的运行时间：" + String.valueOf(endTime - startTime) +
+	// "ms");
+	// return "1";
+	// }
 
 	public static class PostData {
 		public long id;
@@ -207,6 +211,7 @@ public class PostController {
 
 		public long parantId;
 		public String parant;
+		public int status;
 
 		public List<PostData> nodes;
 

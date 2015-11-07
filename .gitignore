@@ -3,6 +3,7 @@ target
 src/main/webapp/dist
 src/main/webapp/.sass-cache
 src/main/webapp/.tmp
+src/main/webapp/tmpts
 src/main/webapp/node_modules
 src/main/webapp-a1/node_modules
 src/main/webapp-a1/bower_components

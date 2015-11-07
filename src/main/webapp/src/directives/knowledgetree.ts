@@ -13,8 +13,20 @@ export class PostNode {
     @Output() clickpost: EventEmitter = new EventEmitter();
     @Output() showHide: EventEmitter = new EventEmitter();
 
+    postStatusColor: string;
+
     constructor() {
 
+    }
+
+    postColor() {
+        if (this.node.status == 1) {
+            return 'red';
+        } else if (this.node.status == 2) {
+            return 'yellow';
+        } else {
+            return 'green';
+        }
     }
 
     show(data) {

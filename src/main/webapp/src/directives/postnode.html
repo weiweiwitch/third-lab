@@ -1,3 +1,3 @@
 <div (click)="showOrHide()" [class.tn-l0]="node.lv === 0" [class.tn-l1]="node.lv === 1" [class.tn-l2]="node.lv === 2" [class.tn-l3]="node.lv === 3" [class.tn-l4]="node.lv === 4">
-  <span (click)="clickSpecPost($event)">{{node.title}}</span>
+  <span [style.color]="postColor()" (click)="clickSpecPost($event)">{{node.title}}</span>
 </div>

@@ -34,28 +34,24 @@ var PATH = {
   },
   src: {
     all: APP_SRC,
-    html: 'src/**/*.html',
+    html: join(APP_SRC, '**', '*.html'),
     ts: [
       join(APP_SRC, '**', '*.ts'),
       '!' + join(APP_SRC, '**', '*_spec.ts')
     ],
     jslib_inject: [
       // Order is quite important here for the HTML tag injection.
-      // resolve('es6-shim/es6-shim.min.js'),
-      // resolve('es6-shim/es6-shim.map'),
       resolve('es6-module-loader/dist/es6-module-loader-dev.src.js'),
       resolve('reflect-metadata/Reflect.js'),
       resolve('reflect-metadata/Reflect.js.map'),
       resolve('systemjs/dist/system.src.js'),
-      APP_SRC + '/system.config.js',
+      join(APP_SRC, 'system.config.js'),
       ANGULAR_BUNDLES + '/angular2.dev.js',
       ANGULAR_BUNDLES + '/router.dev.js',
       ANGULAR_BUNDLES + '/http.dev.js',
       'lib/highlight.pack.js'
     ],
     jslib_copy_only: [
-      // resolve('systemjs/dist/system-polyfills.js'),
-      // resolve('systemjs/dist/system-polyfills.js.map')
       resolve('marked/lib/marked.js')
     ],
     scss: 'src/**/*.scss',
@@ -64,20 +60,6 @@ var PATH = {
       resolve('bootstrap/dist/css/bootstrap.css.map'),
       resolve('highlight.js/styles/solarized_light.css'),
       'css/main.css'
-    ],
-    lib: [
-      // 'node_modules/es6-module-loader/dist/es6-module-loader-dev.src.js',
-      // 'node_modules/systemjs/dist/system.src.js',
-      // 'node_modules/reflect-metadata/Reflect.js',
-      // 'node_modules/reflect-metadata/Reflect.js.map',
-      // 'node_modules/zone.js/dist/zone.js',
-      'node_modules/d3/d3.js',
-      'node_modules/highlight.js/styles/solarized_light.css',
-      // 'lib/bootstrap.min.css',
-      // 'lib/highlight.pack.js'
-    ],
-    otherlib: [
-      'node_modules/marked/lib/marked.js'
     ]
   },
 

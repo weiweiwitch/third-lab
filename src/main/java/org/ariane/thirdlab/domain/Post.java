@@ -51,6 +51,9 @@ public class Post implements Serializable {
 
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date lastModifiedTime;
+	
+	@Column(name = "status", nullable = false)
+	private int status; // 文章状态
 
 	public long getId() {
 		return id;
@@ -122,6 +125,14 @@ public class Post implements Serializable {
 
 	public void setLastModifiedTime(Date lastModifiedTime) {
 		this.lastModifiedTime = lastModifiedTime;
+	}
+
+	public int getStatus() {
+		return status;
+	}
+
+	public void setStatus(int status) {
+		this.status = status;
 	}
 
 }

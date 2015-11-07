@@ -12,24 +12,28 @@ import { TryTreeViewCom } from './trytreeview/trytreeview';
 import { TryInputCom } from './tryinput/tryinput';
 import { TryHttpCom } from './tryhttp/tryhttp';
 import { TryPipeCom } from './trypipe/trypipe';
+import { TryTplCom } from './trytpl/trytpl';
+import { TryDyComponentCom } from './trydycom/trydycom';
 
 @Component({
-  selector: 'tryview'
+	selector: 'tryview'
 })
 @View({
-  templateUrl: 'components/ng2lab/view.html',
-  directives: [RouterOutlet, RouterLink, CORE_DIRECTIVES, TryQueryCom]
+	templateUrl: 'components/ng2lab/view.html',
+	directives: [RouterOutlet, RouterLink, CORE_DIRECTIVES, TryQueryCom]
 })
 @RouteConfig([
-  { path: '/tryquery', as: 'TryQuery', component: TryQueryCom },
-  { path: '/trybind', as: 'TryBind', component: TryBindCom },
-  { path: '/trydi', as: 'TryDi', component: TryDiCom },
-  { path: '/trycd', as: 'TryCd', component: TryCdCom },
-  { path: '/trytimeout', as: 'TryTimeout', component: TryTimeoutCom },
-  { path: '/trytreeview', as: 'TryTreeView', component: TryTreeViewCom },
-  { path: '/tryinput', as: 'TryInput', component: TryInputCom },
-  { path: '/tryhttp', as: 'TryHttp', component: TryHttpCom },
-  { path: '/trypipe', as: 'TryPipe', component: TryPipeCom }
+	{path: '/tryquery', as: 'TryQuery', component: TryQueryCom},
+	{path: '/trybind', as: 'TryBind', component: TryBindCom},
+	{path: '/trydi', as: 'TryDi', component: TryDiCom},
+	{path: '/trycd', as: 'TryCd', component: TryCdCom},
+	{path: '/trytimeout', as: 'TryTimeout', component: TryTimeoutCom},
+	{path: '/trytreeview', as: 'TryTreeView', component: TryTreeViewCom},
+	{path: '/tryinput', as: 'TryInput', component: TryInputCom},
+	{path: '/tryhttp', as: 'TryHttp', component: TryHttpCom},
+	{path: '/trypipe', as: 'TryPipe', component: TryPipeCom},
+	{path: '/trytpl', as: 'TryTpl', component: TryTplCom},
+	{path: '/trydycom', as: 'TryDyCom', component: TryDyComponentCom}
 ])
 export class TryViewCom {
 

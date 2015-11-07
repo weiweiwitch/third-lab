@@ -1,0 +1,19 @@
+<div>
+    <table>
+        <tr>
+            <th *ng-for="#column of options.columns">
+                {{column.columnName}}
+            </th>
+        </tr>
+        <tr *ng-for="#data of options.datas">
+            <td *ng-for="#column of options.columns">
+                <div *ng-if="column.cellCom === null">
+                    {{data[column.data]}}
+                </div>
+                <div *ng-if="column.cellCom !== null">
+                    <dycomcell [column-def]="column" [data]="data" (del-this-row)="delRow($event)"></dycomcell>
+                </div>
+            </td>
+        </tr>
+    </table>
+</div>
