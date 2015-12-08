@@ -1,21 +1,21 @@
 <div class="container-fluid air">
-  <div class="row air-nav">
-    <div class="col-md-12">
-      <div class="navbar-header">
-        <a class="navbar-brand" href="#">AIR</a>
-      </div>
-      <ul class="nav navbar-nav navbar-right">
-        <li [router-link]="['/Wiki', 'Wikiindex']">
-          <a href="#">Wiki</a>
-        </li>
-        <li [router-link]="['/Todo']">
-          <a href="#">Todo</a>
-        </li>
-        <li [router-link]="['/TryView', 'TryQuery']">
-          <a href="#">Ng2Lab</a>
-        </li>
-      </ul>
+    <div class="row air-nav">
+        <div class="col-md-12">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="#">AIR</a>
+            </div>
+            <ul class="nav navbar-nav navbar-right">
+                <li [router-link]="['/Wiki', 'Wikiindex']">
+                    <a href="#">Wiki</a>
+                </li>
+                <li [router-link]="['/Todo']">
+                    <a href="#">Todo</a>
+                </li>
+                <li [router-link]="['/TryView', 'TryQuery']">
+                    <a href="#">Ng2Lab</a>
+                </li>
+            </ul>
+        </div>
     </div>
-  </div>
-  <router-outlet></router-outlet>
+    <router-outlet></router-outlet>
 </div>

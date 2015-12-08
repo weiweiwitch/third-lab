@@ -1,49 +1,40 @@
 <div class="row">
-  <h3>编辑</h3>
-</div>
-<div class="row">
-  <div class="col-md-12">
-    <form class="form-horizontal" [ng-form-model]="form" #f="form">
-      <div class="form-group">
-        <label class="col-md-1 control-label">ID：</label>
-        <div class="col-md-2">
-          <input ng-control="id" class="form-control" readonly type="text">
-        </div>
-        <label class="col-md-1 control-label">上级：</label>
-        <div class="col-md-2">
-          <input ng-control="parantId" class="form-control" type="text">
-        </div>
-      </div>
-      <div class="form-group"></div>
-      <div class="form-group">
-        <label class="col-md-1 control-label">标题：</label>
-        <div class="col-md-7">
-          <input ng-control="title" class="form-control" type="text">
-          <show-error control="title" [errors]="['required', 'tooShort']"></show-error>
-        </div>
-      </div>
-      <div class="form-group">
-        <label class="col-md-1 control-label">内容：</label>
-        <div class="col-md-11">
-          <div>
-            <button class="btn btn-primary" (click)="switchView(true)" name="button">源</button>
-            <button class="btn btn-primary" (click)="switchView(false)" name="button">视图</button>
-          </div>
-          <div>
-            <div *ng-if="showSource()">
-              <textarea class="form-control textarea-height edit-text" ng-control="postText"></textarea>
+    <div class="col-md-12">
+        <form class="form-horizontal" [ng-form-model]="form" #f="form">
+            <div class="form-group">
+                <div class="col-md-8">
+                    <input ng-control="title" class="form-control" type="text">
+                    <show-error control="title" [errors]="['required', 'tooShort']"></show-error>
+                </div>
+                <label class="col-md-1 control-label">ID：</label>
+                <div class="col-md-1">
+                    <input ng-control="id" class="form-control" readonly type="text">
+                </div>
+                <label class="col-md-1 control-label">上级：</label>
+                <div class="col-md-1">
+                    <input ng-control="parantId" class="form-control" type="text">
+                </div>
             </div>
-            <div *ng-if="!showSource()" class="inner_topic">
-              <div class="markdown-text textarea-height" [inner-html]="postView"></div>
+
+            <div class="form-group">
+                <div class="col-md-12">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <textarea class="form-control textarea-height edit-text" (keyup)="onChange()" ng-control="postText"></textarea>
+                        </div>
+                        <div class="col-md-6 inner_topic">
+                            <div class="markdown-text textarea-height" [inner-html]="postView"></div>
+                        </div>
+                    </div>
+                </div>
             </div>
-          </div>
-        </div>
-      </div>
-      <div class="form-group">
-        <div class="col-md-offset-1 col-md-11">
-          <button (click)="create($event)" [disabled]="!f.form.valid" class="btn btn-default">保存</button>
-        </div>
-      </div>
-    </form>
-  </div>
+
+            <div class="form-group">
+                <div class="col-md-12">
+                    <button (click)="create($event)" [disabled]="!f.form.valid" class="btn btn-primary">保存</button>
+                    <button (click)="cancel($event)" class="btn btn-default">取消</button>
+                </div>
+            </div>
+        </form>
+    </div>
 </div>

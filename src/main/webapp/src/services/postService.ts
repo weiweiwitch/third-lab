@@ -1,90 +1,92 @@
 /// <reference path="../../typings/tsd.d.ts"/>
 
 import { Inject, bind, Injectable } from 'angular2/angular2';
-import { Http, Headers } from 'angular2/http';
+import { Http, Headers, Response } from 'angular2/http';
 
 export class PostData {
-    id: number = 0;
-    parantId: number = 0;
-    title: string = '';
-    postText: string = '';
+	id: number = 0;
+	parantId: number = 0;
+	title: string = '';
+	postText: string = '';
 }
 
 @Injectable()
 export class PostService {
 
-    allPosts = [];
+	hideOnEdit: boolean = false;
 
-    http: Http;
-    baseUrl: string;
+	allPosts = [];
 
-    constructor( @Inject(Http) http) {
-        this.http = http;
-        this.baseUrl = '/api/posts';
-    }
+	http: Http;
+	baseUrl: string;
 
-    // 获取所有的文章
-    findAllPosts() {
-        this.http.get(this.baseUrl)
-            .map((res) => {
-                console.log(res);
-                return res.json();
-            })
-            .subscribe((posts) => {
-                this.allPosts = posts;
-            });
-    }
+	constructor(@Inject(Http) http) {
+		this.http = http;
+		this.baseUrl = '/api/posts';
+	}
 
-    findSpecPosts(searchParam: string, successCb, exceptionCb) {
-        let params = {
-            postParam: searchParam
-        }
-        this.http.get('/api/whichpost' + this.json2Params(params))
-            .map(res => res.json())
-            .subscribe(posts => {
-                //this.allPosts = posts;
-                successCb(posts);
-            });
-    }
+	// 获取所有的文章
+	findAllPosts() {
+		this.http.get(this.baseUrl)
+			.map((res: Response) => {
+				console.log(res);
+				return res.json();
+			})
+			.subscribe((posts: any) => {
+				this.allPosts = posts;
+			});
+	}
 
-    getPost(id: string) {
-        return this.http.get(this.baseUrl + '/' + id);
-    }
+	findSpecPosts(searchParam: string, successCb, exceptionCb) {
+		let params = {
+			postParam: searchParam
+		};
+		this.http.get('/api/whichpost' + this.json2Params(params))
+			.map((res: Response) => res.json())
+			.subscribe(posts => {
+				//this.allPosts = posts;
+				successCb(posts);
+			});
+	}
 
-    updatePost(post: PostData) {
-        let headers = new Headers();
-        headers.append('Content-Type', 'application/json;charset=UTF-8');
-        return this.http.put(this.baseUrl + '/' + post.id, JSON.stringify(post), {
-            headers: headers
-        });
-    }
+	getPost(id: string) {
+		return this.http.get(this.baseUrl + '/' + id);
+	}
 
-    createPost(newPost: PostData) {
-        let headers = new Headers();
-        headers.append('Content-Type', 'application/json;charset=UTF-8');
-        return this.http.post(this.baseUrl, JSON.stringify(newPost), {
-            headers: headers
-        });
-    }
+	updatePost(post: PostData) {
+		let headers = new Headers();
+		headers.append('Content-Type', 'application/json;charset=UTF-8');
+		return this.http.put(this.baseUrl + '/' + post.id, JSON.stringify(post), {
+			headers: headers
+		});
+	}
 
-    deletePost(id: number) {
-        let headers = new Headers();
-        headers.append('Content-Type', 'application/json;charset=UTF-8');
-        return this.http.delete(this.baseUrl + '/' + id, {
-            headers: headers
-        });
-    }
+	createPost(newPost: PostData) {
+		let headers = new Headers();
+		headers.append('Content-Type', 'application/json;charset=UTF-8');
+		return this.http.post(this.baseUrl, JSON.stringify(newPost), {
+			headers: headers
+		});
+	}
 
-    json2Params(data: any) {
-        if (data === null || data.length === 0) {
-            return '';
-        }
+	deletePost(id: number) {
+		let headers = new Headers();
+		headers.append('Content-Type', 'application/json;charset=UTF-8');
+		return this.http.delete(this.baseUrl + '/' + id, {
+			headers: headers
+		});
+	}
 
-        let urlParams: string = Object.keys(data).map(function(k) {
-            return encodeURIComponent(k) + '=' + encodeURIComponent(data[k])
-        }).join('&')
+	json2Params(data: any) {
+		if (data === null || data.length === 0) {
+			return '';
+		}
 
-        return '?' + urlParams;
-    }
+		let urlParams: string = Object.keys(data).map(function (k) {
+			return encodeURIComponent(k) + '=' + encodeURIComponent(data[k])
+		}).join('&');
+
+		return '?' + urlParams;
+	}
 
 }

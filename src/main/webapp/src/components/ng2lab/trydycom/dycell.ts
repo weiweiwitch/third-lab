@@ -9,13 +9,13 @@ export class DyComponentCellCom implements OnInit {
 	@Input() columnDef: any;
 	@Input() data: any;
 
-	@Output() delThisRow: EventEmitter = new EventEmitter();
+	@Output() delThisRow = new EventEmitter<any>();
 
 	constructor(private dynamicComponentLoader: DynamicComponentLoader, private elementRef: ElementRef) {
 
 	}
 
-	onInit() {
+	ngOnInit() {
 		this.dynamicComponentLoader.loadIntoLocation(this.columnDef.cellCom, this.elementRef, 'targetLocation')
 			.then((comp: ComponentRef) => {
 				comp.instance.data = this.data;

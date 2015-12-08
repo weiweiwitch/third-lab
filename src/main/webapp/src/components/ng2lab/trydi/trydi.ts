@@ -6,23 +6,21 @@ import { RouteConfig, RouterOutlet, RouterLink, Router, Route } from 'angular2/r
 import { AddrService } from './addrservice';
 
 @Component({
-    selector: 'trydi',
-    providers: [AddrService]
-})
-@View({
-    templateUrl: 'components/ng2lab/trydi/trydi.html',
-    directives: [CORE_DIRECTIVES]
+	selector: 'trydi',
+	providers: [AddrService],
+	templateUrl: 'components/ng2lab/trydi/trydi.html',
+	directives: [CORE_DIRECTIVES]
 })
 export class TryDiCom {
-    addr: string;
+	addr: string;
 
-    constructor(private addrService: AddrService) {
-        console.log(addrService);
+	constructor(private addrService: AddrService) {
+		console.log(addrService);
 
-        this.addr = this.addrService.getAddr();
-    }
+		this.addr = this.addrService.getAddr();
+	}
 
-    showAddr() {
+	showAddr() {
 
-    }
+	}
 }

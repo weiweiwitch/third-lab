@@ -14,6 +14,7 @@ import { TryHttpCom } from './tryhttp/tryhttp';
 import { TryPipeCom } from './trypipe/trypipe';
 import { TryTplCom } from './trytpl/trytpl';
 import { TryDyComponentCom } from './trydycom/trydycom';
+import { TryHostBind } from './tryhostbinding/tryhostbinding';
 
 @Component({
 	selector: 'tryview'
@@ -33,7 +34,8 @@ import { TryDyComponentCom } from './trydycom/trydycom';
 	{path: '/tryhttp', as: 'TryHttp', component: TryHttpCom},
 	{path: '/trypipe', as: 'TryPipe', component: TryPipeCom},
 	{path: '/trytpl', as: 'TryTpl', component: TryTplCom},
-	{path: '/trydycom', as: 'TryDyCom', component: TryDyComponentCom}
+	{path: '/trydycom', as: 'TryDyCom', component: TryDyComponentCom},
+	{path: '/tryhostbind', as: 'TryHostBind', component: TryHostBind}
 ])
 export class TryViewCom {
 

@@ -1,45 +1,36 @@
 <div class="row">
-  <h3>编辑</h3>
-</div>
-<div class="row">
-  <div class="col-md-12 form-horizontal">
-    <div class="form-group">
-      <label class="col-md-1 control-label">ID：</label>
-      <div class="col-md-2">
-        <input [(ng-model)]="post.id" class="form-control" readonly type="text">
-      </div>
-      <label class="col-md-1 control-label">上级：</label>
-      <div class="col-md-2">
-        <input [(ng-model)]="post.parantId" class="form-control" type="text">
-      </div>
-    </div>
-    <div class="form-group">
-      <label class="col-md-1 control-label">标题：</label>
-      <div class="col-md-6">
-        <input [(ng-model)]="post.title" class="form-control" type="text">
-      </div>
-    </div>
-    <div class="form-group">
-      <label class="col-md-1 control-label">内容：</label>
-      <div class="col-md-11">
-        <div>
-          <button class="btn btn-primary" (click)="switchView(true)" name="button">源</button>
-          <button class="btn btn-primary" (click)="switchView(false)" name="button">视图</button>
+    <div class="col-md-12 form-horizontal">
+        <div class="form-group">
+            <div class="col-md-8">
+                <input [(ng-model)]="post.title" class="form-control" type="text">
+            </div>
+            <label class="col-md-1 control-label">ID：</label>
+            <div class="col-md-1">
+                <input [(ng-model)]="post.id" class="form-control" readonly type="text">
+            </div>
+            <label class="col-md-1 control-label">上级：</label>
+            <div class="col-md-1">
+                <input [(ng-model)]="post.parantId" class="form-control" type="text">
+            </div>
         </div>
-        <div>
-          <div *ng-if="showSource()">
-            <textarea class="form-control textarea-height edit-text" [(ng-model)]="post.postText"></textarea>
-          </div>
-          <div *ng-if="!showSource()" class="inner_topic">
-            <div class="markdown-text textarea-height" [inner-html]="postView"></div>
-          </div>
+        <div class="form-group">
+            <div class="col-md-12">
+                <div class="row">
+                    <div class="col-md-6">
+                        <textarea class="form-control textarea-height edit-text" (keyup)="onChange()"
+                                  [(ng-model)]="post.postText"></textarea>
+                    </div>
+                    <div class="col-md-6 inner_topic">
+                        <div class="markdown-text textarea-height" [inner-html]="postView"></div>
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
+        <div class="form-group">
+            <div class="col-md-3">
+                <button (click)="update()" class="btn btn-primary">更新</button>
+                <button (click)="cancel()" class="btn btn-default">取消</button>
+            </div>
+        </div>
     </div>
-    <div class="form-group">
-      <div class="col-md-offset-1 col-md-3">
-        <button (click)="update()" class="btn btn-default">更新</button>
-      </div>
-    </div>
-  </div>
 </div>

@@ -6,7 +6,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "angular2": "^2.0.0-alpha.45",
+    "angular2": "2.0.0-alpha.47",
     "bootstrap": "^3.3.5",
     "d3": "^3.5.5",
     "es6-module-loader": "^0.17.6",
@@ -36,7 +36,7 @@
     "run-sequence": "^1.1.0",
     "slash": "^1.0.0",
     "systemjs-builder": "^0.13.3",
-    "typescript": "^1.5.3",
+    "typescript": "^1.6.2",
     "yargs": "^3.29.0"
   }
 }

@@ -1,27 +1,41 @@
 <div class="row">
-  <div class="col-md-4">
-    <input type="text" (keyup)="search()" [(ng-model)]="searchParam">
-    <span>{{selectedPost.title}}</span>
-  </div>
+    <div class="col-md-6">
+        <div class="form-inline">
+            <div class="form-group">
+                <label class="control-label">搜索</label>
+                <i class="fa fa-folder-open"></i>
+                <input class="form-control" type="text" (keyup)="search()" [(ng-model)]="searchParam">
+            </div>
+        </div>
 
-  <div class="col-md-4">
-    <button class="btn btn-default" (click)="transTo()">切换到</button>
-  </div>
+    </div>
 
-  <div class="col-md-4">
-    <button (click)="test()">测试</button>
-  </div>
+    <div class="col-md-4">
+        <button class="btn btn-default" (click)="transTo()">切换到</button>
+    </div>
+    <div class="col-md-2">
+        <div class="form-inline">
+            <div class="form-group">
+                <div class="checkbox">
+                    <label>
+                        <input type="checkbox">
+                        CheckBox
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 <div class="row">
-  <div class="col-md-12">
-    <table class="table table-condensed table-striped">
-      <tr>
-        <th>Title</th>
-      </tr>
-      <tr *ng-for="#post of posts">
-        <td (click)="selectTarget(post)">{{post.title}}</td>
-      </tr>
-    </table>
-  </div>
+    <div class="col-md-12">
+        <table class="table table-condensed table-striped">
+            <tr>
+                <th>Title</th>
+            </tr>
+            <tr *ng-for="#post of posts">
+                <td (click)="selectTarget(post)">{{post.title}}</td>
+            </tr>
+        </table>
+    </div>
 </div>

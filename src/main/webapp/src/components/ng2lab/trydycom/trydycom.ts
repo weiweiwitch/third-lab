@@ -7,9 +7,7 @@ import {DyComponentGridCom, DyGridOptions, DyGridItem} from './dygrid';
 import {DelButtonCom} from './delbutton';
 
 @Component({
-	selector: 'trydycom'
-})
-@View({
+	selector: 'trydycom',
 	templateUrl: 'components/ng2lab/trydycom/trydycom.html',
 	directives: [CORE_DIRECTIVES, DyComponentGridCom]
 })
@@ -18,11 +16,11 @@ export class TryDyComponentCom {
 
 	constructor() {
 		this.gridOptions = new DyGridOptions();
-		this.gridOptions.columns .push(new DyGridItem('c1', 'c1', null));
-		this.gridOptions.columns .push(new DyGridItem('c2', 'c2', null));
-		this.gridOptions.columns .push(new DyGridItem('c3', 'c3', null));
-		this.gridOptions.columns .push(new DyGridItem('c4', 'c4', null));
-		this.gridOptions.columns .push(new DyGridItem('删除', '', DelButtonCom));
+		this.gridOptions.columns.push(new DyGridItem('c1', 'c1', null));
+		this.gridOptions.columns.push(new DyGridItem('c2', 'c2', null));
+		this.gridOptions.columns.push(new DyGridItem('c3', 'c3', null));
+		this.gridOptions.columns.push(new DyGridItem('c4', 'c4', null));
+		this.gridOptions.columns.push(new DyGridItem('删除', '', DelButtonCom));
 
 		this.gridOptions.datas = [{
 			c1: '1',

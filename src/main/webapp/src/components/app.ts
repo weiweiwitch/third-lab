@@ -21,7 +21,7 @@ import { PostService } from '../services/postService';
     directives: [RouterOutlet, RouterLink, CORE_DIRECTIVES, TreeContainer]
 })
 @RouteConfig([
-    { path: '/', redirectTo: '/wiki/wikiindex' },
+    { path: '/', redirectTo: ['/Wiki/Wikiindex'] },
     { path: '/wiki/...', component: WikiCom, as: 'Wiki' },
     { path: '/todo', component: TodoCom, as: 'Todo' },
     { path: '/try/...', component: TryViewCom, as: 'TryView' }
@@ -33,7 +33,7 @@ export class App implements OnInit {
 
     }
 
-    onInit() {
+    ngOnInit() {
 
     }
 

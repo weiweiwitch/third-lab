@@ -32,7 +32,7 @@ export class WikiCom implements OnInit {
     constructor(private router: Router, private postService: PostService) {
     }
 
-    onInit() {
+    ngOnInit() {
 
     }
 

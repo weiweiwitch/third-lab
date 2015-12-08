@@ -1,3 +1,5 @@
+"use strict";
+
 // var tsc = require('gulp-typescript');
 // var sourcemaps = require('gulp-sourcemaps');
 var join = require('path').join;
@@ -8,7 +10,7 @@ function buildTsDev(gulp, plugins, option) {
     typescript: require('typescript')
   });
 
-  return function() {
+  return function () {
     var tsResult = gulp.src(PATH.src.ts)
       .pipe(plugins.sourcemaps.init())
       .pipe(plugins.typescript(tsProject));
@@ -17,6 +19,10 @@ function buildTsDev(gulp, plugins, option) {
       .pipe(plugins.sourcemaps.write('.'))
       .pipe(gulp.dest(PATH.dest.dev.all));
   };
+}
+
+class MyClass {
+
 }
 
 module.exports = buildTsDev;

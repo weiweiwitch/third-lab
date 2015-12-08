@@ -1,19 +1,19 @@
 <div class="row">
-  <div class="col-md-2">
-    这里演示了NgFor的使用。
-    <div *ng-for="#vv of vvs">
-      {{vv}}
+    <div class="col-md-2">
+        这里演示了NgFor的使用。
+        <div *ng-for="#vv of vvs">
+            {{vv}}
+        </div>
     </div>
-  </div>
-  <div class="col-md-2">
-    这里演示了NgIf的使用。
-    <div *ng-if="number1 % 2 == 0">
-      后面不应该显示1：
-      {{number1}}
+    <div class="col-md-2">
+        这里演示了NgIf的使用。
+        <div *ng-if="number1 % 2 == 0">
+            后面不应该显示1：
+            {{number1}}
+        </div>
+        <div *ng-if="number2 % 2 == 0">
+            后面应该显示2：
+            {{number2}}
+        </div>
     </div>
-    <div *ng-if="number2 % 2 == 0">
-      后面应该显示2：
-      {{number2}}
-    </div>
-  </div>
 </div>

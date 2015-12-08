@@ -1,81 +1,94 @@
 /// <reference path="../../../../typings/tsd.d.ts"/>
 
-import { Component, View, CORE_DIRECTIVES, OnInit, ElementRef } from 'angular2/angular2';
+import { Component, View, CORE_DIRECTIVES, OnInit, OnDestroy, ElementRef } from 'angular2/angular2';
 import { RouteConfig, RouterOutlet, RouterLink, Router, RouteParams } from 'angular2/router';
 import { FormBuilder, FORM_DIRECTIVES, Control, ControlGroup, Validators } from 'angular2/angular2';
+import {Response} from 'angular2/http';
 
 import { PostData, PostService } from '../../../services/postService';
 
 import * as marked from 'marked';
 
 @Component({
-    selector: 'wikiedit'
+	selector: 'wikiedit'
 })
 @View({
-    templateUrl: 'components/wiki/wikiedit/wikiEdit.html',
-    directives: [CORE_DIRECTIVES, FORM_DIRECTIVES]
+	templateUrl: 'components/wiki/wikiedit/wikiEdit.html',
+	directives: [CORE_DIRECTIVES, FORM_DIRECTIVES]
 })
-export class WikiEditCom implements OnInit {
+export class WikiEditCom implements OnInit, OnDestroy {
 
-    id: string;
-    post: PostData = new PostData();
+	id: string;
+	post: PostData = new PostData();
 
-    showMarkdown: boolean = true;
-    postView: string = '';
+	postView: string = '';
 
-    constructor(routeParams: RouteParams, private router: Router, private postService: PostService) {
-        this.id = routeParams.params['id'];
+	constructor(routeParams: RouteParams, private router: Router, private postService: PostService) {
+		this.id = routeParams.params['id'];
 
-        // 使用传入的id加载post。
-        this.postService.getPost(this.id)
-            .map(res => res.json())
-            .subscribe(post => {
-                console.log(post);
+		// 使用传入的id加载post。
+		this.postService.getPost(this.id)
+			.map((res: Response) => res.json())
+			.subscribe((post: any) => {
+				console.log(post);
 
-                this.post = post;
-            });
-    }
+				this.post = post;
 
-    onInit() {
-    }
+				this.render();
+			});
+	}
 
-    // 是否显示markdown源
-    showSource(): boolean {
-        return this.showMarkdown;
-    }
+	ngOnInit() {
+		console.log('wiki new destroy');
 
-    switchView(change: boolean) {
-        this.showMarkdown = change;
-        if (this.showMarkdown) {
-            return;
-        }
 
-        // 渲染markdown
-        marked.setOptions({
-            highlight: (code, lang, callback) => {
-                console.log('try hightlight ' + lang);
-                let afterhl = hljs.highlightAuto(code, [lang]).value;
-                return afterhl;
-            }
-        });
+	}
 
-        this.postView = marked(this.post.postText);
-    }
+	render() {
+		// 渲染markdown
+		marked.setOptions({
+			highlight: (code, lang, callback) => {
+				console.log('try hightlight ' + lang);
+				let afterhl = hljs.highlightAuto(code, [lang]).value;
+				return afterhl;
+			}
+		});
 
-    // 保存更新
-    update() {
-        console.log(this.post);
+		this.postView = marked(this.post.postText);
+	}
 
-        this.postService.updatePost(this.post)
-            .map(res => {
-                let rt = res.json();
-                console.log(rt);
-            })
-            .subscribe(() => {
 
-            });
+	ngOnDestroy() {
+		console.log('wiki edit destroy');
+	}
 
-        // 切换到首页
-        this.router.navigate(['/Wiki/Wikipost', { id: this.post.id }]);
-    }
+	onChange() {
+		this.render();
+	}
+
+	// 保存更新
+	update() {
+		console.log(this.post);
+
+		this.postService.updatePost(this.post)
+			.map((res: Response) => {
+				let rt = res.json();
+				console.log(rt);
+
+				return rt;
+			})
+			.subscribe((data) => {
+				console.log('show save result');
+				console.log(data);
+
+				// 切换到指定页
+				this.router.navigate(['/Wiki/Wikipost', {id: this.post.id}]);
+			});
+
+	}
+
+	cancel() {
+		this.router.navigate(['/Wiki/Wikipost', {id: this.post.id}]);
+	}
+
 }

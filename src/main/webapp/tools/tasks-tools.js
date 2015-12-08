@@ -11,18 +11,18 @@ var TASKS_PATH = join(PATH.tools, 'tasks');
 
 // 自动注册任务
 function autoRegisterTasks() {
-  scanDir(TASKS_PATH, function(taskname) {
-    registerTask(taskname);
-  })
+    scanDir(TASKS_PATH, (taskname) => {
+        registerTask(taskname);
+    });
 }
 
 function task(taskname, option) {
-  // 获取目标任务构造
-  var taskPath = join('..', 'tools', 'tasks', taskname);
-  var t = require(taskPath);
+    // 获取目标任务构造
+    var taskPath = join('..', 'tools', 'tasks', taskname);
+    var t = require(taskPath);
 
-  // 执行任务构造，返回任务执行对象。
-  return t(gulp, plugins(), option);
+    // 执行任务构造，返回任务执行对象。
+    return t(gulp, plugins(), option);
 }
 
 
@@ -30,33 +30,33 @@ function task(taskname, option) {
 
 // 注册任务
 function registerTask(taskname, filename, option) {
-  console.log('register task ' + taskname);
-  gulp.task(taskname, task(filename || taskname, option));
+    console.log('register task ' + taskname);
+    gulp.task(taskname, task(filename || taskname, option));
 }
 
 // 遍历任务目录，对任务定义文件做相关处理。
 function scanDir(root, cb) {
-  if (!existsSync(root))
-    return;
+    if (!existsSync(root))
+        return;
 
-  walk(root);
+    walk(root);
 
-  function walk(path) {
-    readdirSync(path).forEach(function(file) {
-      var curPath = join(path, file);
-      if (lstatSync(curPath).isDirectory()) {
-        path = file;
-        walk(curPath);
-      }
-      if (lstatSync(curPath).isFile() && file.endsWith('.js')) {
-        var taskname = file.replace(/(\.js)/, '');
-        cb(taskname);
-      }
-    })
-  }
+    function walk(path) {
+        readdirSync(path).forEach(function (file) {
+            var curPath = join(path, file);
+            if (lstatSync(curPath).isDirectory()) {
+                path = file;
+                walk(curPath);
+            }
+            if (lstatSync(curPath).isFile() && file.endsWith('.js')) {
+                var taskname = file.replace(/(\.js)/, '');
+                cb(taskname);
+            }
+        })
+    }
 }
 
 module.exports = {
-  autoRegisterTasks: autoRegisterTasks,
-  task: task
-}
+    autoRegisterTasks: autoRegisterTasks,
+    task: task
+};

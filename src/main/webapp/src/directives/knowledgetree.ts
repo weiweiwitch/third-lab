@@ -10,8 +10,8 @@ import { Component, View, CORE_DIRECTIVES, OnChanges, EventEmitter, Input, Outpu
 export class PostNode {
     @Input() node: any;
 
-    @Output() clickpost: EventEmitter = new EventEmitter();
-    @Output() showHide: EventEmitter = new EventEmitter();
+    @Output() clickpost = new EventEmitter();
+    @Output() showHide = new EventEmitter<number>();
 
     postStatusColor: string;
 
@@ -52,13 +52,13 @@ export class PostNode {
 export class TreeContainer implements OnChanges {
     @Input() itemTree: Array<any> = [];
 
-    @Output() clickpost: EventEmitter = new EventEmitter();
+    @Output() clickpost = new EventEmitter<any>();
 
     constructor() {
 
     }
 
-    onChanges(changes) {
+    ngOnChanges(changes) {
         this.itemTree = changes.itemTree.currentValue;
     }
 
