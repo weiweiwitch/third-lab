@@ -4,7 +4,8 @@
             <div class="form-group">
                 <label class="control-label">搜索</label>
                 <i class="fa fa-folder-open"></i>
-                <input class="form-control" type="text" (keyup)="search()" [(ng-model)]="searchParam">
+                <input class="form-control" type="text" (keyup)="search()" [(ngModel)]="searchParam">
+                <span>{{selectedPost.title}}</span>
             </div>
         </div>
 
@@ -33,7 +34,7 @@
             <tr>
                 <th>Title</th>
             </tr>
-            <tr *ng-for="#post of posts">
+            <tr *ngFor="#post of posts">
                 <td (click)="selectTarget(post)">{{post.title}}</td>
             </tr>
         </table>

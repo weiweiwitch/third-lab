@@ -1,47 +1,48 @@
 /// <reference path="../../../../typings/tsd.d.ts"/>
 
-import {Component, View, CORE_DIRECTIVES, FORM_DIRECTIVES, Control, ControlGroup} from 'angular2/angular2';
+import {Component, View } from 'angular2/core';
+import {CORE_DIRECTIVES, FORM_DIRECTIVES, Control, ControlGroup} from 'angular2/common';
 
 @Component({
-    selector: 'tryinput'
+	selector: 'tryinput'
 })
 @View({
-    templateUrl: 'components/ng2lab/tryinput/tryinput.html',
-    directives: [CORE_DIRECTIVES, FORM_DIRECTIVES]
+	templateUrl: 'components/ng2lab/tryinput/tryinput.html',
+	directives: [CORE_DIRECTIVES, FORM_DIRECTIVES]
 })
 export class TryInputCom {
-    inputText: string;
-    inputRadio: string;
+	inputText: string;
+	inputRadio: string;
 
-    sels: Array<any> = [];
+	sels: Array<any> = [];
 
-    selValue: Control = new Control('');
-    selModel: number;
+	selValue: Control = new Control('');
+	selModel: number;
 
-    loginForm: ControlGroup;
+	loginForm: ControlGroup;
 
-    constructor() {
-        this.sels.push({ name: 'aaa', id: 1 });
-        this.sels.push({ name: 'bbb', id: 2 });
-        this.sels.push({ name: 'ccc', id: 3 });
+	constructor() {
+		this.sels.push({name: 'aaa', id: 1});
+		this.sels.push({name: 'bbb', id: 2});
+		this.sels.push({name: 'ccc', id: 3});
 
-        this.loginForm = new ControlGroup({
-            login: new Control(""),
-            password: new Control("")
-        });
-    }
+		this.loginForm = new ControlGroup({
+			login: new Control(""),
+			password: new Control("")
+		});
+	}
 
-    resetInput() {
-        this.inputText = 'reseted';
-    }
+	resetInput() {
+		this.inputText = 'reseted';
+	}
 
-    showSelect() {
-        console.log(this.selValue);
-        console.log(this.selModel);
-    }
+	showSelect() {
+		console.log(this.selValue);
+		console.log(this.selModel);
+	}
 
-    showForm() {
-      console.log(this.loginForm);
-      console.log(this.loginForm.value);
-    }
+	showForm() {
+		console.log(this.loginForm);
+		console.log(this.loginForm.value);
+	}
 }

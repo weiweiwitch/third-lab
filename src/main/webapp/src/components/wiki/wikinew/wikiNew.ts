@@ -1,8 +1,8 @@
 /// <reference path="../../../../typings/tsd.d.ts"/>
 
-import { Component, View, CORE_DIRECTIVES, OnInit, OnDestroy, ElementRef } from 'angular2/angular2';
+import { Component, View, OnInit, OnDestroy, ElementRef } from 'angular2/core';
 import { RouteConfig, RouterOutlet, RouterLink, Router, RouteParams } from 'angular2/router';
-import { FormBuilder, FORM_DIRECTIVES, Control, ControlGroup, Validators } from 'angular2/angular2';
+import { FormBuilder, FORM_DIRECTIVES, CORE_DIRECTIVES, Control, ControlGroup, Validators } from 'angular2/common';
 import {Response} from 'angular2/http';
 
 import { PostData, PostService } from '../../../services/postService';
@@ -14,32 +14,24 @@ import * as marked from 'marked';
 	selector: 'wikinew',
 	viewBindings: [
 		FormBuilder
-	]
-})
-@View({
+	],
 	templateUrl: 'components/wiki/wikinew/wikiNew.html',
 	directives: [CORE_DIRECTIVES, FORM_DIRECTIVES, ShowError]
 })
 export class WikiNewCom implements OnInit, OnDestroy {
 
-	form: ControlGroup;
 	post: PostData = new PostData();
 
 	postView: string = '';
 
 	constructor(private routeParams: RouteParams, fb: FormBuilder, private router: Router, private postService: PostService) {
 		let parentId = this.routeParams.params['parentid'];
-		this.form = fb.group({
-			'id': [0],
-			'parantId': [parentId],
-			'title': ['', Validators.compose([Validators.required, this.titleValidator])],
-			'postText': ['', Validators.required],
-		})
+		this.post.parantId = Number(parentId);
 	}
 
 	// 初始化
 	ngOnInit() {
-		console.log('wiki new destroy');
+		console.log('wiki new init, parentId: ' + this.post.parantId);
 		this.postService.hideOnEdit = true;
 	}
 
@@ -69,22 +61,16 @@ export class WikiNewCom implements OnInit, OnDestroy {
 			}
 		});
 
-		let formValue = this.form.value;
-		this.postView = marked(formValue.postText);
+		this.postView = marked(this.post.postText);
 	}
 
 	// 保存更新
 	create(event) {
 		event.preventDefault();
 
+		console.log('save new post');
 		console.log(this.post);
 
-		let formValue = this.form.value;
-		console.log(formValue);
-
-		this.post.parantId = formValue.parantId;
-		this.post.title = formValue.title;
-		this.post.postText = formValue.postText;
 		this.postService.createPost(this.post)
 			.map((res: Response) => {
 				let rt = res.json();

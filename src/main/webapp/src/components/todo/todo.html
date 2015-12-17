@@ -12,7 +12,7 @@
 				<input id="toggle-all" type="checkbox" (click)="toggleAll($event)">
 				<label for="toggle-all">Mark all as complete</label>
 				<ul id="todo-list">
-					<li *ng-for="#todo of todoStore.list">
+					<li *ngFor="#todo of todoStore.list">
 						<div class="view" [class.hidden]="todoEdit == todo">
 							<input class="toggle" type="checkbox" (click)="completeMe(todo)" [checked]="todo.completed">
 							<label (dblclick)="editTodo(todo)">{{todo.title}}</label>

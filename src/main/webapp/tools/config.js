@@ -41,11 +41,15 @@ var PATH = {
     ],
     jslib_inject: [
       // Order is quite important here for the HTML tag injection.
-      resolve('es6-module-loader/dist/es6-module-loader-dev.src.js'),
+      resolve('es6-shim/es6-shim.js'),
+      resolve('es6-shim/es6-shim.map'),
       resolve('reflect-metadata/Reflect.js'),
       resolve('reflect-metadata/Reflect.js.map'),
+
       resolve('systemjs/dist/system.src.js'),
       join(APP_SRC, 'system.config.js'),
+      resolve('rxjs/bundles/Rx.js'),
+      ANGULAR_BUNDLES + '/angular2-polyfills.js',
       ANGULAR_BUNDLES + '/angular2.dev.js',
       ANGULAR_BUNDLES + '/router.dev.js',
       ANGULAR_BUNDLES + '/http.dev.js',
@@ -54,6 +58,9 @@ var PATH = {
     jslib_copy_only: [
       resolve('marked/lib/marked.js')
     ],
+    jslib_all_copy_only: [{
+      src: 'node_modules/rxjs/**/*', dest: APP_DEST + '/' + ENV + '/' + 'lib' + '/rxjs'
+    }],
     scss: 'src/**/*.scss',
     csslib: [
       resolve('bootstrap/dist/css/bootstrap.css'),
@@ -61,7 +68,7 @@ var PATH = {
       resolve('highlight.js/styles/solarized_light.css'),
       'css/main.css'
     ]
-  },
+  }
 
 };
 

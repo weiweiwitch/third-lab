@@ -2,15 +2,15 @@
     <div class="col-md-12 form-horizontal">
         <div class="form-group">
             <div class="col-md-8">
-                <input [(ng-model)]="post.title" class="form-control" type="text">
+                <input [(ngModel)]="post.title" class="form-control" type="text">
             </div>
             <label class="col-md-1 control-label">ID：</label>
             <div class="col-md-1">
-                <input [(ng-model)]="post.id" class="form-control" readonly type="text">
+                <input [(ngModel)]="post.id" class="form-control" readonly type="text">
             </div>
             <label class="col-md-1 control-label">上级：</label>
             <div class="col-md-1">
-                <input [(ng-model)]="post.parantId" class="form-control" type="text">
+                <input [(ngModel)]="post.parantId" class="form-control" type="text">
             </div>
         </div>
         <div class="form-group">
@@ -18,10 +18,10 @@
                 <div class="row">
                     <div class="col-md-6">
                         <textarea class="form-control textarea-height edit-text" (keyup)="onChange()"
-                                  [(ng-model)]="post.postText"></textarea>
+                                  [(ngModel)]="post.postText"></textarea>
                     </div>
                     <div class="col-md-6 inner_topic">
-                        <div class="markdown-text textarea-height" [inner-html]="postView"></div>
+                        <div class="markdown-text textarea-height" [innerHtml]="postView"></div>
                     </div>
                 </div>
             </div>

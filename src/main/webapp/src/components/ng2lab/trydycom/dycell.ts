@@ -1,8 +1,8 @@
-import {Component, DynamicComponentLoader, ElementRef, ComponentRef, OnInit, Input, Output, EventEmitter } from 'angular2/angular2';
+import {Component, DynamicComponentLoader, ElementRef, ComponentRef, OnInit, Input, Output, EventEmitter } from 'angular2/core';
 
 @Component({
 	selector: 'dycomcell',
-	template: '<div #target-location></div>'
+	template: '<div #targetLocation></div>'
 })
 export class DyComponentCellCom implements OnInit {
 
@@ -19,7 +19,7 @@ export class DyComponentCellCom implements OnInit {
 		this.dynamicComponentLoader.loadIntoLocation(this.columnDef.cellCom, this.elementRef, 'targetLocation')
 			.then((comp: ComponentRef) => {
 				comp.instance.data = this.data;
-				comp.instance.delRow.toRx().subscribe(($event) => {
+				comp.instance.delRow.subscribe(($event) => {
 					this.delRow();
 				});
 			});
@@ -27,7 +27,7 @@ export class DyComponentCellCom implements OnInit {
 
 	delRow() {
 		console.log('trigger del row');
-		this.delThisRow.next(this.data);
+		this.delThisRow.emit(this.data);
 
 	}
 }

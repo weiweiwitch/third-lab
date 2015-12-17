@@ -5,7 +5,7 @@
 	<projects>
 	</projects>
 	<buildSpec>
-		<buildCommand>
+		<!-- <buildCommand>
 			<name>org.eclipse.ui.externaltools.ExternalToolBuilder</name>
 			<triggers>full,incremental,</triggers>
 			<arguments>
@@ -14,7 +14,7 @@
 					<value>&lt;project&gt;/.externalToolBuilders/org.eclipse.wst.jsdt.core.javascriptValidator.launch</value>
 				</dictionary>
 			</arguments>
-		</buildCommand>
+		</buildCommand> -->
 		<buildCommand>
 			<name>org.eclipse.jdt.core.javabuilder</name>
 			<arguments>
@@ -42,7 +42,7 @@
 		<nature>org.eclipse.jdt.core.javanature</nature>
 		<nature>org.eclipse.m2e.core.maven2Nature</nature>
 		<nature>org.eclipse.wst.common.project.facet.core.nature</nature>
-		<nature>org.eclipse.wst.jsdt.core.jsNature</nature>
+		<!-- <nature>org.eclipse.wst.jsdt.core.jsNature</nature> -->
 	</natures>
 	<linkedResources>
 		<link>

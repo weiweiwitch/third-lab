@@ -5,10 +5,3 @@ src/main/webapp/.sass-cache
 src/main/webapp/.tmp
 src/main/webapp/tmpts
 src/main/webapp/node_modules
-src/main/webapp-a1/node_modules
-src/main/webapp-a1/bower_components
-src/main/webapp-react/dist
-src/main/webapp-react/.sass-cache
-src/main/webapp-react/.tmp
-src/main/webapp-react/node_modules
-src/main/webapp-react/bower_components

@@ -1,6 +1,6 @@
 <table class="sort">
   <tr>
-    <td style="border: 1px solid red;" *ng-for="#item of list.items" [ng-class]="item.getClass()">
+    <td style="border: 1px solid red;" *ngFor="#item of list.items" [ngClass]="item.getClass()">
       <span>{{item.val}}</span>
     </td>
   </tr>

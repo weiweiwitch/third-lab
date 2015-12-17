@@ -1,4 +1,5 @@
-import {Component, Directive, HostBinding, HostListener, FORM_DIRECTIVES, NgModel, Input, ContentChild, ContentChildren, ViewChild, Host, Inject, forwardRef} from 'angular2/angular2';
+import {Component, Directive, HostBinding, HostListener,  Input, ContentChild, ContentChildren, ViewChild, Host, Inject, forwardRef} from 'angular2/core';
+import {FORM_DIRECTIVES, NgModel } from 'angular2/common';
 
 @Component({
 	selector: 'embhostbind',
@@ -45,9 +46,9 @@ export class EmbHostBind {
 	selector: 'tryhostbind',
 	template: `<div hostattr="num">
 				<button (click)="showNum()"><span>aaa</span></button>
-				<embhostbind #my-view #my-content #my-single-content class="active">
-					<div #my-content></div>
-					<div #my-content></div>
+				<embhostbind #myView #myContent #mySingleContent class="active">
+					<div #myContent></div>
+					<div #myContent></div>
 				</embhostbind>
 			</div>`,
 	directives: [FORM_DIRECTIVES, EmbHostBind],

@@ -1,18 +1,18 @@
 <div class="row">
     <div class="col-md-12">
-        <form class="form-horizontal" [ng-form-model]="form" #f="form">
+        <form class="form-horizontal" #f="ngForm">
             <div class="form-group">
                 <div class="col-md-8">
-                    <input ng-control="title" class="form-control" type="text">
+                    <input type="text" class="form-control" ngControl="title" [(ngModel)]="post.title" required>
                     <show-error control="title" [errors]="['required', 'tooShort']"></show-error>
                 </div>
                 <label class="col-md-1 control-label">ID：</label>
                 <div class="col-md-1">
-                    <input ng-control="id" class="form-control" readonly type="text">
+                    <input type="text" class="form-control" [value]="post.id" readonly >
                 </div>
                 <label class="col-md-1 control-label">上级：</label>
                 <div class="col-md-1">
-                    <input ng-control="parantId" class="form-control" type="text">
+                    <input type="text" class="form-control" ngControl="parantId" [(ngModel)]="post.parantId" >
                 </div>
             </div>
 
@@ -20,10 +20,10 @@
                 <div class="col-md-12">
                     <div class="row">
                         <div class="col-md-6">
-                            <textarea class="form-control textarea-height edit-text" (keyup)="onChange()" ng-control="postText"></textarea>
+                            <textarea class="form-control textarea-height edit-text" [(ngModel)]="post.postText" (keyup)="onChange()" ngControl="postText" required></textarea>
                         </div>
                         <div class="col-md-6 inner_topic">
-                            <div class="markdown-text textarea-height" [inner-html]="postView"></div>
+                            <div class="markdown-text textarea-height" [innerHtml]="postView"></div>
                         </div>
                     </div>
                 </div>

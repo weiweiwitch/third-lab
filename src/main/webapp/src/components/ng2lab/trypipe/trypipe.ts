@@ -1,48 +1,48 @@
 /// <reference path="../../../../typings/tsd.d.ts"/>
 
-import {Component, View, Pipe, PipeTransform } from 'angular2/angular2';
+import {Component, View, Pipe, PipeTransform } from 'angular2/core';
 
 // We use the @Pipe decorator to register the name of the pipe
 @Pipe({
-    name: 'tempConvert'
+	name: 'tempConvert'
 })
 // The work of the pipe is handled in the tranform method with our pipe's class
 class TempConvertPipe implements PipeTransform {
-    transform(value: number, args: any[]) {
-        if (value && !isNaN(value) && args[0] === 'celsius') {
-            var temp = (value - 32) * 5 / 9;
-            var places = args[1];
-            return temp.toFixed(places) + ' C';
-        }
+	transform(value: number, args: any[]) {
+		if (value && !isNaN(value) && args[0] === 'celsius') {
+			var temp = (value - 32) * 5 / 9;
+			var places = args[1];
+			return temp.toFixed(places) + ' C';
+		}
 
-        return;
-    }
+		return;
+	}
 }
 
 @Component({
-    selector: 'trypipe',
-    templateUrl: 'components/ng2lab/trypipe/trypipe.html',
-    pipes: [TempConvertPipe]
+	selector: 'trypipe',
+	templateUrl: 'components/ng2lab/trypipe/trypipe.html',
+	pipes: [TempConvertPipe]
 })
 export class TryPipeCom {
 
-    rate: number;
-    num: number;
-    date: Date;
-    temp: number;
+	rate: number;
+	num: number;
+	date: Date;
+	temp: number;
 
-    promise: Promise<number>;
+	promise: Promise<number>;
 
-    constructor() {
-        this.rate = 0.9234;
-        this.num = 1232.324234;
-        this.date = new Date();
-        this.temp = 85;
+	constructor() {
+		this.rate = 0.9234;
+		this.num = 1232.324234;
+		this.date = new Date();
+		this.temp = 85;
 
-        this.promise = new Promise((resolve, reject) => {
-            setTimeout(() => {
-                resolve("Hey, I'm from a promise.");
-            }, 2000)
-        });
-    }
+		this.promise = new Promise((resolve, reject) => {
+			setTimeout(() => {
+				resolve("Hey, I'm from a promise.");
+			}, 2000)
+		});
+	}
 }

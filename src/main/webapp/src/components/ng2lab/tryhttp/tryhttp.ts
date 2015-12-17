@@ -1,6 +1,6 @@
 /// <reference path="../../../../typings/tsd.d.ts"/>
 
-import {Component, View} from 'angular2/angular2';
+import {Component, View} from 'angular2/core';
 import {Http, Headers, Response} from 'angular2/http';
 
 @Component({

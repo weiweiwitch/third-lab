@@ -1,8 +1,8 @@
 /// <reference path="../../typings/tsd.d.ts"/>
 
-import { Component, View, CORE_DIRECTIVES, OnInit, Inject } from 'angular2/angular2';
+import { Component, View, OnInit, Inject } from 'angular2/core';
 import { RouteConfig, RouterOutlet, RouterLink, Router, Route } from 'angular2/router';
-import { FormBuilder, FORM_DIRECTIVES, Control, ControlGroup, Validators } from 'angular2/angular2';
+import { FormBuilder, CORE_DIRECTIVES, FORM_DIRECTIVES, Control, ControlGroup, Validators } from 'angular2/common';
 import { Http } from 'angular2/http';
 
 import { TreeContainer } from '../directives/knowledgetree';
@@ -14,9 +14,7 @@ import { TryViewCom } from './ng2lab/view';
 import { PostService } from '../services/postService';
 
 @Component({
-    selector: 'app'
-})
-@View({
+    selector: 'app',
     templateUrl: 'components/app.html',
     directives: [RouterOutlet, RouterLink, CORE_DIRECTIVES, TreeContainer]
 })
@@ -25,12 +23,11 @@ import { PostService } from '../services/postService';
     { path: '/wiki/...', component: WikiCom, as: 'Wiki' },
     { path: '/todo', component: TodoCom, as: 'Todo' },
     { path: '/try/...', component: TryViewCom, as: 'TryView' }
-
 ])
 export class App implements OnInit {
 
     constructor() {
-
+        console.log('ssss');
     }
 
     ngOnInit() {

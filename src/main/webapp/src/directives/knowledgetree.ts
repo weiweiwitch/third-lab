@@ -1,74 +1,75 @@
 /// <reference path="../../typings/tsd.d.ts" />
 
-import { Component, View, CORE_DIRECTIVES, OnChanges, EventEmitter, Input, Output } from 'angular2/angular2';
+import { Component, View, OnChanges, EventEmitter, Input, Output } from 'angular2/core';
+import {CORE_DIRECTIVES} from 'angular2/common';
 
 // 下面的3个指令用于建立tree控件！这类控件之前在angular1中很难实现！
 @Component({
-    selector: 'post-node',
-    templateUrl: 'directives/postnode.html'
+	selector: 'post-node',
+	templateUrl: 'directives/postnode.html'
 })
 export class PostNode {
-    @Input() node: any;
+	@Input() node: any;
 
-    @Output() clickpost = new EventEmitter();
-    @Output() showHide = new EventEmitter<number>();
+	@Output() clickpost = new EventEmitter();
+	@Output() showHide = new EventEmitter<number>();
 
-    postStatusColor: string;
+	postStatusColor: string;
 
-    constructor() {
+	constructor() {
 
-    }
+	}
 
-    postColor() {
-        if (this.node.status == 1) {
-            return 'red';
-        } else if (this.node.status == 2) {
-            return 'yellow';
-        } else {
-            return 'green';
-        }
-    }
+	postColor() {
+		if (this.node.status == 1) {
+			return 'red';
+		} else if (this.node.status == 2) {
+			return 'yellow';
+		} else {
+			return 'green';
+		}
+	}
 
-    show(data) {
-        console.log(data)
-    }
+	show(data) {
+		console.log(data)
+	}
 
-    showOrHide() {
-        this.node.hide = !this.node.hide;
-        this.showHide.next(1);
-    }
+	showOrHide() {
+		this.node.hide = !this.node.hide;
+		this.showHide.next(1);
+	}
 
-    clickSpecPost($event) {
-        console.log($event);
-        this.clickpost.next(this.node);
-    }
+	clickSpecPost($event) {
+		console.log($event);
+		this.clickpost.next(this.node);
+	}
 }
 
 @Component({
-    selector: 'tree-container',
-    templateUrl: 'directives/treec.html',
-    directives: [PostNode, CORE_DIRECTIVES, TreeContainer]
+	selector: 'tree-container',
+	templateUrl: 'directives/treec.html',
+	directives: [PostNode, CORE_DIRECTIVES, TreeContainer]
 })
 export class TreeContainer implements OnChanges {
-    @Input() itemTree: Array<any> = [];
+	@Input() itemTree: Array<any> = [];
 
-    @Output() clickpost = new EventEmitter<any>();
+	@Output() clickpost = new EventEmitter<any>();
 
-    constructor() {
+	constructor() {
 
-    }
+	}
 
-    ngOnChanges(changes) {
-        this.itemTree = changes.itemTree.currentValue;
-    }
+	ngOnChanges(changes) {
+		this.itemTree = changes.itemTree.currentValue;
+	}
 
-    // 当点击特定post时，对外发布点击事件。
-    clickSpecPost(event) {
-        console.log(event);
-        this.clickpost.next(event);
-    }
+	// 当点击特定post时，对外发布点击事件。
+	clickSpecPost(event) {
+		console.log(event);
+		this.clickpost.next(event);
+	}
 
-    showOrHide(event) {
-        console.log('触发某个post的展开或收缩');
-    }
+	showOrHide(event) {
+		console.log('触发某个post的展开或收缩');
+	}
 }

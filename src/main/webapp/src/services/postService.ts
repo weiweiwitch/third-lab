@@ -1,7 +1,9 @@
 /// <reference path="../../typings/tsd.d.ts"/>
 
-import { Inject, bind, Injectable } from 'angular2/angular2';
+import { Inject, bind, Injectable } from 'angular2/core';
 import { Http, Headers, Response } from 'angular2/http';
+
+import 'rxjs/add/operator/map';
 
 export class PostData {
 	id: number = 0;

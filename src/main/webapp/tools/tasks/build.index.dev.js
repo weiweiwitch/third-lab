@@ -24,16 +24,12 @@ function registerInjectableAssetsRef(paths, target) {
 registerInjectableAssetsRef(PATH.src.jslib_inject, PATH.dest.dev.lib);
 registerInjectableAssetsRef(PATH.src.csslib, PATH.dest.dev.css);
 
-console.log(injectables);
-
 function transformPath(plugins, env) {
   var v = '?v=' + VERSION;
 
   return function(filepath) {
-      console.log(filepath);
     var filename = filepath.replace('/' + PATH.dest[env].all + '/', '') + v;
 
-    console.log(filename);
     arguments[0] = filename;// join(APP_BASE, filename);
     var p = plugins.inject.transform.apply(plugins.inject.transform, arguments);
     return p;

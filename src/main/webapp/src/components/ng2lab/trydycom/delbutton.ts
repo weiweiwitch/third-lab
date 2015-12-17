@@ -1,4 +1,4 @@
-import {Component, EventEmitter} from 'angular2/angular2';
+import {Component, EventEmitter} from 'angular2/core';
 import {DyCellWrapCom} from './dycellwrap';
 
 @Component({
@@ -10,6 +10,6 @@ export class DelButtonCom extends DyCellWrapCom {
 	delSelf($event) {
 		console.log('del this row ' + this.data.c1);
 
-		this.delRow.next(this.data);
+		this.delRow.emit(this.data);
 	}
 }

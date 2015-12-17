@@ -1,18 +1,19 @@
 /// <reference path="../../typings/tsd.d.ts" />
 
-import { Pipe } from 'angular2/angular2';
+import { Pipe } from 'angular2/core';
 
 @Pipe({
-    name: 'idp'
+	name: 'idp'
 })
 export class IdPipe {
-    supports(obj) {
-        return true;
-    }
+	supports(obj) {
+		return true;
+	}
 
-    onDestroy() { }
+	onDestroy() {
+	}
 
-    transform(value, args = []) {
-        return `${value}${value}`;
-    }
+	transform(value, args = []) {
+		return `${value}${value}`;
+	}
 }
