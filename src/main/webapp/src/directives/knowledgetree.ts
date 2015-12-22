@@ -36,12 +36,12 @@ export class PostNode {
 
 	showOrHide() {
 		this.node.hide = !this.node.hide;
-		this.showHide.next(1);
+		this.showHide.emit(1);
 	}
 
 	clickSpecPost($event) {
 		console.log($event);
-		this.clickpost.next(this.node);
+		this.clickpost.emit(this.node);
 	}
 }
 
@@ -66,7 +66,7 @@ export class TreeContainer implements OnChanges {
 	// 当点击特定post时，对外发布点击事件。
 	clickSpecPost(event) {
 		console.log(event);
-		this.clickpost.next(event);
+		this.clickpost.emit(event);
 	}
 
 	showOrHide(event) {

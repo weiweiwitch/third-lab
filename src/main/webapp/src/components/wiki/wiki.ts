@@ -39,6 +39,6 @@ export class WikiCom implements OnInit {
 	selectSpecPost(event) {
 		console.log(event);
 
-		this.router.navigate(['/Wiki/Wikipost', {id: event.id}]);
+		this.router.navigate(['Wiki','Wikipost', {id: event.id}]);
 	}
 }

@@ -16,13 +16,15 @@ import { TryPipeCom } from './trypipe/trypipe';
 import { TryTplCom } from './trytpl/trytpl';
 import { TryDyComponentCom } from './trydycom/trydycom';
 import { TryHostBind } from './tryhostbinding/tryhostbinding';
+import {TryLifeCom} from './trylife/trylife';
+import {TryD3Com} from './tryd3/tryd3';
 
 @Component({
 	selector: 'tryview'
 })
 @View({
 	templateUrl: 'components/ng2lab/view.html',
-	directives: [RouterOutlet, RouterLink, CORE_DIRECTIVES, TryQueryCom]
+	directives: [RouterOutlet, RouterLink, CORE_DIRECTIVES]
 })
 @RouteConfig([
 	{path: '/tryquery', as: 'TryQuery', component: TryQueryCom},
@@ -36,7 +38,9 @@ import { TryHostBind } from './tryhostbinding/tryhostbinding';
 	{path: '/trypipe', as: 'TryPipe', component: TryPipeCom},
 	{path: '/trytpl', as: 'TryTpl', component: TryTplCom},
 	{path: '/trydycom', as: 'TryDyCom', component: TryDyComponentCom},
-	{path: '/tryhostbind', as: 'TryHostBind', component: TryHostBind}
+	{path: '/tryhostbind', as: 'TryHostBind', component: TryHostBind},
+	{path: '/trylife', as: 'TryLife', component: TryLifeCom},
+	{path: '/tryd3', as: 'TryD3', component: TryD3Com}
 ])
 export class TryViewCom {
 

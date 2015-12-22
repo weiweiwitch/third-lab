@@ -52,7 +52,7 @@ export class WikiPostCom implements OnInit {
 	// 编辑
 	edit() {
 		// 切换到编辑页面
-		this.router.navigate(['/Wiki/Wikiedit', {id: this.post.id}]);
+		this.router.navigate(['Wiki', 'Wikiedit', {id: this.post.id}]);
 	}
 
 	// 删除
@@ -67,7 +67,7 @@ export class WikiPostCom implements OnInit {
 	createSubPost() {
 		console.log('createSubPost');
 
-		this.router.navigate(['/Wiki/Wikinew', {parentid: this.post.id}]);
+		this.router.navigate(['Wiki', 'Wikinew', {parentid: this.post.id}]);
 	}
 
 	transToIndex() {

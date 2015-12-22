@@ -4,7 +4,7 @@
       <post-node (clickpost)="clickSpecPost($event)" class="labtree-node labtree-node-text" [node]="eachitem">
       </post-node>
       <div *ngIf="eachitem.hide">
-        <tree-container (clickpost)="clickSpecPost($event)" [item-tree]="eachitem.nodes"></tree-container>
+        <tree-container (clickpost)="clickSpecPost($event)" [itemTree]="eachitem.nodes"></tree-container>
       </div>
     </li>
   </ul>

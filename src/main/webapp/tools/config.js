@@ -45,7 +45,7 @@ var PATH = {
       resolve('es6-shim/es6-shim.map'),
       resolve('reflect-metadata/Reflect.js'),
       resolve('reflect-metadata/Reflect.js.map'),
-
+      resolve('d3/d3.js'),
       resolve('systemjs/dist/system.src.js'),
       join(APP_SRC, 'system.config.js'),
       resolve('rxjs/bundles/Rx.js'),
@@ -77,4 +77,4 @@ module.exports = {
   APP_SRC: APP_SRC,
   APP_BASE: APP_BASE,
   VERSION: VERSION
-}
+};
