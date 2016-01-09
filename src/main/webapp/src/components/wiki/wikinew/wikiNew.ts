@@ -78,7 +78,7 @@ export class WikiNewCom implements OnInit, OnDestroy {
 			})
 			.subscribe((data) => {
 				// 切换到首页
-				this.router.navigateByUrl('/');
+				this.router.navigate(['/Wiki', 'Wikiindex']);
 			});
 
 	}
@@ -86,7 +86,7 @@ export class WikiNewCom implements OnInit, OnDestroy {
 	cancel(event) {
 		event.preventDefault();
 
-		this.router.navigate(['/Wiki/Wikiindex']);
+		this.router.navigate(['/Wiki', 'Wikiindex']);
 	}
 
 	isNew() {

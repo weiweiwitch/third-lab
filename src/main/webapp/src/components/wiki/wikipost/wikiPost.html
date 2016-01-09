@@ -1,21 +1,21 @@
 <div class="row">
-  <div class="col-md-11">
-    <button class="btn btn-primary" (click)="edit()">编辑</button>
-    <button class="btn btn-default" (click)="createSubPost()">添加子文章</button>
-    <button class="btn btn-default" (click)="transToIndex()">首页</button>
-  </div>
-  <div class="col-md-1">
-    <button class="btn btn-default" (click)="deletePost()">删除</button>
-  </div>
+    <div class="col-md-11">
+        <button class="btn btn-primary" (click)="edit()">编辑</button>
+        <button class="btn btn-default" (click)="createSubPost()">添加子文章</button>
+        <button class="btn btn-default" (click)="transToIndex()">首页</button>
+    </div>
+    <div class="col-md-1">
+        <button class="btn btn-default" (click)="deletePost()">删除</button>
+    </div>
 </div>
 <div class="row">
-  <div class="col-md-10 inner_topic_container">
-    <div class="topic_header">
-      <span class="topic_full_title">{{post.title}}</span>
+    <div class="col-md-10 inner_topic_container">
+        <div class="topic_header">
+            <span class="topic_full_title">{{post.title}}</span>
+        </div>
+        <content></content>
+        <div class="inner_topic">
+            <div class="markdown-text" [innerHtml]="postText"></div>
+        </div>
     </div>
-    <content></content>
-    <div class="inner_topic">
-      <div class="markdown-text" [innerHtml]="postText"></div>
-    </div>
-  </div>
 </div>

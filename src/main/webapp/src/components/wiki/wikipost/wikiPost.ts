@@ -27,6 +27,7 @@ export class WikiPostCom implements OnInit {
 	searchParam: string;
 
 	constructor(routeParams: RouteParams, private router: Router, private postService: PostService) {
+		console.log('inject router ' + router);
 		this.id = routeParams.params["id"];
 
 		// 使用传入的id加载post。
@@ -52,14 +53,14 @@ export class WikiPostCom implements OnInit {
 	// 编辑
 	edit() {
 		// 切换到编辑页面
-		this.router.navigate(['Wiki', 'Wikiedit', {id: this.post.id}]);
+		this.router.navigate(['Wikiedit', {id: this.post.id}]);
 	}
 
 	// 删除
 	deletePost() {
 		this.postService.deletePost(this.post.id).subscribe(() => {
 			// 切换到首页
-			this.router.navigateByUrl('/');
+			this.router.navigate(['/Wiki', 'Wikiindex']);
 		});
 	}
 
@@ -67,11 +68,11 @@ export class WikiPostCom implements OnInit {
 	createSubPost() {
 		console.log('createSubPost');
 
-		this.router.navigate(['Wiki', 'Wikinew', {parentid: this.post.id}]);
+		this.router.navigate(['Wikinew', {parentid: this.post.id}]);
 	}
 
 	transToIndex() {
 		// 切换到首页
-		this.router.navigateByUrl('/');
+		this.router.navigate(['/Wiki', 'Wikiindex']);
 	}
 }

@@ -57,7 +57,7 @@ export class WikiIndexCom implements OnInit, OnDestroy {
 			return;
 		}
 
-		this.router.navigate(['/Wiki/Wikipost', {id: this.selectedPost.id}]);
+		this.router.navigate(['Wikipost', {id: this.selectedPost.id}]);
 	}
 
 }

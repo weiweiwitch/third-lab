@@ -82,13 +82,13 @@ export class WikiEditCom implements OnInit, OnDestroy {
 				console.log(data);
 
 				// 切换到指定页
-				this.router.navigate(['/Wiki/Wikipost', {id: this.post.id}]);
+				this.router.navigate(['Wikipost', {id: this.post.id}]);
 			});
 
 	}
 
 	cancel() {
-		this.router.navigate(['/Wiki/Wikipost', {id: this.post.id}]);
+		this.router.navigate(['Wikipost', {id: this.post.id}]);
 	}
 
 }
