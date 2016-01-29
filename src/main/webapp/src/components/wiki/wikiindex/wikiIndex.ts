@@ -27,12 +27,10 @@ export class WikiIndexCom implements OnInit, OnDestroy {
 	}
 
 	ngOnInit() {
-		console.log('wiki index init');
 		this.postService.findAllPosts();
 	}
 
 	ngOnDestroy() {
-		console.log('wiki index destroy');
 	}
 
 	search() {

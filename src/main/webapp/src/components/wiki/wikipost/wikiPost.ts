@@ -27,7 +27,6 @@ export class WikiPostCom implements OnInit {
 	searchParam: string;
 
 	constructor(routeParams: RouteParams, private router: Router, private postService: PostService) {
-		console.log('inject router ' + router);
 		this.id = routeParams.params["id"];
 
 		// 使用传入的id加载post。
@@ -66,8 +65,6 @@ export class WikiPostCom implements OnInit {
 
 	// 创建子文章
 	createSubPost() {
-		console.log('createSubPost');
-
 		this.router.navigate(['Wikinew', {parentid: this.post.id}]);
 	}
 

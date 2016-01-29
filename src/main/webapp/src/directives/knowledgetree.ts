@@ -9,6 +9,7 @@ import {CORE_DIRECTIVES} from 'angular2/common';
 	templateUrl: 'directives/postnode.html'
 })
 export class PostNode {
+
 	@Input() node: any;
 
 	@Output() clickpost = new EventEmitter();
@@ -40,7 +41,6 @@ export class PostNode {
 	}
 
 	clickSpecPost($event) {
-		console.log($event);
 		this.clickpost.emit(this.node);
 	}
 }
@@ -51,6 +51,7 @@ export class PostNode {
 	directives: [PostNode, CORE_DIRECTIVES, TreeContainer]
 })
 export class TreeContainer implements OnChanges {
+
 	@Input() itemTree: Array<any> = [];
 
 	@Output() clickpost = new EventEmitter<any>();
@@ -65,7 +66,6 @@ export class TreeContainer implements OnChanges {
 
 	// 当点击特定post时，对外发布点击事件。
 	clickSpecPost(event) {
-		console.log(event);
 		this.clickpost.emit(event);
 	}
 

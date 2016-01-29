@@ -22,10 +22,10 @@ import { PostService } from '../../services/postService';
 	directives: [RouterOutlet, RouterLink, CORE_DIRECTIVES, TreeContainer, WikiIndexCom, WikiPostCom]
 })
 @RouteConfig([
-	{path: '/wikiindex', as: 'Wikiindex', component: WikiIndexCom},
-	{path: '/wikipost/:id', as: 'Wikipost', component: WikiPostCom},
-	{path: '/wikiedit/:id', as: 'Wikiedit', component: WikiEditCom},
-	{path: '/wikinew/:parentid', as: 'Wikinew', component: WikiNewCom}
+	{path: '/wikiindex', name: 'Wikiindex', component: WikiIndexCom},
+	{path: '/wikipost/:id', name: 'Wikipost', component: WikiPostCom},
+	{path: '/wikiedit/:id', name: 'Wikiedit', component: WikiEditCom},
+	{path: '/wikinew/:parentid', name: 'Wikinew', component: WikiNewCom}
 ])
 export class WikiCom implements OnInit {
 
@@ -37,8 +37,6 @@ export class WikiCom implements OnInit {
 	}
 
 	selectSpecPost(event) {
-		console.log(event);
-
 		this.router.navigate(['Wiki', 'Wikipost', {id: event.id}]);
 	}
 }

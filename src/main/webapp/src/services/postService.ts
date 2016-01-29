@@ -35,10 +35,47 @@ export class PostService {
 				return res.json();
 			})
 			.subscribe((posts: any) => {
+				this.syncPostHideMark(posts);
 				this.allPosts = posts;
 			});
 	}
 
+	private syncPostHideMark(newPosts) {
+		// 生成源节点的map
+		let postMap: Map<number, any> = new Map<number, any>();
+		this.genereatePostMap(this.allPosts, postMap);
+
+		// 同步hide标记
+		this.changeHideMark(newPosts, postMap);
+	}
+
+	private genereatePostMap(nodes: Array<any>, postMap: Map<number, any>): void {
+		for (let idx in nodes) {
+			let node = nodes[idx];
+			postMap.set(node.id, node);
+			if (node.nodes != null) {
+				this.genereatePostMap(node.nodes, postMap);
+			}
+		}
+	}
+
+	private changeHideMark(newPosts, postMap: Map<number, any>) {
+		for (let idx in newPosts) {
+			let node = newPosts[idx];
+			let id: number = node.id;
+			let existNode = postMap.get(id);
+			if (existNode != null) {
+				node.hide = existNode.hide == null ? true : existNode.hide;
+			} else {
+				node.hide = true; // 设置为默认隐藏
+			}
+			if (node.nodes != null) {
+				this.changeHideMark(node.nodes, postMap);
+			}
+		}
+	}
+
+	// 获取特定文章
 	findSpecPosts(searchParam: string, successCb, exceptionCb) {
 		let params = {
 			postParam: searchParam

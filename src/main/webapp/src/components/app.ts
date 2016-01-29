@@ -20,9 +20,9 @@ import { PostService } from '../services/postService';
 })
 @RouteConfig([
     { path: '/', redirectTo: ['/Wiki/Wikiindex'] },
-    { path: '/wiki/...', component: WikiCom, as: 'Wiki' },
-    { path: '/todo', component: TodoCom, as: 'Todo' },
-    { path: '/try/...', component: TryViewCom, as: 'TryView' }
+    { path: '/wiki/...', component: WikiCom, name: 'Wiki' },
+    { path: '/todo', component: TodoCom, name: 'Todo' },
+    { path: '/try/...', component: TryViewCom, name: 'TryView' }
 ])
 export class App implements OnInit {
 

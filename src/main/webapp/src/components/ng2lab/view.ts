@@ -27,20 +27,20 @@ import {TryD3Com} from './tryd3/tryd3';
 	directives: [RouterOutlet, RouterLink, CORE_DIRECTIVES]
 })
 @RouteConfig([
-	{path: '/tryquery', as: 'TryQuery', component: TryQueryCom},
-	{path: '/trybind', as: 'TryBind', component: TryBindCom},
-	{path: '/trydi', as: 'TryDi', component: TryDiCom},
-	{path: '/trycd', as: 'TryCd', component: TryCdCom},
-	{path: '/trytimeout', as: 'TryTimeout', component: TryTimeoutCom},
-	{path: '/trytreeview', as: 'TryTreeView', component: TryTreeViewCom},
-	{path: '/tryinput', as: 'TryInput', component: TryInputCom},
-	{path: '/tryhttp', as: 'TryHttp', component: TryHttpCom},
-	{path: '/trypipe', as: 'TryPipe', component: TryPipeCom},
-	{path: '/trytpl', as: 'TryTpl', component: TryTplCom},
-	{path: '/trydycom', as: 'TryDyCom', component: TryDyComponentCom},
-	{path: '/tryhostbind', as: 'TryHostBind', component: TryHostBind},
-	{path: '/trylife', as: 'TryLife', component: TryLifeCom},
-	{path: '/tryd3', as: 'TryD3', component: TryD3Com}
+	{path: '/tryquery', name: 'TryQuery', component: TryQueryCom},
+	{path: '/trybind', name: 'TryBind', component: TryBindCom},
+	{path: '/trydi', name: 'TryDi', component: TryDiCom},
+	{path: '/trycd', name: 'TryCd', component: TryCdCom},
+	{path: '/trytimeout', name: 'TryTimeout', component: TryTimeoutCom},
+	{path: '/trytreeview', name: 'TryTreeView', component: TryTreeViewCom},
+	{path: '/tryinput', name: 'TryInput', component: TryInputCom},
+	{path: '/tryhttp', name: 'TryHttp', component: TryHttpCom},
+	{path: '/trypipe', name: 'TryPipe', component: TryPipeCom},
+	{path: '/trytpl', name: 'TryTpl', component: TryTplCom},
+	{path: '/trydycom', name: 'TryDyCom', component: TryDyComponentCom},
+	{path: '/tryhostbind', name: 'TryHostBind', component: TryHostBind},
+	{path: '/trylife', name: 'TryLife', component: TryLifeCom},
+	{path: '/tryd3', name: 'TryD3', component: TryD3Com}
 ])
 export class TryViewCom {
 
