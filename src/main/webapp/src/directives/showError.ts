@@ -1,6 +1,6 @@
 /// <reference path="../../typings/tsd.d.ts" />
 
-import { Host, Component, View, EventEmitter } from 'angular2/core';
+import { Host, Component, EventEmitter } from 'angular2/core';
 import {NgForm, CORE_DIRECTIVES} from 'angular2/common';
 
 @Component({

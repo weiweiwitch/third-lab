@@ -1,15 +1,13 @@
 /// <reference path="../../../../typings/tsd.d.ts" />
 
-import { Component, View, OnInit, OnDestroy } from 'angular2/core';
+import { Component, OnInit, OnDestroy } from 'angular2/core';
 import {CORE_DIRECTIVES, FORM_DIRECTIVES} from 'angular2/common';
 import { RouteConfig, RouterOutlet, RouterLink, Router } from 'angular2/router';
 
 import { PostService } from '../../../services/postService';
 
 @Component({
-	selector: 'wikiindex'
-})
-@View({
+	selector: 'wikiindex',
 	templateUrl: 'components/wiki/wikiindex/wikiIndex.html',
 	directives: [CORE_DIRECTIVES, FORM_DIRECTIVES]
 })

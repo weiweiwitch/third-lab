@@ -13,7 +13,6 @@ import {LocationStrategy, HashLocationStrategy, PathLocationStrategy} from 'angu
 import { App } from './components/app';
 
 bootstrap(App, [
-
 		ROUTER_PROVIDERS,
 		provide(LocationStrategy,
 			{useClass: PathLocationStrategy}),

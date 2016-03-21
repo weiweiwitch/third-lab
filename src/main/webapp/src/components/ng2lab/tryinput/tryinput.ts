@@ -1,12 +1,10 @@
 /// <reference path="../../../../typings/tsd.d.ts"/>
 
-import {Component, View } from 'angular2/core';
+import {Component } from 'angular2/core';
 import {CORE_DIRECTIVES, FORM_DIRECTIVES, Control, ControlGroup} from 'angular2/common';
 
 @Component({
-	selector: 'tryinput'
-})
-@View({
+	selector: 'tryinput',
 	templateUrl: 'components/ng2lab/tryinput/tryinput.html',
 	directives: [CORE_DIRECTIVES, FORM_DIRECTIVES]
 })

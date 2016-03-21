@@ -1,6 +1,6 @@
 /// <reference path="../../../../typings/tsd.d.ts"/>
 
-import { Component, View, OnInit, OnDestroy, ElementRef } from 'angular2/core';
+import { Component, OnInit, OnDestroy, ElementRef } from 'angular2/core';
 import { RouteConfig, RouterOutlet, RouterLink, Router, RouteParams } from 'angular2/router';
 import { FormBuilder, FORM_DIRECTIVES, CORE_DIRECTIVES, Control, ControlGroup, Validators } from 'angular2/common';
 import {Response} from 'angular2/http';

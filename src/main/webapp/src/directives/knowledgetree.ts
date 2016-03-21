@@ -1,6 +1,6 @@
 /// <reference path="../../typings/tsd.d.ts" />
 
-import { Component, View, OnChanges, EventEmitter, Input, Output } from 'angular2/core';
+import { Component, OnChanges, EventEmitter, Input, Output } from 'angular2/core';
 import {CORE_DIRECTIVES} from 'angular2/common';
 
 // 下面的3个指令用于建立tree控件！这类控件之前在angular1中很难实现！

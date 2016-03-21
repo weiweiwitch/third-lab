@@ -1,6 +1,6 @@
 /// <reference path="../../../typings/tsd.d.ts"/>
 
-import { Component, View } from 'angular2/core';
+import { Component } from 'angular2/core';
 
 import { RouteConfig, RouterOutlet, RouterLink, Router } from 'angular2/router';
 import { FormBuilder, FORM_DIRECTIVES, CORE_DIRECTIVES, Control, ControlGroup, Validators } from 'angular2/common';
@@ -10,9 +10,7 @@ import { PostService } from '../../services/postService';
 import { Todo, TodoStore, TodoFactory } from '../../services/todoStore';
 
 @Component({
-	selector: 'todo'
-})
-@View({
+	selector: 'todo',
 	templateUrl: 'components/todo/todo.html',
 	directives: [RouterOutlet, RouterLink, CORE_DIRECTIVES]
 })

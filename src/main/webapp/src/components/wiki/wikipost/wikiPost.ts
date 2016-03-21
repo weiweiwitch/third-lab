@@ -1,6 +1,6 @@
 /// <reference path="../../../../typings/tsd.d.ts"/>
 
-import { Component, View, OnInit } from 'angular2/core';
+import { Component, OnInit } from 'angular2/core';
 import { Http, Response } from 'angular2/http';
 import { RouteConfig, RouterOutlet, RouterLink, Router, RouteParams } from 'angular2/router';
 import { FormBuilder, FORM_DIRECTIVES, CORE_DIRECTIVES, Control, ControlGroup, Validators } from 'angular2/common';
@@ -12,9 +12,7 @@ import { PostData, PostService } from '../../../services/postService';
 import * as marked from 'marked';
 
 @Component({
-	selector: 'wikipost'
-})
-@View({
+	selector: 'wikipost',
 	templateUrl: 'components/wiki/wikipost/wikiPost.html',
 	directives: [CORE_DIRECTIVES, FORM_DIRECTIVES]
 })

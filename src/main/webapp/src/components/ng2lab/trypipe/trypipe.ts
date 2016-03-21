@@ -1,6 +1,6 @@
 /// <reference path="../../../../typings/tsd.d.ts"/>
 
-import {Component, View, Pipe, PipeTransform } from 'angular2/core';
+import {Component, Pipe, PipeTransform } from 'angular2/core';
 
 // We use the @Pipe decorator to register the name of the pipe
 @Pipe({

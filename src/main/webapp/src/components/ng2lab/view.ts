@@ -1,6 +1,6 @@
 /// <reference path="../../../typings/tsd.d.ts"/>
 
-import { Component, View } from 'angular2/core';
+import { Component } from 'angular2/core';
 import {CORE_DIRECTIVES} from 'angular2/common';
 import { RouteConfig, RouterOutlet, RouterLink, Router, Route } from 'angular2/router';
 
@@ -20,9 +20,7 @@ import {TryLifeCom} from './trylife/trylife';
 import {TryD3Com} from './tryd3/tryd3';
 
 @Component({
-	selector: 'tryview'
-})
-@View({
+	selector: 'tryview',
 	templateUrl: 'components/ng2lab/view.html',
 	directives: [RouterOutlet, RouterLink, CORE_DIRECTIVES]
 })

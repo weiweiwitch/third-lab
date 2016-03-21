@@ -1,6 +1,6 @@
 /// <reference path="../../../typings/tsd.d.ts"/>
 
-import { Component, View, OnInit } from 'angular2/core';
+import { Component, OnInit } from 'angular2/core';
 import { RouteConfig, RouterOutlet, RouterLink, Router, Route } from 'angular2/router';
 import { FormBuilder, FORM_DIRECTIVES, CORE_DIRECTIVES, Control, ControlGroup, Validators } from 'angular2/common';
 import { Http } from 'angular2/http';
@@ -15,9 +15,7 @@ import { WikiNewCom } from '../wiki/wikinew/wikiNew';
 import { PostService } from '../../services/postService';
 
 @Component({
-	selector: 'wiki'
-})
-@View({
+	selector: 'wiki',
 	templateUrl: 'components/wiki/wiki.html',
 	directives: [RouterOutlet, RouterLink, CORE_DIRECTIVES, TreeContainer, WikiIndexCom, WikiPostCom]
 })

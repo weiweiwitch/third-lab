@@ -1,14 +1,12 @@
 /// <reference path="../../../../typings/tsd.d.ts"/>
 
-import {Component, View, Input} from 'angular2/core';
+import {Component, Input} from 'angular2/core';
 import {CORE_DIRECTIVES} from 'angular2/common';
 
 import {Dir} from './dir';
 
 @Component({
-	selector: 'tree-view'
-})
-@View({
+	selector: 'tree-view',
 	templateUrl: 'components/ng2lab/trytreeview/treeview.html',
 	directives: [CORE_DIRECTIVES, TreeViewCom]
 })

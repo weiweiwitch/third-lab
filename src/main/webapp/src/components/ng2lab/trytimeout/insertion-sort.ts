@@ -1,4 +1,4 @@
-import {Component, View} from 'angular2/core';
+import {Component} from 'angular2/core';
 import {CORE_DIRECTIVES} from 'angular2/common';
 
 import { Insertion } from './insertion';
@@ -6,9 +6,7 @@ import { Insertion } from './insertion';
 @Component({
 	selector: 'insertion-sort',
 	inputs: ['list: list'],
-	providers: [Insertion]
-})
-@View({
+	providers: [Insertion],
 	templateUrl: 'components/ng2lab/trytimeout/insertion-sort.html',
 	directives: [CORE_DIRECTIVES]
 })
