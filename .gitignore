@@ -1,5 +1,6 @@
 .DS_Store
 target
+src/main/webapp/.idea
 src/main/webapp/dist
 src/main/webapp/.sass-cache
 src/main/webapp/.tmp
