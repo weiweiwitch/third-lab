@@ -1,8 +1,9 @@
 .DS_Store
 target
+.idea
+third-lab.iml
 src/main/webapp/.idea
 src/main/webapp/dist
-src/main/webapp/.sass-cache
 src/main/webapp/.tmp
 src/main/webapp/tmpts
 src/main/webapp/node_modules
