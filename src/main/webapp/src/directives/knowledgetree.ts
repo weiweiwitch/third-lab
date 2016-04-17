@@ -1,12 +1,10 @@
-/// <reference path="../../typings/tsd.d.ts" />
-
 import { Component, OnChanges, EventEmitter, Input, Output } from 'angular2/core';
 import {CORE_DIRECTIVES} from 'angular2/common';
 
 // 下面的3个指令用于建立tree控件！这类控件之前在angular1中很难实现！
 @Component({
 	selector: 'post-node',
-	templateUrl: 'directives/postnode.html'
+	template: require('./postnode.html')
 })
 export class PostNode {
 
@@ -47,7 +45,7 @@ export class PostNode {
 
 @Component({
 	selector: 'tree-container',
-	templateUrl: 'directives/treec.html',
+	template: require('./treec.html'),
 	directives: [PostNode, CORE_DIRECTIVES, TreeContainer]
 })
 export class TreeContainer implements OnChanges {

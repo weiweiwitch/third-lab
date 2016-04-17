@@ -1,5 +1,3 @@
-/// <reference path="../../typings/tsd.d.ts" />
-
 import { Pipe } from 'angular2/core';
 
 @Pipe({

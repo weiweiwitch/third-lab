@@ -22,7 +22,7 @@ export class DyGridOptions {
 
 @Component({
 	selector: 'dycomgrid',
-	templateUrl: 'components/ng2lab/trydycom/dygrid.html',
+	template: require('./dygrid.html'),
 	directives: [CORE_DIRECTIVES, DyComponentCellCom]
 })
 export class DyComponentGridCom {

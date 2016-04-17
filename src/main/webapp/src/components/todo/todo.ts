@@ -1,5 +1,3 @@
-/// <reference path="../../../typings/tsd.d.ts"/>
-
 import { Component } from 'angular2/core';
 
 import { RouteConfig, RouterOutlet, RouterLink, Router } from 'angular2/router';
@@ -9,9 +7,11 @@ import { Http } from 'angular2/http';
 import { PostService } from '../../services/postService';
 import { Todo, TodoStore, TodoFactory } from '../../services/todoStore';
 
+var css = require('./todo.scss');
+
 @Component({
 	selector: 'todo',
-	templateUrl: 'components/todo/todo.html',
+	template: require('./todo.html'),
 	directives: [RouterOutlet, RouterLink, CORE_DIRECTIVES]
 })
 export class TodoCom {

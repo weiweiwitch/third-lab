@@ -1,19 +1,17 @@
-/// <reference path="../../../../typings/tsd.d.ts"/>
+import {Component, OnInit} from 'angular2/core';
+import {Http, Response} from 'angular2/http';
+import {RouteConfig, RouterOutlet, RouterLink, Router, RouteParams} from 'angular2/router';
+import {FormBuilder, FORM_DIRECTIVES, CORE_DIRECTIVES, Control, ControlGroup, Validators} from 'angular2/common';
+import {PostData, PostService} from '../../../services/postService';
 
-import { Component, OnInit } from 'angular2/core';
-import { Http, Response } from 'angular2/http';
-import { RouteConfig, RouterOutlet, RouterLink, Router, RouteParams } from 'angular2/router';
-import { FormBuilder, FORM_DIRECTIVES, CORE_DIRECTIVES, Control, ControlGroup, Validators } from 'angular2/common';
-//import 'rxjs/operators/map';
-// import * as hljs from 'highlight';
-
-import { PostData, PostService } from '../../../services/postService';
-
+import * as hljs from 'highlight.js';
 import * as marked from 'marked';
+
+var css = require('./wikiPost.scss');
 
 @Component({
 	selector: 'wikipost',
-	templateUrl: 'components/wiki/wikipost/wikiPost.html',
+	template: require('./wikiPost.html'),
 	directives: [CORE_DIRECTIVES, FORM_DIRECTIVES]
 })
 export class WikiPostCom implements OnInit {
@@ -32,11 +30,11 @@ export class WikiPostCom implements OnInit {
 			.map((res: Response) => res.json())
 			.subscribe((post: any) => {
 				this.post = post;
+
 				marked.setOptions({
 					highlight: (code, lang, callback) => {
 						console.log('try hightlight ' + lang);
-						let afterhl = hljs.highlightAuto(code, [lang]).value;
-						return afterhl;
+						return hljs.highlightAuto(code, [lang]).value;
 					}
 				});
 				this.postText = marked(this.post.postText);

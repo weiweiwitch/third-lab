@@ -1,5 +1,3 @@
-/// <reference path="../../../../typings/tsd.d.ts"/>
-
 import {Component} from 'angular2/core';
 import {CORE_DIRECTIVES} from 'angular2/common';
 
@@ -8,7 +6,7 @@ import {TreeViewCom} from './treeview';
 
 @Component({
     selector: 'trytreeview',
-    templateUrl: 'components/ng2lab/trytreeview/trytreeview.html',
+    template: require('./trytreeview.html'),
     directives: [CORE_DIRECTIVES, TreeViewCom]
 })
 export class TryTreeViewCom {

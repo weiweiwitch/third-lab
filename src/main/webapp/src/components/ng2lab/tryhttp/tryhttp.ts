@@ -1,11 +1,9 @@
-/// <reference path="../../../../typings/tsd.d.ts"/>
-
 import {Component} from 'angular2/core';
 import {Http, Headers, Response} from 'angular2/http';
 
 @Component({
 	selector: 'tryhttp',
-	templateUrl: 'components/ng2lab/tryhttp/tryhttp.html'
+	template: require('./tryhttp.html')
 })
 export class TryHttpCom {
 

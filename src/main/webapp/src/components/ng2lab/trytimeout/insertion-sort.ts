@@ -7,7 +7,7 @@ import { Insertion } from './insertion';
 	selector: 'insertion-sort',
 	inputs: ['list: list'],
 	providers: [Insertion],
-	templateUrl: 'components/ng2lab/trytimeout/insertion-sort.html',
+	template: require('./insertion-sort.html'),
 	directives: [CORE_DIRECTIVES]
 })
 export class InsertionSort {

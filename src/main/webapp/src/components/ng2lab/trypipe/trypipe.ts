@@ -1,5 +1,3 @@
-/// <reference path="../../../../typings/tsd.d.ts"/>
-
 import {Component, Pipe, PipeTransform } from 'angular2/core';
 
 // We use the @Pipe decorator to register the name of the pipe
@@ -21,7 +19,7 @@ class TempConvertPipe implements PipeTransform {
 
 @Component({
 	selector: 'trypipe',
-	templateUrl: 'components/ng2lab/trypipe/trypipe.html',
+	template: require('./trypipe.html'),
 	pipes: [TempConvertPipe]
 })
 export class TryPipeCom {

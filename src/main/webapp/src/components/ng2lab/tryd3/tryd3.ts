@@ -2,6 +2,8 @@ import {ElementRef} from "angular2/core";
 import {Component} from "angular2/core";
 import {AfterViewInit} from "angular2/core";
 
+import * as d3 from 'd3';
+
 @Component({
 	selector: 'tryd3',
 	template: '<h1>D3.js Integrated if background is yellow</h1>',

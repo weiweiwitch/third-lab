@@ -1,5 +1,3 @@
-/// <reference path="../../../../typings/tsd.d.ts"/>
-
 import { Component, OnInit, OnDestroy, ElementRef } from 'angular2/core';
 import { RouteConfig, RouterOutlet, RouterLink, Router, RouteParams } from 'angular2/router';
 import { FormBuilder, FORM_DIRECTIVES, CORE_DIRECTIVES, Control, ControlGroup, Validators } from 'angular2/common';
@@ -8,14 +6,17 @@ import {Response} from 'angular2/http';
 import { PostData, PostService } from '../../../services/postService';
 import { ShowError } from '../../../directives/showError';
 
+import * as hljs from 'highlight.js';
 import * as marked from 'marked';
+
+var css = require('./wikiNew.scss');
 
 @Component({
 	selector: 'wikinew',
 	viewBindings: [
 		FormBuilder
 	],
-	templateUrl: 'components/wiki/wikinew/wikiNew.html',
+	template: require('./wikiNew.html'),
 	directives: [CORE_DIRECTIVES, FORM_DIRECTIVES, ShowError]
 })
 export class WikiNewCom implements OnInit, OnDestroy {

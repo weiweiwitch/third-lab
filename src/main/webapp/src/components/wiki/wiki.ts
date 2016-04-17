@@ -1,5 +1,3 @@
-/// <reference path="../../../typings/tsd.d.ts"/>
-
 import { Component, OnInit } from 'angular2/core';
 import { RouteConfig, RouterOutlet, RouterLink, Router, Route } from 'angular2/router';
 import { FormBuilder, FORM_DIRECTIVES, CORE_DIRECTIVES, Control, ControlGroup, Validators } from 'angular2/common';
@@ -14,9 +12,11 @@ import { WikiNewCom } from '../wiki/wikinew/wikiNew';
 
 import { PostService } from '../../services/postService';
 
+var css = require('./wiki.scss');
+
 @Component({
 	selector: 'wiki',
-	templateUrl: 'components/wiki/wiki.html',
+	template: require('./wiki.html'),
 	directives: [RouterOutlet, RouterLink, CORE_DIRECTIVES, TreeContainer, WikiIndexCom, WikiPostCom]
 })
 @RouteConfig([

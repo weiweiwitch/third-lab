@@ -1,5 +1,3 @@
-/// <reference path="../../../../typings/tsd.d.ts"/>
-
 import { Component } from 'angular2/core';
 import {CORE_DIRECTIVES} from 'angular2/common';
 import { RouteConfig, RouterOutlet, RouterLink, Router, Route } from 'angular2/router';
@@ -9,7 +7,7 @@ import {DelButtonCom} from './delbutton';
 
 @Component({
 	selector: 'trydycom',
-	templateUrl: 'components/ng2lab/trydycom/trydycom.html',
+	template: require('./trydycom.html'),
 	directives: [CORE_DIRECTIVES, DyComponentGridCom]
 })
 export class TryDyComponentCom {

@@ -1,5 +1,3 @@
-/// <reference path="../../../../typings/tsd.d.ts"/>
-
 import { Component, Directive, ViewContainerRef, TemplateRef } from 'angular2/core';
 import {CORE_DIRECTIVES} from 'angular2/common';
 
@@ -30,7 +28,7 @@ export class MyTplDir {
 
 @Component({
     selector: 'trytpl',
-    templateUrl: 'components/ng2lab/trytpl/trytpl.html',
+    template: require('./trytpl.html'),
     directives: [CORE_DIRECTIVES, MyTplDir]
 })
 export class TryTplCom {

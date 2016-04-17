@@ -1,5 +1,3 @@
-/// <reference path="../../../../typings/tsd.d.ts"/>
-
 import { Component, OnInit, OnDestroy, ElementRef } from 'angular2/core';
 import { RouteConfig, RouterOutlet, RouterLink, Router, RouteParams } from 'angular2/router';
 import { FormBuilder, FORM_DIRECTIVES, CORE_DIRECTIVES, Control, ControlGroup, Validators } from 'angular2/common';
@@ -7,11 +5,14 @@ import {Response} from 'angular2/http';
 
 import { PostData, PostService } from '../../../services/postService';
 
+import * as hljs from 'highlight.js';
 import * as marked from 'marked';
+
+var css = require('./wikiEdit.scss');
 
 @Component({
 	selector: 'wikiedit',
-	templateUrl: 'components/wiki/wikiedit/wikiEdit.html',
+	template: require('./wikiEdit.html'),
 	directives: [CORE_DIRECTIVES, FORM_DIRECTIVES]
 })
 export class WikiEditCom implements OnInit, OnDestroy {
@@ -38,8 +39,6 @@ export class WikiEditCom implements OnInit, OnDestroy {
 
 	ngOnInit() {
 		console.log('wiki new destroy');
-
-
 	}
 
 	render() {
@@ -47,8 +46,7 @@ export class WikiEditCom implements OnInit, OnDestroy {
 		marked.setOptions({
 			highlight: (code, lang, callback) => {
 				console.log('try hightlight ' + lang);
-				let afterhl = hljs.highlightAuto(code, [lang]).value;
-				return afterhl;
+				return hljs.highlightAuto(code, [lang]).value;
 			}
 		});
 

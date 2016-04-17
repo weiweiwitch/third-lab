@@ -1,11 +1,9 @@
-/// <reference path="../../../../typings/tsd.d.ts"/>
-
 import {Component } from 'angular2/core';
 import {CORE_DIRECTIVES, FORM_DIRECTIVES, Control, ControlGroup} from 'angular2/common';
 
 @Component({
 	selector: 'tryinput',
-	templateUrl: 'components/ng2lab/tryinput/tryinput.html',
+	template: require('./tryinput.html'),
 	directives: [CORE_DIRECTIVES, FORM_DIRECTIVES]
 })
 export class TryInputCom {
