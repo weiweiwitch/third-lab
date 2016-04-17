@@ -1,108 +1,124 @@
+@import "./generic.scss";
+
+$while: #fff;
+$white2: #f7f7f7;
+$gray: #eee;
+$gray2: #e5e5e5;
+$light-gray: #ccc;
+$light-black: #555;
+$black: #000;
+$green: #d5e6b1;
+$blue: #08c;
+
 .browsehappy {
   margin: 0.2em 0;
-  background: #ccc;
-  color: #000;
+  background: $light-gray;
+  color: $black;
   padding: 0.2em 0;
 }
+
 /* Responsive: Portrait tablets and up */
 @media screen and (min-width: 768px) {
   .container {
     max-width: 730px;
   }
 }
-/*
-table,
-td,
-th {
-    border: 1px solid black;
-    padding: 5px;
-}
-*/
+
 .air {
-  font-family: 'Lucida Sans Unicode','Lucida Grande',Helvetica,Arial,sans-serif;
+  font-family: $global-font;
 }
+
 .air-nav {
   border-bottom: 1px solid #eee;
   margin-bottom: 5px;
 }
-.labtree {
-  background: #fff;
-  //border-right: 1px solid #d9d9d9;
 
-  //box-shadow: -1px 1px 6px rgba(0,0,0,0.35);
+.labtree {
+  background: $while;
   margin: 0 6px;
 }
+
 .labtree-btn {
   padding: 10px 15px;
 }
+
 .labtree-nodes {
   list-style-type: none;
   padding-left: 15px;
 }
+
 .labtree-node {
   margin: 5px 0;
 }
+
 .labtree-node-text {
   transition: padding 0.2s ease-out;
-  color: #555;
+  color: $light-black;
   font-size: 13px;
 }
 
-// ul li div span:hover {
-//     //padding-left: 10px;
-//     color: #08c;
-//     // background: #ccc;
-//     text-decoration: none;
-// }
 .labtree-node:hover {
-  color: #08c;
-  background: #ccc;
+  color: $blue;
+  background: $light-gray;
   text-decoration: none;
 }
 
 // 节点层深
+$tn-width: 20px; // 节点右移的单位宽度
+
 .tn-l0 {
   padding: 0;
 }
+
 .tn-l1 {
-  padding: 0 0 0 20px;
+  padding: 0 0 0 $tn-width;
 }
+
 .tn-l2 {
-  padding: 0 0 0 40px;
+  padding: 0 0 0 $tn-width * 2;
 }
+
 .tn-l3 {
-  padding: 0 0 0 60px;
+  padding: 0 0 0 $tn-width * 3;
 }
+
 .tn-l4 {
-  padding: 0 0 0 80px;
+  padding: 0 0 0 $tn-width * 4;
 }
+
 .tn-l5 {
-  padding: 0 0 0 100px;
+  padding: 0 0 0 $tn-width * 5;
 }
+
 .main-auto-height {
   height: calc(100vh - 100px);
   overflow: auto;
 }
+
 .textarea-height {
   height: calc(100vh - 320px) !important;
 }
+
 .topic_header {
   padding: 0 10px;
   margin: 5px 0;
   border-bottom: 1px solid #eee;
 }
+
 .topic_full_title {
   font-size: 24px;
   font-weight: 700;
   display: inline-block;
 }
+
 .inner_topic_container {
   height: calc(100vh - 100px);
   overflow: auto;
-  border-top: 1px solid #eee;
-  border-bottom: 1px solid #eee;
+  border-top: 1px solid $gray;
+  border-bottom: 1px solid $gray;
   margin-top: 5px;
 }
+
 .inner_topic {
   padding: 0 10px;
 }
@@ -112,45 +128,57 @@ th {
   margin: 15px;
   padding-left: 15px;
 }
+
 /* markdown */
-.markdown-text pre {
-  font-family: Monaco, Menlo, Consolas, "Courier New", monospace;
-  font-size: 13px;
-  border: 0;
-  border-left: 3px solid #d5e6b1;
-  background: #f7f7f7;
-  border-radius: 0;
+
+.markdown-text {
+  pre {
+    font-family: $code-font;
+    font-size: 13px;
+    border: 0;
+    border-left: 3px solid $green;
+    background: $white2;
+    border-radius: 0;
+  }
+
+  p {
+    font-family: $show-font;
+    font-size: 12px;
+    line-height: 1.8;
+  }
+
+  li {
+    font-family: $show-font;
+    font-size: 12px;
+    line-height: 1.8;
+  }
+
+  ul {
+    list-style-type: square;
+    padding-left: 20px;
+  }
+
+  h2 {
+    font-size: 18px;
+    padding-bottom: 3px;
+    border-bottom: 1px solid $gray2;
+  }
+
+  h3 {
+    padding-bottom: 3px;
+    font-size: 16px;
+    border-bottom: 1px solid $gray2;
+  }
+
+  h4 {
+    font-size: 14px;
+  }
+
+  h5 {
+    font-size: 12px;
+  }
 }
-.markdown-text p {
-  font-family: 'Ubuntu Mono', Monaco;
-  font-size: 12px;
-  line-height: 1.8;
-}
-.markdown-text li {
-  font-family: 'Ubuntu Mono', Monaco;
-  font-size: 12px;
-  line-height: 1.8;
-}
-.markdown-text ul {
-  list-style-type: square;
-  padding-left: 20px;
-}
-.markdown-text h2 {
-  font-size: 18px;
-  padding-bottom: 3px;
-  border-bottom: 1px solid #e5e5e5;
-}
-.markdown-text h3 {
-  padding-bottom: 3px;
-  font-size: 16px;
-  border-bottom: 1px solid #e5e5e5;
-}
-.markdown-text h4 {
-  font-size: 14px;
-}
-.markdown-text h5 {
-  font-size: 12px;
-}
+
 .ace_editor {
   height: 300px;
 }
