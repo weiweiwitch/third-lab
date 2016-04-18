@@ -10,9 +10,12 @@ import {OnChanges} from "angular2/core";
 
 @Component({
 	selector: 'trylife',
-	template: '<div><button class="btn btn-primary" (click)="addOne()">OK</button>{{num}}</div>'
+	template: '<h2>演示生命周期方法</h2><div><button class="btn btn-primary" (click)="addOne()">OK</button>{{num}}</div>'
 })
 export class TryLifeCom implements OnInit, OnDestroy, AfterViewInit, AfterViewChecked, AfterContentInit, AfterContentChecked, DoCheck, OnChanges {
+
+	num: number = 0;
+
 	ngOnChanges(changes: {}): any {
 		console.log('on changes');
 	}
@@ -20,8 +23,6 @@ export class TryLifeCom implements OnInit, OnDestroy, AfterViewInit, AfterViewCh
 	ngDoCheck(): any {
 		console.log('do check');
 	}
-
-	num: number = 0;
 
 	ngAfterContentInit(): any {
 		console.log('on after content init');

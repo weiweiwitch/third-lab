@@ -1,5 +1,8 @@
+<h2>演示自定义模板</h2>
 <div class="row">
+    <button class="btn btn-default" (click)="changeDiffTime()">增加条件值</button>
+
     <div class="col-md-12">
-        <div *mytpl="true">May Show {{diffTime}} aaa</div>
+        <div *mytpl="diffTime">May Show {{diffTime}} aaa</div>
     </div>
 </div>

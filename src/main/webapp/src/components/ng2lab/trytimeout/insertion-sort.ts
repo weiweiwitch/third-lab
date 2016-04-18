@@ -5,8 +5,7 @@ import { Insertion } from './insertion';
 
 @Component({
 	selector: 'insertion-sort',
-	inputs: ['list: list'],
-	providers: [Insertion],
+	providers: [Insertion], // 注入排序器
 	template: require('./insertion-sort.html'),
 	directives: [CORE_DIRECTIVES]
 })
@@ -15,6 +14,7 @@ export class InsertionSort {
 	list: ValList;
 
 	constructor(private insertion: Insertion) {
+		// 初始化列表
 		this.list = new ValList();
 		this.list.items = [
 			new ListItem(5),
@@ -34,6 +34,7 @@ export class InsertionSort {
 
 	}
 
+	// 排序
 	sortList() {
 		this.insertion.sort(this.list)
 	}

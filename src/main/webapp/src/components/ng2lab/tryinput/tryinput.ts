@@ -12,20 +12,15 @@ export class TryInputCom {
 
 	sels: Array<any> = [];
 
-	selValue: Control = new Control('');
 	selModel: number;
 
-	loginForm: ControlGroup;
+	user: string;
+	password: string;
 
 	constructor() {
 		this.sels.push({name: 'aaa', id: 1});
 		this.sels.push({name: 'bbb', id: 2});
 		this.sels.push({name: 'ccc', id: 3});
-
-		this.loginForm = new ControlGroup({
-			login: new Control(""),
-			password: new Control("")
-		});
 	}
 
 	resetInput() {
@@ -33,12 +28,11 @@ export class TryInputCom {
 	}
 
 	showSelect() {
-		console.log(this.selValue);
 		console.log(this.selModel);
 	}
 
 	showForm() {
-		console.log(this.loginForm);
-		console.log(this.loginForm.value);
+		console.log(this.user);
+		console.log(this.password);
 	}
 }

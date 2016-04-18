@@ -1,44 +1,41 @@
-import { Component, Directive, ViewContainerRef, TemplateRef } from 'angular2/core';
-import {CORE_DIRECTIVES} from 'angular2/common';
-
-import { RouteConfig, RouterOutlet, RouterLink, Router, Route } from 'angular2/router';
+import {Component, Directive, ViewContainerRef, TemplateRef, Input} from "angular2/core";
+import {CORE_DIRECTIVES} from "angular2/common";
 
 @Directive({
-   selector: '[mytpl]',
-   inputs: ['mytpl']
-  })
+	selector: '[mytpl]'
+})
 export class MyTplDir {
-    diffTime: number = 0;
 
-    constructor(private _viewContainer: ViewContainerRef, private _templateRef: TemplateRef) {
-        console.log(this._templateRef);
-    }
+	// 注入了视图容器引用和模板引用
+	constructor(private _viewContainer: ViewContainerRef, private _templateRef: TemplateRef) {
+		console.log(this._templateRef);
+	}
 
-    set mytpl(newCondition /* boolean */) {
-        let d = new Date();
-        this.diffTime = d.getTime() % 20;
-        let cd: boolean = this.diffTime % 20 >= 10 ? true : false;
-        if (cd) {
-            this._viewContainer.createEmbeddedView(this._templateRef);
-        } else {
-            this._viewContainer.clear();
-        }
-    }
+	@Input('mytpl')
+	set mytpl(newCondition /* boolean */) {
+		console.log('条件: ' + newCondition);
+
+		let cd: boolean = newCondition % 20 >= 10 ? true : false;
+		if (cd) {
+			this._viewContainer.createEmbeddedView(this._templateRef);
+		} else {
+			this._viewContainer.clear();
+		}
+	}
 }
 
 @Component({
-    selector: 'trytpl',
-    template: require('./trytpl.html'),
-    directives: [CORE_DIRECTIVES, MyTplDir]
+	selector: 'trytpl',
+	template: require('./trytpl.html'),
+	directives: [CORE_DIRECTIVES, MyTplDir]
 })
 export class TryTplCom {
-    addr: string;
-    diffTime: number = 0;
+	diffTime: number = 0;
 
-    constructor() {
-    }
+	constructor() {
+	}
 
-    showAddr() {
-
-    }
+	changeDiffTime() {
+		this.diffTime += 10;
+	}
 }
