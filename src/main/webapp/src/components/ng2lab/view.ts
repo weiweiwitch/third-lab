@@ -14,6 +14,8 @@ import { TryPipeCom } from './trypipe/trypipe';
 import { TryTplCom } from './trytpl/trytpl';
 import { TryDyComponentCom } from './trydycom/trydycom';
 import { TryHostBind } from './tryhostbinding/tryhostbinding';
+import { TryViewChild } from './tryviewchild/tryviewchild';
+import { TryContentChild } from './trycontentchild/trycontentchild';
 import {TryLifeCom} from './trylife/trylife';
 import {TryD3Com} from './tryd3/tryd3';
 
@@ -35,6 +37,8 @@ import {TryD3Com} from './tryd3/tryd3';
 	{path: '/trytpl', name: 'TryTpl', component: TryTplCom},
 	{path: '/trydycom', name: 'TryDyCom', component: TryDyComponentCom},
 	{path: '/tryhostbind', name: 'TryHostBind', component: TryHostBind},
+	{path: '/tryviewchild', name: 'TryViewChild', component: TryViewChild},
+	{path: '/trycontentchild', name: 'TryContentChild', component: TryContentChild},
 	{path: '/trylife', name: 'TryLife', component: TryLifeCom},
 	{path: '/tryd3', name: 'TryD3', component: TryD3Com}
 ])

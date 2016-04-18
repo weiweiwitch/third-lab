@@ -27,12 +27,14 @@ export class DyGridOptions {
 })
 export class DyComponentGridCom {
 
+	// grid配置
 	@Input() options: DyGridOptions;
 
 	constructor() {
 
 	}
 
+	// 删除行
 	delRow($event) {
 		let selectedIndex = -1;
 		let index = 0;

@@ -1,0 +1,11 @@
+<h2>演示Host的绑定和监听</h2>
+<div hostattr="num" (click)="topClick()">
+    <button (click)="showNum()"><span>aaa</span></button>
+
+    <button btnv="num2" counting type="text">bbbb</button>
+
+    <embhostbind  #myView #myContent #mySingleContent class="active">
+        <div #myContent></div>
+        <div #myContent></div>
+    </embhostbind>
+</div>

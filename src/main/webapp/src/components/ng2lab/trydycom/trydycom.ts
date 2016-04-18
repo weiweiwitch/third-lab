@@ -14,6 +14,7 @@ export class TryDyComponentCom {
 	gridOptions: DyGridOptions;
 
 	constructor() {
+		// 申明列
 		this.gridOptions = new DyGridOptions();
 		this.gridOptions.columns.push(new DyGridItem('c1', 'c1', null));
 		this.gridOptions.columns.push(new DyGridItem('c2', 'c2', null));
@@ -21,6 +22,7 @@ export class TryDyComponentCom {
 		this.gridOptions.columns.push(new DyGridItem('c4', 'c4', null));
 		this.gridOptions.columns.push(new DyGridItem('删除', '', DelButtonCom));
 
+		// 设置初始数据
 		this.gridOptions.datas = [{
 			c1: '1',
 			c2: '2',
@@ -39,6 +41,7 @@ export class TryDyComponentCom {
 		}];
 	}
 
+	// 添加行
 	addRow() {
 		let time = new Date().getTime();
 		this.gridOptions.datas.push({

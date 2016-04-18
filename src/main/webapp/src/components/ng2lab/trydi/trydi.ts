@@ -11,11 +11,14 @@ import { AddrService } from './addrservice';
 	directives: [CORE_DIRECTIVES]
 })
 export class TryDiCom {
+
 	addr: string;
 
+	// 下面在构造函数中注入了服务
 	constructor(private addrService: AddrService) {
 		console.log(addrService);
 
+		// 从注入的服务中获取地址
 		this.addr = this.addrService.getAddr();
 	}
 
