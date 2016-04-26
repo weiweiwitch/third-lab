@@ -63,33 +63,6 @@ $blue: #08c;
   text-decoration: none;
 }
 
-// 节点层深
-$tn-width: 20px; // 节点右移的单位宽度
-
-.tn-l0 {
-  padding: 0;
-}
-
-.tn-l1 {
-  padding: 0 0 0 $tn-width;
-}
-
-.tn-l2 {
-  padding: 0 0 0 $tn-width * 2;
-}
-
-.tn-l3 {
-  padding: 0 0 0 $tn-width * 3;
-}
-
-.tn-l4 {
-  padding: 0 0 0 $tn-width * 4;
-}
-
-.tn-l5 {
-  padding: 0 0 0 $tn-width * 5;
-}
-
 .main-auto-height {
   height: calc(100vh - 100px);
   overflow: auto;

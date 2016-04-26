@@ -15,7 +15,6 @@ var css = require('./app.scss');
 
 @Component({
 	selector: 'app',
-	// styles: [require('./app.scss')],
 	template: require('./app.html'),
 	directives: [RouterOutlet, RouterLink, CORE_DIRECTIVES, TreeContainer]
 })
@@ -28,7 +27,6 @@ var css = require('./app.scss');
 export class App implements OnInit {
 
 	constructor() {
-		console.log('ssss');
 	}
 
 	ngOnInit() {

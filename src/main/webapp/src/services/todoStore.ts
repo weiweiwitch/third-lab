@@ -1,69 +1,48 @@
-import {Injectable } from 'angular2/core';
+import {Injectable} from 'angular2/core';
+import {HttpService} from "./httpService";
 
-// base model for RecordStore
-export class KeyModel {
-	constructor(public key: number) {
-	}
+export class ProjectGroup {
+	id: number;
+	name: string;
 }
 
-export class Todo extends KeyModel {
-	constructor(key: number, public title: string, public completed: boolean) {
-		super(key);
-	}
+export class Project {
+	id: number;
+	name: string;
+	groupId: number;
+}
+
+export class ProjectTask {
+	id: number;
+	name: string;
+	note: string;
+	createTime: number;
+	period: number;
+	nextPeriodTime: number;
+	status: number;
+	projectId: number;
+	parentTask: number;
+}
+
+export class TaskData {
+	groups: ProjectGroup[];
+	projects: Project[];
+	tasks: ProjectTask[];
 }
 
 @Injectable()
-export class TodoFactory {
-	_uid: number = 0;
+export class ProjectStore {
 
-	nextUid(): number {
-		return ++this._uid;
+	private data: TaskData;
+
+	constructor(private httpService: HttpService) {
+
 	}
 
-	create(title: string, isCompleted: boolean): Todo {
-		return new Todo(this.nextUid(), title, isCompleted);
-	}
-}
-
-interface LPredicate<T> {
-	(value: T, index?: number, array?: T[]): boolean;
-}
-
-// Store manages any generic item that inherits from KeyModel
-@Injectable()
-export class TodoStore {
-	list: Array<KeyModel> = [];
-
-	add(record: KeyModel): void {
-		this.list.push(record);
-	}
-
-	remove(record: KeyModel): void {
-		this._spliceOut(record);
-	}
-
-	removeBy(callback): void {
-		let records = this.list.filter(callback);
-		console.log(records);
-		this.removeAll(this.list, records);
-	}
-
-	removeAll<T>(list: Array<T>, items: Array<T>) {
-		for (var i = 0; i < items.length; ++i) {
-			var index = list.indexOf(items[i]);
-			list.splice(index, 1);
-		}
-	}
-
-	private _spliceOut(record: KeyModel) {
-		var i = this._indexFor(record);
-		if (i > -1) {
-			return this.list.splice(i, 1)[0];
-		}
-		return null;
-	}
-
-	private _indexFor(record: KeyModel) {
-		return this.list.indexOf(record);
+	// 获取所有的项目组和项目和任务
+	findAllTasks() {
+		this.httpService.httpGet('/projecttasks', null, (data) => {
+			this.data = data;
+		})
 	}
 }

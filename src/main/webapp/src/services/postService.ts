@@ -29,7 +29,6 @@ export class PostService {
 	findAllPosts() {
 		this.http.get(this.baseUrl)
 			.map((res: Response) => {
-				console.log(res);
 				return res.json();
 			})
 			.subscribe((posts: any) => {

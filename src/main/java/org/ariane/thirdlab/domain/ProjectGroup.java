@@ -10,12 +10,15 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
+/**
+ * 项目组
+ */
 @Entity
 @Table(name = "projectgroup")
 public class ProjectGroup implements Serializable {
 
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 3291014249634982775L;
 

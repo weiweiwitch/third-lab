@@ -10,12 +10,15 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
+/**
+ * 项目
+ */
 @Entity
 @Table(name = "project")
 public class Project implements Serializable {
 
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = -2063288682872121908L;
 
@@ -30,6 +33,9 @@ public class Project implements Serializable {
 
 	@Column(name = "name", nullable = false, length = 150)
 	private String name; // 项目名
+
+	@Column(name = "groupId", nullable = false)
+	private long groupId; // 属于哪个组
 
 	public long getId() {
 		return id;
@@ -53,6 +59,14 @@ public class Project implements Serializable {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public long getGroupId() {
+		return groupId;
+	}
+
+	public void setGroupId(long groupId) {
+		this.groupId = groupId;
 	}
 
 	public Project() {

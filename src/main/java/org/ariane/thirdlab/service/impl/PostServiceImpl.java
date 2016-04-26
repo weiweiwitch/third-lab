@@ -6,6 +6,7 @@ import java.util.List;
 import javax.transaction.Transactional;
 
 import org.ariane.thirdlab.constvalue.PostStatus;
+import org.ariane.thirdlab.constvalue.TlResultCode;
 import org.ariane.thirdlab.dao.PostDao;
 import org.ariane.thirdlab.domain.Post;
 import org.ariane.thirdlab.service.PostService;
@@ -79,7 +80,7 @@ public class PostServiceImpl implements PostService {
 		if (post != null) {
 			postDao.delete(post);
 		}
-		return 0;
+		return TlResultCode.SUCCESS;
 	}
 
 }
