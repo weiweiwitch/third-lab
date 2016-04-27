@@ -18,6 +18,7 @@ export class TryD3Com implements AfterViewInit {
 
 	ngAfterViewInit() {
 		console.log("afterViewInit() called");
+		
 		//d3.select(this.elementRef.nativeElement).select("h1").style("background-color", "yellow");
 		d3.select(this.elementRef.nativeElement).select("div#d3show")
 			.append("svg").attr("width", 50).attr("height", 50)

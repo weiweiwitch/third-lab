@@ -1,0 +1,13 @@
+@import "../../generic.scss";
+
+.projecttree {
+  list-style-type: none;
+}
+
+.pitem4project {
+  margin-left: 20px;
+}
+
+.projectitem:hover {
+  background: $gray2;
+}

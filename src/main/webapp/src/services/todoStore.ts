@@ -4,6 +4,7 @@ import {HttpService} from "./httpService";
 export class ProjectGroup {
 	id: number;
 	name: string;
+	projects: Project[] = [];
 }
 
 export class Project {
@@ -33,16 +34,16 @@ export class TaskData {
 @Injectable()
 export class ProjectStore {
 
-	private data: TaskData;
+	public data: TaskData;
 
 	constructor(private httpService: HttpService) {
 
 	}
 
 	// 获取所有的项目组和项目和任务
-	findAllTasks() {
-		this.httpService.httpGet('/projecttasks', null, (data) => {
-			this.data = data;
+	findAllProjects(successCb) {
+		this.httpService.httpGet('/projects', null, (data) => {
+			successCb(data);
 		})
 	}
 }

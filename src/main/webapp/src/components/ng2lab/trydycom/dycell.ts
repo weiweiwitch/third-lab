@@ -1,24 +1,41 @@
-import {Component, DynamicComponentLoader, ElementRef, ComponentRef, OnInit, Input, Output, EventEmitter } from 'angular2/core';
+import {
+	Component,
+	DynamicComponentLoader,
+	ElementRef,
+	ComponentRef,
+	OnInit,
+	ViewChild,
+	ViewContainerRef,
+	ComponentResolver,
+	Input,
+	Output,
+	EventEmitter
+} from "angular2/core";
 
 @Component({
 	selector: 'dycomcell',
 	template: '<div #targetLocation></div>'
 })
-export class DyComponentCellCom implements OnInit {
+export class DyComponentCellCom {
 
 	@Input() columnDef: any; // 注入的列定义
 	@Input() data: any; // 注入的数据
 
 	@Output() delThisRow = new EventEmitter<any>(); // 对外的删除事件
 
+	@ViewChild('targetLocation', {read: ViewContainerRef})
+	targetLocation: ViewContainerRef;
+
 	// 注入的动态组件加载和元素引用
-	constructor(private dynamicComponentLoader: DynamicComponentLoader, private elementRef: ElementRef) {
+	constructor(private dynamicComponentLoader: DynamicComponentLoader,
+				private compiler: ComponentResolver,
+				private viewContainer: ViewContainerRef) {
 
 	}
 
-	ngOnInit() {
+	ngAfterViewInit() {
 		// 动态加载this.columnDef.cellCom类型的组件
-		this.dynamicComponentLoader.loadIntoLocation(this.columnDef.cellCom, this.elementRef, 'targetLocation')
+		this.dynamicComponentLoader.loadNextToLocation(this.columnDef.cellCom, this.targetLocation)
 			.then((comp: ComponentRef) => {
 				// 绑定数据到组件实例
 				comp.instance.data = this.data;

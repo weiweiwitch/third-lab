@@ -8,6 +8,7 @@ import org.ariane.thirdlab.domain.Project;
 import org.ariane.thirdlab.domain.ProjectGroup;
 import org.ariane.thirdlab.domain.ProjectTask;
 import org.ariane.thirdlab.service.TaskDealService;
+import org.ariane.thirdlab.service.data.ProjectsData;
 import org.ariane.thirdlab.service.data.TasksData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -29,11 +30,17 @@ public class TaskDealServiceImpl implements TaskDealService {
 	private ProjectTaskDao projectTaskDao;
 
 	@Override
-	public TasksData showAllTasks() {
-		TasksData data = new TasksData();
+	public ProjectsData showAllProjects() {
+		ProjectsData data = new ProjectsData();
 		data.groups.addAll(projectGroupDao.findAll());
 		data.projects.addAll(projectDao.findAll());
-		data.tasks.addAll(projectTaskDao.findAll());
+		return data;
+	}
+
+	@Override
+	public TasksData showSomeTasks(long projectId) {
+		TasksData data = new TasksData();
+		data.tasks = projectTaskDao.findAll();
 		return data;
 	}
 

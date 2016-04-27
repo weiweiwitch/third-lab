@@ -1,5 +1,6 @@
 package org.ariane.thirdlab.service;
 
+import org.ariane.thirdlab.service.data.ProjectsData;
 import org.ariane.thirdlab.service.data.TasksData;
 
 /**
@@ -8,11 +9,18 @@ import org.ariane.thirdlab.service.data.TasksData;
 public interface TaskDealService {
 
 	/**
-	 * 获取任务信息
+	 * 获取项目信息
 	 *
 	 * @return
 	 */
-	public TasksData showAllTasks();
+	public ProjectsData showAllProjects();
+
+	/**
+	 *
+	 * @param projectId
+	 * @return
+	 */
+	public TasksData showSomeTasks(long projectId);
 
 	/**
 	 * 添加项目组
