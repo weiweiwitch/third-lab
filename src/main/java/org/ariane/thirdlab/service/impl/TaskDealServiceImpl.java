@@ -45,19 +45,25 @@ public class TaskDealServiceImpl implements TaskDealService {
 	}
 
 	@Override
-	public int addProjectGroup(String name) {
+	public AddGroupRt addProjectGroup(String name) {
 		ProjectGroup group = new ProjectGroup();
 		group.setName(name);
 		projectGroupDao.save(group);
 
-		return TlResultCode.SUCCESS;
+		AddGroupRt rt = new AddGroupRt();
+		rt.rt = TlResultCode.SUCCESS;
+		rt.groupId = group.getId();
+		return rt;
 	}
 
+
 	@Override
-	public int addProject(String name, long groupId) {
+	public AddProjectRt addProject(String name, long groupId) {
 		ProjectGroup group = projectGroupDao.findById(groupId);
 		if (group == null) {
-			return TlResultCode.NOT_FOUND_PROJECT_GROUP;
+			AddProjectRt rt = new AddProjectRt();
+			rt.rt = TlResultCode.NOT_FOUND_PROJECT_GROUP;
+			return rt;
 		}
 
 		Project project = new Project();
@@ -65,7 +71,23 @@ public class TaskDealServiceImpl implements TaskDealService {
 		project.setGroupId(groupId);
 		projectDao.save(project);
 
-		return TlResultCode.SUCCESS;
+		AddProjectRt rt = new AddProjectRt();
+		rt.rt = TlResultCode.SUCCESS;
+		rt.groupId = groupId;
+		rt.projectId = project.getId();
+
+		return rt;
+	}
+
+	public static class AddGroupRt {
+		public int rt;
+		public long groupId;
+	}
+
+	public static class AddProjectRt {
+		public int rt;
+		public long groupId;
+		public long projectId;
 	}
 
 	@Override
@@ -99,4 +121,52 @@ public class TaskDealServiceImpl implements TaskDealService {
 		return TlResultCode.SUCCESS;
 	}
 
+	@Override
+	public int changeGroupName(long groupId, String name) {
+		ProjectGroup group = projectGroupDao.findById(groupId);
+		if (group == null) {
+			return TlResultCode.NOT_FOUND_PROJECT_GROUP;
+		}
+
+		group.setName(name);
+
+		return TlResultCode.SUCCESS;
+	}
+
+	@Override
+	public int changeProjectName(long projectId, String name) {
+		Project project = projectDao.findById(projectId);
+		if (project == null) {
+			return TlResultCode.NOT_FOUND_PROJECT;
+		}
+
+		project.setName(name);
+		return TlResultCode.SUCCESS;
+	}
+
+	@Override
+	public int delGroup(long groupId) {
+		ProjectGroup group = projectGroupDao.findById(groupId);
+		if (group == null) {
+			return TlResultCode.NOT_FOUND_PROJECT_GROUP;
+		}
+
+		projectGroupDao.delete(group);
+
+		return TlResultCode.SUCCESS;
+	}
+
+	@Override
+	public int delProject(long projectId) {
+		Project project = projectDao.findById(projectId);
+		if (project == null) {
+			return TlResultCode.NOT_FOUND_PROJECT;
+		}
+
+		projectDao.delete(project);
+
+		return TlResultCode.SUCCESS;
+	}
+
 }
+

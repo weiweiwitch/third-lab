@@ -2,6 +2,8 @@ package org.ariane.thirdlab.service;
 
 import org.ariane.thirdlab.service.data.ProjectsData;
 import org.ariane.thirdlab.service.data.TasksData;
+import org.ariane.thirdlab.service.impl.TaskDealServiceImpl.AddGroupRt;
+import org.ariane.thirdlab.service.impl.TaskDealServiceImpl.AddProjectRt;
 
 /**
  * Created by ariane on 16/4/25.
@@ -16,7 +18,6 @@ public interface TaskDealService {
 	public ProjectsData showAllProjects();
 
 	/**
-	 *
 	 * @param projectId
 	 * @return
 	 */
@@ -28,7 +29,7 @@ public interface TaskDealService {
 	 * @param name
 	 * @return
 	 */
-	public int addProjectGroup(String name);
+	public AddGroupRt addProjectGroup(String name);
 
 	/**
 	 * 添加项目
@@ -37,7 +38,7 @@ public interface TaskDealService {
 	 * @param groupId
 	 * @return
 	 */
-	public int addProject(String name, long groupId);
+	public AddProjectRt addProject(String name, long groupId);
 
 	/**
 	 * 添加任务
@@ -48,4 +49,38 @@ public interface TaskDealService {
 	 * @return
 	 */
 	public int addTask(String taskInfo, long projectId, long parentTaskId);
+
+	/**
+	 * 修改组名
+	 *
+	 * @param groupId
+	 * @param name
+	 * @return
+	 */
+	public int changeGroupName(long groupId, String name);
+
+	/**
+	 * 修改项目名
+	 *
+	 * @param projectId
+	 * @param name
+	 * @return
+	 */
+	public int changeProjectName(long projectId, String name);
+
+	/**
+	 * 删除项目组
+	 *
+	 * @param groupId
+	 * @return
+	 */
+	public int delGroup(long groupId);
+
+	/**
+	 * 删除项目
+	 *
+	 * @param projectId
+	 * @return
+	 */
+	public int delProject(long projectId);
 }

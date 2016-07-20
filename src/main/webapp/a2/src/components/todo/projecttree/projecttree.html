@@ -6,6 +6,7 @@
                     <i *ngIf="isProject(item)" class="fa fa-ellipsis-v" aria-hidden="true"></i>
                     <i *ngIf="isProject(item) == false" class="fa fa-folder-open-o" aria-hidden="true"></i>
                     <span (click)="selectProject(item)">{{item.name}}</span>
+                    <button (click)="del(item)">删除</button>
                 </div>
             </li>
         </ul>
