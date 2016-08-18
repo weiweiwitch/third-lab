@@ -1,11 +1,9 @@
-import 'babel-polyfill';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import {Provider} from 'react-redux';
 import {Router, browserHistory} from 'react-router';
 import useScroll from 'scroll-behavior/lib/useStandardScroll';
 import {syncHistoryWithStore} from 'react-router-redux';
-import {ReduxAsyncConnect} from 'redux-async-connect';
 
 import ApiClient from './helpers/apiclient';
 import createStore from './redux/create';
@@ -18,10 +16,7 @@ const history = syncHistoryWithStore(_browserHostory, store);
 
 // 组件
 const component = (
-  <Router render={
-    (props) =>
-      <ReduxAsyncConnect {...props} />
-  } history={history}>
+  <Router history={history}>
     {getRoutes(store)}
   </Router>
 );
