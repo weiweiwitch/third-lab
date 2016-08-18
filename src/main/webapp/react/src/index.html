@@ -1,0 +1,14 @@
+<!doctype html>
+<html lang="zh-cn">
+<head>
+    <base href="<%= htmlWebpackPlugin.options.basename %>" />
+    <title><%= htmlWebpackPlugin.options.title %></title>
+    <link rel="shortcut icon" href="/favicon.ico"/>
+    <meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1"/>
+    <link href="<%= htmlWebpackPlugin.options.basename %><%= htmlWebpackPlugin.files.chunks.main.css %>" rel="stylesheet"></head>
+</head>
+<body>
+<div id="content"/>
+<script src="<%= htmlWebpackPlugin.options.basename %><%= htmlWebpackPlugin.files.chunks.main.entry %>"></script>
+</body>
+</html>

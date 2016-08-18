@@ -8,3 +8,7 @@ src/main/webapp/a2/dist
 src/main/webapp/a2/.tmp
 src/main/webapp/a2/tmpts
 src/main/webapp/a2/node_modules
+
+src/main/webapp/react/.idea
+src/main/webapp/react/builds
+src/main/webapp/react/node_modules
