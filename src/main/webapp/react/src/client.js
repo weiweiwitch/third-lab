@@ -14,6 +14,8 @@ const client = new ApiClient();
 const store = createStore(_browserHostory, client, window.__data);
 const history = syncHistoryWithStore(_browserHostory, store);
 
+require('./app.scss');
+
 // 组件
 const component = (
   <Router history={history}>

@@ -18,7 +18,7 @@ try {
 
 // 开发环境配置
 var babelrcObjectDevelopment = babelrcObject.env && babelrcObject.env.development || {};
-console.info(babelrcObjectDevelopment);
+// console.info(babelrcObjectDevelopment);
 
 // 组合babel全局和开发环境插件
 var combinedPlugins = babelrcObject.plugins || [];
@@ -69,7 +69,9 @@ module.exports = {
   // 入口
   entry: {
     'main': [
-      'bootstrap-sass!./src/theme/bootstrap.config.js',
+      'bootstrap-loader',
+      // 'bootstrap-loader/lib/bootstrap.loader?extractStyles&configFilePath=${__dirname}/.bootstraprc!bootstrap-loader/no-op.js'
+      //'bootstrap-sass!./src/theme/bootstrap.config.js',
       './src/client.js'
     ]
   },
@@ -83,35 +85,41 @@ module.exports = {
   },
 
   module: {
-    loaders: [{
-      test: /\.jsx?$/,
-      exclude: /node_modules/,
-      loaders: ['babel?' + JSON.stringify(babelLoaderQuery), 'eslint-loader']
-    }, {
-      test: /\.json$/,
-      loader: 'json-loader'
-    }, {
-      test: /\.less$/,
-      loader: 'style!css?modules&importLoaders=2&sourceMap&localIdentName=[local]___[hash:base64:5]!autoprefixer?browsers=last 2 version!less?outputStyle=expanded&sourceMap'
-    }, {
-      test: /\.scss$/,
-      loader: 'style!css?modules&importLoaders=2&sourceMap&localIdentName=[local]___[hash:base64:5]!autoprefixer?browsers=last 2 version!sass?outputStyle=expanded&sourceMap'
-    }, {
-      test: /\.woff(\?v=\d+\.\d+\.\d+)?$/,
-      loader: "url?limit=10000&mimetype=application/font-woff"
-    }, {
-      test: /\.woff2(\?v=\d+\.\d+\.\d+)?$/,
-      loader: "url?limit=10000&mimetype=application/font-woff"
-    }, {
-      test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/,
-      loader: "url?limit=10000&mimetype=application/octet-stream"
-    }, {
-      test: /\.eot(\?v=\d+\.\d+\.\d+)?$/,
-      loader: "file"
-    }, {
-      test: /\.svg(\?v=\d+\.\d+\.\d+)?$/,
-      loader: "url?limit=10000&mimetype=image/svg+xml"
-    }]
+    loaders: [
+      {
+        test: /bootstrap-sass\/assets\/javascripts\//,
+        loader: 'imports?jQuery=jquery'
+      },
+      {
+        test: /\.jsx?$/,
+        exclude: /node_modules/,
+        loaders: ['babel?' + JSON.stringify(babelLoaderQuery), 'eslint-loader']
+      }, {
+        test: /\.json$/,
+        loader: 'json-loader'
+      }, {
+        test: /\.less$/,
+        loader: 'style!css?modules&importLoaders=2&sourceMap&localIdentName=[local]___[hash:base64:5]!autoprefixer?browsers=last 2 version!less?outputStyle=expanded&sourceMap'
+      }, {
+        test: /\.scss$/,
+        loaders: ["style", "css", "sass"]
+        // loader: 'style!css?modules&importLoaders=2&sourceMap&localIdentName=[local]___[hash:base64:5]!autoprefixer?browsers=last 2 version!sass?outputStyle=expanded&sourceMap'
+      }, {
+        test: /\.woff(\?v=\d+\.\d+\.\d+)?$/,
+        loader: "url?limit=10000&mimetype=application/font-woff"
+      }, {
+        test: /\.woff2(\?v=\d+\.\d+\.\d+)?$/,
+        loader: "url?limit=10000&mimetype=application/font-woff"
+      }, {
+        test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/,
+        loader: "url?limit=10000&mimetype=application/octet-stream"
+      }, {
+        test: /\.eot(\?v=\d+\.\d+\.\d+)?$/,
+        loader: "file"
+      }, {
+        test: /\.svg(\?v=\d+\.\d+\.\d+)?$/,
+        loader: "url?limit=10000&mimetype=image/svg+xml"
+      }]
   },
 
   progress: true,

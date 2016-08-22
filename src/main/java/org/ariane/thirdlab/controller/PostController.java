@@ -41,8 +41,8 @@ public class PostController {
 		List<Post> posts = postService.findAllPosts();
 
 		// 建立临时表
-		List<PostData> pDatas = new ArrayList<PostData>();
-		Map<Long, PostData> pMap = new HashMap<Long, PostData>();
+		List<PostData> pDatas = new ArrayList<>();
+		Map<Long, PostData> pMap = new HashMap<>();
 		for (Post post : posts) {
 			PostData postData = new PostData();
 			postData.id = post.getId();
@@ -58,7 +58,7 @@ public class PostController {
 		}
 
 		// 整理出根元素
-		List<PostData> rootDatas = new ArrayList<PostData>();
+		List<PostData> rootDatas = new ArrayList<>();
 		for (PostData postData : pDatas) {
 			if (postData.parantId == 0L) {
 				rootDatas.add(postData);

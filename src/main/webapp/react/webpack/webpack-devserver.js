@@ -16,7 +16,7 @@ var server = new WebpackDevServer(compiler, {
     colors: true
   },
   proxy: {
-    '/v1/*': {
+    '/api/*': {
       target: 'http://localhost:8080',
       ws: true
     }
