@@ -27,7 +27,7 @@ export default class WikiTree extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      nodeExpands: {}
+      nodeExpands: new Map()
     };
   }
 
@@ -45,7 +45,7 @@ export default class WikiTree extends Component {
     postsFromServer.map((eachPost) => {
       const node = {
         post: eachPost,
-        expand: this.state.nodeExpands[eachPost.id] ? true : false,
+        expand: this.state.nodeExpands.get(eachPost.id) ? true : false,
         nodes: []
       };
       posts.push(node);
@@ -64,11 +64,12 @@ export default class WikiTree extends Component {
   expandNode = (nodeId) => {
     console.info('expandNode: ' + nodeId);
     let expand = true;
-    if (this.state.nodeExpands[nodeId]) {
+    if (this.state.nodeExpands.get(nodeId)) {
       expand = false;
     }
-    const nodeExpands = Object.assign(this.state.nodeExpands, {});
-    nodeExpands[nodeId] = expand;
+
+    const nodeExpands = new Map(this.state.nodeExpands);
+    nodeExpands.set(nodeId, expand);
     this.setState({
       nodeExpands: nodeExpands
     });
