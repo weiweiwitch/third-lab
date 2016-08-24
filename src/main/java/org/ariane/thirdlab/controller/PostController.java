@@ -24,11 +24,15 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletResponse;
+
 @RestController
 public class PostController {
 
 	@Autowired
 	private PostService postService;
+
+
 
 	/**
 	 * 获取所有文章

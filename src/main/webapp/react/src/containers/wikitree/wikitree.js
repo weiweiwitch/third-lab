@@ -1,17 +1,27 @@
 import React, {Component, PropTypes} from 'react';
 import {connect} from 'react-redux';
+import {push} from 'react-router-redux';
+import {querySpecPost} from '../../redux/modules/wikispecpost';
+import {queryPosts} from '../../redux/modules/wikiposts';
 
 @connect(
   state => ({
     wikiposts: state.wikiposts.wikiposts,
     dirty: state.wikiposts.dirty
   }),
-  {}
+  {
+    queryPosts: queryPosts,
+    querySpecPost: querySpecPost,
+    pushState: push
+  }
 )
 export default class WikiTree extends Component {
 
   static propTypes = {
-    wikiposts: PropTypes.array.isRequired
+    wikiposts: PropTypes.array.isRequired,
+    querySpecPost: PropTypes.func.isRequired,
+    queryPosts: PropTypes.func.isRequired,
+    pushState: PropTypes.func.isRequired
   };
 
   constructor(props) {
@@ -19,6 +29,16 @@ export default class WikiTree extends Component {
     this.state = {
       nodeExpands: {}
     };
+  }
+
+  componentWillReceiveProps(nextProps) {
+    // 当将会接收到属性时处理
+    console.info('wikitree componentWillReceiveProps');
+    console.info(nextProps);
+    if (nextProps.dirty === true) {
+      console.info('wikitree call queryPosts()');
+      this.props.queryPosts();
+    }
   }
 
   transferPost(postsFromServer, posts) {
@@ -36,7 +56,13 @@ export default class WikiTree extends Component {
     });
   }
 
+  createPost = () => {
+    this.props.pushState('/wiki/wikinew/0');
+  };
+
+  // 点击节点后,展开或收缩
   expandNode = (nodeId) => {
+    console.info('expandNode: ' + nodeId);
     let expand = true;
     if (this.state.nodeExpands[nodeId]) {
       expand = false;
@@ -46,6 +72,11 @@ export default class WikiTree extends Component {
     this.setState({
       nodeExpands: nodeExpands
     });
+
+    // 查询特定文章
+    this.props.querySpecPost(nodeId);
+
+    this.props.pushState('/wiki/wikipost/' + nodeId);
   };
 
   render() {
@@ -62,7 +93,7 @@ export default class WikiTree extends Component {
       <div>
         <div className="row">
           <div className="col-md-12">
-            <button className="btn btn-primary">创建</button>
+            <button className="btn btn-primary" onClick={(event) => {this.createPost(event);}}>创建</button>
           </div>
         </div>
         <div className="row main-auto-height">

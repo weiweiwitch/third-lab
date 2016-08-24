@@ -15,9 +15,9 @@ export default (store) => {
       <IndexRoute component={ShowIndex}/>
       <Route path="wiki" component={Wiki}>
         <Route path="wikiindex" component={WikiIndex}/>
-        <Route path="wikinew" component={WikiNew}/>
+        <Route path="wikinew/:parentId" component={WikiNew}/>
         <Route path="wikiedit" component={WikiEdit}/>
-        <Route path="wikipost" component={WikiPost}/>
+        <Route path="wikipost/:pId" component={WikiPost}/>
       </Route>
     </Route>
   );

@@ -20,7 +20,6 @@ export default class Wiki extends Component {
   };
 
   componentDidMount() {
-    // 查询账号列表
     this.props.queryPosts();
   }
 
