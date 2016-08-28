@@ -1,11 +1,14 @@
 import React, {Component, PropTypes} from 'react';
 import {connect} from 'react-redux';
 import {push} from 'react-router-redux';
+import RaisedButton from 'material-ui/RaisedButton';
+import TextField from 'material-ui/TextField';
 const marked = require('marked');
 import * as hljs from 'highlight.js';
 
 import {querySpecPost} from '../../redux/modules/wikispecpost';
 import {chgPost, clearModifyMark} from '../../redux/modules/wikispecpost';
+import {queryPosts} from '../../redux/modules/wikiposts';
 
 require('./wikiEdit.scss');
 
@@ -17,6 +20,7 @@ require('./wikiEdit.scss');
   {
     chgPost: chgPost,
     clearModifyMark: clearModifyMark,
+    queryPosts: queryPosts,
     querySpecPost: querySpecPost,
     pushState: push
   }
@@ -27,6 +31,7 @@ export default class WikiEdit extends Component {
     wikipost: PropTypes.object.isRequired,
     chgPost: PropTypes.func.isRequired,
     clearModifyMark: PropTypes.func.isRequired,
+    queryPosts: PropTypes.func.isRequired,
     querySpecPost: PropTypes.func.isRequired,
     pushState: PropTypes.func.isRequired
   };
@@ -37,7 +42,8 @@ export default class WikiEdit extends Component {
     console.info('constructor ' + props.wikipost.title);
     this.state = {
       postTitle: props.wikipost.title,
-      postText: props.wikipost.postText
+      postText: props.wikipost.postText,
+      postParentId: props.wikipost.parantId,
     };
   }
 
@@ -56,7 +62,8 @@ export default class WikiEdit extends Component {
       const post = this.props.wikipost;
       this.props.pushState('/wiki/wikipost/' + post.id);
 
-      this.props.querySpecPost(post.id);
+      // 由于可能的上下级改变,这里重新查询所有文章吧
+      this.props.queryPosts();
     }
   }
 
@@ -68,6 +75,11 @@ export default class WikiEdit extends Component {
   updateText = (event) => {
     console.info(event);
     this.setState({postText: event.target.value});
+  };
+
+  updateParentId = (event) => {
+    console.info(event);
+    this.setState({postParentId: event.target.value});
   };
 
   confirmModify = (event) => {
@@ -82,7 +94,7 @@ export default class WikiEdit extends Component {
       title: this.state.postTitle,
       postText: this.state.postText,
       audio: post.audio,
-      parantId: post.parantId,
+      parantId: parseInt(this.state.postParentId, 10),
       parant: post.parant
     };
     this.props.chgPost(post.id, updatedPost);
@@ -110,17 +122,23 @@ export default class WikiEdit extends Component {
         <div className="col-md-12 form-horizontal">
           <div className="form-group">
             <div className="col-md-8">
-              <input className="form-control" type="text" onChange={(event)=> {
-                this.updateTitle(event);
-              }} value={this.state.postTitle}/>
+              <TextField hintText="请输入标题" floatingLabelText="标题"
+                         onChange={(event)=> {
+                           this.updateTitle(event);
+                         }} value={this.state.postTitle}
+              />
             </div>
-            <label className="col-md-1 control-label">ID：</label>
-            <div className="col-md-1">
-              <input className="form-control" readOnly type="text" defaultValue={post.id}/>
+            <div className="col-md-2">
+              <TextField type="number" hintText="" floatingLabelText="ID"
+                         disabled={true} defaultValue={post.id}
+              />
             </div>
-            <label className="col-md-1 control-label">上级：</label>
-            <div className="col-md-1">
-              <input className="form-control" type="text" defaultValue={post.parantId}/>
+            <div className="col-md-2">
+              <TextField type="number" hintText="请输入上层ID" floatingLabelText="父ID"
+                         onChange={(event)=> {
+                           this.updateParentId(event);
+                         }} value={this.state.postParentId}
+              />
             </div>
           </div>
 
@@ -128,9 +146,12 @@ export default class WikiEdit extends Component {
             <div className="col-md-12">
               <div className="row">
                 <div className="col-md-6">
-                  <textarea className="form-control wikieditarea-height edit-text" onChange={(event)=> {
-                    this.updateText(event);
-                  }} value={this.state.postText}/>
+                  <TextField multiLine={true} className="edit-text wikicreatearea-height" fullWidth={true}
+                             underlineShow={false} hintText="" floatingLabelText="内容"
+                             onChange={(event)=> {
+                               this.updateText(event);
+                             }} value={this.state.postText}
+                  />
                 </div>
                 <div className="col-md-6 inner_topic">
                   <div className="markdown-text textarea-height" dangerouslySetInnerHTML={postText}></div>
@@ -140,14 +161,12 @@ export default class WikiEdit extends Component {
           </div>
           <div className="form-group">
             <div className="col-md-3">
-              <button onClick={(event)=> {
+              <RaisedButton label="更新" primary={true} onClick={(event)=> {
                 this.confirmModify(event);
-              }} className="btn btn-primary">更新
-              </button>
-              <button onClick={(event)=> {
+              }}/>
+              <RaisedButton label="取消" onClick={(event)=> {
                 this.cancelModify(event);
-              }} className="btn btn-default">取消
-              </button>
+              }}/>
             </div>
           </div>
         </div>

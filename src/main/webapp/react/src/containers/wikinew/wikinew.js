@@ -1,6 +1,8 @@
 import React, {Component, PropTypes} from 'react';
 import {connect} from 'react-redux';
 import {push} from 'react-router-redux';
+import RaisedButton from 'material-ui/RaisedButton';
+import TextField from 'material-ui/TextField';
 const marked = require('marked');
 import * as hljs from 'highlight.js';
 
@@ -111,16 +113,19 @@ export default class WikiNew extends Component {
           <form className="form-horizontal">
             <div className="form-group">
               <div className="col-md-8">
-                <input type="text" className="form-control" onChange={(event)=> {
-                  this.updateTitle(event);
-                }} value={this.state.postTitle} required/>
-                <show-error control="title"/>
+                <TextField hintText="请输入标题" floatingLabelText="标题"
+                           onChange={(event)=> {
+                             this.updateTitle(event);
+                           }} value={this.state.postTitle}
+                />
               </div>
-              <label className="col-md-1 control-label">上级：</label>
               <div className="col-md-1">
-                <input type="text" className="form-control" onChange={(event)=> {
-                  this.updateParentId(event);
-                }} value={this.state.parentId}/>
+                <TextField type="number"
+                           hintText="请输入上层ID" floatingLabelText="父ID"
+                           onChange={(event)=> {
+                             this.updateParentId(event);
+                           }} value={this.state.parentId}
+                />
               </div>
             </div>
 
@@ -128,9 +133,12 @@ export default class WikiNew extends Component {
               <div className="col-md-12">
                 <div className="row">
                   <div className="col-md-6">
-                    <textarea className="form-control wikicreatearea-height edit-text" onChange={(event)=> {
-                      this.updateText(event);
-                    }} value={this.state.postText} />
+                    <TextField multiLine={true} className="edit-text wikicreatearea-height" fullWidth={true}
+                               underlineShow={false} hintText="" floatingLabelText="内容"
+                               onChange={(event)=> {
+                                 this.updateText(event);
+                               }} value={this.state.postText}
+                    />
                   </div>
                   <div className="col-md-6 inner_topic">
                     <div className="markdown-text textarea-height" dangerouslySetInnerHTML={postText}></div>
@@ -141,14 +149,12 @@ export default class WikiNew extends Component {
 
             <div className="form-group">
               <div className="col-md-12">
-                <button onClick={(event) => {
+                <RaisedButton label="新建" primary={true} onClick={(event) => {
                   this.createPost(event);
-                }} className="btn btn-primary">新建
-                </button>
-                <button onClick={(event) => {
+                }}/>
+                <RaisedButton label="取消" onClick={(event) => {
                   this.cancelCreate(event);
-                }} className="btn btn-default">取消
-                </button>
+                }}/>
               </div>
             </div>
           </form>

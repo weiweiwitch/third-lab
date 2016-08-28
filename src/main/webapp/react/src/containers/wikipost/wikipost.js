@@ -1,6 +1,7 @@
 import React, {Component, PropTypes} from 'react';
 import {connect} from 'react-redux';
 import {push} from 'react-router-redux';
+import RaisedButton from 'material-ui/RaisedButton';
 const marked = require('marked');
 import * as hljs from 'highlight.js';
 
@@ -32,6 +33,9 @@ export default class WikiPost extends Component {
   componentDidMount() {
     // 查询账号列表
     const postId = parseInt(this.props.params.pId, 10);
+
+    // 查询特定文章
+    this.props.querySpecPost(postId);
   }
 
   edit = () => {
@@ -72,34 +76,31 @@ export default class WikiPost extends Component {
     return (
       <div className="row">
         <div className="col-md-12">
+          {/* 编辑栏 */}
           <div className="row">
             <div className="col-md-11">
-              <button className="btn btn-primary" onClick={(event) => {
+              <RaisedButton label="编辑" primary={true} onClick={(event) => {
                 this.edit();
-              }}>编辑
-              </button>
-              <button className="btn btn-default" onClick={(event) => {
+              }}/>
+              <RaisedButton label="添加子文章" onClick={(event) => {
                 this.createSubPost();
-              }}>添加子文章
-              </button>
-              <button className="btn btn-default" onClick={(event) => {
+              }}/>
+              <RaisedButton label="首页" onClick={(event) => {
                 this.transToIndex();
-              }}>首页
-              </button>
+              }}/>
             </div>
             <div className="col-md-1">
-              <button className="btn btn-default" onClick={(event) => {
+              <RaisedButton label="删除" onClick={(event) => {
                 this.deletePost();
-              }}>删除
-              </button>
+              }}/>
             </div>
           </div>
+          {/* 文章内容 */}
           <div className="row">
             <div className="col-md-10 inner_topic_container">
               <div className="topic_header">
                 <span className="topic_full_title">{post.title}</span>
               </div>
-              <content></content>
               <div className="inner_topic">
                 <div className="markdown-text" dangerouslySetInnerHTML={postText}></div>
               </div>

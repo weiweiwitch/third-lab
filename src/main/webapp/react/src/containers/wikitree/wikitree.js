@@ -1,6 +1,7 @@
 import React, {Component, PropTypes} from 'react';
 import {connect} from 'react-redux';
 import {push} from 'react-router-redux';
+import RaisedButton from 'material-ui/RaisedButton';
 import {querySpecPost} from '../../redux/modules/wikispecpost';
 import {queryPosts} from '../../redux/modules/wikiposts';
 
@@ -60,7 +61,7 @@ export default class WikiTree extends Component {
     this.props.pushState('/wiki/wikinew/0');
   };
 
-  // 点击节点后,展开或收缩
+  // 点击节点后,展开或收缩的响应方法
   expandNode = (nodeId) => {
     console.info('expandNode: ' + nodeId);
     let expand = true;
@@ -73,9 +74,6 @@ export default class WikiTree extends Component {
     this.setState({
       nodeExpands: nodeExpands
     });
-
-    // 查询特定文章
-    this.props.querySpecPost(nodeId);
 
     this.props.pushState('/wiki/wikipost/' + nodeId);
   };
@@ -94,7 +92,7 @@ export default class WikiTree extends Component {
       <div>
         <div className="row">
           <div className="col-md-12">
-            <button className="btn btn-primary" onClick={(event) => {this.createPost(event);}}>创建</button>
+            <RaisedButton label="创建" primary={true} onClick={(event) => {this.createPost(event);}}/>
           </div>
         </div>
         <div className="row main-auto-height">
