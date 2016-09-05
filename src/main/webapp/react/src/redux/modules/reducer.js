@@ -4,6 +4,7 @@ import wikiposts from './wikiposts';
 import wikispecpost from './wikispecpost';
 import examcategory from './examcategory';
 import examcategoryquestions from './examcategoryquestions';
+import examexec from './examexec';
 
 // 组合reducer
 export default combineReducers({
@@ -11,5 +12,6 @@ export default combineReducers({
   wikiposts,
   wikispecpost,
   examcategory,
-  examcategoryquestions
+  examcategoryquestions,
+  examexec
 });

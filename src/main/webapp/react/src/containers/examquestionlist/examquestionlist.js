@@ -39,6 +39,11 @@ export default class ExamQuestionList extends Component {
     this.props.pushState('/exam/examquestionnew/' + categoryId);
   }
 
+  startExam() {
+    const categoryId = parseInt(this.props.params.categoryId, 10);
+    this.props.pushState('/exam/examstart/' + categoryId);
+  }
+
   render() {
 
     const categoryQuestions = this.props.categoryQuestions;
@@ -61,6 +66,9 @@ export default class ExamQuestionList extends Component {
             <div className="col-md-12">
               <RaisedButton label="创建新题目" primary={true} onClick={() => {
                 this.createQuestion();
+              }}/>
+              <RaisedButton label="开始测试" primary={true} onClick={() => {
+                this.startExam();
               }}/>
             </div>
           </div>

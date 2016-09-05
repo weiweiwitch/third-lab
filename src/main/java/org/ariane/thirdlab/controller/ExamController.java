@@ -3,6 +3,8 @@ package org.ariane.thirdlab.controller;
 import org.ariane.thirdlab.constvalue.TlResultCode;
 import org.ariane.thirdlab.service.ExamService;
 import org.ariane.thirdlab.service.data.ExamCategoryQuestions;
+import org.ariane.thirdlab.service.data.ExamCategorySummary;
+import org.ariane.thirdlab.service.data.ExamPreparedQuestions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -23,9 +25,60 @@ public class ExamController {
 	@RequestMapping(value = "/categorysummary", method = RequestMethod.GET, produces = "application/json")
 	@ResponseStatus(HttpStatus.OK)
 	public QueryResponse categorySummary() {
-		List data = examService.queryExamCategorySummary();
+		List<ExamCategorySummary> data = examService.queryExamCategorySummary();
 		QueryResponse queryResponse = new QueryResponse(TlResultCode.SUCCESS);
 		queryResponse.data = data;
+		return queryResponse;
+	}
+
+	/**
+	 * 创建类别
+	 *
+	 * @param needCreateCategory
+	 * @return
+	 */
+	@RequestMapping(value = "/categories", method = RequestMethod.POST, consumes = "application/json", produces = "application/json")
+	@ResponseStatus(HttpStatus.OK)
+	public QueryResponse createCategory(@RequestBody CategoryDetailData needCreateCategory) {
+		String categoryName = needCreateCategory.categoryName;
+		long parentId = needCreateCategory.parentId;
+		int rt = examService.addCategory(categoryName, parentId);
+		QueryResponse queryResponse = new QueryResponse(rt);
+		return queryResponse;
+	}
+
+	/**
+	 * 更新类别
+	 *
+	 * @param id
+	 * @param needUpdateCategory
+	 * @return
+	 */
+	@RequestMapping(value = "/categories/{id}", method = RequestMethod.PUT, produces = "application/json")
+	@ResponseStatus(HttpStatus.OK)
+	public QueryResponse updateCategory(@PathVariable long id, @RequestBody CategoryDetailData needUpdateCategory) {
+		String categoryName = needUpdateCategory.categoryName;
+		long parentId = needUpdateCategory.parentId;
+		int rt = examService.updateCategory(id, categoryName, parentId);
+		QueryResponse queryResponse = new QueryResponse(rt);
+		return queryResponse;
+	}
+
+	public static class CategoryDetailData {
+		public String categoryName;
+		public long parentId;
+	}
+
+	/**
+	 * 删除类别
+	 *
+	 * @param id
+	 */
+	@RequestMapping(value = "/categories/{id}", method = RequestMethod.DELETE, produces = "application/json")
+	@ResponseStatus(HttpStatus.OK)
+	public QueryResponse deleteCategory(@PathVariable long id) {
+		int rt = examService.delCategory(id);
+		QueryResponse queryResponse = new QueryResponse(rt);
 		return queryResponse;
 	}
 
@@ -108,6 +161,15 @@ public class ExamController {
 	public QueryResponse deleteQuestion(@PathVariable long id) {
 		int rt = examService.delQuestion(id);
 		QueryResponse queryResponse = new QueryResponse(rt);
+		return queryResponse;
+	}
+
+	@RequestMapping(value = "/preparequestions", method = RequestMethod.GET, produces = "application/json")
+	@ResponseStatus(HttpStatus.OK)
+	public QueryResponse PrepareSpecCategoryQuestions(int categoryId, int num) {
+		ExamPreparedQuestions data = examService.prepareQuestions(categoryId, num);
+		QueryResponse queryResponse = new QueryResponse(TlResultCode.SUCCESS);
+		queryResponse.data = data;
 		return queryResponse;
 	}
 }

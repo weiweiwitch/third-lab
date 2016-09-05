@@ -29,17 +29,17 @@ export default class ExamQuestion extends Component {
 
     const questionId = parseInt(this.props.params.questionId, 10);
     const categoryQuestions = this.props.categoryQuestions;
-    this.syncQuestion(questionId, categoryQuestions);
+    this.syncQuestion(questionId, categoryQuestions, true);
   }
 
   componentWillReceiveProps(nextProps) {
     console.info('ExamQuestion componentWillReceiveProps');
     const questionId = parseInt(this.props.params.questionId, 10);
     const categoryQuestions = nextProps.categoryQuestions;
-    this.syncQuestion(questionId, categoryQuestions);
+    this.syncQuestion(questionId, categoryQuestions, false);
   }
 
-  syncQuestion(questionId, categoryQuestions) {
+  syncQuestion(questionId, categoryQuestions, init) {
     let questionStr = '';
     let answerStr = '';
     let answerOther1Str = '';
@@ -54,13 +54,25 @@ export default class ExamQuestion extends Component {
         answerOther3Str = question.answerOther3;
       }
     }
-    this.state = {
-      questionStr: questionStr,
-      answerStr: answerStr,
-      answerOther1Str: answerOther1Str,
-      answerOther2Str: answerOther2Str,
-      answerOther3Str: answerOther3Str
-    };
+
+    if (init) {
+      this.state = {
+        questionStr: questionStr,
+        answerStr: answerStr,
+        answerOther1Str: answerOther1Str,
+        answerOther2Str: answerOther2Str,
+        answerOther3Str: answerOther3Str
+      };
+    } else {
+      this.setState({
+        questionStr: questionStr,
+        answerStr: answerStr,
+        answerOther1Str: answerOther1Str,
+        answerOther2Str: answerOther2Str,
+        answerOther3Str: answerOther3Str
+      });
+    }
+
   }
 
   editQuestion(questionId) {

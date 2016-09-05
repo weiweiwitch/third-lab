@@ -14,4 +14,5 @@ public interface TlResultCode {
 
 	public static final int NOT_FOUND_TARGET_CATEGORY = 301; // 找不到目标类别
 	public static final int NOT_FOUND_TARGET_QUESTION = 302; // 找不到目标问题
+	public static final int CANT_DEL_NO_EMPTY_CATEGORY = 303; // 无法删除非空类别
 }

@@ -6,6 +6,7 @@ import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.criterion.Projections;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.orm.hibernate4.HibernateCallback;
 import org.springframework.stereotype.Repository;
 
@@ -36,11 +37,38 @@ public class ExamQuestionDaoImpl extends AbstractDaoImpl<ExamQuestion> implement
 	}
 
 	@Override
+	public Integer calSpecCategoryQuestionNum(long categoryId) {
+		Integer cals = (Integer) getHibernateTemplate().execute(new HibernateCallback<Integer>() {
+			public Integer doInHibernate(Session session) throws HibernateException {
+				Integer totalResult = ((Number) session.createCriteria(ExamQuestion.class)
+						.add(Restrictions.eq("categoryId", categoryId))
+						.setProjection(Projections.rowCount()).uniqueResult()).intValue();
+				return totalResult;
+			}
+		});
+
+		return cals;
+	}
+
+	@Override
 	public List<ExamQuestion> findQuestions(long categoryId) {
 		List<ExamQuestion> questions = (List<ExamQuestion>) getHibernateTemplate().execute(new HibernateCallback<List<ExamQuestion>>() {
 			public List<ExamQuestion> doInHibernate(Session session) throws HibernateException {
 				Query hqlQuery = session.createQuery("FROM ExamQuestion p WHERE p.categoryId = :categoryId");
 				hqlQuery.setLong("categoryId", categoryId);
+				return hqlQuery.list();
+			}
+		});
+		return questions;
+	}
+
+	@Override
+	public List<ExamQuestion> findQuestionsLimit(long categoryId, int num) {
+		List<ExamQuestion> questions = (List<ExamQuestion>) getHibernateTemplate().execute(new HibernateCallback<List<ExamQuestion>>() {
+			public List<ExamQuestion> doInHibernate(Session session) throws HibernateException {
+				Query hqlQuery = session.createQuery("FROM ExamQuestion p WHERE p.categoryId = :categoryId");
+				hqlQuery.setLong("categoryId", categoryId);
+				hqlQuery.setMaxResults(num);
 				return hqlQuery.list();
 			}
 		});
