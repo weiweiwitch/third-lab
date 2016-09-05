@@ -11,4 +11,7 @@ public interface TlResultCode {
 	public static final int NOT_FOUND_PROJECT = 202; // 找不到目标项目
 	public static final int NOT_FOUND_TASK = 203; // 找不到目标任务
 	public static final int NOT_SAME_PROJECT_AND_TASK = 204; // 任务和工程不符
+
+	public static final int NOT_FOUND_TARGET_CATEGORY = 301; // 找不到目标类别
+	public static final int NOT_FOUND_TARGET_QUESTION = 302; // 找不到目标问题
 }

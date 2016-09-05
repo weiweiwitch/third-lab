@@ -1,5 +1,6 @@
 import React, {Component, PropTypes} from 'react';
 import {connect} from 'react-redux';
+import {Link} from 'react-router';
 
 @connect(
   state => ({}),
@@ -21,7 +22,10 @@ export default class App extends Component {
             </div>
             <ul className="nav navbar-nav navbar-right">
               <li >
-                <a href="#">Wiki</a>
+                <Link to="/wiki/wikiindex">Wiki</Link>
+              </li>
+              <li >
+                <Link to="/exam/examsummary">Exam</Link>
               </li>
             </ul>
           </div>
