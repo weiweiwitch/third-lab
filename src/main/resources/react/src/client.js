@@ -19,6 +19,13 @@ require('./app.scss');
 
 injectTapEventPlugin();
 
+export const styles = {
+  codeStyle: {
+    fontFamily: 'Monaco, Menlo, Consolas, monospace',
+    fontSize: '12px'
+  }
+};
+
 // 组件
 const component = (
   <Router history={history}>

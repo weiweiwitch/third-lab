@@ -2,7 +2,6 @@ import React, {Component, PropTypes} from 'react';
 import {connect} from 'react-redux';
 import {push} from 'react-router-redux';
 import RaisedButton from 'material-ui/RaisedButton';
-import {querySpecPost} from '../../redux/modules/wikispecpost';
 import {queryPosts} from '../../redux/modules/wikiposts';
 
 @connect(
@@ -12,7 +11,6 @@ import {queryPosts} from '../../redux/modules/wikiposts';
   }),
   {
     queryPosts: queryPosts,
-    querySpecPost: querySpecPost,
     pushState: push
   }
 )
@@ -20,7 +18,6 @@ export default class WikiTree extends Component {
 
   static propTypes = {
     wikiposts: PropTypes.array.isRequired,
-    querySpecPost: PropTypes.func.isRequired,
     queryPosts: PropTypes.func.isRequired,
     pushState: PropTypes.func.isRequired
   };

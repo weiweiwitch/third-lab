@@ -6,9 +6,9 @@ import TextField from 'material-ui/TextField';
 const marked = require('marked');
 import * as hljs from 'highlight.js';
 
-import {querySpecPost} from '../../redux/modules/wikispecpost';
 import {chgPost, clearModifyMark} from '../../redux/modules/wikispecpost';
 import {queryPosts} from '../../redux/modules/wikiposts';
+import {styles} from '../../client';
 
 require('./wikiEdit.scss');
 
@@ -21,7 +21,6 @@ require('./wikiEdit.scss');
     chgPost: chgPost,
     clearModifyMark: clearModifyMark,
     queryPosts: queryPosts,
-    querySpecPost: querySpecPost,
     pushState: push
   }
 )
@@ -32,7 +31,6 @@ export default class WikiEdit extends Component {
     chgPost: PropTypes.func.isRequired,
     clearModifyMark: PropTypes.func.isRequired,
     queryPosts: PropTypes.func.isRequired,
-    querySpecPost: PropTypes.func.isRequired,
     pushState: PropTypes.func.isRequired
   };
 
@@ -146,7 +144,7 @@ export default class WikiEdit extends Component {
             <div className="col-md-12">
               <div className="row">
                 <div className="col-md-6">
-                  <TextField multiLine={true} className="edit-text wikicreatearea-height" fullWidth={true}
+                  <TextField textareaStyle={styles.codeStyle} multiLine={true} className="edit-text wikicreatearea-height" fullWidth={true}
                              underlineShow={false} hintText="" floatingLabelText="内容"
                              onChange={(event)=> {
                                this.updateText(event);

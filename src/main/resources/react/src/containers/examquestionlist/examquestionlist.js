@@ -75,7 +75,7 @@ export default class ExamQuestionList extends Component {
           <div className="row">
             <div className="col-md-12">
               <Table>
-                <TableHeader adjustForCheckbox={false}>
+                <TableHeader displaySelectAll={false} adjustForCheckbox={false}>
                   <TableRow>
                     <TableHeaderColumn>ID</TableHeaderColumn>
                     <TableHeaderColumn>问题</TableHeaderColumn>

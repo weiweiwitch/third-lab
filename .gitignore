@@ -2,14 +2,16 @@
 target
 .idea
 .externalToolBuilders
-third-lab.iml
+
+accesslog
+
 src/main/webapp/a2/.idea
 src/main/webapp/a2/dist
 src/main/webapp/a2/.tmp
 src/main/webapp/a2/tmpts
 src/main/webapp/a2/node_modules
 
-src/main/webapp/react/.idea
-src/main/webapp/react/builds
-src/main/webapp/react/node_modules
-src/main/webapp/react/static
+src/main/resources/react/.idea
+src/main/resources/react/builds
+src/main/resources/react/node_modules
+src/main/resources/react/static

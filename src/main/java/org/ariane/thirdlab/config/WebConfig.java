@@ -1,25 +1,20 @@
 package org.ariane.thirdlab.config;
 
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.multipart.commons.CommonsMultipartResolver;
-import org.springframework.web.multipart.support.StandardServletMultipartResolver;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
-import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
 @Configuration
-@EnableWebMvc
+//@EnableWebMvc
 @ComponentScan(basePackages = "org.ariane.thirdlab.controller")
 public class WebConfig extends WebMvcConfigurerAdapter {
 
-	@Override
-	public void addResourceHandlers(ResourceHandlerRegistry registry) {
-		registry.addResourceHandler("/p/**").addResourceLocations("/react/static/dist/").setCachePeriod(0);
+//	@Override
+//	public void addResourceHandlers(ResourceHandlerRegistry registry) {
+//		registry.addResourceHandler("/p/**").addResourceLocations("/react/static/dist/").setCachePeriod(0);
 		// registry.addResourceHandler("/**").addResourceLocations("/").setCachePeriod(0);
-	}
+//	}
 
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
@@ -36,9 +31,9 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 	// return multipartResolver;
 	// }
 
-	@Bean
-	public StandardServletMultipartResolver multipartResolver() {
-		StandardServletMultipartResolver standardServletMultipartResolver = new StandardServletMultipartResolver();
-		return standardServletMultipartResolver;
-	}
+//	@Bean
+//	public StandardServletMultipartResolver multipartResolver() {
+//		StandardServletMultipartResolver standardServletMultipartResolver = new StandardServletMultipartResolver();
+//		return standardServletMultipartResolver;
+//	}
 }
