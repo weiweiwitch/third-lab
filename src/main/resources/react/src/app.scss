@@ -102,6 +102,7 @@
     border-left: 3px solid $green;
     background: $white2;
     border-radius: 0;
+    padding: 8px;
   }
 
   p {
@@ -125,12 +126,16 @@
     font-size: 18px;
     padding-bottom: 3px;
     border-bottom: 1px solid $gray2;
+    margin-top: 20px;
+    margin-bottom: 10px;
   }
 
   h3 {
     padding-bottom: 3px;
     font-size: 16px;
     border-bottom: 1px solid $gray2;
+    margin-top: 20px;
+    margin-bottom: 10px;
   }
 
   h4 {

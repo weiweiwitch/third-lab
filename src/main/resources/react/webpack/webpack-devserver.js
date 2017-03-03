@@ -1,13 +1,16 @@
 import WebpackDevServer from "webpack-dev-server";
 import webpack from "webpack";
 
-var config = require("./devserver.config.js");
+var config = require("./dev.config.js");
 
+const apiPort = process.env.APIPORT;
 var port = process.env.PORT;
-config.entry.main.unshift("webpack-dev-server/client?http://localhost:" + port + "/");
 
 var compiler = webpack(config);
 var server = new WebpackDevServer(compiler, {
+  contentBase: 'src/',
+  hot: true,
+  historyApiFallback: true,
   quiet: false,
   noInfo: false,
   lazy: false,
@@ -17,7 +20,7 @@ var server = new WebpackDevServer(compiler, {
   },
   proxy: {
     '/api/*': {
-      target: 'http://localhost:8080',
+      target: 'http://localhost:' + apiPort,
       ws: true
     }
   },

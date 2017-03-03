@@ -27,12 +27,11 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletResponse;
 
 @RestController
+@RequestMapping(value = "/api")
 public class PostController {
 
 	@Autowired
 	private PostService postService;
-
-
 
 	/**
 	 * 获取所有文章

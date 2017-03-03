@@ -10,6 +10,7 @@ var projectRootPath = path.resolve(__dirname, '../');
 var assetsPath = path.resolve(projectRootPath, './static/dist');
 
 let extractCSS = new ExtractTextPlugin('[name]-[chunkhash].css', {allChunks: true});
+const sources = path.resolve('./src');
 
 module.exports = {
   // 构建时输出多少信息
@@ -28,7 +29,19 @@ module.exports = {
       'bootstrap-loader',
       // 'bootstrap-sass!./src/theme/bootstrap.config.prod.js',
       // 'font-awesome-webpack!./src/theme/font-awesome.config.prod.js',
-      './src/client.js'
+      './src/index.js'
+    ],
+    'vendor': [
+      'antd',
+      'history',
+      'isomorphic-fetch',
+      'moment',
+      'react',
+      'react-dom',
+      'react-redux',
+      'react-router',
+      'react-router-redux',
+      'redux'
     ]
   },
   output: {
@@ -46,7 +59,22 @@ module.exports = {
       {
         test: /\.jsx?$/,
         exclude: /node_modules/,
-        loaders: [strip.loader('debug'), 'babel']
+        loader: 'babel-loader',
+        query: {
+          presets: ['es2015', 'react', 'stage-0'],
+          plugins: [
+            ['import', {
+              "libraryName": "antd",
+              "style": true,   // or 'css'
+            }]
+          ]
+        }
+      }, {
+        test: /\.tsx?$/,
+        loader: 'awesome-typescript-loader',
+        include: [
+          sources,
+        ]
       },
       {
         test: /\.json$/,
@@ -58,10 +86,7 @@ module.exports = {
       },
       {
         test: /\.scss$/,
-        // loaders: ["style", "css", "sass"]
         loader: extractCSS.extract(['css', 'sass'])
-        // loader: ExtractTextPlugin.extract(['style', 'css', 'sass'])
-        // loader: ExtractTextPlugin.extract('style', 'css?modules&importLoaders=2&sourceMap!sass?outputStyle=expanded&sourceMap=true&sourceMapContents=true')
       },
       {
         test: /\.woff(\?v=\d+\.\d+\.\d+)?$/,
@@ -91,7 +116,7 @@ module.exports = {
       'src',
       'node_modules'
     ],
-    extensions: ['', '.json', '.js', '.jsx']
+    extensions: ['', '.json', '.js', '.jsx', '.scss', '.ts', '.tsx']
   },
   plugins: [
     new CleanPlugin([assetsPath], {root: projectRootPath}),
