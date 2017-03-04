@@ -12,3 +12,6 @@ src/main/resources/react/static
 
 build
 .gradle
+
+docker/application.properties
+docker/thirdlab.jar

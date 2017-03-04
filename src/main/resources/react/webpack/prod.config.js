@@ -6,8 +6,8 @@ import ExtractTextPlugin from 'extract-text-webpack-plugin';
 import strip from 'strip-loader';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 
-var projectRootPath = path.resolve(__dirname, '../');
-var assetsPath = path.resolve(projectRootPath, './static/dist');
+const projectRootPath = path.resolve(__dirname, '../');
+const assetsPath = path.resolve(projectRootPath, './static/dist');
 
 let extractCSS = new ExtractTextPlugin('[name]-[chunkhash].css', {allChunks: true});
 const sources = path.resolve('./src');
@@ -26,13 +26,11 @@ module.exports = {
 
   entry: {
     'main': [
-      'bootstrap-loader',
       // 'bootstrap-sass!./src/theme/bootstrap.config.prod.js',
       // 'font-awesome-webpack!./src/theme/font-awesome.config.prod.js',
       './src/index.js'
     ],
     'vendor': [
-      'antd',
       'history',
       'isomorphic-fetch',
       'moment',
@@ -82,11 +80,15 @@ module.exports = {
       },
       {
         test: /\.less$/,
-        loader: ExtractTextPlugin.extract('style', 'css?modules&importLoaders=2&sourceMap!autoprefixer?browsers=last 2 version!less?outputStyle=expanded&sourceMap=true&sourceMapContents=true')
+        loader: ExtractTextPlugin.extract('style-loader', 'css-loader?modules&importLoaders=2&sourceMap!autoprefixer?browsers=last 2 version!less?outputStyle=expanded&sourceMap=true&sourceMapContents=true')
       },
       {
         test: /\.scss$/,
-        loader: extractCSS.extract(['css', 'sass'])
+        loader: extractCSS.extract(['css-loader', 'sass-loader'])
+      },
+      {
+        test: /\.css$/,
+        loader: 'style-loader!css-loader'
       },
       {
         test: /\.woff(\?v=\d+\.\d+\.\d+)?$/,
@@ -116,7 +118,7 @@ module.exports = {
       'src',
       'node_modules'
     ],
-    extensions: ['', '.json', '.js', '.jsx', '.scss', '.ts', '.tsx']
+    extensions: ['', '.json', '.js', '.jsx', '.ts', '.tsx']
   },
   plugins: [
     new CleanPlugin([assetsPath], {root: projectRootPath}),
@@ -126,7 +128,7 @@ module.exports = {
     extractCSS,
     new webpack.DefinePlugin({
       'process.env': {
-        NODE_ENV: '"development"'
+        NODE_ENV: '"production"'
       },
 
       __CLIENT__: true,
@@ -148,7 +150,7 @@ module.exports = {
     }),
     new HtmlWebpackPlugin({
       title: 'ns-mgr',
-      basename: '/api/p/',
+      basename: '',
       template: 'src/index.html', // Load a custom template
       inject: false // Inject all scripts into the body
     })

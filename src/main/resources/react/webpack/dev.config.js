@@ -11,7 +11,7 @@ const port = process.env.PORT;
 
 const htmlWebpackPlugin = new HtmlWebpackPlugin({
   title: 'third-lab',
-  basename: '',
+  // basename: '',
   template: 'src/index.html', // Load a custom template
   inject: false // Inject all scripts into the body
 });
@@ -30,7 +30,6 @@ module.exports = {
       './src/index.js'
     ],
     'vendor': [
-      'antd',
       'history',
       'isomorphic-fetch',
       'moment',
@@ -61,6 +60,7 @@ module.exports = {
           presets: ['es2015', 'react', 'stage-0'],
           plugins: ['transform-decorators-legacy',
             'react-hot-loader/babel',
+            'transform-react-jsx-source',
             ['import', {
               "libraryName": "antd",
               "style": true,   // or 'css'

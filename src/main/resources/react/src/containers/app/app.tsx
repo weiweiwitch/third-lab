@@ -21,9 +21,9 @@ function mapStateToProps(state) {
 
 class App extends Component<AppProps, any> {
 
-  static propTypes = {
-    children: PropTypes.object.isRequired // 子组件
-  };
+  constructor(props) {
+    super(props);
+  }
 
   render() {
     return (
