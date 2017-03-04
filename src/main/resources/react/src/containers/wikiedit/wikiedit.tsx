@@ -13,8 +13,6 @@ const FormItem = Form.Item;
 
 const marked = require('marked');
 
-require('./wikiEdit.scss');
-
 interface StateProps {
   wikipost: any,
   modifySuccess: boolean,
@@ -149,10 +147,8 @@ class WikiEdit extends React.Component<AppProps, any> {
             <Row>
               <Col span={12}>
                 <FormItem {...formItemLayout} label="上层ID">
-                  <Input type="number" placeholder="请输入上层ID"
-                         onChange={(event)=> {
-                           this.updateParentId(event);
-                         }} value={this.state.postParentId}
+                  <Input type="number" placeholder="请输入上层ID" onChange={this.updateParentId}
+                         value={this.state.postParentId}
                   />
                 </FormItem>
               </Col>
@@ -160,12 +156,8 @@ class WikiEdit extends React.Component<AppProps, any> {
             <Row>
               <Col span={12}>
                 <FormItem {...formItemLayout} label="内容">
-                  <Input style={styles.codeStyle} type="textarea" autosize
-                         className="edit-text wikicreatearea-height"
-                         placeholder="内容"
-                         onChange={(event)=> {
-                               this.updateText(event);
-                             }} value={this.state.postText}
+                  <Input style={styles.codeStyle} type="textarea" autosize className="edit-text textarea-height"
+                         placeholder="内容" onChange={this.updateText} value={this.state.postText}
                   />
                 </FormItem>
               </Col>
@@ -178,14 +170,8 @@ class WikiEdit extends React.Component<AppProps, any> {
 
             <Row>
               <Col span={12} offset={1}>
-                <FormItem label=" ">
-                  <Button type="primary" onClick={(event)=> {
-                this.confirmModify(event);
-              }}>更新</Button>
-                  <Button onClick={(event)=> {
-                this.cancelModify(event);
-              }}>取消</Button>
-                </FormItem>
+                <Button type="primary" onClick={this.confirmModify}>更新</Button>
+                <Button onClick={this.cancelModify}>取消</Button>
               </Col>
             </Row>
 

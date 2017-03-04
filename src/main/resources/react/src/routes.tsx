@@ -8,6 +8,9 @@ import WikiNew from "./containers/wikinew/wikinew";
 import WikiEdit from "./containers/wikiedit/wikiedit";
 import WikiPost from "./containers/wikipost/wikipost";
 
+import Solution from './containers/solution/solution';
+import SolutionIndex from './containers/solutionindex/solutionindex';
+
 export default (store) => {
   // 返回路由组件
   return (
@@ -18,6 +21,9 @@ export default (store) => {
         <Route path="wikinew/:parentId" component={WikiNew}/>
         <Route path="wikiedit" component={WikiEdit}/>
         <Route path="wikipost/:pId" component={WikiPost}/>
+      </Route>
+      <Route path="solution" component={Solution}>
+        <Route path="solutionindex" component={SolutionIndex}></Route>
       </Route>
     </Route>
   );

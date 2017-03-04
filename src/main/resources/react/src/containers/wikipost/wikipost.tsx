@@ -55,16 +55,19 @@ class WikiPost extends React.Component<AppProps, any> {
     }
   }
 
-  edit = () => {
+  // 编辑文章
+  edit = (event) => {
     this.props.pushState('/wiki/wikiedit');
   };
 
-  createSubPost = () => {
+  // 创建子文章
+  createSubPost = (event) => {
     const post = this.props.wikipost;
     this.props.pushState('/wiki/wikinew/' + post.id);
   };
 
-  deletePost = () => {
+  // 删除文章
+  deletePost = (event) => {
     // 删除特定post
     const post = this.props.wikipost;
     this.props.deletePost(post.id);
@@ -73,7 +76,8 @@ class WikiPost extends React.Component<AppProps, any> {
     this.props.pushState('/wiki/wikiindex');
   };
 
-  transToIndex = () => {
+  // 返回首页
+  transToIndex = (event) => {
     this.props.pushState('/wiki/wikiindex');
   };
 
@@ -94,20 +98,12 @@ class WikiPost extends React.Component<AppProps, any> {
           {/* 编辑栏 */}
           <Row>
             <Col span={22}>
-              <Button type="primary" onClick={(event) => {
-                this.edit();
-              }}>编辑</Button>
-              <Button onClick={(event) => {
-                this.createSubPost();
-              }}>添加子文章</Button>
-              <Button onClick={(event) => {
-                this.transToIndex();
-              }}>首页</Button>
+              <Button type="primary" onClick={this.edit}>编辑</Button>
+              <Button onClick={this.createSubPost}>添加子文章</Button>
+              <Button onClick={this.transToIndex}>首页</Button>
             </Col>
             <Col span={2}>
-              <Button onClick={(event) => {
-                this.deletePost();
-              }}>删除</Button>
+              <Button type="danger" onClick={this.deletePost}>删除</Button>
             </Col>
           </Row>
           {/* 文章内容 */}

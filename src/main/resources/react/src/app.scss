@@ -14,6 +14,13 @@
   }
 }
 
+#logo span {
+  font-size: 16px;
+  height: 80px;
+  line-height: 80px;
+  text-transform: uppercase;
+}
+
 .air {
   font-family: $global-font;
 }
@@ -75,7 +82,7 @@
 }
 
 .inner_topic_container {
-  height: calc(100vh - 100px);
+  height: calc(100vh - 120px);
   overflow: auto;
   border-top: 1px solid $gray;
   border-bottom: 1px solid $gray;

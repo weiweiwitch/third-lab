@@ -26,8 +26,6 @@ module.exports = {
 
   entry: {
     'main': [
-      // 'bootstrap-sass!./src/theme/bootstrap.config.prod.js',
-      // 'font-awesome-webpack!./src/theme/font-awesome.config.prod.js',
       './src/index.js'
     ],
     'vendor': [
@@ -50,10 +48,6 @@ module.exports = {
   },
   module: {
     loaders: [
-      {
-        test: /bootstrap-sass\/assets\/javascripts\//,
-        loader: 'imports?jQuery=jquery'
-      },
       {
         test: /\.jsx?$/,
         exclude: /node_modules/,
@@ -149,7 +143,7 @@ module.exports = {
       }
     }),
     new HtmlWebpackPlugin({
-      title: 'ns-mgr',
+      title: 'third-lab',
       basename: '',
       template: 'src/index.html', // Load a custom template
       inject: false // Inject all scripts into the body

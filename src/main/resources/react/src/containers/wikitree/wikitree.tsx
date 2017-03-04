@@ -81,13 +81,13 @@ class WikiTree extends React.Component<AppProps, any> {
     });
 
     return (
-      <div>
+      <div className="main-auto-height">
         <Row>
           <Col span={24}>
             <Button type="primary" onClick={(event) => {this.createPost();}}>创建</Button>
           </Col>
         </Row>
-        <Row className="main-auto-height">
+        <Row>
           <Col span={24}>
             <Tree onExpand={this.onExpand}
                   autoExpandParent={true}

@@ -7,8 +7,6 @@ import * as hljs from "highlight.js";
 import {styles} from "../../client";
 import {clearCreateMark, addPost} from "../../redux/modules/wikiposts";
 
-require('./wikiNew.scss');
-
 const FormItem = Form.Item;
 
 const marked = require('marked');
@@ -145,7 +143,7 @@ class WikiNew extends React.Component<AppProps, any> {
             <Row>
               <Col span={12}>
                 <FormItem {...formItemLayout} label="内容">
-                  <Input style={styles.codeStyle} type="textarea" className="edit-text wikicreatearea-height" autosize
+                  <Input style={styles.codeStyle} type="textarea" className="edit-text textarea-height" autosize
                          placeholder="内容" onChange={(event)=> {
                                  this.updateText(event);
                                }} value={this.state.postText}

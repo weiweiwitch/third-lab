@@ -37,7 +37,7 @@ class Wiki extends React.Component<AppProps, any> {
     return (
       <Row>
         <Col span={4}>
-          <WikiTree />
+            <WikiTree />
         </Col>
         <Col span={20}>
           {this.props.children}
