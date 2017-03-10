@@ -1,8 +1,0 @@
-area
-<ul>
-  <li *ngFor="#dir of dirs">
-    <span>{{dir.name}} + </span>
-    <span>{{dir.dirs.length}}</span>
-    <tree-view [dirs]="dir.dirs"></tree-view>
-  </li>
-</ul>
