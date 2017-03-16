@@ -3,6 +3,8 @@ import {bindActionCreators} from "redux";
 import {connect} from "react-redux";
 import {push} from "react-router-redux";
 import {Row, Col, Radio} from "antd";
+import {Layout} from 'antd';
+const {Header, Footer, Sider, Content} = Layout;
 const RadioButton = Radio.Button;
 const RadioGroup = Radio.Group;
 
@@ -34,25 +36,27 @@ class App extends React.Component<AppProps, any> {
 
   render() {
     return (
-      <div className="air">
-        <Row>
-          <Col span={22}>
-            <div id="logo">
-              <span href="#">third lab</span>
-            </div>
-          </Col>
-          <Col span={2}>
-            <RadioGroup onChange={this.onChange} defaultValue="/wiki/wikiindex">
-              <RadioButton value="/wiki/wikiindex">Wiki</RadioButton>
-              <RadioButton value="/solution/solutionindex">解决方案</RadioButton>
-            </RadioGroup>
-          </Col>
-        </Row>
-        <Row>
-          <Col span={24}>
+      <div>
+        <Layout>
+          <Header id="header">
+            <Row>
+              <Col span={20}>
+                <div id="logo">
+                  <span href="#">third lab</span>
+                </div>
+              </Col>
+              <Col span={4}>
+                <RadioGroup onChange={this.onChange} defaultValue="/wiki/wikiindex">
+                  <RadioButton value="/wiki/wikiindex">Wiki</RadioButton>
+                  <RadioButton value="/solution/solutionindex">解决方案</RadioButton>
+                </RadioGroup>
+              </Col>
+            </Row>
+          </Header>
+          <Content style={{ padding: '0 30px' }}>
             {this.props.children}
-          </Col>
-        </Row>
+          </Content>
+        </Layout>
       </div>
     );
   }

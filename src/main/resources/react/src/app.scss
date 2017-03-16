@@ -8,11 +8,11 @@
 }
 
 /* Responsive: Portrait tablets and up */
-@media screen and (min-width: 768px) {
-  .container {
-    max-width: 730px;
-  }
-}
+//@media screen and (min-width: 768px) {
+//  .container {
+//    max-width: 730px;
+//  }
+//}
 
 #logo span {
   font-size: 16px;
@@ -28,6 +28,16 @@
 .air-nav {
   border-bottom: 1px solid #eee;
   margin-bottom: 5px;
+}
+
+#header {
+  -webkit-transition: opacity .5s;
+  transition: opacity .5s;
+  background: #fff;
+  height: 80px;
+  margin-bottom: 24px;
+  padding: 0 48px;
+  width: 100%;
 }
 
 .labtree {
@@ -61,12 +71,13 @@
 }
 
 .main-auto-height {
-  height: calc(100vh - 100px);
+  height: calc(100vh - 120px);
   overflow: auto;
 }
 
 .textarea-height {
-  height: calc(100vh - 320px) !important;
+  height: calc(100vh - 240px) !important;
+  overflow: auto;
 }
 
 .topic_header {
@@ -82,7 +93,7 @@
 }
 
 .inner_topic_container {
-  height: calc(100vh - 120px);
+  height: calc(100vh - 140px);
   overflow: auto;
   border-top: 1px solid $gray;
   border-bottom: 1px solid $gray;
@@ -103,13 +114,13 @@
 
 .markdown-text {
   code {
-    background: #eee;
+    background: $white2;
     color: #666;
     padding: 0 5px;
     margin: 0 2px;
     font-size: 0.9em;
-    border: 1px solid #ddd;
-    border-radius: 3px;
+    //border: 1px solid #ddd;
+    //border-radius: 3px;
   }
 
   pre {
@@ -162,8 +173,4 @@
   h5 {
     font-size: 12px;
   }
-}
-
-.ace_editor {
-  height: 300px;
 }

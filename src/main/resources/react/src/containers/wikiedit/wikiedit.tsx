@@ -118,8 +118,12 @@ class WikiEdit extends React.Component<AppProps, any> {
     const postText = {__html: marked(this.state.postText)};
 
     const formItemLayout = {
+      labelCol: {span: 3},
+      wrapperCol: {span: 17},
+    };
+    const formItemLayout2 = {
       labelCol: {span: 2},
-      wrapperCol: {span: 18},
+      wrapperCol: {span: 20},
     };
 
     return (
@@ -127,7 +131,7 @@ class WikiEdit extends React.Component<AppProps, any> {
         <Col span={24}>
           <Form>
             <Row>
-              <Col span={12}>
+              <Col span={8}>
                 <FormItem {...formItemLayout} label="标题">
                   <Input placeholder="请输入标题"
                          onChange={(event)=> {
@@ -136,16 +140,14 @@ class WikiEdit extends React.Component<AppProps, any> {
                   />
                 </FormItem>
               </Col>
-              <Col span={12}>
+              <Col span={8}>
                 <FormItem {...formItemLayout} label="ID">
                   <Input type="number" placeholder="ID"
                          disabled={true} defaultValue={post.id}
                   />
                 </FormItem>
               </Col>
-            </Row>
-            <Row>
-              <Col span={12}>
+              <Col span={8}>
                 <FormItem {...formItemLayout} label="上层ID">
                   <Input type="number" placeholder="请输入上层ID" onChange={this.updateParentId}
                          value={this.state.postParentId}
@@ -155,16 +157,14 @@ class WikiEdit extends React.Component<AppProps, any> {
             </Row>
             <Row>
               <Col span={12}>
-                <FormItem {...formItemLayout} label="内容">
+                <FormItem {...formItemLayout2} label="内容">
                   <Input style={styles.codeStyle} type="textarea" autosize className="edit-text textarea-height"
                          placeholder="内容" onChange={this.updateText} value={this.state.postText}
                   />
                 </FormItem>
               </Col>
               <Col span={12}>
-                <div className="col-md-6 inner_topic">
-                  <div className="markdown-text textarea-height" dangerouslySetInnerHTML={postText}></div>
-                </div>
+                <div className="inner_topic markdown-text textarea-height" dangerouslySetInnerHTML={postText}></div>
               </Col>
             </Row>
 
