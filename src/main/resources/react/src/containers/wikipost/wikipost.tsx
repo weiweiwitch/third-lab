@@ -4,13 +4,27 @@ import {push} from "react-router-redux";
 import {Button, Radio, Icon} from 'antd';
 import * as hljs from "highlight.js";
 import {Row, Col} from 'antd';
+import * as MarkdownIt from 'markdown-it';
 import {querySpecPost} from "../../redux/modules/wikispecpost";
 import {deletePost} from "../../redux/modules/wikiposts";
 import {bindActionCreators} from "redux";
 
 require('./wikiPost.scss');
 
-const marked = require('marked');
+const md = new MarkdownIt({
+  html: true,
+  highlight: function (str, lang) {
+    if (lang && hljs.getLanguage(lang)) {
+      try {
+        return hljs.highlight(lang, str).value;
+      } catch (e) {
+        console.info(e);
+      }
+    }
+
+    return ''; // use external default escaping
+  },
+});
 
 interface StateProps {
   params: any,
@@ -84,13 +98,7 @@ class WikiPost extends React.Component<AppProps, any> {
   render() {
     const post = this.props.wikipost;
 
-    marked.setOptions({
-      highlight: (code, lang, callback) => {
-        console.log('try hightlight ' + lang);
-        return hljs.highlightAuto(code, [lang]).value;
-      }
-    });
-    const postText = {__html: marked(post.postText)};
+    const result = {__html: md.render(post.postText)};
 
     return (
       <Row>
@@ -114,7 +122,7 @@ class WikiPost extends React.Component<AppProps, any> {
                   <span className="topic_full_title">{post.title}</span>
                 </div>
                 <div className="inner_topic">
-                  <div className="markdown-text" dangerouslySetInnerHTML={postText}></div>
+                  <div className="markdown-text" dangerouslySetInnerHTML={result}></div>
                 </div>
               </div>
             </Col>

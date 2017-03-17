@@ -4,12 +4,26 @@ import {push} from "react-router-redux";
 import {Button, Form, Input, Row, Col} from "antd";
 import {bindActionCreators} from "redux";
 import * as hljs from "highlight.js";
+import * as MarkdownIt from 'markdown-it';
 import {styles} from "../../client";
 import {clearCreateMark, addPost} from "../../redux/modules/wikiposts";
 
 const FormItem = Form.Item;
 
-const marked = require('marked');
+const md = new MarkdownIt({
+  html: true,
+  highlight: function (str, lang) {
+    if (lang && hljs.getLanguage(lang)) {
+      try {
+        return hljs.highlight(lang, str).value;
+      } catch (e) {
+        console.info(e);
+      }
+    }
+
+    return ''; // use external default escaping
+  },
+});
 
 interface StateProps {
   createSuccess: boolean,
@@ -102,13 +116,7 @@ class WikiNew extends React.Component<AppProps, any> {
   };
 
   render() {
-    marked.setOptions({
-      highlight: (code, lang, callback) => {
-        console.log('try hightlight ' + lang);
-        return hljs.highlightAuto(code, [lang]).value;
-      }
-    });
-    const postText = {__html: marked(this.state.postText)};
+    const postText = {__html: md.render(this.state.postText)};
 
     const formItemLayout = {
       labelCol: {span: 2},

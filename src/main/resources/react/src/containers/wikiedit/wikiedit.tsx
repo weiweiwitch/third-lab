@@ -4,6 +4,7 @@ import {push} from "react-router-redux";
 import {Button, Radio, Icon} from 'antd';
 import {Row, Col, Form, Input} from 'antd';
 import * as hljs from "highlight.js";
+import * as MarkdownIt from 'markdown-it';
 import {chgPost, clearModifyMark} from "../../redux/modules/wikispecpost";
 import {queryPosts} from "../../redux/modules/wikiposts";
 import {styles} from "../../client";
@@ -11,7 +12,20 @@ import {bindActionCreators} from "redux";
 
 const FormItem = Form.Item;
 
-const marked = require('marked');
+const md = new MarkdownIt({
+  html: true,
+  highlight: function (str, lang) {
+    if (lang && hljs.getLanguage(lang)) {
+      try {
+        return hljs.highlight(lang, str).value;
+      } catch (e) {
+        console.info(e);
+      }
+    }
+
+    return ''; // use external default escaping
+  },
+});
 
 interface StateProps {
   wikipost: any,
@@ -109,13 +123,8 @@ class WikiEdit extends React.Component<AppProps, any> {
 
   render() {
     const post = this.props.wikipost;
-    marked.setOptions({
-      highlight: (code, lang, callback) => {
-        console.log('try hightlight ' + lang);
-        return hljs.highlightAuto(code, [lang]).value;
-      }
-    });
-    const postText = {__html: marked(this.state.postText)};
+
+    const postText = {__html: md.render(this.state.postText)};
 
     const formItemLayout = {
       labelCol: {span: 3},

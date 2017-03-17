@@ -1,4 +1,5 @@
 @import "./generic.scss";
+@import "~highlight.js/styles/github.css";
 
 .browsehappy {
   margin: 0.2em 0;
@@ -113,14 +114,21 @@
 /* markdown */
 
 .markdown-text {
-  code {
+
+  p > code {
     background: $white2;
     color: #666;
     padding: 0 5px;
     margin: 0 2px;
     font-size: 0.9em;
-    //border: 1px solid #ddd;
-    //border-radius: 3px;
+    border: 1px solid #ddd;
+    border-radius: 3px;
+  }
+
+  pre > code {
+    background: $white2;
+    color: #666;
+    font-size: 0.9em;
   }
 
   pre {
@@ -130,6 +138,7 @@
     border-left: 3px solid $green;
     background: $white2;
     border-radius: 0;
+    margin: 5px 0;
     padding: 8px;
   }
 
