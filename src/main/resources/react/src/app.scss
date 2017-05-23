@@ -31,6 +31,10 @@
   margin-bottom: 5px;
 }
 
+textarea {
+  tab-size: 4;
+}
+
 #header {
   -webkit-transition: opacity .5s;
   transition: opacity .5s;
@@ -114,6 +118,7 @@
 /* markdown */
 
 .markdown-text {
+  tab-size: 4;
 
   p > code {
     background: $white2;

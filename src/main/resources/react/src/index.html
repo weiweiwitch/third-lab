@@ -8,6 +8,7 @@
 </head>
 <body>
 <div id="content"/>
+<script src="<%= htmlWebpackPlugin.options.basename %><%= htmlWebpackPlugin.files.chunks.manifest.entry %>"></script>
 <script src="<%= htmlWebpackPlugin.options.basename %><%= htmlWebpackPlugin.files.chunks.vendor.entry %>"></script>
 <script src="<%= htmlWebpackPlugin.options.basename %><%= htmlWebpackPlugin.files.chunks.main.entry %>"></script>
 </body>

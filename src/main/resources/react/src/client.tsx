@@ -15,23 +15,23 @@ const history = syncHistoryWithStore(browserHistory, store);
 require('./app.scss');
 
 export const styles = {
-  codeStyle: {
-    fontFamily: 'Monaco, Menlo, Consolas, monospace',
-    fontSize: '12px'
-  }
+	codeStyle: {
+		fontFamily: 'Monaco, Menlo, Consolas, monospace',
+		fontSize: '12px'
+	}
 };
 
 // 组件
 const component = (
-  <Router history={history}>
-    {getRoutes(store)}
-  </Router>
+	<Router history={history}>
+		{getRoutes(store)}
+	</Router>
 );
 
 const dest = document.getElementById('content'); // 获取根元素
 ReactDOM.render(
-  <Provider store={store} key="provider">
-    {component}
-  </Provider>,
-  dest
+	<Provider store={store} key="provider">
+		{component}
+	</Provider>,
+	dest
 );

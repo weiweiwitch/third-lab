@@ -2,25 +2,17 @@ import path from "path";
 import webpack from "webpack";
 import HtmlWebpackPlugin from "html-webpack-plugin";
 
-const assetsPath = path.resolve(__dirname, '../static/dev');
-console.info('output path: ', assetsPath);
-
-const sources = path.resolve('./src');
+const contextPath = path.resolve(__dirname, '..');
+const assetsPath = path.resolve(contextPath, 'static', 'dev');
+const sourcePath = path.resolve(contextPath, 'src');
 
 const port = process.env.PORT;
-
-const htmlWebpackPlugin = new HtmlWebpackPlugin({
-  title: 'third-lab',
-  // basename: '',
-  template: 'src/index.html', // Load a custom template
-  inject: false // Inject all scripts into the body
-});
 
 module.exports = {
   // 内联调试信息
   devtool: 'source-map',
 
-  context: path.resolve(__dirname, '..'),
+  context: contextPath,
 
   // 入口
   entry: {
@@ -28,17 +20,6 @@ module.exports = {
       'webpack/hot/dev-server',
       'webpack-dev-server/client?http://localhost:' + port,
       './src/index.js'
-    ],
-    'vendor': [
-      'history',
-      'isomorphic-fetch',
-      'moment',
-      'react',
-      'react-dom',
-      'react-redux',
-      'react-router',
-      'react-router-redux',
-      'redux'
     ]
   },
 
@@ -47,76 +28,68 @@ module.exports = {
     path: assetsPath,
     filename: '[name].js', // 输出文件名
     chunkFilename: '[name]-[chunkhash].js', // 非entry的文件名
-    publicPath: '' // 指定公共URL地址
+    publicPath: '/' // 指定公共URL地址
   },
 
   module: {
-    loaders: [
+    rules: [
       {
         test: /\.jsx?$/,
         exclude: /node_modules/,
-        loader: 'babel-loader',
-        query: {
-          presets: ['es2015', 'react', 'stage-0'],
-          plugins: ['transform-decorators-legacy',
-            'react-hot-loader/babel',
-            'transform-react-jsx-source',
-            ['import', {
-              "libraryName": "antd",
-              "style": true,   // or 'css'
-            }]]
-        }
+        use: {
+          loader: 'babel-loader',
+          options: {
+            presets: ['es2015', 'react', 'stage-0'],
+            plugins: [
+              ['import', {
+                "libraryName": "antd",
+                "style": true,   // or 'css'
+              }]]
+          },
+        },
       },
       {
         test: /\.tsx?$/,
-        loader: 'awesome-typescript-loader',
+        use: 'awesome-typescript-loader',
         include: [
-          sources,
+          sourcePath,
         ]
       },
       {
-        test: /\.json$/,
-        loader: 'json-loader'
-      },
-      {
         test: /\.css$/,
-        loader: 'style-loader!css-loader'
+        use: [
+          {
+            loader: 'style-loader',
+          },
+          {
+            loader: 'css-loader',
+          }
+        ]
       },
       {
         test: /\.scss$/,
-        loaders: ["style", "css", "sass"]
+        use: [
+          {
+            loader: "style-loader",
+          },
+          {
+            loader: "css-loader",
+          },
+          {
+            loader: "sass-loader"
+          },
+        ]
       },
-      {
-        test: /\.woff(\?v=\d+\.\d+\.\d+)?$/,
-        loader: "url-loader?limit=10000&mimetype=application/font-woff"
-      },
-      {
-        test: /\.woff2(\?v=\d+\.\d+\.\d+)?$/,
-        loader: "url-loader?limit=10000&mimetype=application/font-woff"
-      },
-      {
-        test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/,
-        loader: "url-loader?limit=10000&mimetype=application/octet-stream"
-      },
-      {
-        test: /\.eot(\?v=\d+\.\d+\.\d+)?$/,
-        loader: "file"
-      },
-      {
-        test: /\.svg(\?v=\d+\.\d+\.\d+)?$/,
-        loader: "url-loader?limit=10000&mimetype=image/svg+xml"
-      }]
+    ]
   },
-
-  progress: true,
 
   // 哪些后缀的文件会被解析为模块文件
   resolve: {
-    modulesDirectories: [
-      'src',
+    modules: [
+      sourcePath,
       'node_modules'
     ],
-    extensions: ['', '.json', '.js', '.jsx', '.ts', '.tsx']
+    extensions: ['.json', '.js', '.jsx', '.ts', '.tsx']
   },
 
   plugins: [
@@ -129,7 +102,21 @@ module.exports = {
       __DEVELOPMENT__: true,
       __DEVTOOLS__: true // <-------- DISABLE redux-devtools HERE
     }),
-    htmlWebpackPlugin,
-    new webpack.optimize.CommonsChunkPlugin('vendor', 'vendor.bundle.js')
+    new HtmlWebpackPlugin({
+      title: 'third-lab',
+      template: 'src/index.html', // Load a custom template
+      inject: false // Inject all scripts into the body
+    }),
+
+    new webpack.optimize.CommonsChunkPlugin({
+      name: 'vendor',
+      minChunks: function (module) {
+        // 该配置假定你引入的 vendor 存在于 node_modules 目录中
+        return module.context && module.context.indexOf('node_modules') !== -1;
+      }
+    }),
+    new webpack.optimize.CommonsChunkPlugin({
+      name: 'manifest' //But since there are no more common modules between them we end up with just the runtime code included in the manifest file
+    }),
   ]
 };

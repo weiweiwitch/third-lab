@@ -1,14 +1,16 @@
 import WebpackDevServer from "webpack-dev-server";
 import webpack from "webpack";
+import path from "path";
 
-var config = require("./dev.config.js");
+const config = require('./dev.config.js');
 
 const apiPort = process.env.APIPORT;
-var port = process.env.PORT;
+const port = process.env.PORT;
 
-var compiler = webpack(config);
-var server = new WebpackDevServer(compiler, {
-  contentBase: 'src/',
+const compiler = webpack(config);
+const server = new WebpackDevServer(compiler, {
+  contentBase: [path.resolve(__dirname, '..', 'src')], // 使用绝对路径
+  watchContentBase: true,
   hot: true,
   historyApiFallback: true,
   quiet: false,
