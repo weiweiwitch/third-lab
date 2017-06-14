@@ -10,7 +10,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.ariane.thirdlab.constvalue.RtCode;
 import org.ariane.thirdlab.domain.Post;
+import org.ariane.thirdlab.resp.LabResp;
 import org.ariane.thirdlab.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -40,7 +42,7 @@ public class PostController {
 	 */
 	@RequestMapping(value = "/posts", method = RequestMethod.GET, produces = "application/json")
 	@ResponseStatus(HttpStatus.OK)
-	public List<PostData> allPost() {
+	public LabResp<List<PostData>> allPost() {
 		List<Post> posts = postService.findAllPosts();
 
 		// 建立临时表
@@ -86,23 +88,30 @@ public class PostController {
 
 		});
 
-		return rootDatas;
+		LabResp<List<PostData>> resp = new LabResp<>(RtCode.SUCCESS);
+		resp.data = rootDatas;
+		return resp;
 	}
 
 	@RequestMapping(value = "/whichpost", method = RequestMethod.GET, produces = "application/json")
 	@ResponseStatus(HttpStatus.OK)
-	public PostPositionData searchPost(@RequestParam String postParam) {
+	public LabResp<PostPositionData> searchPost(@RequestParam String postParam) {
 		List<Post> posts = postService.findSpecPost(postParam);
 		if (posts.size() > 0) {
 			PostPositionData postPositionData = new PostPositionData();
 			for (Post post : posts) {
 				postPositionData.postInfos.add(new PostInfo(post.getId(), post.getTitle()));
 			}
-			return postPositionData;
+
+			LabResp<PostPositionData> resp = new LabResp<>(RtCode.SUCCESS);
+			resp.data = postPositionData;
+			return resp;
 
 		} else {
 			PostPositionData postPositionData = new PostPositionData();
-			return postPositionData;
+			LabResp<PostPositionData> resp = new LabResp<>(RtCode.SUCCESS);
+			resp.data = postPositionData;
+			return resp;
 		}
 	}
 
@@ -114,14 +123,17 @@ public class PostController {
 	 */
 	@RequestMapping(value = "/posts/{id}", method = RequestMethod.GET, produces = "application/json")
 	@ResponseStatus(HttpStatus.OK)
-	public PostDetailData specPost(@PathVariable long id) {
+	public LabResp<PostDetailData> specPost(@PathVariable long id) {
 		Post post = postService.findSpecPost(id);
 		if (post != null) {
 			PostDetailData postDetailData = new PostDetailData(post);
-			return postDetailData;
+			LabResp<PostDetailData> resp = new LabResp<>(RtCode.SUCCESS);
+			resp.data = postDetailData;
+			return resp;
 
 		} else {
-			return null;
+			LabResp<PostDetailData> resp = new LabResp<>(RtCode.POST_NOT_FOUND);
+			return resp;
 		}
 	}
 
@@ -133,13 +145,15 @@ public class PostController {
 	 */
 	@RequestMapping(value = "/posts", method = RequestMethod.POST, consumes = "application/json", produces = "application/json")
 	@ResponseStatus(HttpStatus.OK)
-	public PostDetailData createPost(@RequestBody PostDetailData needCreatePost) {
+	public LabResp<PostDetailData> createPost(@RequestBody PostDetailData needCreatePost) {
 		long parantId = needCreatePost.parantId;
 		String title = needCreatePost.title;
 		String postData = needCreatePost.postText;
 		Post post = postService.createPost(parantId, title, postData);
 		PostDetailData postDetailData = new PostDetailData(post);
-		return postDetailData;
+		LabResp<PostDetailData> resp = new LabResp<>(RtCode.SUCCESS);
+		resp.data = postDetailData;
+		return resp;
 	}
 
 	/**
@@ -151,13 +165,15 @@ public class PostController {
 	 */
 	@RequestMapping(value = "/posts/{id}", method = RequestMethod.PUT, produces = "application/json")
 	@ResponseStatus(HttpStatus.OK)
-	public PostDetailData updatePost(@PathVariable long id, @RequestBody PostDetailData needUpdatePost) {
+	public LabResp<PostDetailData> updatePost(@PathVariable long id, @RequestBody PostDetailData needUpdatePost) {
 		long parantId = needUpdatePost.parantId;
 		String title = needUpdatePost.title;
 		String postData = needUpdatePost.postText;
 		Post post = postService.updatePost(id, parantId, title, postData);
 		PostDetailData postDetailData = new PostDetailData(post);
-		return postDetailData;
+		LabResp<PostDetailData> resp = new LabResp<>(RtCode.SUCCESS);
+		resp.data = postDetailData;
+		return resp;
 	}
 
 	/**
@@ -167,8 +183,11 @@ public class PostController {
 	 */
 	@RequestMapping(value = "/posts/{id}", method = RequestMethod.DELETE, produces = "application/json")
 	@ResponseStatus(HttpStatus.OK)
-	public void deletePost(@PathVariable long id) {
+	public LabResp<Integer> deletePost(@PathVariable long id) {
 		postService.deletePost(id);
+
+		LabResp<Integer> resp = new LabResp<>(RtCode.SUCCESS);
+		return resp;
 	}
 
 	@RequestMapping(value = "/picupload", method = RequestMethod.POST)

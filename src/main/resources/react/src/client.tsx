@@ -7,7 +7,7 @@ import ApiClient from "./helpers/apiclient";
 import myCreateStore from "./redux/create";
 import getRoutes from "./routes";
 
-const client = new ApiClient();
+export const client = new ApiClient();
 const initialState = {};
 const store = myCreateStore(browserHistory, client, initialState);
 const history = syncHistoryWithStore(browserHistory, store);

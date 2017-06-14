@@ -5,7 +5,7 @@ import wikispecpost from "./wikispecpost";
 
 // 组合reducer
 export default combineReducers({
-  routing: routerReducer,
-  wikiposts,
-  wikispecpost,
+	routing: routerReducer,
+	wikiposts,
+	wikispecpost,
 });
