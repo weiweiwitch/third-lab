@@ -52,19 +52,7 @@ class WikiPost extends React.Component<AppProps, any> {
 	}
 
 	componentDidMount() {
-		// 查询账号列表
-		const postId = parseInt(this.props.params.pId, 10);
-
-		// 查询特定文章
-		this.props.querySpecPost(postId);
-	}
-
-	componentWillReceiveProps(nextProps) {
-		// 当将会接收到属性时处理
-		if (nextProps.params.pId !== this.props.params.pId) {
-			const postId = parseInt(nextProps.params.pId, 10);
-			this.props.querySpecPost(postId);
-		}
+		
 	}
 
 	// 编辑文章

@@ -66,7 +66,7 @@ export default class ApiClient {
 	put(path, r?: any) {
 		const p = new Promise((resolve, reject) => {
 			const url = formatUrl(path);
-			const request = superagent['get'](url);
+			const request = superagent['put'](url);
 
 			// 设置参数
 			if (r && r.params) {
@@ -89,7 +89,7 @@ export default class ApiClient {
 	del(path, r?: any) {
 		const p = new Promise((resolve, reject) => {
 			const url = formatUrl(path);
-			const request = superagent['get'](url);
+			const request = superagent['del'](url);
 
 			// 设置参数
 			if (r && r.params) {

@@ -29,7 +29,6 @@ class Wiki extends React.Component<AppProps, any> {
 	}
 
 	componentDidMount() {
-		console.info('queryPosts');
 		this.props.queryPosts();
 	}
 

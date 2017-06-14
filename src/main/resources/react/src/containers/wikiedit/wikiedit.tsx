@@ -73,9 +73,6 @@ class WikiEdit extends React.Component<AppProps, any> {
 			// 修改成功, 切换到文章页, 并刷新
 			const post = this.props.wikipost;
 			this.props.pushState('/wiki/wikipost/' + post.id);
-
-			// 由于可能的上下级改变,这里重新查询所有文章吧
-			this.props.queryPosts();
 		}
 	}
 

@@ -1,4 +1,4 @@
-import {all, call, put, takeEvery} from "redux-saga/effects";
+import {all, call, put, takeEvery, fork, race, take} from "redux-saga/effects";
 
 import {client} from "../client";
 
@@ -26,16 +26,15 @@ export const CHG_WIKI_SPECPOST = 'CHG_WIKI_SPECPOST';
 export const CHG_WIKI_SPECPOST_SUCCESS = 'CHG_WIKI_SPECPOST_SUCCESS';
 export const CHG_WIKI_SPECPOST_FAILED = 'CHG_WIKI_SPECPOST_FAILED';
 
-export function clearCreateMark(data) {
+export function clearCreateMark() {
 	return {
 		type: CLEAR_CREATE_MARK,
 	};
 }
 
-export function queryPosts(data) {
+export function queryPosts() {
 	return {
-		type: QUERY_WIKI_POSTS,
-		payload: data,
+		type: QUERY_WIKI_POSTS
 	};
 }
 
@@ -123,7 +122,7 @@ export function clearModifyMark() {
 	};
 }
 
-export function querySpecPost(postId) {
+export function querySpecPost(postId: number) {
 	console.info('触发 querySpecPost');
 	return {
 		type: QUERY_WIKI_SPECPOST,
@@ -153,7 +152,6 @@ function* querySpecPostDeal(action) {
 
 export function chgPost(id, data) {
 	console.info('触发 chgPost');
-	data.state = parseInt(data.state, 10);
 
 	return {
 		type: CHG_WIKI_SPECPOST,
@@ -174,13 +172,39 @@ function* chgPostDeal(action) {
 		});
 
 		if (result.rt !== 1) {
-			yield put({type: QUERY_WIKI_SPECPOST_FAILED,});
+			yield put({type: CHG_WIKI_SPECPOST_FAILED,});
 		} else {
-			yield put({type: QUERY_WIKI_SPECPOST_SUCCESS, payload: result.data,});
+			yield put({type: CHG_WIKI_SPECPOST_SUCCESS, payload: result.data,});
 		}
 
 	} catch (e) {
-		yield put({type: QUERY_WIKI_SPECPOST_FAILED,});
+		yield put({type: CHG_WIKI_SPECPOST_FAILED,});
+	}
+}
+
+export function* refreshPostsDeal() {
+	while (true) {
+		yield race({
+			add: take(ADD_WIKI_SPECPOST),
+			del: take(DEL_WIKI_SPECPOST),
+		});
+
+		// 触发查询
+		yield put(queryPosts());
+	}
+}
+
+export function* refreshSpecPostDeal() {
+	while (true) {
+		const {change} = yield race({
+			change: take(CHG_WIKI_SPECPOST),
+		});
+		console.info('change');
+		console.info(change);
+
+		// 触发查询
+		yield put(queryPosts()); // 由于可能的上下级变更，触发全局刷新
+		yield put(querySpecPost(change.payload.id)); // 刷新特定文章
 	}
 }
 
@@ -190,5 +214,9 @@ export function* postsSaga() {
 		takeEvery(ADD_WIKI_SPECPOST, addPostDeal),
 		takeEvery(DEL_WIKI_SPECPOST, deletePostDeal),
 		takeEvery(QUERY_WIKI_SPECPOST, querySpecPostDeal),
+		takeEvery(CHG_WIKI_SPECPOST, chgPostDeal),
+
+		fork(refreshPostsDeal),
+		fork(refreshSpecPostDeal),
 	]);
 }

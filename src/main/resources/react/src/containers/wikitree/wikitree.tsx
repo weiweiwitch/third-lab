@@ -2,7 +2,7 @@ import * as React from "react";
 import {connect} from "react-redux";
 import {push} from "react-router-redux";
 import {Button, Col, Row, Tree} from "antd";
-import {queryPosts} from "../../sagas/posts";
+import {queryPosts, querySpecPost} from "../../sagas/posts";
 import {bindActionCreators} from "redux";
 
 const TreeNode = Tree.TreeNode;
@@ -13,8 +13,9 @@ interface StateProps {
 }
 
 interface DispatchProps {
-	queryPosts();
 	pushState(nextLocation: any);
+	queryPosts();
+	querySpecPost(postId: number)
 }
 
 type AppProps = StateProps & DispatchProps;
@@ -62,6 +63,11 @@ class WikiTree extends React.Component<AppProps, any> {
 		}
 
 		const nodeId = parseInt(selectedKeys[0], 10);
+
+		// 查询特定文章
+		this.props.querySpecPost(nodeId);
+
+		// 切换页面
 		this.props.pushState('/wiki/wikipost/' + nodeId);
 	};
 
@@ -106,7 +112,8 @@ class WikiTree extends React.Component<AppProps, any> {
 
 export default connect(mapStateToProps, (dispatch) => {
 	return bindActionCreators({
-		queryPosts: queryPosts,
 		pushState: push,
+		queryPosts: queryPosts,
+		querySpecPost: querySpecPost,
 	}, dispatch)
 })(WikiTree);
