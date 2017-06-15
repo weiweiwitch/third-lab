@@ -2,11 +2,14 @@ import * as React from "react";
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
 import {Col, Row} from "antd";
+import {Layout} from 'antd';
 
 import WikiTree from "../wikitree/wikitree";
 import {queryPosts} from "../../sagas/posts";
 
 require('./wiki.scss');
+
+const {Header, Footer, Sider, Content} = Layout;
 
 interface StateProps {
 	children?: any // 子组件
@@ -34,14 +37,14 @@ class Wiki extends React.Component<AppProps, any> {
 
 	render() {
 		return (
-			<Row>
-				<Col span={4}>
+			<Layout style={{ height: 'calc(100vh - 120px)' }}>
+				<Sider style={{ padding: '12px 24px', background: '#ddd', overflow: 'auto' }}>
 					<WikiTree />
-				</Col>
-				<Col span={20}>
+				</Sider>
+				<Layout style={{ padding: '12px 24px', overflow: 'auto' }}>
 					{this.props.children}
-				</Col>
-			</Row>
+				</Layout>
+			</Layout>
 		);
 	}
 }

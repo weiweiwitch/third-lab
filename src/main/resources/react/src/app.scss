@@ -40,7 +40,6 @@ textarea {
   transition: opacity .5s;
   background: #fff;
   height: 80px;
-  margin-bottom: 24px;
   padding: 0 48px;
   width: 100%;
 }
@@ -75,11 +74,6 @@ textarea {
   text-decoration: none;
 }
 
-.main-auto-height {
-  height: calc(100vh - 120px);
-  overflow: auto;
-}
-
 .textarea-height {
   height: calc(100vh - 240px) !important;
   overflow: auto;
@@ -98,8 +92,8 @@ textarea {
 }
 
 .inner_topic_container {
-  height: calc(100vh - 140px);
-  overflow: auto;
+  //height: calc(100vh - 140px);
+  //overflow: auto;
   border-top: 1px solid $gray;
   border-bottom: 1px solid $gray;
   margin-top: 5px;

@@ -60,9 +60,9 @@ class App extends React.Component<AppProps, any> {
 							</Col>
 						</Row>
 					</Header>
-					<Content style={{padding: '0 30px'}}>
+					<div>
 						{this.props.children}
-					</Content>
+					</div>
 				</Layout>
 			</div>
 		);

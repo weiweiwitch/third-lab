@@ -197,7 +197,7 @@ export function* refreshPostsDeal() {
 export function* refreshSpecPostDeal() {
 	while (true) {
 		const {change} = yield race({
-			change: take(CHG_WIKI_SPECPOST),
+			change: take(CHG_WIKI_SPECPOST_SUCCESS),
 		});
 		console.info('change');
 		console.info(change);

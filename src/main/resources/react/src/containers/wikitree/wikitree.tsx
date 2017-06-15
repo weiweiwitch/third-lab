@@ -86,7 +86,7 @@ class WikiTree extends React.Component<AppProps, any> {
 		});
 
 		return (
-			<div className="main-auto-height">
+			<div>
 				<Row>
 					<Col span={24}>
 						<Button type="primary" onClick={(event) => {

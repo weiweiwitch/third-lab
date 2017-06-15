@@ -4,7 +4,7 @@ import {push} from "react-router-redux";
 import {Button, Col, Row} from "antd";
 import * as hljs from "highlight.js";
 import * as MarkdownIt from "markdown-it";
-import {deletePost, querySpecPost} from "../../sagas/posts";
+import {deletePost} from "../../sagas/posts";
 import {bindActionCreators} from "redux";
 
 require('./wikiPost.scss');
@@ -31,7 +31,6 @@ interface StateProps {
 }
 
 interface DispatchProps {
-	querySpecPost(postId: number);
 	deletePost(postId: number);
 	pushState(nextLocation: any);
 }
@@ -52,7 +51,7 @@ class WikiPost extends React.Component<AppProps, any> {
 	}
 
 	componentDidMount() {
-		
+
 	}
 
 	// 编辑文章
@@ -121,7 +120,6 @@ class WikiPost extends React.Component<AppProps, any> {
 
 export default connect(mapStateToProps, (dispatch) => {
 	return bindActionCreators({
-		querySpecPost: querySpecPost,
 		deletePost: deletePost,
 		pushState: push
 	}, dispatch)
