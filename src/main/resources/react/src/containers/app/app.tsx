@@ -44,7 +44,7 @@ class App extends React.Component<AppProps, any> {
 	render() {
 		return (
 			<div style={{padding: '0px'}}>
-				<Header id="header">
+				<Header className="header">
 					<Row>
 						<Col span={20}>
 							<div id="logo"><span>third lab</span></div>

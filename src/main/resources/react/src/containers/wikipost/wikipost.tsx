@@ -96,7 +96,7 @@ class WikiPost extends React.Component<AppProps, any> {
 
 		const result = {__html: md.render(post.postText)};
 		const parseResult = md.parse(post.postText);
-		
+
 		let headingStarted = false;
 		let currentHeaderNode;
 		let headerNodes: HeaderNode[] = [];
