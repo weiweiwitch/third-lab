@@ -32,9 +32,12 @@ export function clearCreateMark() {
 	};
 }
 
-export function queryPosts() {
+export function queryPosts(tagId: number) {
 	return {
-		type: QUERY_WIKI_POSTS
+		type: QUERY_WIKI_POSTS,
+		payload: {
+			tagId: tagId
+		},
 	};
 }
 
@@ -43,7 +46,11 @@ function* queryPostsDeal(action) {
 	try {
 		// 发送请求查询
 		const result = yield call(() => {
-			return client.get('/api/posts')
+			return client.get('/api/posts',{
+				params: {
+					tagId: action.payload.tagId,
+				}
+			})
 		});
 
 		if (result.rt !== 1) {
@@ -182,28 +189,13 @@ function* chgPostDeal(action) {
 	}
 }
 
-export function* refreshPostsDeal() {
-	while (true) {
-		yield race({
-			add: take(ADD_WIKI_SPECPOST),
-			del: take(DEL_WIKI_SPECPOST),
-		});
-
-		// 触发查询
-		yield put(queryPosts());
-	}
-}
-
 export function* refreshSpecPostDeal() {
 	while (true) {
 		const {change} = yield race({
 			change: take(CHG_WIKI_SPECPOST_SUCCESS),
 		});
-		console.info('change');
-		console.info(change);
 
 		// 触发查询
-		yield put(queryPosts()); // 由于可能的上下级变更，触发全局刷新
 		yield put(querySpecPost(change.payload.id)); // 刷新特定文章
 	}
 }
@@ -216,7 +208,6 @@ export function* postsSaga() {
 		takeEvery(QUERY_WIKI_SPECPOST, querySpecPostDeal),
 		takeEvery(CHG_WIKI_SPECPOST, chgPostDeal),
 
-		fork(refreshPostsDeal),
 		fork(refreshSpecPostDeal),
 	]);
 }

@@ -31,18 +31,26 @@ interface StateProps {
 }
 
 interface DispatchProps {
+	pushState(nextLocation: any);
 	clearCreateMark();
 	addPost(data: any);
-	pushState(nextLocation: any);
 }
 
 type AppProps = StateProps & DispatchProps;
 
-function mapStateToProps(state) {
+const mapStateToProps = (state) => {
 	return {
 		createSuccess: state.wikiposts.createSuccess
 	};
-}
+};
+
+const mapDispatchToProps = (dispatch) => {
+	return bindActionCreators({
+		pushState: push,
+		clearCreateMark: clearCreateMark,
+		addPost: addPost,
+	}, dispatch)
+};
 
 class WikiNew extends React.Component<AppProps, any> {
 
@@ -183,10 +191,4 @@ class WikiNew extends React.Component<AppProps, any> {
 	}
 }
 
-export default connect(mapStateToProps, (dispatch) => {
-	return bindActionCreators({
-		clearCreateMark: clearCreateMark,
-		addPost: addPost,
-		pushState: push,
-	}, dispatch)
-})(WikiNew);
+export default connect(mapStateToProps, mapDispatchToProps)(WikiNew);

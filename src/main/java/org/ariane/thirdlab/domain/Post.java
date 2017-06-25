@@ -55,6 +55,9 @@ public class Post implements Serializable {
 	@Column(name = "status", nullable = false)
 	private int status; // 文章状态
 
+	@Column(name = "noTags", nullable = false)
+	private int noTags; // 没有标签
+
 	public long getId() {
 		return id;
 	}
@@ -135,4 +138,11 @@ public class Post implements Serializable {
 		this.status = status;
 	}
 
+	public int getNoTags() {
+		return noTags;
+	}
+
+	public void setNoTags(int noTags) {
+		this.noTags = noTags;
+	}
 }

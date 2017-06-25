@@ -45,4 +45,27 @@ public class PostDaoImpl extends AbstractDaoImpl<Post> implements PostDao {
 		});
 		return posts;
 	}
+
+	@Override
+	public List<Post> findPostsByIds(List<Long> ids) {
+		List<Post> posts = (List<Post>) getHibernateTemplate().execute(new HibernateCallback<List<Post>>() {
+			public List<Post> doInHibernate(Session session) throws HibernateException {
+				Query hqlQuery = session.createQuery("from Post p where p.id in ( :ids )");
+				hqlQuery.setParameterList("ids", ids);
+				return hqlQuery.list();
+			}
+		});
+		return posts;
+	}
+
+	@Override
+	public List<Post> findPostsUntagged() {
+		List<Post> posts = (List<Post>) getHibernateTemplate().execute(new HibernateCallback<List<Post>>() {
+			public List<Post> doInHibernate(Session session) throws HibernateException {
+				Query hqlQuery = session.createQuery("from Post p where p.noTags = 0");
+				return hqlQuery.list();
+			}
+		});
+		return posts;
+	}
 }

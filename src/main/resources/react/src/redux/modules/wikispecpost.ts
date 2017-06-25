@@ -2,7 +2,8 @@ import {CHG_WIKI_SPECPOST_SUCCESS, CLEAR_MODIFY_MARK, QUERY_WIKI_SPECPOST_SUCCES
 
 const initialState = {
 	wikipost: {
-		postText: ''
+		postText: '',
+		tags: [],
 	},
 	modifySuccess: false,
 	dirty: false
@@ -17,7 +18,6 @@ export default function reducer(state = initialState, action: any = {}) {
 			};
 		case QUERY_WIKI_SPECPOST_SUCCESS:
 			console.info('reducer query spec post success');
-			console.info(action.payload);
 
 			return {
 				...state,
@@ -26,7 +26,6 @@ export default function reducer(state = initialState, action: any = {}) {
 			};
 		case CHG_WIKI_SPECPOST_SUCCESS:
 			console.info('reducer chg spec post success');
-			console.info(action.payload);
 			return {
 				...state,
 				modifySuccess: true,

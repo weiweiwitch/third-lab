@@ -2,27 +2,26 @@ import * as React from "react";
 import {connect} from "react-redux";
 import {push} from "react-router-redux";
 import {Button, Col, Row, Tree} from "antd";
-import {queryPosts, querySpecPost} from "../../sagas/posts";
+import {queryPosts} from "../../sagas/posts";
 import {bindActionCreators} from "redux";
 
 const TreeNode = Tree.TreeNode;
 
 interface StateProps {
-	wikiposts: any[];
+	wikitagtree: any[];
 	dirty: boolean;
 }
 
 interface DispatchProps {
 	pushState(nextLocation: any);
-	queryPosts();
-	querySpecPost(postId: number)
+	queryPosts(tagId: number);
 }
 
 type AppProps = StateProps & DispatchProps;
 
 const mapStateToProps = (state) => {
 	return {
-		wikiposts: state.wikiposts.wikiposts,
+		wikitagtree: state.wikitags.wikitagtree,
 		dirty: state.wikiposts.dirty
 	};
 };
@@ -31,11 +30,14 @@ const mapDispatchToProps = (dispatch) => {
 	return bindActionCreators({
 		pushState: push,
 		queryPosts: queryPosts,
-		querySpecPost: querySpecPost,
 	}, dispatch)
 };
 
-class WikiTree extends React.Component<AppProps, any> {
+interface AppStates {
+	nodeExpands: Map<any, any>;
+}
+
+class WikiTagTree extends React.Component<AppProps, AppStates> {
 
 	constructor(props) {
 		super(props);
@@ -44,18 +46,6 @@ class WikiTree extends React.Component<AppProps, any> {
 			nodeExpands: new Map()
 		};
 	}
-
-	componentWillReceiveProps(nextProps) {
-		// 当将会接收到属性时处理
-		if (nextProps.dirty === true) {
-			// console.info('wikitree call queryPosts()');
-			this.props.queryPosts();
-		}
-	}
-
-	createPost = () => {
-		this.props.pushState('/wiki/wikinew/0');
-	};
 
 	onExpand = (expandedKeys) => {
 		// console.log('onExpand', arguments);
@@ -70,45 +60,39 @@ class WikiTree extends React.Component<AppProps, any> {
 			return;
 		}
 
+		// 查询特定tag下的所有文章
 		const nodeId = parseInt(selectedKeys[0], 10);
-
-		// 查询特定文章
-		this.props.querySpecPost(nodeId);
-
-		// 切换页面
-		this.props.pushState('/wiki/wikipost/' + nodeId);
+		this.props.queryPosts(nodeId);
 	};
 
 	render() {
-		const wikiposts = this.props.wikiposts;
+		const wikitagtree = this.props.wikitagtree;
+		wikitagtree.push({
+			id: 0,
+			tagName: '未归类',
+			parentTagId: 0,
+		});
 
 		const loop = data => data.map((item) => {
 			if (item.nodes) {
 				return (
-					<TreeNode key={item.id} title={item.title} disableCheckbox={true}>
+					<TreeNode key={item.id} title={item.tagName} disableCheckbox={true}>
 						{loop(item.nodes)}
 					</TreeNode>
 				);
 			}
-			return <TreeNode key={item.id} title={item.title}/>;
+			return <TreeNode key={item.id} title={item.tagName}/>;
 		});
 
 		return (
 			<div>
-				<Row>
-					<Col span={24}>
-						<Button type="primary" onClick={(event) => {
-							this.createPost();
-						}}>创建</Button>
-					</Col>
-				</Row>
 				<div>
 					<Tree onExpand={this.onExpand}
 						  autoExpandParent={true}
 						  onCheck={this.onCheck}
 						  onSelect={this.onSelect}
 					>
-						{loop(wikiposts)}
+						{loop(wikitagtree)}
 					</Tree>
 				</div>
 			</div>
@@ -116,6 +100,4 @@ class WikiTree extends React.Component<AppProps, any> {
 	}
 }
 
-
-
-export default connect(mapStateToProps, mapDispatchToProps)(WikiTree);
+export default connect(mapStateToProps, mapDispatchToProps)(WikiTagTree);

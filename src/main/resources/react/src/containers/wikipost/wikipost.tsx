@@ -3,6 +3,7 @@ import {connect} from "react-redux";
 import {push} from "react-router-redux";
 import {Button, Col, Row} from "antd";
 import {Tree} from 'antd';
+import {Tag} from 'antd';
 
 import * as hljs from "highlight.js";
 import * as MarkdownIt from "markdown-it";
@@ -20,6 +21,7 @@ const md = new MarkdownIt({
 			try {
 				return hljs.highlight(lang, str).value;
 			} catch (e) {
+				console.info('hightlight');
 				console.info(e);
 			}
 		}
@@ -133,6 +135,12 @@ class WikiPost extends React.Component<AppProps, any> {
 			);
 		});
 
+		const tags = post.tags.map((tag) => {
+			return (
+				<Tag key={tag.id}>{tag.tagName}</Tag>
+			);
+		});
+
 		return (
 			<Row>
 				<Col span={20}>
@@ -153,6 +161,10 @@ class WikiPost extends React.Component<AppProps, any> {
 							<div className="inner_topic_container">
 								<div className="topic_header">
 									<span className="topic_full_title">{post.title}</span>
+								</div>
+								<div>
+									<span>标签</span>
+									{tags}
 								</div>
 								<div className="inner_topic">
 									<div className="markdown-text" dangerouslySetInnerHTML={result}></div>

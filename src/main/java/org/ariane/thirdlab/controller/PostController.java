@@ -11,9 +11,12 @@ import java.util.List;
 import java.util.Map;
 
 import org.ariane.thirdlab.constvalue.RtCode;
+import org.ariane.thirdlab.controller.req.PostDetailReq;
 import org.ariane.thirdlab.domain.Post;
+import org.ariane.thirdlab.domain.PostTag;
 import org.ariane.thirdlab.resp.LabResp;
 import org.ariane.thirdlab.service.PostService;
+import org.ariane.thirdlab.service.data.PostDetailData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -37,13 +40,18 @@ public class PostController {
 
 	/**
 	 * 获取所有文章
-	 * 
+	 *
 	 * @return
 	 */
 	@RequestMapping(value = "/posts", method = RequestMethod.GET, produces = "application/json")
 	@ResponseStatus(HttpStatus.OK)
-	public LabResp<List<PostData>> allPost() {
-		List<Post> posts = postService.findAllPosts();
+	public LabResp<List<PostData>> allPost(long tagId) {
+		List<Post> posts = new ArrayList<>();
+		if (tagId == -1L) {
+			posts = postService.findAllPosts();
+		} else {
+			posts = postService.findPostsByTagId(tagId);
+		}
 
 		// 建立临时表
 		List<PostData> pDatas = new ArrayList<>();
@@ -63,33 +71,33 @@ public class PostController {
 		}
 
 		// 整理出根元素
-		List<PostData> rootDatas = new ArrayList<>();
-		for (PostData postData : pDatas) {
-			if (postData.parantId == 0L) {
-				rootDatas.add(postData);
-			} else if (pMap.get(postData.parantId) == null) {
-				rootDatas.add(postData);
-			} else {
-				PostData parantData = pMap.get(postData.parantId);
-				if (parantData.nodes == null) {
-					parantData.nodes = new ArrayList<>();
-				}
-				parantData.nodes.add(postData);
-			}
-		}
+//		List<PostData> rootDatas = new ArrayList<>();
+//		for (PostData postData : pDatas) {
+//			if (postData.parantId == 0L) {
+//				rootDatas.add(postData);
+//			} else if (pMap.get(postData.parantId) == null) {
+//				rootDatas.add(postData);
+//			} else {
+//				PostData parantData = pMap.get(postData.parantId);
+//				if (parantData.nodes == null) {
+//					parantData.nodes = new ArrayList<>();
+//				}
+//				parantData.nodes.add(postData);
+//			}
+//		}
 
 		// 对最上层排序
-		Collections.sort(rootDatas, new Comparator<PostData>() {
-
-			@Override
-			public int compare(PostData o1, PostData o2) {
-				return o1.title.compareTo(o2.title);
-			}
-
-		});
+//		Collections.sort(rootDatas, new Comparator<PostData>() {
+//
+//			@Override
+//			public int compare(PostData o1, PostData o2) {
+//				return o1.title.compareTo(o2.title);
+//			}
+//
+//		});
 
 		LabResp<List<PostData>> resp = new LabResp<>(RtCode.SUCCESS);
-		resp.data = rootDatas;
+		resp.data = pDatas;
 		return resp;
 	}
 
@@ -117,29 +125,27 @@ public class PostController {
 
 	/**
 	 * 获取某一篇文章
-	 * 
+	 *
 	 * @param id
 	 * @return
 	 */
 	@RequestMapping(value = "/posts/{id}", method = RequestMethod.GET, produces = "application/json")
 	@ResponseStatus(HttpStatus.OK)
 	public LabResp<PostDetailData> specPost(@PathVariable long id) {
-		Post post = postService.findSpecPost(id);
-		if (post != null) {
-			PostDetailData postDetailData = new PostDetailData(post);
-			LabResp<PostDetailData> resp = new LabResp<>(RtCode.SUCCESS);
-			resp.data = postDetailData;
-			return resp;
-
-		} else {
+		PostDetailData postDetailData = postService.findSpecPost(id);
+		if (postDetailData == null) {
 			LabResp<PostDetailData> resp = new LabResp<>(RtCode.POST_NOT_FOUND);
 			return resp;
 		}
+
+		LabResp<PostDetailData> resp = new LabResp<>(RtCode.SUCCESS);
+		resp.data = postDetailData;
+		return resp;
 	}
 
 	/**
 	 * 创建文章
-	 * 
+	 *
 	 * @param needCreatePost
 	 * @return
 	 */
@@ -158,18 +164,19 @@ public class PostController {
 
 	/**
 	 * 更新文章
-	 * 
+	 *
 	 * @param id
 	 * @param needUpdatePost
 	 * @return
 	 */
 	@RequestMapping(value = "/posts/{id}", method = RequestMethod.PUT, produces = "application/json")
 	@ResponseStatus(HttpStatus.OK)
-	public LabResp<PostDetailData> updatePost(@PathVariable long id, @RequestBody PostDetailData needUpdatePost) {
+	public LabResp<PostDetailData> updatePost(@PathVariable long id, @RequestBody PostDetailReq needUpdatePost) {
 		long parantId = needUpdatePost.parantId;
 		String title = needUpdatePost.title;
-		String postData = needUpdatePost.postText;
-		Post post = postService.updatePost(id, parantId, title, postData);
+		String postText = needUpdatePost.postText;
+		List<String> tags = needUpdatePost.tags;
+		Post post = postService.updatePost(id, parantId, title, postText, tags);
 		PostDetailData postDetailData = new PostDetailData(post);
 		LabResp<PostDetailData> resp = new LabResp<>(RtCode.SUCCESS);
 		resp.data = postDetailData;
@@ -178,7 +185,7 @@ public class PostController {
 
 	/**
 	 * 删除文章
-	 * 
+	 *
 	 * @param id
 	 */
 	@RequestMapping(value = "/posts/{id}", method = RequestMethod.DELETE, produces = "application/json")
@@ -191,9 +198,10 @@ public class PostController {
 	}
 
 	@RequestMapping(value = "/picupload", method = RequestMethod.POST)
-	public @ResponseBody String handleFileUpload(// @RequestParam("name") String
-													// name,
-			@RequestParam("file") MultipartFile file) {
+	public @ResponseBody
+	String handleFileUpload(// @RequestParam("name") String
+							// name,
+							@RequestParam("file") MultipartFile file) {
 		String name = "dddd.jpg";
 		if (!file.isEmpty()) {
 			try {
@@ -257,31 +265,4 @@ public class PostController {
 		}
 	}
 
-	public static class PostDetailData {
-		public long id;
-		public String _id;
-		public String user;
-		public String title;
-		public String postText;
-
-		public String audio; // 可选的音频文件链接
-
-		public long parantId;
-		public String parant;
-
-		public PostDetailData() {
-
-		}
-
-		public PostDetailData(Post post) {
-			this.id = post.getId();
-			this._id = post.getMgId();
-			this.user = "";
-			this.title = post.getTitle();
-			this.postText = post.getPost();
-
-			this.parantId = post.getParantId();
-			this.parant = post.getMgParantId();
-		}
-	}
 }

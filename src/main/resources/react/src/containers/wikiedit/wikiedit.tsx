@@ -2,11 +2,16 @@ import * as React from "react";
 import {connect} from "react-redux";
 import {push} from "react-router-redux";
 import {Button, Col, Form, Input, Row} from "antd";
+import {Tag} from 'antd';
+import {Tabs} from 'antd';
+import {AutoComplete} from 'antd';
+const TabPane = Tabs.TabPane;
 import * as hljs from "highlight.js";
 import * as MarkdownIt from "markdown-it";
-import {chgPost, clearModifyMark, queryPosts} from "../../sagas/posts";
+import {chgPost, clearModifyMark} from "../../sagas/posts";
 import {styles} from "../../client";
 import {bindActionCreators} from "redux";
+import {isNullOrUndefined} from "util";
 
 const FormItem = Form.Item;
 
@@ -27,24 +32,33 @@ const md = new MarkdownIt({
 
 interface StateProps {
 	wikipost: any,
+	wikitaglist: any[],
 	modifySuccess: boolean,
 }
 
 interface DispatchProps {
 	chgPost(postId: number, post: any);
 	clearModifyMark();
-	queryPosts();
 	pushState(nextLocation: any);
 }
 
 type AppProps = StateProps & DispatchProps;
 
-function mapStateToProps(state) {
+const mapStateToProps = (state) => {
 	return {
 		wikipost: state.wikispecpost.wikipost,
+		wikitaglist: state.wikitags.wikitaglist,
 		modifySuccess: state.wikispecpost.modifySuccess
 	};
-}
+};
+
+const mapDispatchToProps = (dispatch) => {
+	return bindActionCreators({
+		chgPost: chgPost,
+		clearModifyMark: clearModifyMark,
+		pushState: push,
+	}, dispatch)
+};
 
 class WikiEdit extends React.Component<AppProps, any> {
 
@@ -52,10 +66,27 @@ class WikiEdit extends React.Component<AppProps, any> {
 		super(props);
 
 		console.info('constructor ' + props.wikipost.title);
+
+		let maxTagId = 0;
+		const tags = props.wikipost.tags.map((tag) => {
+			if (tag.id > maxTagId) {
+				maxTagId = tag.id;
+			}
+			return {
+				id: tag.id,
+				tagName: tag.tagName,
+			};
+		});
+
 		this.state = {
 			postTitle: props.wikipost.title,
 			postText: props.wikipost.postText,
 			postParentId: props.wikipost.parantId,
+			maxTagId: maxTagId,
+			postTags: tags,
+			tagSearchResult: [],
+			selectedTag: '',
+			inputTag: '',
 		};
 	}
 
@@ -67,27 +98,32 @@ class WikiEdit extends React.Component<AppProps, any> {
 
 	componentWillReceiveProps(nextProps) {
 		// 当将会接收到属性时处理
-		console.info('wikiedit componentWillReceiveProps');
-		console.info(nextProps);
 		if (nextProps.modifySuccess === true) {
 			// 修改成功, 切换到文章页, 并刷新
 			const post = this.props.wikipost;
 			this.props.pushState('/wiki/wikipost/' + post.id);
 		}
+
+		const tags = this.props.wikipost.tags.map((tag) => {
+			return {
+				id: tag.id,
+				tagName: tag.tagName,
+			};
+		});
+		this.setState({
+			postTags: tags,
+		})
 	}
 
 	updateTitle = (event) => {
-		console.info(event);
 		this.setState({postTitle: event.target.value});
 	};
 
 	updateText = (event) => {
-		console.info(event);
 		this.setState({postText: event.target.value});
 	};
 
 	updateParentId = (event) => {
-		console.info(event);
 		this.setState({postParentId: event.target.value});
 	};
 
@@ -95,16 +131,18 @@ class WikiEdit extends React.Component<AppProps, any> {
 		event.preventDefault();
 
 		const post = this.props.wikipost;
+		let postTags = [];
+		this.state.postTags.map((postTag) => {
+			postTags.push(postTag.tagName);
+		});
 
 		const updatedPost = {
 			id: post.id,
-			_id: post.id,
 			user: post.user,
 			title: this.state.postTitle,
 			postText: this.state.postText,
-			audio: post.audio,
 			parantId: parseInt(this.state.postParentId, 10),
-			parant: post.parant
+			tags: postTags,
 		};
 		this.props.chgPost(post.id, updatedPost);
 	};
@@ -116,19 +154,126 @@ class WikiEdit extends React.Component<AppProps, any> {
 		this.props.pushState('/wiki/wikipost/' + post.id);
 	};
 
+	onTagSelect = (value) => {
+		this.setState({
+			selectedTag: value,
+		});
+	};
+
+	onTagSearch = (inputValue) => {
+		const searchResult = [];
+		const existTagMap = new Map<string, boolean>();
+		this.state.postTags.map((postTag) => {
+			existTagMap[postTag.tagName] = true;
+		});
+		this.props.wikitaglist.filter((value, index) => {
+			if (isNullOrUndefined(existTagMap[value.tagName]) == false) {
+				return false;
+			}
+			if (value.tagName.indexOf(inputValue) === -1) {
+				return false;
+			}
+
+			searchResult.push(value.tagName);
+			return true;
+		});
+
+		console.info(inputValue);
+		this.setState({
+			tagSearchResult: searchResult,
+			inputTag: inputValue,
+		});
+	};
+
+	onTagEnterPress = (event) => {
+		if (event.key === 'Enter') {
+			// 按了回车
+			const existTagMap = new Map<string, boolean>();
+			this.state.postTags.map((postTag) => {
+				existTagMap[postTag.tagName] = true;
+			});
+
+			let addNewTag = false;
+			let newTagName = '';
+			const selectedTag = this.state.selectedTag;
+			if (selectedTag !== '') {
+				// 判断这个tag是否已经存在
+				if (isNullOrUndefined(existTagMap[selectedTag]) == false) {
+					// 已经存在了
+					return;
+				}
+
+				newTagName = selectedTag;
+				addNewTag = true;
+
+			} else {
+				const inputTag = this.state.inputTag;
+				if (inputTag != '') {
+					// 判断这个tag是否已经存在
+					if (isNullOrUndefined(existTagMap[selectedTag]) == false) {
+						// 已经存在了
+						return;
+					}
+
+					newTagName = inputTag;
+					addNewTag = true;
+				}
+			}
+
+			if (addNewTag) {
+				let newTagId = this.state.maxTagId + 1;
+				const newTag = {
+					id: newTagId,
+					tagName: newTagName,
+				};
+				const nowTags = [...this.state.postTags];
+				nowTags.push(newTag);
+
+				this.setState({
+					postTags: nowTags,
+					maxTagId: newTagId,
+					selectedTag: '', // 清空选择
+					inputTag: '',
+				});
+			}
+		}
+	};
+
+	tagClose = (tag) => {
+		console.info(tag);
+		const remainings = this.state.postTags.filter((record, index) => {
+			if (record == tag) {
+				return false;
+			} else {
+				return true;
+			}
+		});
+		this.setState({
+			postTags: remainings,
+		})
+	};
+
 	render() {
 		const post = this.props.wikipost;
 
 		const postText = {__html: md.render(this.state.postText)};
 
 		const formItemLayout = {
-			labelCol: {span: 3},
-			wrapperCol: {span: 17},
+			labelCol: {span: 6},
+			wrapperCol: {span: 14},
 		};
 		const formItemLayout2 = {
-			labelCol: {span: 2},
-			wrapperCol: {span: 20},
+			labelCol: {span: 0},
+			wrapperCol: {span: 24},
 		};
+
+		const tags = this.state.postTags.map((tag) => {
+			return (
+				<Tag key={tag.id} closable afterClose={() => this.tagClose(tag)}>{tag.tagName}</Tag>
+			);
+		});
+
+		const allTags = this.state.tagSearchResult;
 
 		return (
 			<Row>
@@ -159,18 +304,40 @@ class WikiEdit extends React.Component<AppProps, any> {
 								</FormItem>
 							</Col>
 						</Row>
+
 						<Row>
-							<Col span={12}>
-								<FormItem {...formItemLayout2} label="内容">
-									<Input style={styles.codeStyle} type="textarea" autosize
-										   className="edit-text textarea-height"
-										   placeholder="内容" onChange={this.updateText} value={this.state.postText}
-									/>
-								</FormItem>
-							</Col>
-							<Col span={12}>
-								<div className="inner_topic markdown-text textarea-height"
-									 dangerouslySetInnerHTML={postText}></div>
+							<div>
+								<AutoComplete
+									allowClear={true}
+									dataSource={allTags}
+									style={{width: 200}}
+									onSelect={this.onTagSelect}
+									onSearch={this.onTagSearch}
+									placeholder="添加tag"
+								>
+									<input onKeyPress={this.onTagEnterPress} />
+								</AutoComplete>
+								{tags}
+							</div>
+						</Row>
+
+						<Row>
+							<Col span={24}>
+								<Tabs defaultActiveKey="1">
+									<TabPane tab="Markdown" key="1">
+										<FormItem {...formItemLayout2}>
+											<Input style={styles.codeStyle} type="textarea" autosize
+												   className="edit-text textarea-height"
+												   placeholder="内容" onChange={this.updateText}
+												   value={this.state.postText}
+											/>
+										</FormItem>
+									</TabPane>
+									<TabPane tab="预览" key="2">
+										<div className="inner_topic markdown-text textarea-height"
+											 dangerouslySetInnerHTML={postText}></div>
+									</TabPane>
+								</Tabs>
 							</Col>
 						</Row>
 
@@ -188,11 +355,4 @@ class WikiEdit extends React.Component<AppProps, any> {
 	}
 }
 
-export default connect(mapStateToProps, (dispatch) => {
-	return bindActionCreators({
-		chgPost: chgPost,
-		clearModifyMark: clearModifyMark,
-		queryPosts: queryPosts,
-		pushState: push
-	}, dispatch)
-})(WikiEdit);
+export default connect(mapStateToProps, mapDispatchToProps)(WikiEdit);

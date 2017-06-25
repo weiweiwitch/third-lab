@@ -20,25 +20,18 @@ export default function reducer(state = initialState, action: any = {}) {
 				createSuccess: false
 			};
 		case QUERY_WIKI_POSTS_SUCCESS:
-			console.info('reducer query posts success');
-			console.info(action.payload);
-
 			return {
 				...state,
 				wikiposts: action.payload,
 				dirty: false
 			};
 		case ADD_WIKI_SPECPOST_SUCCESS:
-			console.info('reducer add spec post success');
-			console.info(action.payload);
 			return {
 				...state,
 				createSuccess: true,
 				dirty: true
 			};
 		case DEL_WIKI_SPECPOST_SUCCESS:
-			console.info('reducer del spec post success');
-			console.info(action.payload);
 			return {
 				...state,
 				dirty: true
