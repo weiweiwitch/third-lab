@@ -43,27 +43,23 @@ class App extends React.Component<AppProps, any> {
 
 	render() {
 		return (
-			<div>
-				<Layout>
-					<Header id="header">
-						<Row>
-							<Col span={20}>
-								<div id="logo">
-									<span href="#">third lab</span>
-								</div>
-							</Col>
-							<Col span={4}>
-								<RadioGroup onChange={this.onChange} defaultValue="/wiki/wikiindex">
-									<RadioButton value="/wiki/wikiindex">Wiki</RadioButton>
-									<RadioButton value="/solution/solutionindex">解决方案</RadioButton>
-								</RadioGroup>
-							</Col>
-						</Row>
-					</Header>
-					<div>
-						{this.props.children}
-					</div>
-				</Layout>
+			<div style={{padding: '0px'}}>
+				<Header id="header">
+					<Row>
+						<Col span={20}>
+							<div id="logo"><span>third lab</span></div>
+						</Col>
+						<Col span={4}>
+							<RadioGroup onChange={this.onChange} defaultValue="/wiki/wikiindex">
+								<RadioButton value="/wiki/wikiindex">Wiki</RadioButton>
+								<RadioButton value="/solution/solutionindex">解决方案</RadioButton>
+							</RadioGroup>
+						</Col>
+					</Row>
+				</Header>
+				<div>
+					{this.props.children}
+				</div>
 			</div>
 		);
 	}

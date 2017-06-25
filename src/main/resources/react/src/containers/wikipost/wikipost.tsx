@@ -2,6 +2,8 @@ import * as React from "react";
 import {connect} from "react-redux";
 import {push} from "react-router-redux";
 import {Button, Col, Row} from "antd";
+import {Tree} from 'antd';
+
 import * as hljs from "highlight.js";
 import * as MarkdownIt from "markdown-it";
 import {deletePost} from "../../sagas/posts";
@@ -9,8 +11,10 @@ import {bindActionCreators} from "redux";
 
 require('./wikiPost.scss');
 
+const TreeNode = Tree.TreeNode;
+
 const md = new MarkdownIt({
-	html: true,
+	//html: true,
 	highlight: function (str, lang) {
 		if (lang && hljs.getLanguage(lang)) {
 			try {
@@ -42,6 +46,13 @@ function mapStateToProps(state) {
 		wikipost: state.wikispecpost.wikipost,
 		dirty: state.wikiposts.dirty
 	};
+}
+
+class HeaderNode {
+	key: number;
+	headLv: number;
+	prefix: string;
+	content: string;
 }
 
 class WikiPost extends React.Component<AppProps, any> {
@@ -84,10 +95,47 @@ class WikiPost extends React.Component<AppProps, any> {
 		const post = this.props.wikipost;
 
 		const result = {__html: md.render(post.postText)};
+		const parseResult = md.parse(post.postText);
+		
+		let headingStarted = false;
+		let currentHeaderNode;
+		let headerNodes: HeaderNode[] = [];
+		let headerKey = 1;
+		parseResult.forEach((token) => {
+			if (token.type == 'heading_open') {
+				headingStarted = true;
+				const nowHeadLv = token.markup.split('');
+				const headerNode = {
+					key: headerKey,
+					headLv: nowHeadLv,
+					prefix: token.markup,
+					content: '',
+				};
+
+				headerKey++;
+				currentHeaderNode = headerNode;
+				headerNodes.push(headerNode);
+
+			} else if (token.type == 'heading_close') {
+				headingStarted = false
+			}
+
+			if (headingStarted) {
+				if (token.type == 'inline') {
+					currentHeaderNode.content = token.content;
+				}
+			}
+		});
+		const headers = headerNodes.map((headerNode: HeaderNode) => {
+			return (
+				<TreeNode title={headerNode.prefix + ' ' + headerNode.content} key={headerNode.key}>
+				</TreeNode>
+			);
+		});
 
 		return (
 			<Row>
-				<Col span={24}>
+				<Col span={20}>
 					{/* 编辑栏 */}
 					<Row>
 						<Col span={22}>
@@ -112,6 +160,11 @@ class WikiPost extends React.Component<AppProps, any> {
 							</div>
 						</Col>
 					</Row>
+				</Col>
+				<Col span={4}>
+					<Tree>
+						{headers}
+					</Tree>
 				</Col>
 			</Row>
 		);

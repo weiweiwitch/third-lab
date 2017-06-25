@@ -37,14 +37,25 @@ class Wiki extends React.Component<AppProps, any> {
 
 	render() {
 		return (
-			<Layout style={{ height: 'calc(100vh - 120px)' }}>
-				<Sider style={{ padding: '12px 24px', background: '#ddd', overflow: 'auto' }}>
+			<Row style={{padding: '0px',}}>
+				<Col span={4} style={{
+					height: 'calc(100vh - 64px)',
+					padding: '12px 24px',
+					background: '#fff',
+					overflowX: 'hidden',
+					overflowY: 'auto',
+				}}>
 					<WikiTree />
-				</Sider>
-				<Layout style={{ padding: '12px 24px', overflow: 'auto' }}>
+				</Col>
+				<Col span={20} style={{
+					height: 'calc(100vh - 64px)',
+					display: 'inline-block',
+					padding: '12px 24px',
+					overflowY: 'auto',
+				}}>
 					{this.props.children}
-				</Layout>
-			</Layout>
+				</Col>
+			</Row>
 		);
 	}
 }

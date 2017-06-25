@@ -1,11 +1,27 @@
 @import "./generic.scss";
 @import "~highlight.js/styles/github.css";
 
-.browsehappy {
-  margin: 0.2em 0;
-  background: $light-gray;
-  color: $black;
-  padding: 0.2em 0;
+//.browsehappy {
+//  margin: 0.2em 0;
+//  background: $light-gray;
+//  color: $black;
+//  padding: 0.2em 0;
+//}
+
+body {
+  height: 100%;
+  margin: 0;
+  padding:0;
+  background-color: #f8f8f8;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #e6e6e6;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
 }
 
 /* Responsive: Portrait tablets and up */
@@ -17,8 +33,7 @@
 
 #logo span {
   font-size: 16px;
-  height: 80px;
-  line-height: 80px;
+  line-height: 56px;
   text-transform: uppercase;
 }
 
@@ -36,10 +51,9 @@ textarea {
 }
 
 #header {
-  -webkit-transition: opacity .5s;
-  transition: opacity .5s;
+  //-webkit-transition: opacity .5s;
+  //transition: opacity .5s;
   background: #fff;
-  height: 80px;
   padding: 0 48px;
   width: 100%;
 }

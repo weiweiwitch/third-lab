@@ -94,17 +94,15 @@ class WikiTree extends React.Component<AppProps, any> {
 						}}>创建</Button>
 					</Col>
 				</Row>
-				<Row>
-					<Col span={24}>
-						<Tree onExpand={this.onExpand}
-							  autoExpandParent={true}
-							  onCheck={this.onCheck}
-							  onSelect={this.onSelect}
-						>
-							{loop(wikiposts)}
-						</Tree>
-					</Col>
-				</Row>
+				<div>
+					<Tree onExpand={this.onExpand}
+						  autoExpandParent={true}
+						  onCheck={this.onCheck}
+						  onSelect={this.onSelect}
+					>
+						{loop(wikiposts)}
+					</Tree>
+				</div>
 			</div>
 		);
 	}
