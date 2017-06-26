@@ -2,7 +2,7 @@ import * as React from "react";
 import {connect} from "react-redux";
 import {push} from "react-router-redux";
 import {Button, Col, Row, Tree} from "antd";
-import {queryPosts} from "../../sagas/posts";
+import {querySpecTagPosts} from "../../sagas/posts";
 import {bindActionCreators} from "redux";
 
 const TreeNode = Tree.TreeNode;
@@ -14,7 +14,7 @@ interface StateProps {
 
 interface DispatchProps {
 	pushState(nextLocation: any);
-	queryPosts(tagId: number);
+	querySpecTagPosts(tagId: number);
 }
 
 type AppProps = StateProps & DispatchProps;
@@ -29,7 +29,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
 	return bindActionCreators({
 		pushState: push,
-		queryPosts: queryPosts,
+		querySpecTagPosts: querySpecTagPosts,
 	}, dispatch)
 };
 
@@ -62,7 +62,7 @@ class WikiTagTree extends React.Component<AppProps, AppStates> {
 
 		// 查询特定tag下的所有文章
 		const nodeId = parseInt(selectedKeys[0], 10);
-		this.props.queryPosts(nodeId);
+		this.props.querySpecTagPosts(nodeId);
 	};
 
 	render() {

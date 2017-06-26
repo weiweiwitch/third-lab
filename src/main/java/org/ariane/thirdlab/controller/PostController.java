@@ -12,6 +12,7 @@ import java.util.Map;
 
 import org.ariane.thirdlab.constvalue.RtCode;
 import org.ariane.thirdlab.controller.req.PostDetailReq;
+import org.ariane.thirdlab.controller.resp.PostsOfSpecTagResp;
 import org.ariane.thirdlab.domain.Post;
 import org.ariane.thirdlab.domain.PostTag;
 import org.ariane.thirdlab.resp.LabResp;
@@ -30,6 +31,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
+import javax.ws.rs.PathParam;
 
 @RestController
 @RequestMapping(value = "/api")
@@ -45,13 +47,8 @@ public class PostController {
 	 */
 	@RequestMapping(value = "/posts", method = RequestMethod.GET, produces = "application/json")
 	@ResponseStatus(HttpStatus.OK)
-	public LabResp<List<PostData>> allPost(long tagId) {
-		List<Post> posts = new ArrayList<>();
-		if (tagId == -1L) {
-			posts = postService.findAllPosts();
-		} else {
-			posts = postService.findPostsByTagId(tagId);
-		}
+	public LabResp<List<PostData>> allPost() {
+		List<Post> posts = postService.findAllPosts();
 
 		// 建立临时表
 		List<PostData> pDatas = new ArrayList<>();
@@ -71,33 +68,68 @@ public class PostController {
 		}
 
 		// 整理出根元素
-//		List<PostData> rootDatas = new ArrayList<>();
-//		for (PostData postData : pDatas) {
-//			if (postData.parantId == 0L) {
-//				rootDatas.add(postData);
-//			} else if (pMap.get(postData.parantId) == null) {
-//				rootDatas.add(postData);
-//			} else {
-//				PostData parantData = pMap.get(postData.parantId);
-//				if (parantData.nodes == null) {
-//					parantData.nodes = new ArrayList<>();
-//				}
-//				parantData.nodes.add(postData);
-//			}
-//		}
+		List<PostData> rootDatas = new ArrayList<>();
+		for (PostData postData : pDatas) {
+			if (postData.parantId == 0L) {
+				rootDatas.add(postData);
+			} else if (pMap.get(postData.parantId) == null) {
+				rootDatas.add(postData);
+			} else {
+				PostData parantData = pMap.get(postData.parantId);
+				if (parantData.nodes == null) {
+					parantData.nodes = new ArrayList<>();
+				}
+				parantData.nodes.add(postData);
+			}
+		}
 
 		// 对最上层排序
-//		Collections.sort(rootDatas, new Comparator<PostData>() {
-//
-//			@Override
-//			public int compare(PostData o1, PostData o2) {
-//				return o1.title.compareTo(o2.title);
-//			}
-//
-//		});
+		Collections.sort(rootDatas, new Comparator<PostData>() {
+
+			@Override
+			public int compare(PostData o1, PostData o2) {
+				return o1.title.compareTo(o2.title);
+			}
+
+		});
 
 		LabResp<List<PostData>> resp = new LabResp<>(RtCode.SUCCESS);
-		resp.data = pDatas;
+		resp.data = rootDatas;
+		return resp;
+	}
+
+	/**
+	 * 获取所有文章
+	 *
+	 * @return
+	 */
+	@RequestMapping(value = "/tags/{tagId}/posts", method = RequestMethod.GET, produces = "application/json")
+	@ResponseStatus(HttpStatus.OK)
+	public LabResp<PostsOfSpecTagResp> PostsOfSpecTag(@PathVariable(value = "tagId") long tagId) {
+		List<Post> posts = postService.findPostsByTagId(tagId);
+
+		// 建立临时表
+		List<PostData> pDatas = new ArrayList<>();
+		Map<Long, PostData> pMap = new HashMap<>();
+		for (Post post : posts) {
+			PostData postData = new PostData();
+			postData.id = post.getId();
+			postData._id = post.getMgId();
+			postData.title = post.getTitle();
+
+			postData.parantId = post.getParantId();
+			postData.parant = post.getMgParantId();
+			postData.status = post.getStatus();
+
+			pMap.put(postData.id, postData);
+			pDatas.add(postData);
+		}
+
+		LabResp<PostsOfSpecTagResp> resp = new LabResp<>(RtCode.SUCCESS);
+		PostsOfSpecTagResp postsOfSpecTagResp = new PostsOfSpecTagResp();
+		postsOfSpecTagResp.posts = pDatas;
+		postsOfSpecTagResp.tagId = tagId;
+		resp.data = postsOfSpecTagResp;
 		return resp;
 	}
 

@@ -5,7 +5,7 @@ import {Button, Col, Form, Input, Row} from "antd";
 import {Tag} from 'antd';
 import {Tabs} from 'antd';
 import {AutoComplete} from 'antd';
-const TabPane = Tabs.TabPane;
+
 import * as hljs from "highlight.js";
 import * as MarkdownIt from "markdown-it";
 import {chgPost, clearModifyMark} from "../../sagas/posts";
@@ -13,6 +13,7 @@ import {styles} from "../../client";
 import {bindActionCreators} from "redux";
 import {isNullOrUndefined} from "util";
 
+const TabPane = Tabs.TabPane;
 const FormItem = Form.Item;
 
 const md = new MarkdownIt({
