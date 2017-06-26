@@ -17,9 +17,15 @@ export default function reducer(state = initialState, action: any = {}) {
 			console.info('reducer query tags success');
 			console.info(action.payload);
 
+			const wikitagtree = action.payload.tagTree;
+			wikitagtree.push({
+				id: 0,
+				tagName: '未归类',
+				parentTagId: 0,
+			});
 			return {
 				...state,
-				wikitagtree: action.payload.tagTree,
+				wikitagtree: wikitagtree,
 				wikitaglist: action.payload.tagList,
 				dirty: false
 			};

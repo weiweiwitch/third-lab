@@ -67,11 +67,6 @@ class WikiTagTree extends React.Component<AppProps, AppStates> {
 
 	render() {
 		const wikitagtree = this.props.wikitagtree;
-		wikitagtree.push({
-			id: 0,
-			tagName: '未归类',
-			parentTagId: 0,
-		});
 
 		const loop = data => data.map((item) => {
 			if (item.nodes) {

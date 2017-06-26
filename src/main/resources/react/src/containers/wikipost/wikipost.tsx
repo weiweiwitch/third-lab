@@ -15,7 +15,7 @@ require('./wikiPost.scss');
 const TreeNode = Tree.TreeNode;
 
 const md = new MarkdownIt({
-	//html: true,
+	html: true,
 	highlight: function (str, lang) {
 		if (lang && hljs.getLanguage(lang)) {
 			try {
@@ -97,37 +97,43 @@ class WikiPost extends React.Component<AppProps, any> {
 		const post = this.props.wikipost;
 
 		const result = {__html: md.render(post.postText)};
-		const parseResult = md.parse(post.postText);
 
-		let headingStarted = false;
-		let currentHeaderNode;
+		// 解析markdown结构
 		let headerNodes: HeaderNode[] = [];
-		let headerKey = 1;
-		parseResult.forEach((token) => {
-			if (token.type == 'heading_open') {
-				headingStarted = true;
-				const nowHeadLv = token.markup.split('');
-				const headerNode = {
-					key: headerKey,
-					headLv: nowHeadLv,
-					prefix: token.markup,
-					content: '',
-				};
+		try {
+			const parseResult = md.parse(post.postText);
+			let headingStarted = false;
+			let currentHeaderNode;
+			let headerKey = 1;
+			parseResult.forEach((token) => {
+				if (token.type == 'heading_open') {
+					headingStarted = true;
+					const nowHeadLv = token.markup.split('');
+					const headerNode = {
+						key: headerKey,
+						headLv: nowHeadLv,
+						prefix: token.markup,
+						content: '',
+					};
 
-				headerKey++;
-				currentHeaderNode = headerNode;
-				headerNodes.push(headerNode);
+					headerKey++;
+					currentHeaderNode = headerNode;
+					headerNodes.push(headerNode);
 
-			} else if (token.type == 'heading_close') {
-				headingStarted = false
-			}
-
-			if (headingStarted) {
-				if (token.type == 'inline') {
-					currentHeaderNode.content = token.content;
+				} else if (token.type == 'heading_close') {
+					headingStarted = false
 				}
-			}
-		});
+
+				if (headingStarted) {
+					if (token.type == 'inline') {
+						currentHeaderNode.content = token.content;
+					}
+				}
+			});
+		} catch (e) {
+			console.info(e);
+		}
+
 		const headers = headerNodes.map((headerNode: HeaderNode) => {
 			return (
 				<TreeNode title={headerNode.prefix + ' ' + headerNode.content} key={headerNode.key}>
