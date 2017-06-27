@@ -1,15 +1,15 @@
 package org.ariane.thirdlab.controller;
 
+import org.ariane.thirdlab.constvalue.RtCode;
+import org.ariane.thirdlab.controller.req.ProjectReq;
+import org.ariane.thirdlab.controller.resp.AddProjectResp;
+import org.ariane.thirdlab.resp.LabResp;
 import org.ariane.thirdlab.service.TaskDealService;
 import org.ariane.thirdlab.service.data.ProjectsData;
 import org.ariane.thirdlab.service.impl.TaskDealServiceImpl.AddGroupRt;
-import org.ariane.thirdlab.service.impl.TaskDealServiceImpl.AddProjectRt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 public class ProjectTaskController {
@@ -19,22 +19,36 @@ public class ProjectTaskController {
 
 	@RequestMapping(value = "/projects", method = RequestMethod.GET, produces = "application/json")
 	@ResponseStatus(HttpStatus.OK)
-	public ProjectsData allTasks() {
+	public LabResp<ProjectsData> allProjects() {
 		ProjectsData data = taskDealService.showAllProjects();
-		return data;
+		LabResp<ProjectsData> resp = new LabResp<>(RtCode.SUCCESS);
+		resp.data = data;
+		return resp;
+	}
+
+	@RequestMapping(value = "/projects", method = RequestMethod.POST, produces = "application/json")
+	@ResponseStatus(HttpStatus.OK)
+	public LabResp<AddProjectResp> addProject(@RequestBody ProjectReq projectReq) {
+		AddProjectResp addProjectResp = taskDealService.addProject(projectReq.name, projectReq.groupId);
+
+		LabResp<AddProjectResp> resp = new LabResp<>(addProjectResp.rt);
+		resp.data = addProjectResp;
+		return resp;
+	}
+
+	@RequestMapping(value = "/projects/{id}", method = RequestMethod.DELETE, produces = "application/json")
+	@ResponseStatus(HttpStatus.OK)
+	public LabResp<Integer> delProject(@PathVariable long id) {
+		int rt = taskDealService.delProject(id);
+		LabResp<Integer> resp = new LabResp<>(rt);
+		resp.data = 0;
+		return resp;
 	}
 
 	@RequestMapping(value = "/addprojectgroup", method = RequestMethod.GET, produces = "application/json")
 	@ResponseStatus(HttpStatus.OK)
 	public AddGroupRt addGroup(String groupName) {
 		AddGroupRt rt = taskDealService.addProjectGroup(groupName);
-		return rt;
-	}
-
-	@RequestMapping(value = "/addproject", method = RequestMethod.GET, produces = "application/json")
-	@ResponseStatus(HttpStatus.OK)
-	public AddProjectRt addGroup(String name, long groupId) {
-		AddProjectRt rt = taskDealService.addProject(name, groupId);
 		return rt;
 	}
 
@@ -66,10 +80,4 @@ public class ProjectTaskController {
 		return rt;
 	}
 
-	@RequestMapping(value = "/delname", method = RequestMethod.GET, produces = "application/json")
-	@ResponseStatus(HttpStatus.OK)
-	public int delProject(long projectId) {
-		int rt = taskDealService.delProject(projectId);
-		return rt;
-	}
 }

@@ -4,17 +4,13 @@ import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.ariane.thirdlab.constvalue.RtCode;
 import org.ariane.thirdlab.controller.req.PostDetailReq;
+import org.ariane.thirdlab.controller.resp.PostResp;
 import org.ariane.thirdlab.controller.resp.PostsOfSpecTagResp;
 import org.ariane.thirdlab.domain.Post;
-import org.ariane.thirdlab.domain.PostTag;
 import org.ariane.thirdlab.resp.LabResp;
 import org.ariane.thirdlab.service.PostService;
 import org.ariane.thirdlab.service.data.PostDetailData;
@@ -30,9 +26,6 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpServletResponse;
-import javax.ws.rs.PathParam;
-
 @RestController
 @RequestMapping(value = "/api")
 public class PostController {
@@ -47,53 +40,22 @@ public class PostController {
 	 */
 	@RequestMapping(value = "/posts", method = RequestMethod.GET, produces = "application/json")
 	@ResponseStatus(HttpStatus.OK)
-	public LabResp<List<PostData>> allPost() {
+	public LabResp<List<PostResp>> allPost() {
 		List<Post> posts = postService.findAllPosts();
 
 		// 建立临时表
-		List<PostData> pDatas = new ArrayList<>();
-		Map<Long, PostData> pMap = new HashMap<>();
+		List<PostResp> pDatas = new ArrayList<>();
 		for (Post post : posts) {
-			PostData postData = new PostData();
-			postData.id = post.getId();
-			postData._id = post.getMgId();
-			postData.title = post.getTitle();
+			PostResp postResp = new PostResp();
+			postResp.id = post.getId();
+			postResp.title = post.getTitle();
+			postResp.parantId = post.getParantId();
+			postResp.status = post.getStatus();
 
-			postData.parantId = post.getParantId();
-			postData.parant = post.getMgParantId();
-			postData.status = post.getStatus();
-
-			pMap.put(postData.id, postData);
-			pDatas.add(postData);
+			pDatas.add(postResp);
 		}
 
-		// 整理出根元素
-//		List<PostData> rootDatas = new ArrayList<>();
-//		for (PostData postData : pDatas) {
-//			if (postData.parantId == 0L) {
-//				rootDatas.add(postData);
-//			} else if (pMap.get(postData.parantId) == null) {
-//				rootDatas.add(postData);
-//			} else {
-//				PostData parantData = pMap.get(postData.parantId);
-//				if (parantData.nodes == null) {
-//					parantData.nodes = new ArrayList<>();
-//				}
-//				parantData.nodes.add(postData);
-//			}
-//		}
-
-		// 对最上层排序
-//		Collections.sort(rootDatas, new Comparator<PostData>() {
-//
-//			@Override
-//			public int compare(PostData o1, PostData o2) {
-//				return o1.title.compareTo(o2.title);
-//			}
-//
-//		});
-
-		LabResp<List<PostData>> resp = new LabResp<>(RtCode.SUCCESS);
+		LabResp<List<PostResp>> resp = new LabResp<>(RtCode.SUCCESS);
 		resp.data = pDatas;
 		return resp;
 	}
@@ -105,24 +67,20 @@ public class PostController {
 	 */
 	@RequestMapping(value = "/tags/{tagId}/posts", method = RequestMethod.GET, produces = "application/json")
 	@ResponseStatus(HttpStatus.OK)
-	public LabResp<PostsOfSpecTagResp> PostsOfSpecTag(@PathVariable(value = "tagId") long tagId) {
+	public LabResp<PostsOfSpecTagResp> findPostsOfSpecTag(@PathVariable(value = "tagId") long tagId) {
 		List<Post> posts = postService.findPostsByTagId(tagId);
 
 		// 建立临时表
-		List<PostData> pDatas = new ArrayList<>();
-		Map<Long, PostData> pMap = new HashMap<>();
+		List<PostResp> pDatas = new ArrayList<>();
 		for (Post post : posts) {
-			PostData postData = new PostData();
-			postData.id = post.getId();
-			postData._id = post.getMgId();
-			postData.title = post.getTitle();
+			PostResp postResp = new PostResp();
+			postResp.id = post.getId();
+			postResp.title = post.getTitle();
 
-			postData.parantId = post.getParantId();
-			postData.parant = post.getMgParantId();
-			postData.status = post.getStatus();
+			postResp.parantId = post.getParantId();
+			postResp.status = post.getStatus();
 
-			pMap.put(postData.id, postData);
-			pDatas.add(postData);
+			pDatas.add(postResp);
 		}
 
 		LabResp<PostsOfSpecTagResp> resp = new LabResp<>(RtCode.SUCCESS);
@@ -265,19 +223,6 @@ public class PostController {
 	// "ms");
 	// return "1";
 	// }
-
-	public static class PostData {
-		public long id;
-		public String _id;
-		public String title;
-
-		public long parantId;
-		public String parant;
-		public int status;
-
-		public List<PostData> nodes;
-
-	}
 
 	public static class PostPositionData {
 		public List<PostInfo> postInfos = new ArrayList<>();

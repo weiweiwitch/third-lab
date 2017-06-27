@@ -1,9 +1,9 @@
 package org.ariane.thirdlab.service;
 
+import org.ariane.thirdlab.controller.resp.AddProjectResp;
 import org.ariane.thirdlab.service.data.ProjectsData;
 import org.ariane.thirdlab.service.data.TasksData;
 import org.ariane.thirdlab.service.impl.TaskDealServiceImpl.AddGroupRt;
-import org.ariane.thirdlab.service.impl.TaskDealServiceImpl.AddProjectRt;
 
 /**
  * Created by ariane on 16/4/25.
@@ -38,7 +38,7 @@ public interface TaskDealService {
 	 * @param groupId
 	 * @return
 	 */
-	public AddProjectRt addProject(String name, long groupId);
+	public AddProjectResp addProject(String name, long groupId);
 
 	/**
 	 * 添加任务

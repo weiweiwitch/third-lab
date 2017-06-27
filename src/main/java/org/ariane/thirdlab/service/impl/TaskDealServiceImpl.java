@@ -1,6 +1,7 @@
 package org.ariane.thirdlab.service.impl;
 
 import org.ariane.thirdlab.constvalue.TlResultCode;
+import org.ariane.thirdlab.controller.resp.AddProjectResp;
 import org.ariane.thirdlab.dao.ProjectDao;
 import org.ariane.thirdlab.dao.ProjectGroupDao;
 import org.ariane.thirdlab.dao.ProjectTaskDao;
@@ -58,10 +59,10 @@ public class TaskDealServiceImpl implements TaskDealService {
 
 
 	@Override
-	public AddProjectRt addProject(String name, long groupId) {
+	public AddProjectResp addProject(String name, long groupId) {
 		ProjectGroup group = projectGroupDao.findById(groupId);
 		if (group == null) {
-			AddProjectRt rt = new AddProjectRt();
+			AddProjectResp rt = new AddProjectResp();
 			rt.rt = TlResultCode.NOT_FOUND_PROJECT_GROUP;
 			return rt;
 		}
@@ -71,7 +72,7 @@ public class TaskDealServiceImpl implements TaskDealService {
 		project.setGroupId(groupId);
 		projectDao.save(project);
 
-		AddProjectRt rt = new AddProjectRt();
+		AddProjectResp rt = new AddProjectResp();
 		rt.rt = TlResultCode.SUCCESS;
 		rt.groupId = groupId;
 		rt.projectId = project.getId();
@@ -82,12 +83,6 @@ public class TaskDealServiceImpl implements TaskDealService {
 	public static class AddGroupRt {
 		public int rt;
 		public long groupId;
-	}
-
-	public static class AddProjectRt {
-		public int rt;
-		public long groupId;
-		public long projectId;
 	}
 
 	@Override

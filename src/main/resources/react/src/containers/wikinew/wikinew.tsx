@@ -95,13 +95,10 @@ class WikiNew extends React.Component<AppProps, any> {
 		event.preventDefault();
 		const post = {
 			id: 0,
-			_id: 0,
 			user: '',
 			title: this.state.postTitle,
 			postText: this.state.postText,
-			audio: '',
 			parantId: this.state.parentId,
-			parant: '',
 		};
 		this.props.addPost(post);
 	};
