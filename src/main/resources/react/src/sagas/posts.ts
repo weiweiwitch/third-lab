@@ -1,6 +1,7 @@
-import {all, call, put, takeEvery, fork, race, take} from "redux-saga/effects";
+import {all, call, put, takeEvery, fork, race, take, select} from "redux-saga/effects";
 import {LOGIN_SUCCESS} from './auth';
 import {client} from "../client";
+import {getSpecTagId} from "../redux/modules/wikitags";
 
 export const CLEAR_CREATE_MARK = 'CLEAR_CREATE_MARK';
 
@@ -233,6 +234,9 @@ export function* refreshPostsDeal() {
 
 		// 触发查询
 		yield put(queryPosts()); // 刷新文章
+
+		const specTagId = yield select(getSpecTagId);
+		yield put(querySpecTagPosts(specTagId)); // 刷新特定文章
 	}
 }
 
@@ -244,6 +248,7 @@ export function* refreshSpecPostDeal() {
 
 		// 触发查询
 		yield put(querySpecPost(change.payload.id)); // 刷新特定文章
+
 	}
 }
 

@@ -43,12 +43,19 @@ interface DispatchProps {
 
 type AppProps = StateProps & DispatchProps;
 
-function mapStateToProps(state) {
+const mapStateToProps = (state) => {
 	return {
 		wikipost: state.wikispecpost.wikipost,
 		dirty: state.wikiposts.dirty
 	};
-}
+};
+
+const mapDispatchToProps = (dispatch) => {
+	return bindActionCreators({
+		deletePost: deletePost,
+		pushState: push
+	}, dispatch)
+};
 
 class HeaderNode {
 	key: number;
@@ -154,8 +161,8 @@ class WikiPost extends React.Component<AppProps, any> {
 					<Row>
 						<Col span={22}>
 							<Button type="primary" onClick={this.edit}>编辑</Button>
-							<Button onClick={this.createSubPost}>添加子文章</Button>
-							<Button onClick={this.transToIndex}>首页</Button>
+							<Button onClick={this.createSubPost}>添加子级文章</Button>
+							<Button onClick={this.transToIndex}>搜索</Button>
 						</Col>
 						<Col span={2}>
 							<Button type="danger" onClick={this.deletePost}>删除</Button>
@@ -169,7 +176,7 @@ class WikiPost extends React.Component<AppProps, any> {
 									<span className="topic_full_title">{post.title}</span>
 								</div>
 								<div>
-									<span>标签</span>
+									<span>标签：</span>
 									{tags}
 								</div>
 								<div className="inner_topic">
@@ -189,9 +196,4 @@ class WikiPost extends React.Component<AppProps, any> {
 	}
 }
 
-export default connect(mapStateToProps, (dispatch) => {
-	return bindActionCreators({
-		deletePost: deletePost,
-		pushState: push
-	}, dispatch)
-})(WikiPost);
+export default connect(mapStateToProps, mapDispatchToProps)(WikiPost);

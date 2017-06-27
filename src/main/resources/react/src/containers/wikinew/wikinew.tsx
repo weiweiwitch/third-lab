@@ -2,12 +2,14 @@ import * as React from "react";
 import {connect} from "react-redux";
 import {push} from "react-router-redux";
 import {Button, Form, Input, Row, Col} from "antd";
+import {Tabs} from 'antd';
 import {bindActionCreators} from "redux";
 import * as hljs from "highlight.js";
 import * as MarkdownIt from 'markdown-it';
 import {styles} from "../../client";
 import {clearCreateMark, addPost} from "../../sagas/posts";
 
+const TabPane = Tabs.TabPane;
 const FormItem = Form.Item;
 
 const md = new MarkdownIt({
@@ -71,26 +73,17 @@ class WikiNew extends React.Component<AppProps, any> {
 
 	componentWillReceiveProps(nextProps) {
 		// 当将会接收到属性时处理
-		console.info('wikinew componentWillReceiveProps');
-		console.info(nextProps);
 		if (nextProps.createSuccess === true) {
 			console.info('wikinew switch to index');
 			this.props.pushState('/wiki/wikiindex');
 		}
 	}
 
-	updateParentId = (event) => {
-		console.info(event);
-		this.setState({parentId: event.target.value});
-	};
-
 	updateTitle = (event) => {
-		console.info(event);
 		this.setState({postTitle: event.target.value});
 	};
 
 	updateText = (event) => {
-		console.info(event.target.value);
 		let text = event.target.value;
 		if (text === null) {
 			text = '';
@@ -116,11 +109,7 @@ class WikiNew extends React.Component<AppProps, any> {
 	cancelCreate = (event) => {
 		event.preventDefault();
 
-		if (this.state.parentId !== 0) {
-			this.props.pushState('/wiki/wikipost/' + this.state.parentId);
-		} else {
-			this.props.pushState('/wiki/wikiindex');
-		}
+		this.props.pushState('/wiki/wikiindex');
 	};
 
 	render() {
@@ -130,6 +119,10 @@ class WikiNew extends React.Component<AppProps, any> {
 			labelCol: {span: 2},
 			wrapperCol: {span: 18},
 		};
+		const formItemLayout2 = {
+			labelCol: {span: 0},
+			wrapperCol: {span: 24},
+		};
 
 		return (
 			<Row>
@@ -137,46 +130,37 @@ class WikiNew extends React.Component<AppProps, any> {
 					<Form>
 
 						<Row>
-							<Col span={12}>
-								<FormItem {...formItemLayout} label="标题">
-									<Input placeholder="请输入标题" onChange={(event) => {
-										this.updateTitle(event);
-									}} value={this.state.postTitle}
-									/>
-								</FormItem>
+							<Col span={24}>
+								<Input placeholder="请输入标题"
+									   onChange={this.updateTitle}
+									   value={this.state.postTitle}
+								/>
 							</Col>
-							<Col span={12}>
-								<FormItem {...formItemLayout} label="ID">
-									<Input type="number" placeholder="请输入上层ID"
-										   onChange={(event) => {
-											   this.updateParentId(event);
-										   }} value={this.state.parentId}
-									/>
-								</FormItem>
+						</Row>
+
+						<Row>
+							<Col span={24}>
+								<Tabs defaultActiveKey="1">
+									<TabPane tab="Markdown" key="1">
+										<FormItem {...formItemLayout2}>
+											<Input style={styles.codeStyle} type="textarea" autosize
+												   className="edit-text textarea-height"
+												   placeholder="内容" onChange={this.updateText}
+												   value={this.state.postText}
+											/>
+										</FormItem>
+									</TabPane>
+									<TabPane tab="预览" key="2">
+										<div className="inner_topic markdown-text textarea-height"
+											 dangerouslySetInnerHTML={postText}></div>
+									</TabPane>
+								</Tabs>
 							</Col>
 						</Row>
 
 						<Row>
 							<Col span={12}>
-								<FormItem {...formItemLayout} label="内容">
-									<Input style={styles.codeStyle} type="textarea"
-										   className="edit-text textarea-height" autosize
-										   placeholder="内容" onChange={(event) => {
-										this.updateText(event);
-									}} value={this.state.postText}
-									/>
-								</FormItem>
-							</Col>
-							<Col span={12}>
-								<div className="markdown-text textarea-height" dangerouslySetInnerHTML={postText}></div>
-							</Col>
-						</Row>
-
-						<Row>
-							<Col span={12} offset={1}>
-								<Button type="primary" onClick={(event) => {
-									this.createPost(event);
-								}}>新建</Button>
+								<Button type="primary" onClick={this.createPost}>新建</Button>
 								<Button onClick={(event) => {
 									this.cancelCreate(event);
 								}}>取消</Button>

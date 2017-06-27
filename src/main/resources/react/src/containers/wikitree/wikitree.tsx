@@ -15,7 +15,7 @@ interface StateProps {
 interface DispatchProps {
 	pushState(nextLocation: any);
 	queryPosts();
-	querySpecPost(postId: number)
+	querySpecPost(postId: number);
 }
 
 type AppProps = StateProps & DispatchProps;
@@ -115,7 +115,5 @@ class WikiTree extends React.Component<AppProps, any> {
 		);
 	}
 }
-
-
 
 export default connect(mapStateToProps, mapDispatchToProps)(WikiTree);

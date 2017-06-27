@@ -50,7 +50,15 @@ textarea {
   tab-size: 4;
 }
 
-.header {
+button {
+  margin-right: 8px;
+}
+
+input {
+  margin-right: 8px;
+}
+
+div .header {
   //-webkit-transition: opacity .5s;
   //transition: opacity .5s;
   background: #fff;
@@ -59,7 +67,7 @@ textarea {
 }
 
 .labtree {
-  background: $while;
+  background: $white;
   margin: 0 6px;
 }
 

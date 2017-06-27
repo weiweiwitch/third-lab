@@ -281,45 +281,27 @@ class WikiEdit extends React.Component<AppProps, any> {
 				<Col span={24}>
 					<Form>
 						<Row>
-							<Col span={8}>
-								<FormItem {...formItemLayout} label="标题">
-									<Input placeholder="请输入标题"
-										   onChange={(event) => {
-											   this.updateTitle(event);
-										   }} value={this.state.postTitle}
-									/>
-								</FormItem>
-							</Col>
-							<Col span={8}>
-								<FormItem {...formItemLayout} label="ID">
-									<Input type="number" placeholder="ID"
-										   disabled={true} defaultValue={post.id}
-									/>
-								</FormItem>
-							</Col>
-							<Col span={8}>
-								<FormItem {...formItemLayout} label="上层ID">
-									<Input type="number" placeholder="请输入上层ID" onChange={this.updateParentId}
-										   value={this.state.postParentId}
-									/>
-								</FormItem>
+							<Col span={24} style={{padding: '12px 0px',}}>
+								<Input placeholder="请输入标题"
+									   onChange={this.updateTitle} value={this.state.postTitle}
+								/>
 							</Col>
 						</Row>
 
 						<Row>
-							<div>
+							<Col span={24}>
 								<AutoComplete
 									allowClear={true}
 									dataSource={allTags}
-									style={{width: 200}}
+									style={{width: 200, padding: '0px 12px 0px 0px',}}
 									onSelect={this.onTagSelect}
 									onSearch={this.onTagSearch}
 									placeholder="添加tag"
 								>
-									<input onKeyPress={this.onTagEnterPress} />
+									<input onKeyPress={this.onTagEnterPress}/>
 								</AutoComplete>
 								{tags}
-							</div>
+							</Col>
 						</Row>
 
 						<Row>
@@ -343,7 +325,7 @@ class WikiEdit extends React.Component<AppProps, any> {
 						</Row>
 
 						<Row>
-							<Col span={12} offset={1}>
+							<Col span={12}>
 								<Button type="primary" onClick={this.confirmModify}>更新</Button>
 								<Button onClick={this.cancelModify}>取消</Button>
 							</Col>

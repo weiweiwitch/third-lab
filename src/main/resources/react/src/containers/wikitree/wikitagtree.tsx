@@ -1,7 +1,7 @@
 import * as React from "react";
 import {connect} from "react-redux";
 import {push} from "react-router-redux";
-import {Button, Col, Row, Tree} from "antd";
+import {Button, Col, Row, Tree, Badge} from "antd";
 import {querySpecTagPosts} from "../../sagas/posts";
 import {bindActionCreators} from "redux";
 
@@ -70,8 +70,13 @@ class WikiTagTree extends React.Component<AppProps, AppStates> {
 
 		const loop = data => data.map((item) => {
 			if (item.nodes) {
+				const treeNodeTitle = (
+					<div>
+						<span>{item.tagName}</span>
+					</div>
+				);
 				return (
-					<TreeNode key={item.id} title={item.tagName} disableCheckbox={true}>
+					<TreeNode key={item.id} title={treeNodeTitle} disableCheckbox={true}>
 						{loop(item.nodes)}
 					</TreeNode>
 				);
@@ -81,15 +86,13 @@ class WikiTagTree extends React.Component<AppProps, AppStates> {
 
 		return (
 			<div>
-				<div>
-					<Tree onExpand={this.onExpand}
-						  autoExpandParent={true}
-						  onCheck={this.onCheck}
-						  onSelect={this.onSelect}
-					>
-						{loop(wikitagtree)}
-					</Tree>
-				</div>
+				<Tree onExpand={this.onExpand}
+					  autoExpandParent={true}
+					  onCheck={this.onCheck}
+					  onSelect={this.onSelect}
+				>
+					{loop(wikitagtree)}
+				</Tree>
 			</div>
 		);
 	}

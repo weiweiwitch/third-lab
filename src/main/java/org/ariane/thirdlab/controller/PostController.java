@@ -68,33 +68,33 @@ public class PostController {
 		}
 
 		// 整理出根元素
-		List<PostData> rootDatas = new ArrayList<>();
-		for (PostData postData : pDatas) {
-			if (postData.parantId == 0L) {
-				rootDatas.add(postData);
-			} else if (pMap.get(postData.parantId) == null) {
-				rootDatas.add(postData);
-			} else {
-				PostData parantData = pMap.get(postData.parantId);
-				if (parantData.nodes == null) {
-					parantData.nodes = new ArrayList<>();
-				}
-				parantData.nodes.add(postData);
-			}
-		}
+//		List<PostData> rootDatas = new ArrayList<>();
+//		for (PostData postData : pDatas) {
+//			if (postData.parantId == 0L) {
+//				rootDatas.add(postData);
+//			} else if (pMap.get(postData.parantId) == null) {
+//				rootDatas.add(postData);
+//			} else {
+//				PostData parantData = pMap.get(postData.parantId);
+//				if (parantData.nodes == null) {
+//					parantData.nodes = new ArrayList<>();
+//				}
+//				parantData.nodes.add(postData);
+//			}
+//		}
 
 		// 对最上层排序
-		Collections.sort(rootDatas, new Comparator<PostData>() {
-
-			@Override
-			public int compare(PostData o1, PostData o2) {
-				return o1.title.compareTo(o2.title);
-			}
-
-		});
+//		Collections.sort(rootDatas, new Comparator<PostData>() {
+//
+//			@Override
+//			public int compare(PostData o1, PostData o2) {
+//				return o1.title.compareTo(o2.title);
+//			}
+//
+//		});
 
 		LabResp<List<PostData>> resp = new LabResp<>(RtCode.SUCCESS);
-		resp.data = rootDatas;
+		resp.data = pDatas;
 		return resp;
 	}
 
