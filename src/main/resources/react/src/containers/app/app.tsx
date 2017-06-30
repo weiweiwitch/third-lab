@@ -53,6 +53,7 @@ class App extends React.Component<AppProps, any> {
 							<RadioGroup onChange={this.onChange} defaultValue="/wiki/wikiindex">
 								<RadioButton value="/wiki/wikiindex">Wiki</RadioButton>
 								<RadioButton value="/solution/solutionindex">解决方案</RadioButton>
+								<RadioButton value="/project/projecttask">任务管理</RadioButton>
 							</RadioGroup>
 						</Col>
 					</Row>

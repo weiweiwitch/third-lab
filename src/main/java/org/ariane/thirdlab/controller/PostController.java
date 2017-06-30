@@ -1,12 +1,6 @@
 package org.ariane.thirdlab.controller;
 
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.util.ArrayList;
-import java.util.List;
-
-import org.ariane.thirdlab.constvalue.RtCode;
+import org.ariane.thirdlab.constvalue.TlResultCode;
 import org.ariane.thirdlab.controller.req.PostDetailReq;
 import org.ariane.thirdlab.controller.resp.PostResp;
 import org.ariane.thirdlab.controller.resp.PostsOfSpecTagResp;
@@ -16,15 +10,14 @@ import org.ariane.thirdlab.service.PostService;
 import org.ariane.thirdlab.service.data.PostDetailData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 @RequestMapping(value = "/api")
@@ -55,7 +48,7 @@ public class PostController {
 			pDatas.add(postResp);
 		}
 
-		LabResp<List<PostResp>> resp = new LabResp<>(RtCode.SUCCESS);
+		LabResp<List<PostResp>> resp = new LabResp<>(TlResultCode.SUCCESS);
 		resp.data = pDatas;
 		return resp;
 	}
@@ -83,7 +76,7 @@ public class PostController {
 			pDatas.add(postResp);
 		}
 
-		LabResp<PostsOfSpecTagResp> resp = new LabResp<>(RtCode.SUCCESS);
+		LabResp<PostsOfSpecTagResp> resp = new LabResp<>(TlResultCode.SUCCESS);
 		PostsOfSpecTagResp postsOfSpecTagResp = new PostsOfSpecTagResp();
 		postsOfSpecTagResp.posts = pDatas;
 		postsOfSpecTagResp.tagId = tagId;
@@ -101,13 +94,13 @@ public class PostController {
 				postPositionData.postInfos.add(new PostInfo(post.getId(), post.getTitle()));
 			}
 
-			LabResp<PostPositionData> resp = new LabResp<>(RtCode.SUCCESS);
+			LabResp<PostPositionData> resp = new LabResp<>(TlResultCode.SUCCESS);
 			resp.data = postPositionData;
 			return resp;
 
 		} else {
 			PostPositionData postPositionData = new PostPositionData();
-			LabResp<PostPositionData> resp = new LabResp<>(RtCode.SUCCESS);
+			LabResp<PostPositionData> resp = new LabResp<>(TlResultCode.SUCCESS);
 			resp.data = postPositionData;
 			return resp;
 		}
@@ -124,11 +117,11 @@ public class PostController {
 	public LabResp<PostDetailData> specPost(@PathVariable long id) {
 		PostDetailData postDetailData = postService.findSpecPost(id);
 		if (postDetailData == null) {
-			LabResp<PostDetailData> resp = new LabResp<>(RtCode.POST_NOT_FOUND);
+			LabResp<PostDetailData> resp = new LabResp<>(TlResultCode.POST_NOT_FOUND);
 			return resp;
 		}
 
-		LabResp<PostDetailData> resp = new LabResp<>(RtCode.SUCCESS);
+		LabResp<PostDetailData> resp = new LabResp<>(TlResultCode.SUCCESS);
 		resp.data = postDetailData;
 		return resp;
 	}
@@ -147,7 +140,7 @@ public class PostController {
 		String postData = needCreatePost.postText;
 		Post post = postService.createPost(parantId, title, postData);
 		PostDetailData postDetailData = new PostDetailData(post);
-		LabResp<PostDetailData> resp = new LabResp<>(RtCode.SUCCESS);
+		LabResp<PostDetailData> resp = new LabResp<>(TlResultCode.SUCCESS);
 		resp.data = postDetailData;
 		return resp;
 	}
@@ -168,7 +161,7 @@ public class PostController {
 		List<String> tags = needUpdatePost.tags;
 		Post post = postService.updatePost(id, parantId, title, postText, tags);
 		PostDetailData postDetailData = new PostDetailData(post);
-		LabResp<PostDetailData> resp = new LabResp<>(RtCode.SUCCESS);
+		LabResp<PostDetailData> resp = new LabResp<>(TlResultCode.SUCCESS);
 		resp.data = postDetailData;
 		return resp;
 	}
@@ -183,7 +176,7 @@ public class PostController {
 	public LabResp<Integer> deletePost(@PathVariable long id) {
 		postService.deletePost(id);
 
-		LabResp<Integer> resp = new LabResp<>(RtCode.SUCCESS);
+		LabResp<Integer> resp = new LabResp<>(TlResultCode.SUCCESS);
 		return resp;
 	}
 

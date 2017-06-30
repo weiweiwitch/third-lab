@@ -1,6 +1,6 @@
 package org.ariane.thirdlab.controller;
 
-import org.ariane.thirdlab.constvalue.RtCode;
+import org.ariane.thirdlab.constvalue.TlResultCode;
 import org.ariane.thirdlab.domain.PostTag;
 import org.ariane.thirdlab.resp.LabResp;
 import org.ariane.thirdlab.service.PostService;
@@ -69,7 +69,7 @@ public class PostTagController {
 
 		});
 
-		LabResp<PostTagContainer> resp = new LabResp<>(RtCode.SUCCESS);
+		LabResp<PostTagContainer> resp = new LabResp<>(TlResultCode.SUCCESS);
 		postTagContainer.tree = rootDatas;
 		postTagContainer.list = ptDatas;
 		resp.data = postTagContainer;

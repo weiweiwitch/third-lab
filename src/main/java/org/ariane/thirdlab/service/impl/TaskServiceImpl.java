@@ -1,15 +1,14 @@
 package org.ariane.thirdlab.service.impl;
 
 import org.ariane.thirdlab.constvalue.TlResultCode;
-import org.ariane.thirdlab.controller.resp.AddProjectResp;
+import org.ariane.thirdlab.controller.req.ProjectTaskReq;
 import org.ariane.thirdlab.dao.ProjectDao;
 import org.ariane.thirdlab.dao.ProjectGroupDao;
 import org.ariane.thirdlab.dao.ProjectTaskDao;
 import org.ariane.thirdlab.domain.Project;
 import org.ariane.thirdlab.domain.ProjectGroup;
 import org.ariane.thirdlab.domain.ProjectTask;
-import org.ariane.thirdlab.service.TaskDealService;
-import org.ariane.thirdlab.service.data.ProjectsData;
+import org.ariane.thirdlab.service.TaskService;
 import org.ariane.thirdlab.service.data.TasksData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,7 +18,7 @@ import java.util.Date;
 
 @Service
 @Transactional
-public class TaskDealServiceImpl implements TaskDealService {
+public class TaskServiceImpl implements TaskService {
 
 	@Autowired
 	private ProjectGroupDao projectGroupDao;
@@ -29,14 +28,6 @@ public class TaskDealServiceImpl implements TaskDealService {
 
 	@Autowired
 	private ProjectTaskDao projectTaskDao;
-
-	@Override
-	public ProjectsData showAllProjects() {
-		ProjectsData data = new ProjectsData();
-		data.groups.addAll(projectGroupDao.findAll());
-		data.projects.addAll(projectDao.findAll());
-		return data;
-	}
 
 	@Override
 	public TasksData showSomeTasks(long projectId) {
@@ -57,60 +48,29 @@ public class TaskDealServiceImpl implements TaskDealService {
 		return rt;
 	}
 
-
-	@Override
-	public AddProjectResp addProject(String name, long groupId) {
-		ProjectGroup group = projectGroupDao.findById(groupId);
-		if (group == null) {
-			AddProjectResp rt = new AddProjectResp();
-			rt.rt = TlResultCode.NOT_FOUND_PROJECT_GROUP;
-			return rt;
-		}
-
-		Project project = new Project();
-		project.setName(name);
-		project.setGroupId(groupId);
-		projectDao.save(project);
-
-		AddProjectResp rt = new AddProjectResp();
-		rt.rt = TlResultCode.SUCCESS;
-		rt.groupId = groupId;
-		rt.projectId = project.getId();
-
-		return rt;
-	}
-
 	public static class AddGroupRt {
 		public int rt;
 		public long groupId;
 	}
 
 	@Override
-	public int addTask(String taskInfo, long projectId, long parentTaskId) {
-		Project project = projectDao.findById(projectId);
+	public int addTask(ProjectTaskReq projectTaskReq) {
+		Project project = projectDao.findById(projectTaskReq.projectId);
 		if (project == null) {
 			return TlResultCode.NOT_FOUND_PROJECT;
 		}
 
-		if (parentTaskId != 0L) {
-			ProjectTask parentTask = projectTaskDao.findById(parentTaskId);
-			if (parentTask == null) {
-				return TlResultCode.NOT_FOUND_TASK;
-			}
-			if (parentTask.getProjectId() != projectId) {
-				return TlResultCode.NOT_SAME_PROJECT_AND_TASK;
-			}
-		}
-
 		ProjectTask task = new ProjectTask();
-		task.setName(taskInfo);
+		task.setName(projectTaskReq.name);
 		task.setNote("");
 		task.setCreateTime(new Date());
 		task.setPeriod(0);
 		task.setNextPeriodTime(new Date());
 		task.setStatus(0);
-		task.setProjectId(projectId);
-		task.setParentTask(parentTaskId);
+		task.setParentTask(0);
+
+		task.setProjectId(projectTaskReq.projectId);
+		task.setGoalId(projectTaskReq.goalId);
 		projectTaskDao.save(task);
 
 		return TlResultCode.SUCCESS;
@@ -128,16 +88,7 @@ public class TaskDealServiceImpl implements TaskDealService {
 		return TlResultCode.SUCCESS;
 	}
 
-	@Override
-	public int changeProjectName(long projectId, String name) {
-		Project project = projectDao.findById(projectId);
-		if (project == null) {
-			return TlResultCode.NOT_FOUND_PROJECT;
-		}
 
-		project.setName(name);
-		return TlResultCode.SUCCESS;
-	}
 
 	@Override
 	public int delGroup(long groupId) {
@@ -147,18 +98,6 @@ public class TaskDealServiceImpl implements TaskDealService {
 		}
 
 		projectGroupDao.delete(group);
-
-		return TlResultCode.SUCCESS;
-	}
-
-	@Override
-	public int delProject(long projectId) {
-		Project project = projectDao.findById(projectId);
-		if (project == null) {
-			return TlResultCode.NOT_FOUND_PROJECT;
-		}
-
-		projectDao.delete(project);
 
 		return TlResultCode.SUCCESS;
 	}

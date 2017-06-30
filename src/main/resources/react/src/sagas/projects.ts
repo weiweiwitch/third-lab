@@ -1,13 +1,16 @@
-import {all, call, put, takeEvery, fork, race, take, select} from "redux-saga/effects";
-import {LOGIN_SUCCESS} from './auth';
+import {all, call, fork, put, race, take, takeEvery} from "redux-saga/effects";
+import {LOGIN_SUCCESS} from "./auth";
 import {client} from "../client";
-import {getSpecTagId} from "../redux/modules/wikitags";
 
 export const CLEAR_CREATE_MARK = 'CLEAR_CREATE_MARK';
 
 export const QUERY_PROJECTS = 'QUERY_PROJECTS';
 export const QUERY_PROJECTS_SUCCESS = 'QUERY_PROJECTS_SUCCESS';
 export const QUERY_PROJECTS_FAILED = 'QUERY_PROJECTS_FAILED';
+
+export const QUERY_SPEC_PROJECT = 'QUERY_SPEC_PROJECT';
+export const QUERY_SPEC_PROJECT_SUCCESS = 'QUERY_SPEC_PROJECT_SUCCESS';
+export const QUERY_SPEC_PROJECT_FAILED = 'QUERY_SPEC_PROJECT_FAILED';
 
 export const ADD_PROJECT = 'ADD_PROJECT';
 export const ADD_PROJECT_SUCCESS = 'ADD_PROJECT_SUCCESS';
@@ -39,11 +42,50 @@ function* queryProjectsDeal(action) {
 		if (result.rt !== 1) {
 			yield put({type: QUERY_PROJECTS_FAILED,});
 		} else {
-			yield put({type: QUERY_PROJECTS_SUCCESS, payload: result.data,});
+			yield put({
+				type: QUERY_PROJECTS_SUCCESS, payload: {
+					groups: result.data.groups,
+					projects: result.data.projects,
+				}
+			});
 		}
 
 	} catch (e) {
 		yield put({type: QUERY_PROJECTS_FAILED,});
+	}
+}
+
+export function querySpecProject(projectId: number) {
+	console.info('querySpecProject');
+	return {
+		type: QUERY_SPEC_PROJECT,
+		payload: projectId,
+	};
+}
+
+function* querySpecProjectDeal(action) {
+	console.info('queryProjectsDeal');
+	try {
+		// 发送请求查询
+		const result = yield call(() => {
+			return client.get('/api/projects/' + action.payload);
+		});
+
+		if (result.rt !== 1) {
+			yield put({type: QUERY_SPEC_PROJECT_FAILED,});
+		} else {
+			yield put({
+				type: QUERY_SPEC_PROJECT_SUCCESS, payload: {
+					specProject: result.data.project,
+					sectionsOfSpecProject: result.data.sections,
+					goalsOfSpecProject: result.data.goals,
+					tasksOfSpecProject: result.data.tasks,
+				}
+			});
+		}
+
+	} catch (e) {
+		yield put({type: QUERY_SPEC_PROJECT_FAILED,});
 	}
 }
 
@@ -155,7 +197,8 @@ export function* projectsSaga() {
 		takeEvery(ADD_PROJECT, addProjectDeal),
 		takeEvery(DEL_PROJECT, deleteProjectDeal),
 		takeEvery(CHG_PROJECT, chgProjectDeal),
-
+		takeEvery(QUERY_SPEC_PROJECT, querySpecProjectDeal),
+		
 		fork(refreshProjectsDeal),
 	]);
 }

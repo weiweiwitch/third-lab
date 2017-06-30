@@ -57,6 +57,9 @@ public class ProjectTask implements Serializable {
 	@Column(name = "projectId", nullable = false)
 	private long projectId; // 属于哪个项目
 
+	@Column(name = "goalId", nullable = false)
+	private long goalId; // 属于哪个项目目标
+
 	@Column(name = "parentTask", nullable = false)
 	private long parentTask; // 父任务,如果没有父任务,就为0
 
@@ -130,6 +133,14 @@ public class ProjectTask implements Serializable {
 
 	public void setProjectId(long projectId) {
 		this.projectId = projectId;
+	}
+
+	public long getGoalId() {
+		return goalId;
+	}
+
+	public void setGoalId(long goalId) {
+		this.goalId = goalId;
 	}
 
 	public long getParentTask() {
