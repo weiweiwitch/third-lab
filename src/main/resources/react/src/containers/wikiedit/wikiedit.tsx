@@ -1,10 +1,7 @@
 import * as React from "react";
 import {connect} from "react-redux";
-import {push} from "react-router-redux";
-import {Button, Col, Form, Input, Row} from "antd";
-import {Tag} from 'antd';
-import {Tabs} from 'antd';
-import {AutoComplete} from 'antd';
+import {browserHistory} from "react-router";
+import {AutoComplete, Button, Col, Form, Input, Row, Tabs, Tag} from "antd";
 
 import * as hljs from "highlight.js";
 import * as MarkdownIt from "markdown-it";
@@ -40,7 +37,6 @@ interface StateProps {
 interface DispatchProps {
 	chgPost(postId: number, post: any);
 	clearModifyMark();
-	pushState(nextLocation: any);
 }
 
 type AppProps = StateProps & DispatchProps;
@@ -57,7 +53,6 @@ const mapDispatchToProps = (dispatch) => {
 	return bindActionCreators({
 		chgPost: chgPost,
 		clearModifyMark: clearModifyMark,
-		pushState: push,
 	}, dispatch)
 };
 
@@ -102,7 +97,7 @@ class WikiEdit extends React.Component<AppProps, any> {
 		if (nextProps.modifySuccess === true) {
 			// 修改成功, 切换到文章页, 并刷新
 			const post = this.props.wikipost;
-			this.props.pushState('/wiki/wikipost/' + post.id);
+			browserHistory.push('/wiki/wikipost/' + post.id);
 		}
 
 		const tags = this.props.wikipost.tags.map((tag) => {
@@ -152,7 +147,7 @@ class WikiEdit extends React.Component<AppProps, any> {
 		event.preventDefault();
 
 		const post = this.props.wikipost;
-		this.props.pushState('/wiki/wikipost/' + post.id);
+		browserHistory.push('/wiki/wikipost/' + post.id);
 	};
 
 	onTagSelect = (value) => {

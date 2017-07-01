@@ -1,6 +1,6 @@
 import * as React from "react";
 import {connect} from "react-redux";
-import {push} from "react-router-redux";
+import {browserHistory} from "react-router";
 import {Button, Form, Input, Row, Col} from "antd";
 import {Tabs} from 'antd';
 import {bindActionCreators} from "redux";
@@ -33,7 +33,6 @@ interface StateProps {
 }
 
 interface DispatchProps {
-	pushState(nextLocation: any);
 	clearCreateMark();
 	addPost(data: any);
 }
@@ -48,7 +47,6 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
 	return bindActionCreators({
-		pushState: push,
 		clearCreateMark: clearCreateMark,
 		addPost: addPost,
 	}, dispatch)
@@ -75,7 +73,7 @@ class WikiNew extends React.Component<AppProps, any> {
 		// 当将会接收到属性时处理
 		if (nextProps.createSuccess === true) {
 			console.info('wikinew switch to index');
-			this.props.pushState('/wiki/wikiindex');
+			browserHistory.push('/wiki/wikiindex');
 		}
 	}
 
@@ -106,7 +104,7 @@ class WikiNew extends React.Component<AppProps, any> {
 	cancelCreate = (event) => {
 		event.preventDefault();
 
-		this.props.pushState('/wiki/wikiindex');
+		browserHistory.push('/wiki/wikiindex');
 	};
 
 	render() {

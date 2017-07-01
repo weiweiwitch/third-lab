@@ -1,17 +1,15 @@
 import * as React from "react";
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
-import {push} from "react-router-redux";
 import {Col, Input, Row} from "antd";
 import {addProjectSection} from "../../sagas/projectsections";
-import {TaskTable} from "./tasktable";
+import TaskTable from "./tasktable";
 
 interface StateProps {
 	specProject: any;
 }
 
 interface DispatchProps {
-	pushState(nextLocation: any);
 	addProjectSection(section: any);
 }
 
@@ -25,7 +23,6 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
 	return bindActionCreators({
-		pushState: push,
 		addProjectSection: addProjectSection,
 	}, dispatch)
 };
@@ -68,8 +65,8 @@ class ProjectTask extends React.Component<AppProps, any> {
 				<Col span={24}>
 					<Row>
 						<Col span={24}>
-							<Input placeholder="添加目标组" onChange={this.onNewSectionChange}
-								   onPressEnter={this.onNewSectionAdd} value={this.state.newSectionName}/>
+							<AddSectionInput onChange={this.onNewSectionChange}
+											 onPressEnter={this.onNewSectionAdd} value={this.state.newSectionName}/>
 						</Col>
 					</Row>
 					<Row>
@@ -84,4 +81,15 @@ class ProjectTask extends React.Component<AppProps, any> {
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(ProjectTask);
+
+interface AddSectionInputProps {
+	onChange(event);
+	onPressEnter(event);
+	value: string;
+}
+
+const AddSectionInput: React.SFC<AddSectionInputProps> = ({onChange, onPressEnter, value}): React.ReactElement<any> => {
+	return (<Input placeholder="添加目标组" onChange={onChange}
+				   onPressEnter={onPressEnter} value={value}/>);
+};
 

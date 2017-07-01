@@ -1,9 +1,7 @@
 import * as React from "react";
 import {connect} from "react-redux";
-import {push} from "react-router-redux";
-import {Button, Col, Row} from "antd";
-import {Tree} from 'antd';
-import {Tag} from 'antd';
+import {browserHistory} from "react-router";
+import {Button, Col, Row, Tag, Tree} from "antd";
 
 import * as hljs from "highlight.js";
 import * as MarkdownIt from "markdown-it";
@@ -31,14 +29,13 @@ const md = new MarkdownIt({
 });
 
 interface StateProps {
-	params: any,
-	wikipost: any,
-	dirty: boolean,
+	params: any;
+	wikipost: any;
+	dirty: boolean;
 }
 
 interface DispatchProps {
 	deletePost(postId: number);
-	pushState(nextLocation: any);
 }
 
 type AppProps = StateProps & DispatchProps;
@@ -53,7 +50,6 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
 	return bindActionCreators({
 		deletePost: deletePost,
-		pushState: push
 	}, dispatch)
 };
 
@@ -76,13 +72,13 @@ class WikiPost extends React.Component<AppProps, any> {
 
 	// 编辑文章
 	edit = (event) => {
-		this.props.pushState('/wiki/wikiedit');
+		browserHistory.push('/wiki/wikiedit');
 	};
 
 	// 创建子文章
 	createSubPost = (event) => {
 		const post = this.props.wikipost;
-		this.props.pushState('/wiki/wikinew/' + post.id);
+		browserHistory.push('/wiki/wikinew/' + post.id);
 	};
 
 	// 删除文章
@@ -92,12 +88,12 @@ class WikiPost extends React.Component<AppProps, any> {
 		this.props.deletePost(post.id);
 
 		// 跳到首页
-		this.props.pushState('/wiki/wikiindex');
+		browserHistory.push('/wiki/wikiindex');
 	};
 
 	// 返回首页
 	transToIndex = (event) => {
-		this.props.pushState('/wiki/wikiindex');
+		browserHistory.push('/wiki/wikiindex');
 	};
 
 	render() {

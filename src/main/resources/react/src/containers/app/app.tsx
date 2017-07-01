@@ -1,20 +1,18 @@
 import * as React from "react";
 import {bindActionCreators} from "redux";
 import {connect} from "react-redux";
-import {push} from "react-router-redux";
-import {Row, Col, Radio} from "antd";
-import {Layout} from 'antd';
+import {browserHistory} from "react-router";
+import {Col, Layout, Radio, Row} from "antd";
 
 const {Header, Footer, Sider, Content} = Layout;
 const RadioButton = Radio.Button;
 const RadioGroup = Radio.Group;
 
 interface StateProps {
-	children?: any
+	children?: any;
 }
 
 interface DispatchProps {
-	pushState(nextLocation: any);
 }
 
 type AppProps = StateProps & DispatchProps;
@@ -23,9 +21,8 @@ function mapStateToProps(state) {
 	return {};
 }
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = dispatch => {
 	return bindActionCreators({
-		pushState: push,
 	}, dispatch)
 };
 
@@ -38,7 +35,7 @@ class App extends React.Component<AppProps, any> {
 	onChange = (e) => {
 		const path = e.target.value;
 
-		this.props.pushState(path);
+		browserHistory.push(path);
 	};
 
 	render() {

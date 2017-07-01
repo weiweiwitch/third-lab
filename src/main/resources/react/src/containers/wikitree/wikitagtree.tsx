@@ -1,7 +1,6 @@
 import * as React from "react";
 import {connect} from "react-redux";
-import {push} from "react-router-redux";
-import {Button, Col, Row, Tree, Badge} from "antd";
+import {Tree} from "antd";
 import {querySpecTagPosts} from "../../sagas/posts";
 import {bindActionCreators} from "redux";
 
@@ -13,7 +12,6 @@ interface StateProps {
 }
 
 interface DispatchProps {
-	pushState(nextLocation: any);
 	querySpecTagPosts(tagId: number);
 }
 
@@ -28,7 +26,6 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
 	return bindActionCreators({
-		pushState: push,
 		querySpecTagPosts: querySpecTagPosts,
 	}, dispatch)
 };

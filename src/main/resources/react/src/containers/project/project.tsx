@@ -1,7 +1,7 @@
 import * as React from "react";
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
-import {push} from "react-router-redux";
+import {browserHistory} from "react-router";
 import {Button, Col, Input, Modal, Row, Table} from "antd";
 import {TableColumnConfig} from "antd/lib/table/Table";
 import {addProject, deleteProject, chgProject, querySpecProject} from '../../sagas/projects';
@@ -12,7 +12,6 @@ interface StateProps {
 }
 
 interface DispatchProps {
-	pushState(nextLocation: any);
 	addProject(project: any);
 	deleteProject(id: number);
 	chgProject(id, data);
@@ -29,7 +28,6 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
 	return bindActionCreators({
-		pushState: push,
 		addProject: addProject,
 		deleteProject: deleteProject,
 		chgProject: chgProject,
@@ -149,7 +147,7 @@ class Project extends React.Component<AppProps, any> {
 		this.props.querySpecProject(record.id);
 
 		// 可能的话，切换到任务页面
-		this.props.pushState('/project/projecttask');
+		browserHistory.push('/project/projecttask');
 	};
 
 	render() {

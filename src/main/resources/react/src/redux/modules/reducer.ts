@@ -7,7 +7,7 @@ import projects from "./projects";
 
 // 组合reducer
 export default combineReducers({
-	routing: routerReducer,
+	//routing: routerReducer,
 	wikiposts,
 	wikispecpost,
 	wikitags,

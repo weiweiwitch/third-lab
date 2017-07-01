@@ -41,6 +41,11 @@ public class ProjectSectionServiceImpl implements ProjectSectionService {
 
 	@Override
 	public int addProjectSection(ProjectSectionReq projectSectionReq) {
+		Project project = projectDao.findById(projectSectionReq.projectId);
+		if (project == null) {
+			return TlResultCode.NOT_FOUND_PROJECT;
+		}
+
 		ProjectSection projectSection = new ProjectSection();
 		projectSection.setName(projectSectionReq.name);
 		projectSection.setProjectId(projectSectionReq.projectId);
@@ -54,8 +59,9 @@ public class ProjectSectionServiceImpl implements ProjectSectionService {
 		if (projectSection == null) {
 			return TlResultCode.NOT_FOUND_SPEC_PROJECT_SECTION;
 		}
+
 		projectSectionDao.delete(projectSection);
-		return 0;
+		return TlResultCode.SUCCESS;
 	}
 
 	@Override
@@ -64,6 +70,12 @@ public class ProjectSectionServiceImpl implements ProjectSectionService {
 		if (projectSection == null) {
 			return TlResultCode.NOT_FOUND_SPEC_PROJECT_SECTION;
 		}
+
+		Project project = projectDao.findById(projectSectionReq.projectId);
+		if (project == null) {
+			return TlResultCode.NOT_FOUND_PROJECT;
+		}
+
 		projectSection.setName(projectSectionReq.name);
 		projectSection.setProjectId(projectSectionReq.projectId);
 		projectSectionDao.save(projectSection);

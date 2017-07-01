@@ -1,17 +1,16 @@
 import * as React from "react";
 import {connect} from "react-redux";
-import {push} from "react-router-redux";
+import {browserHistory} from "react-router";
 import {bindActionCreators} from "redux";
 import {Input, Col, Row, Table} from "antd";
 
 import {queryPosts, querySpecPost} from "../../sagas/posts";
 
 interface StateProps {
-	wikiposts: any[],
+	wikiposts: any[];
 }
 
 interface DispatchProps {
-	pushState(nextLocation: any);
 	querySpecPost(postId: number);
 }
 
@@ -25,7 +24,6 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
 	return bindActionCreators({
-		pushState: push,
 		querySpecPost: querySpecPost,
 	}, dispatch)
 };
@@ -74,7 +72,7 @@ class WikiIndex extends React.Component<AppProps, any> {
 		this.props.querySpecPost(record.id);
 
 		// 切换页面
-		this.props.pushState('/wiki/wikipost/' + record.id);
+		browserHistory.push('/wiki/wikipost/' + record.id);
 	};
 
 	showPost = (chosenRequest, index) => {
@@ -82,7 +80,7 @@ class WikiIndex extends React.Component<AppProps, any> {
 		if (index !== -1) {
 			const post = this.state.searchSource[index].value;
 			console.info(post);
-			this.props.pushState('/wiki/wikipost/' + post.id);
+			browserHistory.push('/wiki/wikipost/' + post.id);
 		}
 	};
 

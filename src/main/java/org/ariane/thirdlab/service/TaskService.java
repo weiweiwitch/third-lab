@@ -29,6 +29,23 @@ public interface TaskService {
 	public int addTask(ProjectTaskReq projectTaskReq);
 
 	/**
+	 * 删除任务
+	 *
+	 * @param taskId
+	 * @return
+	 */
+	public int delTask(long taskId);
+
+	/**
+	 * 修改任务
+	 *
+	 * @param taskId
+	 * @param projectTaskReq
+	 * @return
+	 */
+	public int updateProjectTask(long taskId, ProjectTaskReq projectTaskReq);
+
+	/**
 	 * 修改组名
 	 *
 	 * @param groupId

@@ -2,17 +2,15 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 import {Provider} from "react-redux";
 import {Router, browserHistory} from "react-router";
-import {syncHistoryWithStore} from "react-router-redux";
 import ApiClient from "./helpers/apiclient";
 import myCreateStore from "./redux/create";
 import getRoutes from "./routes";
 
-export const client = new ApiClient();
-const initialState = {};
-const store = myCreateStore(browserHistory, client, initialState);
-const history = syncHistoryWithStore(browserHistory, store);
-
 require('./app.scss');
+
+export const client = new ApiClient();
+
+const store = myCreateStore();
 
 export const styles = {
 	codeStyle: {
@@ -23,14 +21,14 @@ export const styles = {
 
 // 组件
 const component = (
-	<Router history={history}>
-		{getRoutes(store)}
+	<Router history={browserHistory}>
+		{getRoutes()}
 	</Router>
 );
 
 const dest = document.getElementById('content'); // 获取根元素
 ReactDOM.render(
-	<Provider store={store} key="provider">
+	<Provider store={store}>
 		{component}
 	</Provider>,
 	dest

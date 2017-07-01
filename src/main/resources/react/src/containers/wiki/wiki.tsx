@@ -1,7 +1,7 @@
 import * as React from "react";
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
-import {push} from "react-router-redux";
+import {browserHistory} from "react-router";
 import {Button, Col, Row, Table} from "antd";
 import {TableColumnConfig} from "antd/lib/table/Table";
 import WikiTagTree from "../wikitree/wikitagtree";
@@ -16,7 +16,6 @@ interface StateProps {
 }
 
 interface DispatchProps {
-	pushState(nextLocation: any);
 	loginSuccess();
 	querySpecPost(postId: number);
 }
@@ -31,7 +30,6 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
 	return bindActionCreators({
-		pushState: push,
 		loginSuccess: loginSuccess,
 		querySpecPost: querySpecPost,
 	}, dispatch)
@@ -63,11 +61,11 @@ class Wiki extends React.Component<AppProps, any> {
 		this.props.querySpecPost(record.id);
 
 		// 切换页面
-		this.props.pushState('/wiki/wikipost/' + record.id);
+		browserHistory.push('/wiki/wikipost/' + record.id);
 	};
 
 	createPost = () => {
-		this.props.pushState('/wiki/wikinew/0');
+		browserHistory.push('/wiki/wikinew/0');
 	};
 
 	render() {

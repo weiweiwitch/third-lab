@@ -14,7 +14,7 @@ import SolutionIndex from './containers/solutionindex/solutionindex';
 import Project from './containers/project/project';
 import ProjectTask from './containers/projecttask/projecttask';
 
-export default (store) => {
+export default () => {
 	// 返回路由组件
 	return (
 		<Route path="/" component={App}>
@@ -26,10 +26,10 @@ export default (store) => {
 				<Route path="wikipost/:pId" component={WikiPost}/>
 			</Route>
 			<Route path="solution" component={Solution}>
-				<Route path="solutionindex" component={SolutionIndex}></Route>
+				<Route path="solutionindex" component={SolutionIndex} />
 			</Route>
 			<Route path="project" component={Project}>
-				<Route path="projecttask" component={ProjectTask}></Route>
+				<Route path="projecttask" component={ProjectTask} />
 			</Route>
 		</Route>
 	);

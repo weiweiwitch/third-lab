@@ -77,6 +77,38 @@ public class TaskServiceImpl implements TaskService {
 	}
 
 	@Override
+	public int delTask(long taskId) {
+		ProjectTask task = projectTaskDao.findById(taskId);
+		if (task == null) {
+			return TlResultCode.NOT_FOUND_TASK;
+		}
+
+		projectTaskDao.delete(task);
+		return TlResultCode.SUCCESS;
+	}
+
+	@Override
+	public int updateProjectTask(long taskId, ProjectTaskReq projectTaskReq) {
+		ProjectTask task = projectTaskDao.findById(taskId);
+		if (task == null) {
+			return TlResultCode.NOT_FOUND_TASK;
+		}
+
+		task.setName(projectTaskReq.name);
+		task.setNote("");
+		task.setCreateTime(new Date());
+		task.setPeriod(0);
+		task.setNextPeriodTime(new Date());
+		task.setStatus(0);
+		task.setParentTask(0);
+
+		task.setProjectId(projectTaskReq.projectId);
+		task.setGoalId(projectTaskReq.goalId);
+
+		return TlResultCode.SUCCESS;
+	}
+
+	@Override
 	public int changeGroupName(long groupId, String name) {
 		ProjectGroup group = projectGroupDao.findById(groupId);
 		if (group == null) {
@@ -87,8 +119,6 @@ public class TaskServiceImpl implements TaskService {
 
 		return TlResultCode.SUCCESS;
 	}
-
-
 
 	@Override
 	public int delGroup(long groupId) {

@@ -55,7 +55,7 @@ public class ProjectGoalServiceImpl implements ProjectGoalService {
 		}
 
 		projectGoalDao.delete(projectGoal);
-		return 0;
+		return TlResultCode.SUCCESS;
 	}
 
 	@Override
