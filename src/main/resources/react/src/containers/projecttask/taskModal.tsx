@@ -3,9 +3,11 @@ import {Input, Modal} from "antd";
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
 import {addProjectTask, chgProjectTask} from "../../sagas/projecttasks";
+import {IGoalNode, ITaskNode} from './tasktable';
+
 interface StateProps {
-	task: any;
-	parentGoal: any;
+	task: ITaskNode;
+	parentGoal: IGoalNode;
 	projectId: number;
 	taskModalVisible: boolean;
 	atCreate: boolean;
@@ -68,17 +70,24 @@ class TaskModal extends React.Component<AppProps, TaskModalState> {
 			return;
 		}
 
-		const task = {
-			id: this.state.id,
-			name: this.state.taskName,
-			projectId: this.props.projectId,
-			goalId: this.props.parentGoal.id,
-		};
-
 		if (this.props.atCreate) {
-			this.props.addProjectTask(task);
+			this.props.addProjectTask({
+				id: this.state.id,
+				name: this.state.taskName,
+				nextTaskId: 0,
+				relyGoalId: 0,
+				projectId: this.props.projectId,
+				goalId: this.props.parentGoal.id,
+			});
 		} else {
-			this.props.chgProjectTask(task.id, task);
+			this.props.chgProjectTask(this.state.id, {
+				id: this.state.id,
+				name: this.state.taskName,
+				nextTaskId: this.props.task.nextTaskId,
+				relyGoalId: this.props.task.relyGoalId,
+				projectId: this.props.projectId,
+				goalId: this.props.parentGoal.id,
+			});
 		}
 
 		this.props.ok()
@@ -100,8 +109,7 @@ class TaskModal extends React.Component<AppProps, TaskModalState> {
 				title={this.props.atCreate ? "添加任务" : "编辑任务"}
 				visible={this.props.taskModalVisible}
 				onOk={this.handleTaskOk}
-				onCancel={this.handleTaskCancel}
-			>
+				onCancel={this.handleTaskCancel}>
 				<Input placeholder="请输入任务名" onChange={this.onTaskNameChange} value={this.state.taskName}/>
 			</Modal>
 		);

@@ -63,6 +63,12 @@ public class ProjectTask implements Serializable {
 	@Column(name = "parentTask", nullable = false)
 	private long parentTask; // 父任务,如果没有父任务,就为0
 
+	@Column(name = "nextTaskId", nullable = false)
+	private long nextTaskId; // 指向下一个任务
+
+	@Column(name = "relyGoalId", nullable = false)
+	private long relyGoalId; // 依赖目标
+
 	public long getId() {
 		return id;
 	}
@@ -149,6 +155,22 @@ public class ProjectTask implements Serializable {
 
 	public void setParentTask(long parentTask) {
 		this.parentTask = parentTask;
+	}
+
+	public long getNextTaskId() {
+		return nextTaskId;
+	}
+
+	public void setNextTaskId(long nextTaskId) {
+		this.nextTaskId = nextTaskId;
+	}
+
+	public long getRelyGoalId() {
+		return relyGoalId;
+	}
+
+	public void setRelyGoalId(long relyGoalId) {
+		this.relyGoalId = relyGoalId;
 	}
 
 	public ProjectTask() {

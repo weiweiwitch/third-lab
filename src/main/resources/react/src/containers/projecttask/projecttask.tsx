@@ -1,9 +1,11 @@
 import * as React from "react";
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
-import {Col, Input, Row} from "antd";
+import {Col, Row, Tabs} from "antd";
 import {addProjectSection} from "../../sagas/projectsections";
 import TaskTable from "./tasktable";
+
+const TabPane = Tabs.TabPane;
 
 interface StateProps {
 	specProject: any;
@@ -37,43 +39,17 @@ class ProjectTask extends React.Component<AppProps, any> {
 		};
 	}
 
-	onNewSectionChange = (event) => {
-		this.setState({
-			newSectionName: event.target.value,
-		});
-	};
-
-	onNewSectionAdd = (event) => {
-		if (this.state.newSectionName.trim() === '') {
-			return;
-		}
-
-		this.props.addProjectSection({
-			name: this.state.newSectionName,
-			projectId: this.props.specProject.id,
-		});
-
-		this.setState({
-			newSectionName: '',
-		})
-	};
-
 	render() {
 
 		return (
 			<Row>
 				<Col span={24}>
-					<Row>
-						<Col span={24}>
-							<AddSectionInput onChange={this.onNewSectionChange}
-											 onPressEnter={this.onNewSectionAdd} value={this.state.newSectionName}/>
-						</Col>
-					</Row>
-					<Row>
-						<Col span={24}>
+					<Tabs>
+						<TabPane tab="结构" key="1">
 							<TaskTable/>
-						</Col>
-					</Row>
+						</TabPane>
+						<TabPane tab="推进次序" key="2">Content of Tab Pane 2</TabPane>
+					</Tabs>
 				</Col>
 			</Row>
 		);
@@ -82,14 +58,4 @@ class ProjectTask extends React.Component<AppProps, any> {
 
 export default connect(mapStateToProps, mapDispatchToProps)(ProjectTask);
 
-interface AddSectionInputProps {
-	onChange(event);
-	onPressEnter(event);
-	value: string;
-}
-
-const AddSectionInput: React.SFC<AddSectionInputProps> = ({onChange, onPressEnter, value}): React.ReactElement<any> => {
-	return (<Input placeholder="添加目标组" onChange={onChange}
-				   onPressEnter={onPressEnter} value={value}/>);
-};
 

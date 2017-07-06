@@ -3,10 +3,8 @@ package org.ariane.thirdlab.service.impl;
 import org.ariane.thirdlab.constvalue.TlResultCode;
 import org.ariane.thirdlab.controller.req.ProjectTaskReq;
 import org.ariane.thirdlab.dao.ProjectDao;
-import org.ariane.thirdlab.dao.ProjectGroupDao;
 import org.ariane.thirdlab.dao.ProjectTaskDao;
 import org.ariane.thirdlab.domain.Project;
-import org.ariane.thirdlab.domain.ProjectGroup;
 import org.ariane.thirdlab.domain.ProjectTask;
 import org.ariane.thirdlab.service.TaskService;
 import org.ariane.thirdlab.service.data.TasksData;
@@ -19,9 +17,6 @@ import java.util.Date;
 @Service
 @Transactional
 public class TaskServiceImpl implements TaskService {
-
-	@Autowired
-	private ProjectGroupDao projectGroupDao;
 
 	@Autowired
 	private ProjectDao projectDao;
@@ -37,29 +32,18 @@ public class TaskServiceImpl implements TaskService {
 	}
 
 	@Override
-	public AddGroupRt addProjectGroup(String name) {
-		ProjectGroup group = new ProjectGroup();
-		group.setName(name);
-		projectGroupDao.save(group);
-
-		AddGroupRt rt = new AddGroupRt();
-		rt.rt = TlResultCode.SUCCESS;
-		rt.groupId = group.getId();
-		return rt;
-	}
-
-	public static class AddGroupRt {
-		public int rt;
-		public long groupId;
-	}
-
-	@Override
 	public int addTask(ProjectTaskReq projectTaskReq) {
-		Project project = projectDao.findById(projectTaskReq.projectId);
+		long projectId = projectTaskReq.projectId;
+		Project project = projectDao.findById(projectId);
 		if (project == null) {
 			return TlResultCode.NOT_FOUND_PROJECT;
 		}
 
+		// 先找到本项目最后一个任务
+		// 这步必须在保存新任务前执行
+		ProjectTask lastTask = projectTaskDao.findLastTask(projectId, projectTaskReq.goalId);
+
+		// 创建新任务
 		ProjectTask task = new ProjectTask();
 		task.setName(projectTaskReq.name);
 		task.setNote("");
@@ -68,10 +52,16 @@ public class TaskServiceImpl implements TaskService {
 		task.setNextPeriodTime(new Date());
 		task.setStatus(0);
 		task.setParentTask(0);
-
+		task.setNextTaskId(projectTaskReq.nextTaskId);
+		task.setRelyGoalId(projectTaskReq.relyGoalId);
 		task.setProjectId(projectTaskReq.projectId);
 		task.setGoalId(projectTaskReq.goalId);
 		projectTaskDao.save(task);
+
+		// 建立关联
+		if (lastTask != null) {
+			lastTask.setNextTaskId(task.getId());
+		}
 
 		return TlResultCode.SUCCESS;
 	}
@@ -83,7 +73,23 @@ public class TaskServiceImpl implements TaskService {
 			return TlResultCode.NOT_FOUND_TASK;
 		}
 
+		ProjectTask lastTask = projectTaskDao.findTaskByNextTaskId(taskId);
+		if (lastTask != null) {
+			if (task.getNextTaskId() != 0) {
+				ProjectTask nextTask = projectTaskDao.findById(task.getNextTaskId());
+				if (nextTask != null) {
+					lastTask.setNextTaskId(nextTask.getId());
+				} else {
+					lastTask.setNextTaskId(0);
+				}
+			} else {
+				lastTask.setNextTaskId(0);
+			}
+		}
+
+		// 删除任务
 		projectTaskDao.delete(task);
+
 		return TlResultCode.SUCCESS;
 	}
 
@@ -102,32 +108,30 @@ public class TaskServiceImpl implements TaskService {
 		task.setStatus(0);
 		task.setParentTask(0);
 
-		task.setProjectId(projectTaskReq.projectId);
+		// 如果改变了任务的下一个任务的引用，那么调整任务顺序
+		long targetNextTaskId = projectTaskReq.nextTaskId;
+		if (targetNextTaskId != task.getNextTaskId()) {
+			ProjectTask lastTask = projectTaskDao.findTaskByNextTaskId(task.getId());
+			ProjectTask nextTask = projectTaskDao.findById(task.getNextTaskId());
+
+			ProjectTask oldLinkTask = projectTaskDao.findTaskByNextTaskId(targetNextTaskId);
+			if (oldLinkTask != null) {
+				oldLinkTask.setNextTaskId(task.getId());
+			}
+			task.setNextTaskId(targetNextTaskId);
+
+			if (lastTask != null) {
+				if (nextTask != null) {
+					lastTask.setNextTaskId(nextTask.getId());
+				} else {
+					lastTask.setNextTaskId(0);
+				}
+			}
+		}
+
+		task.setRelyGoalId(projectTaskReq.relyGoalId);
+
 		task.setGoalId(projectTaskReq.goalId);
-
-		return TlResultCode.SUCCESS;
-	}
-
-	@Override
-	public int changeGroupName(long groupId, String name) {
-		ProjectGroup group = projectGroupDao.findById(groupId);
-		if (group == null) {
-			return TlResultCode.NOT_FOUND_PROJECT_GROUP;
-		}
-
-		group.setName(name);
-
-		return TlResultCode.SUCCESS;
-	}
-
-	@Override
-	public int delGroup(long groupId) {
-		ProjectGroup group = projectGroupDao.findById(groupId);
-		if (group == null) {
-			return TlResultCode.NOT_FOUND_PROJECT_GROUP;
-		}
-
-		projectGroupDao.delete(group);
 
 		return TlResultCode.SUCCESS;
 	}

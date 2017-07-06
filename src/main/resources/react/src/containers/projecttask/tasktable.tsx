@@ -1,14 +1,16 @@
 import * as React from "react";
-import {Button, Collapse, Icon, Popover, Table} from "antd";
+import {Button, Collapse, Icon, Popover, Table, Row, Col, Input} from "antd";
 import {TableColumnConfig} from "antd/lib/table/Table";
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
+import {addProjectSection} from "../../sagas/projectsections";
 import {deleteProjectSection} from "../../sagas/projectsections";
 import {deleteProjectGoal} from "../../sagas/projectgoals";
-import {deleteProjectTask} from "../../sagas/projecttasks";
-import SectionModal from './sectionModal';
+import {deleteProjectTask, chgProjectTask} from "../../sagas/projecttasks";
+import SectionModal from "./sectionModal";
 import TaskModal from "./taskModal";
 import GoalModal from "./goalModal";
+import RelyGoalModal from './relyGoalModal';
 import {isNullOrUndefined} from "util";
 
 const Panel = Collapse.Panel;
@@ -17,60 +19,165 @@ export const SECTION_NODE = 1;
 export const GOAL_NODE = 2;
 export const TASK_NODE = 3;
 
-export interface ITask {
+export interface INode {
 	id: number;
 	name: string;
 	type: number;
 	key: string;
-	expand: boolean;
 }
 
-interface ISectionNode extends ITask {
+interface ISectionNode extends INode {
 	children: IGoalNode[];
 }
 
-interface IGoalNode extends ITask {
+export interface IGoalNode extends INode {
 	parent: ISectionNode;
+	topTask: ITaskNode;
 	children: ITaskNode[];
 }
 
-interface ITaskNode extends ITask {
+export interface ITaskNode extends INode {
 	parent: IGoalNode;
+	nextTaskId: number;
+	relyGoalId: number;
+	nextTask?: ITaskNode;
+	lastTask?: ITaskNode;
 }
 
 interface StateProps {
 	specProject: any;
-	sectionsOfSpecProject: any[];
-	goalsOfSpecProject: any[];
-	tasksOfSpecProject: any[];
+	nodeTree: ISectionNode[];
 }
 
 interface DispatchProps {
+	addProjectSection(section: any);
 	deleteProjectSection(sectionId: number);
 	deleteProjectGoal(goalId: number);
 	deleteProjectTask(taskId: number);
+	chgProjectTask(taskId: number, task: any);
 }
 
 type AppProps = StateProps & DispatchProps;
 
+const selectNodes = (props): { nodeTree: ISectionNode[] } => {
+	const sections = props.projects.sectionsOfSpecProject;
+	const goals = props.projects.goalsOfSpecProject;
+	const tasks = props.projects.tasksOfSpecProject;
+
+	const sectionNodeTree: ISectionNode[] = [];
+	const sectionNodeMap: Map<number, ISectionNode> = new Map<number, ISectionNode>();
+	sections.forEach((section) => {
+		const sectionNode: ISectionNode = {
+			id: section.id,
+			type: SECTION_NODE,
+			key: 'section.' + section.id,
+			name: section.name,
+			children: [],
+		};
+
+		sectionNodeTree.push(sectionNode);
+		sectionNodeMap[section.id] = sectionNode;
+	});
+
+	const goalNodeMap: Map<number, IGoalNode> = new Map<number, IGoalNode>();
+	goals.forEach((goal) => {
+		const sectionNode = sectionNodeMap[goal.sectionId];
+		if (isNullOrUndefined(sectionNode)) {
+			return;
+		}
+
+		const goalNode: IGoalNode = {
+			id: goal.id,
+			type: GOAL_NODE,
+			key: 'goal.' + goal.id,
+			name: goal.name,
+			parent: sectionNode,
+			topTask: null,
+			children: [],
+		};
+
+		sectionNode.children.push(goalNode);
+		goalNodeMap[goal.id] = goalNode;
+	});
+
+	const taskMap: Map<number, ITaskNode> = new Map<number, ITaskNode>();
+	tasks.forEach((task) => {
+		const goalNode = goalNodeMap[task.goalId];
+		if (isNullOrUndefined(goalNode)) {
+			return;
+		}
+
+		const taskNode: ITaskNode = {
+			id: task.id,
+			type: TASK_NODE,
+			key: 'task.' + task.id,
+			name: task.name,
+			parent: goalNode,
+			nextTaskId: task.nextTaskId,
+			relyGoalId: task.relyGoalId,
+		};
+
+		goalNode.children.push(taskNode);
+		taskMap[taskNode.id] = taskNode;
+	});
+
+	// 对任务按照nextTask进行排序
+	sectionNodeTree.forEach((sectionNode: ISectionNode) => {
+		sectionNode.children.forEach((goalNode: IGoalNode) => {
+			const tasks: Array<ITaskNode> = goalNode.children;
+			if (tasks.length == 0) {
+				return;
+			}
+
+			tasks.forEach((task: ITaskNode) => {
+				if (task.nextTaskId !== 0) {
+					const nextTask = taskMap[task.nextTaskId];
+					if (!isNullOrUndefined(nextTask)) {
+						task.nextTask = nextTask;
+						nextTask.lastTask = task;
+					}
+				}
+			});
+			let topTask: ITaskNode = null;
+			tasks.forEach((task: ITaskNode) => {
+				if (isNullOrUndefined(task.lastTask)) {
+					topTask = task;
+				}
+			});
+
+			const sortedTasks: Array<ITaskNode> = [];
+			let targetTask: ITaskNode = topTask;
+			while (!isNullOrUndefined(targetTask)) {
+				console.info(targetTask);
+				sortedTasks.push(targetTask);
+				targetTask = targetTask.nextTask;
+			}
+			goalNode.children = sortedTasks;
+		});
+	});
+
+	return {nodeTree: sectionNodeTree};
+};
+
 const mapStateToProps = (state) => {
 	return {
 		specProject: state.projects.specProject,
-		sectionsOfSpecProject: state.projects.sectionsOfSpecProject,
-		goalsOfSpecProject: state.projects.goalsOfSpecProject,
-		tasksOfSpecProject: state.projects.tasksOfSpecProject,
+		nodeTree: selectNodes(state).nodeTree,
 	};
 };
 
 const mapDispatchToProps = (dispatch) => {
 	return bindActionCreators({
+		addProjectSection: addProjectSection,
 		deleteProjectSection: deleteProjectSection,
 		deleteProjectGoal: deleteProjectGoal,
 		deleteProjectTask: deleteProjectTask,
+		chgProjectTask: chgProjectTask,
 	}, dispatch)
 };
 
 interface ITaskTableState {
+	newSectionName: string;
 	selectedSection: ISectionNode;
 	selectedGoal: IGoalNode;
 	selectedTask: ITaskNode;
@@ -78,9 +185,8 @@ interface ITaskTableState {
 	goalModalVisible: boolean;
 	taskModalVisible: boolean;
 	editTaskVisible: boolean;
+	relyGoalModalVisible: boolean;
 	atCreate: boolean;
-	nodes: ITask[];
-	expands: any[];
 }
 
 class TaskTable extends React.Component<AppProps, ITaskTableState> {
@@ -88,15 +194,13 @@ class TaskTable extends React.Component<AppProps, ITaskTableState> {
 	constructor(props) {
 		super(props);
 
-		const {nodeTree, nodes} = this.selectNodes(props);
-		const expands = nodes.map(item => item.key);
 		this.state = {
+			newSectionName: '',
 			selectedSection: {
 				id: 0,
 				type: SECTION_NODE,
 				key: 'section.' + 0,
 				name: '',
-				expand: true,
 				children: [],
 			},
 			selectedGoal: {
@@ -104,8 +208,8 @@ class TaskTable extends React.Component<AppProps, ITaskTableState> {
 				type: GOAL_NODE,
 				key: 'goal.' + 0,
 				name: '',
-				expand: true,
 				parent: null,
+				topTask: null,
 				children: [],
 			},
 			selectedTask: {
@@ -114,27 +218,38 @@ class TaskTable extends React.Component<AppProps, ITaskTableState> {
 				key: 'task.' + 0,
 				name: '',
 				parent: null,
-				expand: true,
+				nextTaskId: 0,
+				relyGoalId: 0,
 			},
 			sectionModalVisible: false,
 			goalModalVisible: false,
 			taskModalVisible: false,
 			editTaskVisible: false,
+			relyGoalModalVisible: false,
 			atCreate: true,
-			nodes: nodeTree,
-			expands: expands,
 		}
 	}
 
-	componentWillReceiveProps(nextProps) {
-		const {nodeTree, nodes} = this.selectNodes(nextProps);
-		const expands = nodes.map(item => item.key);
-		console.info(expands);
+	onNewSectionChange = (event) => {
 		this.setState({
-			nodes: nodeTree,
-			expands: expands,
+			newSectionName: event.target.value,
+		});
+	};
+
+	onNewSectionAdd = (event) => {
+		if (this.state.newSectionName.trim() === '') {
+			return;
+		}
+
+		this.props.addProjectSection({
+			name: this.state.newSectionName,
+			projectId: this.props.specProject.id,
+		});
+
+		this.setState({
+			newSectionName: '',
 		})
-	}
+	};
 
 	onRowClick = (record, index) => {
 
@@ -182,7 +297,7 @@ class TaskTable extends React.Component<AppProps, ITaskTableState> {
 		});
 	};
 
-	onClick4EditTask = (record) => {
+	onClick4EditTask = (record: ITaskNode) => {
 		this.setState({
 			selectedGoal: record.parent,
 			selectedTask: record,
@@ -195,38 +310,128 @@ class TaskTable extends React.Component<AppProps, ITaskTableState> {
 		this.props.deleteProjectTask(record.id);
 	};
 
-	columns: TableColumnConfig<ITask>[] = [{
+	onClick4ConfigRelyGoal = (record) => {
+		this.setState({
+			selectedTask: record,
+			relyGoalModalVisible: true,
+		});
+	};
+
+	onTaskUp = (record: ITaskNode) => {
+		const lastTask: ITaskNode = record.lastTask;
+		if (isNullOrUndefined(lastTask)) {
+			return;
+		}
+
+		this.props.chgProjectTask(record.id, {
+			id: record.id,
+			name: record.name,
+			nextTaskId: lastTask.id,
+			relyGoalId: record.relyGoalId,
+			projectId: this.props.specProject.id,
+			goalId: record.parent.id,
+		});
+	};
+
+	onTaskDown = record => {
+		const nextTask: ITaskNode = record.nextTask;
+		if (isNullOrUndefined(nextTask)) {
+			return;
+		}
+
+		let targetNextTaskId = 0;
+		if (!isNullOrUndefined(nextTask.nextTask)) {
+			// 下一个任务不是最后一个了。
+			targetNextTaskId = nextTask.nextTask.id;
+		}
+
+		this.props.chgProjectTask(record.id, {
+			id: record.id,
+			name: record.name,
+			nextTaskId: targetNextTaskId,
+			projectId: this.props.specProject.id,
+			goalId: record.parent.id,
+		});
+	};
+
+	columns: TableColumnConfig<INode>[] = [{
 		key: 'key',
 		title: '名称',
 		dataIndex: 'name',
-		render: (text, record: ITask) => {
+		render: (text, record: INode) => {
 			return (
 				<span>{record.name}</span>
 			);
 		},
 	}, {
+		width: '100px',
+		key: 'rely',
+		title: '依赖目标',
+		render: (text, record: INode) => {
+			if (record.type === TASK_NODE) {
+				let relyGoal: IGoalNode = null;
+				let relyOn = false;
+				const task = record as ITaskNode;
+				if (task.relyGoalId !== 0) {
+					this.props.nodeTree.forEach((section) => {
+						section.children.forEach((goal) => {
+							if (goal.id === task.relyGoalId) {
+								relyGoal = goal;
+								relyOn = true;
+							}
+						});
+					});
+				}
+				if (relyOn) {
+					return (<span onClick={() => this.onClick4ConfigRelyGoal(record)}>{relyGoal.name}</span>);
+				} else {
+					return (<span><Icon type="edit" onClick={() => this.onClick4ConfigRelyGoal(record)}/></span>);
+				}
+
+			} else {
+				return <span />
+			}
+		},
+	}, {
+		width: '200px',
 		key: 'op',
 		title: '操作',
-		render: (text, record: ITask) => {
+		render: (text, record: INode) => {
 			let pop;
-			if (record.type === GOAL_NODE) {
+			if (record.type === SECTION_NODE) {
+				const section = record as ISectionNode;
+				pop = (
+					<span>
+						<Icon style={{paddingRight: 10}} type="edit" onClick={() => this.onClick4EditSection(section)}/>
+						{
+							section.children.length === 0 ? <Icon style={{paddingRight: 10}} type="delete"
+																  onClick={() => this.onClick4DelSection(section)}/> :
+								<span/>
+						}
+						<Icon style={{paddingRight: 10}} type="plus" onClick={() => this.onClick4CreateGoal(section)}/>
+						</span>
+				);
+			} else if (record.type === GOAL_NODE) {
 				const goal = record as IGoalNode;
-				pop = (<span><Popover content={
-						<div>
-							<div><Button onClick={() => this.onClick4EditGoal(record)}>编辑</Button></div>
-							<div><Button onClick={() => this.onClick4DelGoal(record)}
-										 disabled={goal.children.length !== 0}>删除</Button></div>
-							<div><Button onClick={() => this.onClick4CreateTask(record)}>添加任务</Button></div>
-						</div>
-					} trigger="click"><Icon type="ellipsis"/></Popover></span>
+				pop = (
+					<span>
+						<Icon style={{paddingRight: 10}} type="edit" onClick={() => this.onClick4EditGoal(goal)}/>
+						{
+							goal.children.length === 0 ? <Icon style={{paddingRight: 10}} type="delete"
+															   onClick={() => this.onClick4DelGoal(goal)}/> : <span/>
+						}
+						<Icon style={{paddingRight: 10}} type="plus" onClick={() => this.onClick4CreateTask(goal)}/>
+						</span>
 				);
 			} else {
-				pop = (<span><Popover content={
-						<div>
-							<div><Button onClick={() => this.onClick4EditTask(record)}>编辑</Button></div>
-							<div><Button onClick={() => this.onClick4DelTask(record)}>删除</Button></div>
-						</div>
-					} trigger="click"><Icon type="ellipsis"/></Popover></span>
+				const task = record as ITaskNode;
+				pop = (
+					<span>
+						<Icon style={{paddingRight: 10}} type="edit" onClick={() => this.onClick4EditTask(task)}/>
+						<Icon style={{paddingRight: 10}} type="delete" onClick={() => this.onClick4DelTask(task)}/>
+						<Icon style={{paddingRight: 10}} type="up" onClick={() => this.onTaskUp(task)}/>
+						<Icon style={{paddingRight: 10}} type="down" onClick={() => this.onTaskDown(task)}/>
+					</span>
 				);
 			}
 
@@ -270,75 +475,26 @@ class TaskTable extends React.Component<AppProps, ITaskTableState> {
 		});
 	};
 
-	selectNodes = (props): { nodeTree: ISectionNode[], nodes: ITask[] } => {
-		const sections = props.sectionsOfSpecProject;
-		const goals = props.goalsOfSpecProject;
-		const tasks = props.tasksOfSpecProject;
-
-		const nodes: ITask[] = [];
-		const sectionNodes: ISectionNode[] = [];
-		const sectionNodeMap: Map<number, ISectionNode> = new Map<number, ISectionNode>();
-		sections.forEach((section) => {
-			const sectionNode = {
-				id: section.id,
-				type: SECTION_NODE,
-				key: 'section.' + section.id,
-				name: section.name,
-				expand: true,
-				children: [],
-			};
-
-			sectionNodes.push(sectionNode);
-			nodes.push(sectionNode);
-			sectionNodeMap[section.id] = sectionNode;
+	handleRelyGoalOk = (selectedGoalId: number) => {
+		const selectedTask = this.state.selectedTask;
+		this.props.chgProjectTask(selectedTask.id, {
+			id: selectedTask.id,
+			name: selectedTask.name,
+			nextTaskId: selectedTask.nextTaskId,
+			relyGoalId: selectedGoalId,
+			projectId: this.props.specProject.id,
+			goalId: selectedTask.parent.id,
 		});
 
-		const goalNodeMap: Map<number, IGoalNode> = new Map<number, IGoalNode>();
-		goals.forEach((goal) => {
-			const sectionNode = sectionNodeMap[goal.sectionId];
-			if (isNullOrUndefined(sectionNode)) {
-				return;
-			}
-
-			const goalNode = {
-				id: goal.id,
-				type: GOAL_NODE,
-				key: 'goal.' + goal.id,
-				name: goal.name,
-				expand: true,
-				parent: sectionNode,
-				children: [],
-			};
-
-			sectionNode.children.push(goalNode);
-			nodes.push(goalNode);
-			goalNodeMap[goal.id] = goalNode;
+		this.setState({
+			relyGoalModalVisible: false,
 		});
-
-		tasks.forEach((task) => {
-			const goalNode = goalNodeMap[task.goalId];
-			if (isNullOrUndefined(goalNode)) {
-				return;
-			}
-
-			const taskNode = {
-				id: task.id,
-				type: TASK_NODE,
-				key: 'task.' + task.id,
-				name: task.name,
-				parent: goalNode,
-				expand: true,
-			};
-
-			goalNode.children.push(taskNode);
-			nodes.push(taskNode);
-		});
-
-		return {nodeTree: sectionNodes, nodes: nodes};
 	};
 
-	onPanelChange = (key) => {
-		console.info(key);
+	handleRelyGoalCancel = () => {
+		this.setState({
+			relyGoalModalVisible: false,
+		});
 	};
 
 	render() {
@@ -371,43 +527,58 @@ class TaskTable extends React.Component<AppProps, ITaskTableState> {
 			cancel: this.handleTaskCancel,
 		};
 
-		const nodeTree = this.state.nodes;
-		const panelActiveKeys = nodeTree.map(item => item.key);
+		const relyGoalModalProps = {
+			selfGoalId: isNullOrUndefined(this.state.selectedTask.parent) ? 0 : this.state.selectedTask.parent.id,
+			relyGoalId: this.state.selectedTask.relyGoalId,
+			modalVisible: this.state.relyGoalModalVisible,
+			ok: this.handleRelyGoalOk,
+			cancel: this.handleRelyGoalCancel,
+		};
+
+		const nodeTree = this.props.nodeTree;
+		const expands = [];
+		nodeTree.forEach((section: ISectionNode) => {
+			expands.push(section.key);
+			section.children.forEach((goal: IGoalNode) => expands.push(goal.key));
+		});
+
 		return (
-			<div>
+			<Row>
 				<SectionModal {...sectionModalProps}/>
 				<GoalModal {...goalModalProps}/>
 				<TaskModal {...taskModalProps}/>
-
-				<Collapse bordered={false} activeKey={panelActiveKeys} onChange={this.onPanelChange}>
-					{
-						nodeTree.map((section: ISectionNode) => {
-							const expands = section.children.map((goal: IGoalNode) => goal.key);
-
-							return (
-								<Panel header={
-									<span>{section.name}<Popover content={
-										<div>
-											<Button onClick={() => this.onClick4EditSection(section)}>编辑</Button>
-											<Button onClick={() => this.onClick4DelSection(section)}
-													disabled={section.children.length !== 0}>删除</Button>
-											<Button onClick={() => this.onClick4CreateGoal(section)}>添加目标</Button>
-										</div>
-									} trigger="click"><Icon type="ellipsis"/>
-								</Popover></span>} key={section.key}>
-									<Table expandedRowKeys={this.state.expands} onRowClick={this.onRowClick}
-										   columns={this.columns} dataSource={section.children}
-										   pagination={false} showHeader={false} size="small">
-									</Table>
-								</Panel>
-							);
-						})
-					}
-				</Collapse>
-			</div>
+				<RelyGoalModal {...relyGoalModalProps}/>
+				<Col span={24}>
+					<Row>
+						<Col span={24}>
+							<AddSectionInput onChange={this.onNewSectionChange}
+											 onPressEnter={this.onNewSectionAdd}
+											 value={this.state.newSectionName}/>
+						</Col>
+					</Row>
+					<Row>
+						<Col span={24}>
+							<Table expandedRowKeys={expands} onRowClick={this.onRowClick}
+								   columns={this.columns} dataSource={nodeTree}
+								   pagination={false} showHeader={false} size="small">
+							</Table>
+						</Col>
+					</Row>
+				</Col>
+			</Row>
 		);
 	}
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(TaskTable);
 
+interface AddSectionInputProps {
+	onChange(event);
+	onPressEnter(event);
+	value: string;
+}
+
+const AddSectionInput: React.SFC<AddSectionInputProps> = ({onChange, onPressEnter, value}): React.ReactElement<any> => {
+	return (<Input placeholder="添加目标组" onChange={onChange}
+				   onPressEnter={onPressEnter} value={value}/>);
+};

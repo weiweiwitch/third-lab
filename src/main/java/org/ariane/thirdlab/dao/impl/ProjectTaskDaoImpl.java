@@ -31,4 +31,39 @@ public class ProjectTaskDaoImpl extends AbstractDaoImpl<ProjectTask> implements 
 		});
 		return tasks;
 	}
+
+	@Override
+	public ProjectTask findLastTask(long projectId, long goalId) {
+		List<ProjectTask> tasks = (List<ProjectTask>) getHibernateTemplate().execute(new HibernateCallback<List<ProjectTask>>() {
+			public List<ProjectTask> doInHibernate(Session session) throws HibernateException {
+				Query hqlQuery = session.createQuery("from ProjectTask p where p.projectId = :projectId and p.goalId = :goalId and p.nextTaskId = 0");
+				hqlQuery.setLong("projectId", projectId);
+				hqlQuery.setLong("goalId", goalId);
+				hqlQuery.setMaxResults(1);
+				return hqlQuery.list();
+			}
+		});
+		if (tasks.size() == 0) {
+			return null;
+		} else {
+			return tasks.get(0);
+		}
+	}
+
+	@Override
+	public ProjectTask findTaskByNextTaskId(long nextTaskId) {
+		List<ProjectTask> tasks = (List<ProjectTask>) getHibernateTemplate().execute(new HibernateCallback<List<ProjectTask>>() {
+			public List<ProjectTask> doInHibernate(Session session) throws HibernateException {
+				Query hqlQuery = session.createQuery("from ProjectTask p where p.nextTaskId = :nextTaskId");
+				hqlQuery.setLong("nextTaskId", nextTaskId);
+				hqlQuery.setMaxResults(1);
+				return hqlQuery.list();
+			}
+		});
+		if (tasks.size() == 0) {
+			return null;
+		} else {
+			return tasks.get(0);
+		}
+	}
 }

@@ -73,8 +73,6 @@ function* deleteProjectTaskDeal(action) {
 }
 
 export function chgProjectTask(id, data) {
-	console.info('chgProjectTask');
-
 	return {
 		type: CHG_PROJECT_TASK,
 		payload: {
