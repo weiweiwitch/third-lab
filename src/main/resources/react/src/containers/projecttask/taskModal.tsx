@@ -3,7 +3,7 @@ import {Input, Modal} from "antd";
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
 import {addProjectTask, chgProjectTask} from "../../sagas/projecttasks";
-import {IGoalNode, ITaskNode} from './tasktable';
+import {IGoalNode, ITaskNode} from './archtable';
 
 interface StateProps {
 	task: ITaskNode;

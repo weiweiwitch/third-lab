@@ -129,6 +129,7 @@ const selectNodes = (props): { nodeTree: ISectionNode[] } => {
 				return;
 			}
 
+			let lastTask: ITaskNode = null;
 			tasks.forEach((task: ITaskNode) => {
 				if (task.nextTaskId !== 0) {
 					const nextTask = taskMap[task.nextTaskId];
@@ -136,22 +137,18 @@ const selectNodes = (props): { nodeTree: ISectionNode[] } => {
 						task.nextTask = nextTask;
 						nextTask.lastTask = task;
 					}
-				}
-			});
-			let topTask: ITaskNode = null;
-			tasks.forEach((task: ITaskNode) => {
-				if (isNullOrUndefined(task.lastTask)) {
-					topTask = task;
+				} else {
+					lastTask = task;
 				}
 			});
 
-			const sortedTasks: Array<ITaskNode> = [];
-			let targetTask: ITaskNode = topTask;
-			while (!isNullOrUndefined(targetTask)) {
-				console.info(targetTask);
-				sortedTasks.push(targetTask);
-				targetTask = targetTask.nextTask;
-			}
+			const sortedTasks: ITaskNode[] = [];
+			let currentTask = lastTask;
+			do {
+				sortedTasks.unshift(currentTask);
+				currentTask = currentTask.lastTask;
+			} while (!isNullOrUndefined(currentTask));
+
 			goalNode.children = sortedTasks;
 		});
 	});
@@ -176,7 +173,7 @@ const mapDispatchToProps = (dispatch) => {
 	}, dispatch)
 };
 
-interface ITaskTableState {
+interface IArchTableState {
 	newSectionName: string;
 	selectedSection: ISectionNode;
 	selectedGoal: IGoalNode;
@@ -189,7 +186,7 @@ interface ITaskTableState {
 	atCreate: boolean;
 }
 
-class TaskTable extends React.Component<AppProps, ITaskTableState> {
+class ArchTable extends React.Component<AppProps, IArchTableState> {
 
 	constructor(props) {
 		super(props);
@@ -570,7 +567,7 @@ class TaskTable extends React.Component<AppProps, ITaskTableState> {
 	}
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(TaskTable);
+export default connect(mapStateToProps, mapDispatchToProps)(ArchTable);
 
 interface AddSectionInputProps {
 	onChange(event);

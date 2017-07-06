@@ -3,7 +3,8 @@ import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
 import {Col, Row, Tabs} from "antd";
 import {addProjectSection} from "../../sagas/projectsections";
-import TaskTable from "./tasktable";
+import ArchTable from "./archtable";
+import ExecTable from './exectable';
 
 const TabPane = Tabs.TabPane;
 
@@ -46,9 +47,11 @@ class ProjectTask extends React.Component<AppProps, any> {
 				<Col span={24}>
 					<Tabs>
 						<TabPane tab="结构" key="1">
-							<TaskTable/>
+							<ArchTable/>
 						</TabPane>
-						<TabPane tab="推进次序" key="2">Content of Tab Pane 2</TabPane>
+						<TabPane tab="推进次序" key="2">
+							<ExecTable/>
+						</TabPane>
 					</Tabs>
 				</Col>
 			</Row>
