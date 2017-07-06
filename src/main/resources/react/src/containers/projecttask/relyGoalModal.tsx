@@ -73,8 +73,8 @@ class RelyGoalModal extends React.Component<AppProps, RelyGoalModalState> {
 		filterGoalMap[relyGoalId] = true;
 		const relyTasks = goalRelyMap[relyGoalId];
 		if (!isNullOrUndefined(relyTasks)) {
-			relyTasks.forEach((relyTask) => {
-				this.calFilter(goalRelyMap, filterGoalMap, relyTask.goalId);
+			relyTasks.forEach((goalId) => {
+				this.calFilter(goalRelyMap, filterGoalMap, goalId);
 			});
 		}
 	};
@@ -82,33 +82,40 @@ class RelyGoalModal extends React.Component<AppProps, RelyGoalModalState> {
 	render() {
 		// 建立所有被任务依赖的目标的表
 		const tasks = this.props.tasks;
-		const goalRelyMap = new Map<number, any[]>();
+		const goalRelyMap = new Map<number, number[]>(); // 目标被哪些目标依赖
+		const goalRelyWhatMap = new Map<number, number>(); // 任务的目标依赖了哪个目标
 		tasks.forEach((task) => {
 			if (task.relyGoalId !== 0) {
-				let tasks = goalRelyMap[task.relyGoalId];
-				if (isNullOrUndefined(tasks)) {
-					tasks = [];
-					goalRelyMap[task.relyGoalId] = tasks;
+				let taskGoalIds = goalRelyMap[task.relyGoalId];
+				if (isNullOrUndefined(taskGoalIds)) {
+					taskGoalIds = [];
+					goalRelyMap[task.relyGoalId] = taskGoalIds;
 				}
-				tasks.push(task);
+				taskGoalIds.push(task.goalId);
+
+				goalRelyWhatMap[task.goalId] = task.relyGoalId;
 			}
 		});
 
 		// 筛选出当前目标的依赖目标表
-		const filterGoalMap = new Map<number, boolean>();
-		this.calFilter(goalRelyMap, filterGoalMap, this.props.selfGoalId);
+		let goalOptions = [];
+		if (this.props.relyGoalId !== 0 || isNullOrUndefined(goalRelyWhatMap[this.props.selfGoalId])) {
+			// 当前目标没有依赖其他目标
+			const filterGoalMap = new Map<number, boolean>();
+			this.calFilter(goalRelyMap, filterGoalMap, this.props.selfGoalId);
 
-		// 建立选择表
-		const goals = this.props.goals;
-		console.info(goals);
-		const goalOptions = goals.filter((goal) => {
-			const notRelyOn = isNullOrUndefined(filterGoalMap[goal.id]);
-			return notRelyOn;
-		}).map((goal) => {
-			return (
-				<Option key={goal.id} value={'' + goal.id}>{goal.name}</Option>
-			);
-		});
+			// 建立选择表
+			const goals = this.props.goals;
+			goalOptions = goals.filter((goal) => {
+				const notRelyOn = isNullOrUndefined(filterGoalMap[goal.id]);
+				return notRelyOn;
+			}).map((goal) => {
+				return (
+					<Option key={goal.id} value={'' + goal.id}>{goal.name}</Option>
+				);
+			});
+		}
+		goalOptions.push(<Option key={0} value={'' + 0}>-</Option>);
 
 		const selectValue = '' + (this.state.selectedGoalId === 0 ? '' : this.state.selectedGoalId);
 		return (
