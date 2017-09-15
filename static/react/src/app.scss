@@ -1,0 +1,206 @@
+@import "./generic.scss";
+@import "~highlight.js/styles/github.css";
+
+//.browsehappy {
+//  margin: 0.2em 0;
+//  background: $light-gray;
+//  color: $black;
+//  padding: 0.2em 0;
+//}
+
+body {
+  height: 100%;
+  margin: 0;
+  padding:0;
+  background-color: #f8f8f8;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #e6e6e6;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+/* Responsive: Portrait tablets and up */
+//@media screen and (min-width: 768px) {
+//  .container {
+//    max-width: 730px;
+//  }
+//}
+
+#logo span {
+  font-size: 16px;
+  line-height: 56px;
+  text-transform: uppercase;
+}
+
+.air {
+  font-family: $global-font;
+}
+
+.air-nav {
+  border-bottom: 1px solid #eee;
+  margin-bottom: 5px;
+}
+
+textarea {
+  tab-size: 4;
+}
+
+button {
+  margin-right: 8px;
+}
+
+input {
+  margin-right: 8px;
+}
+
+div .header {
+  //-webkit-transition: opacity .5s;
+  //transition: opacity .5s;
+  background: #fff;
+  padding: 0 48px;
+  width: 100%;
+}
+
+.labtree {
+  background: $white;
+  margin: 0 6px;
+}
+
+.labtree-btn {
+  padding: 10px 15px;
+}
+
+.labtree-nodes {
+  list-style-type: none;
+  padding-left: 15px;
+}
+
+.labtree-node {
+  margin: 5px 0;
+}
+
+.labtree-node-text {
+  transition: padding 0.2s ease-out;
+  color: $light-black;
+  font-size: 13px;
+}
+
+.labtree-node:hover {
+  color: $blue;
+  background: $light-gray;
+  text-decoration: none;
+}
+
+.textarea-height {
+  height: calc(100vh - 276px) !important;
+  overflow: auto;
+}
+
+.topic_header {
+  padding: 0 10px;
+  margin: 5px 0;
+  border-bottom: 1px solid #eee;
+}
+
+.topic_full_title {
+  font-size: 24px;
+  font-weight: 700;
+  display: inline-block;
+}
+
+.inner_topic_container {
+  //height: calc(100vh - 140px);
+  //overflow: auto;
+  border-top: 1px solid $gray;
+  border-bottom: 1px solid $gray;
+  margin-top: 5px;
+}
+
+.inner_topic {
+  padding: 0 10px;
+}
+
+/* 章节信息 */
+.chapter-nodes {
+  margin: 15px;
+  padding-left: 15px;
+}
+
+/* markdown */
+
+.markdown-text {
+  tab-size: 4;
+
+  p > code {
+    background: $white2;
+    color: #666;
+    padding: 0 5px;
+    margin: 0 2px;
+    font-size: 0.9em;
+    border: 1px solid #ddd;
+    border-radius: 3px;
+  }
+
+  pre > code {
+    background: $white2;
+    color: #666;
+    font-size: 0.9em;
+  }
+
+  pre {
+    font-family: $code-font;
+    font-size: 13px;
+    border: 0;
+    border-left: 3px solid $green;
+    background: $white2;
+    border-radius: 0;
+    margin: 5px 0;
+    padding: 8px;
+  }
+
+  p {
+    font-family: $show-font;
+    font-size: 12px;
+    line-height: 1.8;
+  }
+
+  li {
+    font-family: $show-font;
+    font-size: 12px;
+    line-height: 1.8;
+  }
+
+  ul {
+    list-style-type: square;
+    padding-left: 20px;
+  }
+
+  h2 {
+    font-size: 18px;
+    padding-bottom: 3px;
+    border-bottom: 1px solid $gray2;
+    margin-top: 20px;
+    margin-bottom: 10px;
+  }
+
+  h3 {
+    padding-bottom: 3px;
+    font-size: 16px;
+    border-bottom: 1px solid $gray2;
+    margin-top: 20px;
+    margin-bottom: 10px;
+  }
+
+  h4 {
+    font-size: 14px;
+  }
+
+  h5 {
+    font-size: 12px;
+  }
+}
