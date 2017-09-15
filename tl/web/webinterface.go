@@ -3,7 +3,7 @@ package web
 import (
 	"github.com/gorilla/sessions"
 	"github.com/labstack/echo"
-	"thirdlab/th/comm"
+	"thirdlab/tl/comm"
 )
 
 type BaseAction interface {
@@ -40,4 +40,12 @@ func RegisterGet(routerGroup *echo.Group, path string, dealReq BaseAction) {
 
 func RegisterPost(routerGroup *echo.Group, path string, dealReq BaseAction) {
 	routerGroup.POST(path, dealReq.DealReq)
+}
+
+func RegisterPut(routerGroup *echo.Group, path string, dealReq BaseAction) {
+	routerGroup.PUT(path, dealReq.DealReq)
+}
+
+func RegisterDel(routerGroup *echo.Group, path string, dealReq BaseAction) {
+	routerGroup.DELETE(path, dealReq.DealReq)
 }

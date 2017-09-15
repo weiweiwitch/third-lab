@@ -7,7 +7,8 @@ import (
 	"github.com/labstack/echo/middleware"
 	"net/http"
 	"strconv"
-	"thirdlab/th/data"
+	"thirdlab/tl/data"
+	"thirdlab/tl/web/ctrl"
 )
 
 func StartServer(port int) {
@@ -21,8 +22,6 @@ func start(port int) {
 	router.Use(middleware.Recover())
 
 	// session支持
-	//store, _ := sessions.NewRedisStore(50, "tcp", "127.0.0.1:6379", "", []byte("secret"))
-	//router.Use(sessions.Sessions("mysession", store))
 	router.Use(Middleware(sessions.NewCookieStore([]byte("secret"))))
 
 	gob.Register(&data.ThData{})
@@ -36,12 +35,28 @@ func start(port int) {
 	})
 
 	// 下面是功能的路由
-	version1 := router.Group("/v1")
-	yzgmapi := router.Group("")
+	api := router.Group("/api")
 
 	{
-		// 创建gm账号
-		//RegisterPost(version1, "/createAccount", mcontroller.NewAuthedActionDeal(new(maccount.CreateAccountDeal)))
+		// 查询所有的post
+		RegisterGet(api, "/posts", NewSessionActionDeal(new(ctrl.PostsDeal)))
+
+		// 根据条件查询文章
+
+		// 获取特定文章
+		RegisterGet(api, "/posts/:id", NewSessionActionDeal(new(ctrl.QuerySpecPostDeal)))
+
+		// 添加post
+		RegisterPost(api, "/posts", NewSessionActionDeal(new(ctrl.AddPostDeal)))
+
+		// 更新post
+		RegisterPut(api, "/posts/:id", NewSessionActionDeal(new(ctrl.UpdatePostDeal)))
+
+		// 删除post
+		RegisterDel(api, "/posts/:id", NewSessionActionDeal(new(ctrl.DelPostsDeal)))
+
+		// 查询所有的tag
+		RegisterGet(api, "/tags", NewSessionActionDeal(new(ctrl.PostTagsDeal)))
 	}
 
 	// 运行服务器

@@ -1,4 +1,4 @@
-package th
+package tl
 
 import (
 	"thirdlab/th/cfg"

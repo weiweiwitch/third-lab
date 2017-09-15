@@ -3,9 +3,11 @@ package db
 import (
 	"fmt"
 	"github.com/jinzhu/gorm"
-	"thirdlab/th/cfg"
-	"thirdlab/th/comm"
+	"thirdlab/tl/cfg"
+	"thirdlab/tl/comm"
 )
+
+var DbConn *gorm.DB
 
 // 初始化数据库连接
 func InitMysqlConn(jsonConfig *cfg.JsonConfig) (err error) {
@@ -18,13 +20,13 @@ func InitMysqlConn(jsonConfig *cfg.JsonConfig) (err error) {
 	)
 	comm.Log.Debug("数据库连接：%s", dbUrl)
 
-	dbConn, err := gorm.Open("mysql", dbUrl)
+	DbConn, err = gorm.Open("mysql", dbUrl)
 	if err != nil {
 		return err
 	}
 
-	dbConn.DB().SetMaxIdleConns(10)
-	dbConn.DB().SetMaxOpenConns(100)
+	DbConn.DB().SetMaxIdleConns(10)
+	DbConn.DB().SetMaxOpenConns(100)
 
 	return nil
 }
