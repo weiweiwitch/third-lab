@@ -7,6 +7,7 @@ import (
 	"strconv"
 	"thirdlab/tl/dao"
 	"thirdlab/tl/db"
+	"thirdlab/tl/domain"
 	"thirdlab/tl/rtcode"
 	"thirdlab/tl/web/resp"
 )
@@ -35,20 +36,26 @@ func (this *QueryTagPostDeal) DealReqWithSession(session *sessions.Session, c ec
 		return
 	}
 
-	// 找到这个tag的所有关系，从中提取出post的id
-	relations := dao.FindPostTagRelationByTagId(db.DbConn, tagId)
-	postIds := make([]int, 0)
-	for _, eachRelation := range relations {
-		postIds = append(postIds, eachRelation.PostId)
+	posts := make([]*domain.Post, 0)
+	if tagId != 0 {
+		// 找到这个tag的所有关系，从中提取出post的id
+		relations := dao.FindPostTagRelationByTagId(db.DbConn, tagId)
+		postIds := make([]int, 0)
+		for _, eachRelation := range relations {
+			postIds = append(postIds, eachRelation.PostId)
+		}
+
+		// 查询出所有的post
+		posts = dao.FindPostsByIds(db.DbConn, postIds)
+
+	} else {
+		posts = dao.FindPostsUntagged(db.DbConn)
 	}
 
 	specTagPostsResp := &SpecTagPostsResp{
 		TagId: tagId,
 		Posts: make([]*TagPostResp, 0),
 	}
-
-	// 查询出所有的post
-	posts := dao.FindPostsByIds(db.DbConn, postIds)
 	for _, eachPost := range posts {
 		tagPostResp := &TagPostResp{
 			Id:       eachPost.ID,

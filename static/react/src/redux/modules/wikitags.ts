@@ -1,13 +1,13 @@
 import {
 	ADD_WIKI_SPECTAG_SUCCESS,
 	DEL_WIKI_SPECTAG_SUCCESS,
-	QUERY_WIKI_TAGS_SUCCESS
+	QUERY_WIKI_TAGS_SUCCESS,
 } from "../../sagas/tags";
 import {
 	QUERY_SPEC_TAG_POSTS,
 } from "../../sagas/posts";
 
-export function getSpecTagId(state): number {
+export function getSpecTagId(state: any): number {
 	return state.wikitags.specTagId;
 }
 
@@ -16,10 +16,10 @@ const initialState = {
 	wikitaglist: [],
 	specTagId: 0,
 	createSuccess: false,
-	dirty: false
+	dirty: false,
 };
 
-export default function reducer(state = initialState, action: any = {}) {
+export default function reducer(state: any = initialState, action: any = {}): any {
 	switch (action.type) {
 		case QUERY_SPEC_TAG_POSTS:
 			return {
@@ -28,9 +28,6 @@ export default function reducer(state = initialState, action: any = {}) {
 			};
 
 		case QUERY_WIKI_TAGS_SUCCESS:
-			console.info('reducer query tags success');
-			console.info(action.payload);
-
 			const wikitagtree = action.payload.tagTree;
 			wikitagtree.push({
 				id: 0,
@@ -39,24 +36,20 @@ export default function reducer(state = initialState, action: any = {}) {
 			});
 			return {
 				...state,
-				wikitagtree: wikitagtree,
+				wikitagtree,
 				wikitaglist: action.payload.tagList,
-				dirty: false
+				dirty: false,
 			};
 		case ADD_WIKI_SPECTAG_SUCCESS:
-			console.info('reducer add spec tag success');
-			console.info(action.payload);
 			return {
 				...state,
 				createSuccess: true,
-				dirty: true
+				dirty: true,
 			};
 		case DEL_WIKI_SPECTAG_SUCCESS:
-			console.info('reducer del spec tag success');
-			console.info(action.payload);
 			return {
 				...state,
-				dirty: true
+				dirty: true,
 			};
 		default:
 			return state;

@@ -15,12 +15,12 @@ const FormItem = Form.Item;
 
 const md = new MarkdownIt({
 	html: true,
-	highlight: function (str, lang) {
+	highlight: (str: any, lang: any): any => {
 		if (lang && hljs.getLanguage(lang)) {
 			try {
 				return hljs.highlight(lang, str).value;
 			} catch (e) {
-				console.info(e);
+				// console.error(e);
 			}
 		}
 
@@ -28,43 +28,41 @@ const md = new MarkdownIt({
 	},
 });
 
-interface StateProps {
-	wikipost: any,
-	wikitaglist: any[],
-	modifySuccess: boolean,
+interface IStateProps {
+	wikipost: any;
+	wikitaglist: any[];
+	modifySuccess: boolean;
 }
 
-interface DispatchProps {
-	chgPost(postId: number, post: any);
-	clearModifyMark();
+interface IDispatchProps {
+	chgPost(postId: number, post: any): any;
+	clearModifyMark(): any;
 }
 
-type AppProps = StateProps & DispatchProps;
+type IAppProps = IStateProps & IDispatchProps;
 
-const mapStateToProps = (state) => {
+const mapStateToProps = (state: any): any => {
 	return {
 		wikipost: state.wikispecpost.wikipost,
 		wikitaglist: state.wikitags.wikitaglist,
-		modifySuccess: state.wikispecpost.modifySuccess
+		modifySuccess: state.wikispecpost.modifySuccess,
 	};
 };
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = (dispatch: any): any => {
 	return bindActionCreators({
-		chgPost: chgPost,
-		clearModifyMark: clearModifyMark,
-	}, dispatch)
+		chgPost,
+		clearModifyMark,
+	}, dispatch);
 };
 
-class WikiEdit extends React.Component<AppProps, any> {
+class WikiEdit extends React.Component<IAppProps, any> {
 
-	constructor(props) {
+	constructor(props: IAppProps) {
 		super(props);
 
-		console.info('constructor ' + props.wikipost.title);
-
 		let maxTagId = 0;
-		const tags = props.wikipost.tags.map((tag) => {
+		const tags = props.wikipost.tags.map((tag: any) => {
 			if (tag.id > maxTagId) {
 				maxTagId = tag.id;
 			}
@@ -77,8 +75,8 @@ class WikiEdit extends React.Component<AppProps, any> {
 		this.state = {
 			postTitle: props.wikipost.title,
 			postText: props.wikipost.postText,
-			postParentId: props.wikipost.parantId,
-			maxTagId: maxTagId,
+			postParentId: props.wikipost.parentId,
+			maxTagId,
 			postTags: tags,
 			tagSearchResult: [],
 			selectedTag: '',
@@ -86,13 +84,11 @@ class WikiEdit extends React.Component<AppProps, any> {
 		};
 	}
 
-	componentDidMount() {
-		console.info('componentDidMount ' + this.props.wikipost.title);
-
+	componentDidMount(): any {
 		this.props.clearModifyMark();
 	}
 
-	componentWillReceiveProps(nextProps) {
+	componentWillReceiveProps(nextProps: any): any {
 		// 当将会接收到属性时处理
 		if (nextProps.modifySuccess === true) {
 			// 修改成功, 切换到文章页, 并刷新
@@ -100,7 +96,7 @@ class WikiEdit extends React.Component<AppProps, any> {
 			browserHistory.push('/wiki/wikipost/' + post.id);
 		}
 
-		const tags = this.props.wikipost.tags.map((tag) => {
+		const tags = this.props.wikipost.tags.map((tag: any) => {
 			return {
 				id: tag.id,
 				tagName: tag.tagName,
@@ -108,27 +104,27 @@ class WikiEdit extends React.Component<AppProps, any> {
 		});
 		this.setState({
 			postTags: tags,
-		})
+		});
 	}
 
-	updateTitle = (event) => {
+	updateTitle = (event: any): any => {
 		this.setState({postTitle: event.target.value});
 	};
 
-	updateText = (event) => {
+	updateText = (event: any): any => {
 		this.setState({postText: event.target.value});
 	};
 
-	updateParentId = (event) => {
+	updateParentId = (event: any): any => {
 		this.setState({postParentId: event.target.value});
 	};
 
-	confirmModify = (event) => {
+	confirmModify = (event: any): any => {
 		event.preventDefault();
 
 		const post = this.props.wikipost;
-		let postTags = [];
-		this.state.postTags.map((postTag) => {
+		const postTags = [];
+		this.state.postTags.map((postTag: any) => {
 			postTags.push(postTag.tagName);
 		});
 
@@ -137,33 +133,33 @@ class WikiEdit extends React.Component<AppProps, any> {
 			user: post.user,
 			title: this.state.postTitle,
 			postText: this.state.postText,
-			parantId: parseInt(this.state.postParentId, 10),
+			parentId: parseInt(this.state.postParentId, 10),
 			tags: postTags,
 		};
 		this.props.chgPost(post.id, updatedPost);
 	};
 
-	cancelModify = (event) => {
+	cancelModify = (event: any): any => {
 		event.preventDefault();
 
 		const post = this.props.wikipost;
 		browserHistory.push('/wiki/wikipost/' + post.id);
 	};
 
-	onTagSelect = (value) => {
+	onTagSelect = (value: any): any => {
 		this.setState({
 			selectedTag: value,
 		});
 	};
 
-	onTagSearch = (inputValue) => {
+	onTagSearch = (inputValue: any): any => {
 		const searchResult = [];
 		const existTagMap = new Map<string, boolean>();
-		this.state.postTags.map((postTag) => {
+		this.state.postTags.map((postTag: any) => {
 			existTagMap[postTag.tagName] = true;
 		});
-		this.props.wikitaglist.filter((value, index) => {
-			if (isNullOrUndefined(existTagMap[value.tagName]) == false) {
+		this.props.wikitaglist.filter((value: any, index: any) => {
+			if (isNullOrUndefined(existTagMap[value.tagName]) === false) {
 				return false;
 			}
 			if (value.tagName.indexOf(inputValue) === -1) {
@@ -174,18 +170,17 @@ class WikiEdit extends React.Component<AppProps, any> {
 			return true;
 		});
 
-		console.info(inputValue);
 		this.setState({
 			tagSearchResult: searchResult,
 			inputTag: inputValue,
 		});
 	};
 
-	onTagEnterPress = (event) => {
+	onTagEnterPress = (event: any): any => {
 		if (event.key === 'Enter') {
 			// 按了回车
 			const existTagMap = new Map<string, boolean>();
-			this.state.postTags.map((postTag) => {
+			this.state.postTags.map((postTag: any) => {
 				existTagMap[postTag.tagName] = true;
 			});
 
@@ -194,7 +189,7 @@ class WikiEdit extends React.Component<AppProps, any> {
 			const selectedTag = this.state.selectedTag;
 			if (selectedTag !== '') {
 				// 判断这个tag是否已经存在
-				if (isNullOrUndefined(existTagMap[selectedTag]) == false) {
+				if (isNullOrUndefined(existTagMap[selectedTag]) === false) {
 					// 已经存在了
 					return;
 				}
@@ -204,9 +199,9 @@ class WikiEdit extends React.Component<AppProps, any> {
 
 			} else {
 				const inputTag = this.state.inputTag;
-				if (inputTag != '') {
+				if (inputTag !== '') {
 					// 判断这个tag是否已经存在
-					if (isNullOrUndefined(existTagMap[selectedTag]) == false) {
+					if (isNullOrUndefined(existTagMap[selectedTag]) === false) {
 						// 已经存在了
 						return;
 					}
@@ -217,7 +212,7 @@ class WikiEdit extends React.Component<AppProps, any> {
 			}
 
 			if (addNewTag) {
-				let newTagId = this.state.maxTagId + 1;
+				const newTagId = this.state.maxTagId + 1;
 				const newTag = {
 					id: newTagId,
 					tagName: newTagName,
@@ -235,10 +230,9 @@ class WikiEdit extends React.Component<AppProps, any> {
 		}
 	};
 
-	tagClose = (tag) => {
-		console.info(tag);
-		const remainings = this.state.postTags.filter((record, index) => {
-			if (record == tag) {
+	tagClose = (tag: any): any => {
+		const remainings = this.state.postTags.filter((record: any, index: any) => {
+			if (record === tag) {
 				return false;
 			} else {
 				return true;
@@ -246,10 +240,10 @@ class WikiEdit extends React.Component<AppProps, any> {
 		});
 		this.setState({
 			postTags: remainings,
-		})
+		});
 	};
 
-	render() {
+	render(): any {
 		const post = this.props.wikipost;
 
 		const postText = {__html: md.render(this.state.postText)};
@@ -263,9 +257,9 @@ class WikiEdit extends React.Component<AppProps, any> {
 			wrapperCol: {span: 24},
 		};
 
-		const tags = this.state.postTags.map((tag) => {
+		const tags = this.state.postTags.map((tag: any) => {
 			return (
-				<Tag key={tag.id} closable afterClose={() => this.tagClose(tag)}>{tag.tagName}</Tag>
+				<Tag key={tag.id} closable afterClose={(): any => this.tagClose(tag)}>{tag.tagName}</Tag>
 			);
 		});
 
@@ -276,7 +270,7 @@ class WikiEdit extends React.Component<AppProps, any> {
 				<Col span={24}>
 					<Form>
 						<Row>
-							<Col span={24} style={{padding: '12px 0px',}}>
+							<Col span={24} style={{padding: '12px 0px'}}>
 								<Input placeholder="请输入标题"
 									   onChange={this.updateTitle} value={this.state.postTitle}
 								/>
@@ -288,7 +282,7 @@ class WikiEdit extends React.Component<AppProps, any> {
 								<AutoComplete
 									allowClear={true}
 									dataSource={allTags}
-									style={{width: 200, padding: '0px 12px 0px 0px',}}
+									style={{width: 200, padding: '0px 12px 0px 0px'}}
 									onSelect={this.onTagSelect}
 									onSearch={this.onTagSearch}
 									placeholder="添加tag"

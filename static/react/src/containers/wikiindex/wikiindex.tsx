@@ -6,39 +6,39 @@ import {Input, Col, Row, Table} from "antd";
 
 import {queryPosts, querySpecPost} from "../../sagas/posts";
 
-interface StateProps {
+interface IStateProps {
 	wikiposts: any[];
 }
 
-interface DispatchProps {
-	querySpecPost(postId: number);
+interface IDispatchProps {
+	querySpecPost(postId: number): any;
 }
 
-type AppProps = StateProps & DispatchProps;
+type IAppProps = IStateProps & IDispatchProps;
 
-const mapStateToProps = (state) => {
+const mapStateToProps = (state: any): any => {
 	return {
-		wikiposts: state.wikiposts.wikiposts
+		wikiposts: state.wikiposts.wikiposts,
 	};
 };
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = (dispatch: any): any => {
 	return bindActionCreators({
-		querySpecPost: querySpecPost,
-	}, dispatch)
+		querySpecPost,
+	}, dispatch);
 };
 
-class WikiIndex extends React.Component<AppProps, any> {
+class WikiIndex extends React.Component<IAppProps, any> {
 
-	constructor(props) {
+	constructor(props: IAppProps) {
 		super(props);
 
 		this.state = {
-			searchSource: []
+			searchSource: [],
 		};
 	}
 
-	handleUpdateInput = (event) => {
+	handleUpdateInput = (event: any): any => {
 		const keyword = event.target.value;
 		if (keyword.trim() === '') {
 			this.setState({
@@ -55,19 +55,19 @@ class WikiIndex extends React.Component<AppProps, any> {
 		}
 	};
 
-	searchEachNode(keyword, wikiposts, filterPosts) {
+	searchEachNode(keyword: any, wikiposts: any, filterPosts: any): any {
 		for (const post of wikiposts) {
 			if (post.title.includes(keyword)) {
 				filterPosts.push({
 					id: post.id,
 					text: post.title,
-					value: post
+					value: post,
 				});
 			}
 		}
 	}
 
-	onRowClick = (record, index) => {
+	onRowClick = (record: any, index: any): any => {
 		// 查询特定文章
 		this.props.querySpecPost(record.id);
 
@@ -75,16 +75,14 @@ class WikiIndex extends React.Component<AppProps, any> {
 		browserHistory.push('/wiki/wikipost/' + record.id);
 	};
 
-	showPost = (chosenRequest, index) => {
-		console.info(index);
+	showPost = (chosenRequest: any, index: any): any => {
 		if (index !== -1) {
 			const post = this.state.searchSource[index].value;
-			console.info(post);
 			browserHistory.push('/wiki/wikipost/' + post.id);
 		}
 	};
 
-	render() {
+	render(): any {
 		const columns = [{
 			title: '标题',
 			dataIndex: 'text',

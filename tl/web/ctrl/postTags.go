@@ -23,8 +23,8 @@ type PostTagResp struct {
 }
 
 type PostTagContainer struct {
-	Tree []*PostTagResp
-	List []*PostTagResp
+	Tree []*PostTagResp `json:"tree"`
+	List []*PostTagResp `json:"list"`
 }
 
 // 查询所有的tag

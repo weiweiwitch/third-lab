@@ -8,6 +8,8 @@ const sourcePath = path.resolve(contextPath, 'src');
 
 const port = process.env.PORT;
 
+const tslintConfig = require('../tslint.json');
+
 module.exports = {
   // 内联调试信息
   devtool: 'source-map',
@@ -54,6 +56,18 @@ module.exports = {
         include: [
           sourcePath,
         ]
+      },
+      {
+        enforce: 'pre',
+        test: /\.tsx?$/,
+        exclude: /node_modules/,
+        use: {
+          loader: 'tslint-loader',
+          options: {
+            failOnHint: true,
+            configuration: tslintConfig
+          }
+        }
       },
       {
         test: /\.css$/,

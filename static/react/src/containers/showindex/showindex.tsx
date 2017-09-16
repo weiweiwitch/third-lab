@@ -3,34 +3,34 @@ import {connect} from "react-redux";
 import {browserHistory} from "react-router";
 import {bindActionCreators} from "redux";
 
-interface StateProps {
+interface IStateProps {
 }
 
-interface DispatchProps {
+interface IDispatchProps {
 }
 
-type AppProps = StateProps & DispatchProps;
+type IAppProps = IStateProps & IDispatchProps;
 
-const mapStateToProps = (state) => {
+const mapStateToProps = (state: any): any => {
 	return {};
 };
 
-const mapDispatchToProps = (dispatch) => {
-	return bindActionCreators({}, dispatch)
+const mapDispatchToProps = (dispatch: any): any => {
+	return bindActionCreators({}, dispatch);
 };
 
-class ShowIndex extends React.Component<AppProps, any> {
+class ShowIndex extends React.Component<IAppProps, any> {
 
-	constructor(props) {
+	constructor(props: IAppProps) {
 		super(props);
 	}
 
-	componentDidMount() {
+	componentDidMount(): any {
 		// 查询账号列表
 		browserHistory.push('/wiki/wikiindex');
 	}
 
-	render() {
+	render(): any {
 		return (
 			<div></div>
 		);

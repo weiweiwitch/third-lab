@@ -8,19 +8,20 @@ import * as MarkdownIt from "markdown-it";
 import {deletePost} from "../../sagas/posts";
 import {bindActionCreators} from "redux";
 
+// import {} from "./wikiPost.scss";
 require('./wikiPost.scss');
 
 const TreeNode = Tree.TreeNode;
 
 const md = new MarkdownIt({
 	html: true,
-	highlight: function (str, lang) {
+	highlight: (str: any, lang: any): any => {
 		if (lang && hljs.getLanguage(lang)) {
 			try {
 				return hljs.highlight(lang, str).value;
 			} catch (e) {
-				console.info('hightlight');
-				console.info(e);
+				// console.info('hightlight');
+				// console.info(e);
 			}
 		}
 
@@ -28,29 +29,29 @@ const md = new MarkdownIt({
 	},
 });
 
-interface StateProps {
+interface IStateProps {
 	params: any;
 	wikipost: any;
 	dirty: boolean;
 }
 
-interface DispatchProps {
-	deletePost(postId: number);
+interface IDispatchProps {
+	deletePost(postId: number): any;
 }
 
-type AppProps = StateProps & DispatchProps;
+type IAppProps = IStateProps & IDispatchProps;
 
-const mapStateToProps = (state) => {
+const mapStateToProps = (state: any): any => {
 	return {
 		wikipost: state.wikispecpost.wikipost,
-		dirty: state.wikiposts.dirty
+		dirty: state.wikiposts.dirty,
 	};
 };
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = (dispatch: any): any => {
 	return bindActionCreators({
-		deletePost: deletePost,
-	}, dispatch)
+		deletePost,
+	}, dispatch);
 };
 
 class HeaderNode {
@@ -60,29 +61,29 @@ class HeaderNode {
 	content: string;
 }
 
-class WikiPost extends React.Component<AppProps, any> {
+class WikiPost extends React.Component<IAppProps, any> {
 
-	constructor(props) {
+	constructor(props: IAppProps) {
 		super(props);
 	}
 
-	componentDidMount() {
+	componentDidMount(): any {
 
 	}
 
 	// 编辑文章
-	edit = (event) => {
+	edit = (event: any): any => {
 		browserHistory.push('/wiki/wikiedit');
 	};
 
 	// 创建子文章
-	createSubPost = (event) => {
+	createSubPost = (event: any): any => {
 		const post = this.props.wikipost;
 		browserHistory.push('/wiki/wikinew/' + post.id);
 	};
 
 	// 删除文章
-	deletePost = (event) => {
+	deletePost = (event: any): any => {
 		// 删除特定post
 		const post = this.props.wikipost;
 		this.props.deletePost(post.id);
@@ -92,24 +93,24 @@ class WikiPost extends React.Component<AppProps, any> {
 	};
 
 	// 返回首页
-	transToIndex = (event) => {
+	transToIndex = (event: any): any => {
 		browserHistory.push('/wiki/wikiindex');
 	};
 
-	render() {
+	render(): any {
 		const post = this.props.wikipost;
 
 		const result = {__html: md.render(post.postText)};
 
 		// 解析markdown结构
-		let headerNodes: HeaderNode[] = [];
+		const headerNodes: HeaderNode[] = [];
 		try {
 			const parseResult = md.parse(post.postText);
 			let headingStarted = false;
 			let currentHeaderNode;
 			let headerKey = 1;
-			parseResult.forEach((token) => {
-				if (token.type == 'heading_open') {
+			parseResult.forEach((token: any) => {
+				if (token.type === 'heading_open') {
 					headingStarted = true;
 					const nowHeadLv = token.markup.split('');
 					const headerNode = {
@@ -123,18 +124,18 @@ class WikiPost extends React.Component<AppProps, any> {
 					currentHeaderNode = headerNode;
 					headerNodes.push(headerNode);
 
-				} else if (token.type == 'heading_close') {
-					headingStarted = false
+				} else if (token.type === 'heading_close') {
+					headingStarted = false;
 				}
 
 				if (headingStarted) {
-					if (token.type == 'inline') {
+					if (token.type === 'inline') {
 						currentHeaderNode.content = token.content;
 					}
 				}
 			});
 		} catch (e) {
-			console.info(e);
+			//console.info(e);
 		}
 
 		const headers = headerNodes.map((headerNode: HeaderNode) => {
@@ -144,7 +145,7 @@ class WikiPost extends React.Component<AppProps, any> {
 			);
 		});
 
-		const tags = post.tags.map((tag) => {
+		const tags = post.tags.map((tag: any) => {
 			return (
 				<Tag key={tag.id}>{tag.tagName}</Tag>
 			);

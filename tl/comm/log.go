@@ -61,7 +61,7 @@ func (logStd *LogStd) ChgLogLv(logLvReader LogLvReader) {
 	}
 
 	// 日志级别变更提示信息
-	NormalLog.Info("日志级别被设置为：%s", logLv)
+	Log.Info("日志级别被设置为：%s", logLv)
 }
 
 // 日志输出到文件
@@ -69,14 +69,14 @@ func (logStd *LogStd) Output2File(suffix int) {
 	filename := "log/log_" + strconv.Itoa(suffix) + ".log"
 	f, err := os.OpenFile(filename, os.O_WRONLY|os.O_CREATE|os.O_APPEND, 0644)
 	if err != nil {
-		NormalLog.Error("日志重定向到文件 失败：%s", err.Error())
+		Log.Error("日志重定向到文件 失败：%s", err.Error())
 		return
 	}
 
 	logStd.fileLogEntry.Logger.Out = f
 	logStd.ignoreFile = false
 
-	NormalLog.Info("日志重定向到文件 成功：%s", filename)
+	Log.Info("日志重定向到文件 成功：%s", filename)
 }
 
 func (this *LogStd) GetLv() logrus.Level {

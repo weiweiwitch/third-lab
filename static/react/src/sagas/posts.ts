@@ -31,21 +31,20 @@ export const CHG_WIKI_SPECPOST = 'CHG_WIKI_SPECPOST';
 export const CHG_WIKI_SPECPOST_SUCCESS = 'CHG_WIKI_SPECPOST_SUCCESS';
 export const CHG_WIKI_SPECPOST_FAILED = 'CHG_WIKI_SPECPOST_FAILED';
 
-export function clearCreateMark() {
+export function clearCreateMark(): any {
 	return {
 		type: CLEAR_CREATE_MARK,
 	};
 }
 
-export function queryPosts() {
-	console.info('queryPosts');
+export function queryPosts(): any {
 	return {
 		type: QUERY_WIKI_POSTS,
 	};
 }
 
-function* queryPostsDeal(action) {
-	console.info('queryPosts Deal');
+function* queryPostsDeal(action: any): any {
+	console.info('queryPostsDeal');
 	try {
 		// 发送请求查询
 		const result = yield call(() => {
@@ -53,28 +52,26 @@ function* queryPostsDeal(action) {
 		});
 
 		if (result.rt !== 1) {
-			yield put({type: QUERY_WIKI_POSTS_FAILED,});
+			yield put({type: QUERY_WIKI_POSTS_FAILED});
 		} else {
-			yield put({type: QUERY_WIKI_POSTS_SUCCESS, payload: result.data,});
+			yield put({type: QUERY_WIKI_POSTS_SUCCESS, payload: result.data});
 		}
 
 	} catch (e) {
-		yield put({type: QUERY_WIKI_POSTS_FAILED,});
+		yield put({type: QUERY_WIKI_POSTS_FAILED});
 	}
 }
 
-export function querySpecTagPosts(tagId: number) {
-	console.info('querySpecTagPosts ' + tagId);
+export function querySpecTagPosts(tagId: number): any {
 	return {
 		type: QUERY_SPEC_TAG_POSTS,
 		payload: {
-			tagId: tagId
+			tagId,
 		},
 	};
 }
 
-function* querySpecTagPostsDeal(action) {
-	console.info('querySpecTagPostsDeal deal ');
+function* querySpecTagPostsDeal(action: any): any {
 	try {
 		// 发送请求查询
 		const result = yield call(() => {
@@ -82,7 +79,7 @@ function* querySpecTagPostsDeal(action) {
 		});
 
 		if (result.rt !== 1) {
-			yield put({type: QUERY_SPEC_TAG_POSTS_FAILED,});
+			yield put({type: QUERY_SPEC_TAG_POSTS_FAILED});
 		} else {
 			yield put({
 				type: QUERY_SPEC_TAG_POSTS_SUCCESS,
@@ -94,11 +91,11 @@ function* querySpecTagPostsDeal(action) {
 		}
 
 	} catch (e) {
-		yield put({type: QUERY_SPEC_TAG_POSTS_FAILED,});
+		yield put({type: QUERY_SPEC_TAG_POSTS_FAILED});
 	}
 }
 
-export function addPost(data) {
+export function addPost(data: any): any {
 	data.state = parseInt(data.state, 10);
 
 	return {
@@ -107,7 +104,7 @@ export function addPost(data) {
 	};
 }
 
-function* addPostDeal(action) {
+function* addPostDeal(action: any): any {
 	try {
 		// 发送请求查询
 		const result = yield call(() => {
@@ -117,63 +114,61 @@ function* addPostDeal(action) {
 		});
 
 		if (result.rt !== 1) {
-			yield put({type: ADD_WIKI_SPECPOST_FAILED,});
+			yield put({type: ADD_WIKI_SPECPOST_FAILED});
 		} else {
-			yield put({type: ADD_WIKI_SPECPOST_SUCCESS, payload: result.data,});
+			yield put({type: ADD_WIKI_SPECPOST_SUCCESS, payload: result.data});
 		}
 
 	} catch (e) {
-		yield put({type: ADD_WIKI_SPECPOST_FAILED,});
+		yield put({type: ADD_WIKI_SPECPOST_FAILED});
 	}
 }
 
-export function deletePost(id: number) {
+export function deletePost(id: number): any {
 	return {
 		type: DEL_WIKI_SPECPOST,
 		payload: {
-			id: id,
-		}
+			id,
+		},
 	};
 }
 
-function* deletePostDeal(action) {
+function* deletePostDeal(action: any): any {
 	try {
 		// 发送请求查询
 		const result = yield call(() => {
 			return client.del('/api/posts/' + action.payload.id, {
-				params: {}
+				params: {},
 			});
 		});
 
 		if (result.rt !== 1) {
-			yield put({type: DEL_WIKI_SPECPOST_FAILED,});
+			yield put({type: DEL_WIKI_SPECPOST_FAILED});
 		} else {
-			yield put({type: DEL_WIKI_SPECPOST_SUCCESS, payload: result.data,});
+			yield put({type: DEL_WIKI_SPECPOST_SUCCESS, payload: result.data});
 		}
 
 	} catch (e) {
-		yield put({type: DEL_WIKI_SPECPOST_FAILED,});
+		yield put({type: DEL_WIKI_SPECPOST_FAILED});
 	}
 }
 
-export function clearModifyMark() {
-	console.info('触发 clearModifyMark');
+export function clearModifyMark(): any {
 	return {
-		type: CLEAR_MODIFY_MARK
+		type: CLEAR_MODIFY_MARK,
 	};
 }
 
-export function querySpecPost(postId: number) {
-	console.info('触发 querySpecPost');
+export function querySpecPost(postId: number): any {
 	return {
 		type: QUERY_WIKI_SPECPOST,
 		payload: {
 			id: postId,
-		}
+		},
 	};
 }
 
-function* querySpecPostDeal(action) {
+function* querySpecPostDeal(action: any): any {
 	try {
 		// 发送请求查询
 		const result = yield call(() => {
@@ -181,49 +176,47 @@ function* querySpecPostDeal(action) {
 		});
 
 		if (result.rt !== 1) {
-			yield put({type: QUERY_WIKI_SPECPOST_FAILED,});
+			yield put({type: QUERY_WIKI_SPECPOST_FAILED});
 		} else {
-			yield put({type: QUERY_WIKI_SPECPOST_SUCCESS, payload: result.data,});
+			yield put({type: QUERY_WIKI_SPECPOST_SUCCESS, payload: result.data});
 		}
 
 	} catch (e) {
-		yield put({type: QUERY_WIKI_SPECPOST_FAILED,});
+		yield put({type: QUERY_WIKI_SPECPOST_FAILED});
 	}
 }
 
-export function chgPost(id, data) {
-	console.info('触发 chgPost');
-
+export function chgPost(id: any, data: any): any {
 	return {
 		type: CHG_WIKI_SPECPOST,
 		payload: {
-			id: id,
-			data: data,
-		}
+			id,
+			data,
+		},
 	};
 }
 
-function* chgPostDeal(action) {
+function* chgPostDeal(action: any): any {
 	try {
 		// 发送请求查询
 		const result = yield call(() => {
 			return client.put('/api/posts/' + action.payload.id, {
-				data: action.payload.data
+				data: action.payload.data,
 			});
 		});
 
 		if (result.rt !== 1) {
-			yield put({type: CHG_WIKI_SPECPOST_FAILED,});
+			yield put({type: CHG_WIKI_SPECPOST_FAILED});
 		} else {
-			yield put({type: CHG_WIKI_SPECPOST_SUCCESS, payload: result.data,});
+			yield put({type: CHG_WIKI_SPECPOST_SUCCESS, payload: result.data});
 		}
 
 	} catch (e) {
-		yield put({type: CHG_WIKI_SPECPOST_FAILED,});
+		yield put({type: CHG_WIKI_SPECPOST_FAILED});
 	}
 }
 
-export function* refreshPostsDeal() {
+export function* refreshPostsDeal(): any {
 	while (true) {
 		yield race({
 			login: take(LOGIN_SUCCESS),
@@ -240,19 +233,20 @@ export function* refreshPostsDeal() {
 	}
 }
 
-export function* refreshSpecPostDeal() {
+export function* refreshSpecPostDeal(): any {
 	while (true) {
 		const {change} = yield race({
 			change: take(CHG_WIKI_SPECPOST_SUCCESS),
 		});
 
 		// 触发查询
+		console.info('refresh ', change);
 		yield put(querySpecPost(change.payload.id)); // 刷新特定文章
 
 	}
 }
 
-export function* postsSaga() {
+export function* postsSaga(): any {
 	yield all([
 		takeEvery(QUERY_WIKI_POSTS, queryPostsDeal),
 		takeEvery(ADD_WIKI_SPECPOST, addPostDeal),

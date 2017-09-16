@@ -14,12 +14,12 @@ const FormItem = Form.Item;
 
 const md = new MarkdownIt({
 	html: true,
-	highlight: function (str, lang) {
+	highlight:  (str: any, lang: any): any => {
 		if (lang && hljs.getLanguage(lang)) {
 			try {
 				return hljs.highlight(lang, str).value;
 			} catch (e) {
-				console.info(e);
+				//console.info(e);
 			}
 		}
 
@@ -27,61 +27,59 @@ const md = new MarkdownIt({
 	},
 });
 
-interface StateProps {
-	createSuccess: boolean,
-	params: any,
+interface IStateProps {
+	createSuccess: boolean;
+	params: any;
 }
 
-interface DispatchProps {
-	clearCreateMark();
-	addPost(data: any);
+interface IDispatchProps {
+	clearCreateMark(): any;
+	addPost(data: any): any;
 }
 
-type AppProps = StateProps & DispatchProps;
+type IAppProps = IStateProps & IDispatchProps;
 
-const mapStateToProps = (state) => {
+const mapStateToProps = (state: any): any => {
 	return {
-		createSuccess: state.wikiposts.createSuccess
+		createSuccess: state.wikiposts.createSuccess,
 	};
 };
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = (dispatch: any): any => {
 	return bindActionCreators({
-		clearCreateMark: clearCreateMark,
-		addPost: addPost,
-	}, dispatch)
+		clearCreateMark,
+		addPost,
+	}, dispatch);
 };
 
-class WikiNew extends React.Component<AppProps, any> {
+class WikiNew extends React.Component<IAppProps, any> {
 
-	constructor(props) {
+	constructor(props: IAppProps) {
 		super(props);
 
-		console.info('parentId: ' + this.props.params.parentId);
 		this.state = {
 			parentId: parseInt(this.props.params.parentId, 10),
 			postTitle: '',
-			postText: ''
+			postText: '',
 		};
 	}
 
-	componentDidMount() {
+	componentDidMount(): any {
 		this.props.clearCreateMark();
 	}
 
-	componentWillReceiveProps(nextProps) {
+	componentWillReceiveProps(nextProps: IAppProps): any {
 		// 当将会接收到属性时处理
 		if (nextProps.createSuccess === true) {
-			console.info('wikinew switch to index');
 			browserHistory.push('/wiki/wikiindex');
 		}
 	}
 
-	updateTitle = (event) => {
+	updateTitle = (event: any): any => {
 		this.setState({postTitle: event.target.value});
 	};
 
-	updateText = (event) => {
+	updateText = (event: any): any => {
 		let text = event.target.value;
 		if (text === null) {
 			text = '';
@@ -89,25 +87,25 @@ class WikiNew extends React.Component<AppProps, any> {
 		this.setState({postText: text});
 	};
 
-	createPost = (event) => {
+	createPost = (event: any): any => {
 		event.preventDefault();
 		const post = {
 			id: 0,
 			user: '',
 			title: this.state.postTitle,
 			postText: this.state.postText,
-			parantId: this.state.parentId,
+			parentId: this.state.parentId,
 		};
 		this.props.addPost(post);
 	};
 
-	cancelCreate = (event) => {
+	cancelCreate = (event: any): any => {
 		event.preventDefault();
 
 		browserHistory.push('/wiki/wikiindex');
 	};
 
-	render() {
+	render(): any {
 		const postText = {__html: md.render(this.state.postText)};
 
 		const formItemLayout = {
@@ -156,7 +154,7 @@ class WikiNew extends React.Component<AppProps, any> {
 						<Row>
 							<Col span={12}>
 								<Button type="primary" onClick={this.createPost}>新建</Button>
-								<Button onClick={(event) => {
+								<Button onClick={(event: any): any => {
 									this.cancelCreate(event);
 								}}>取消</Button>
 							</Col>

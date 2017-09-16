@@ -8,13 +8,7 @@ import WikiNew from "./containers/wikinew/wikinew";
 import WikiEdit from "./containers/wikiedit/wikiedit";
 import WikiPost from "./containers/wikipost/wikipost";
 
-import Solution from './containers/solution/solution';
-import SolutionIndex from './containers/solutionindex/solutionindex';
-
-import Project from './containers/project/project';
-import ProjectTask from './containers/projecttask/projecttask';
-
-export default () => {
+export default (): any => {
 	// 返回路由组件
 	return (
 		<Route path="/" component={App}>
@@ -24,12 +18,6 @@ export default () => {
 				<Route path="wikinew/:parentId" component={WikiNew}/>
 				<Route path="wikiedit" component={WikiEdit}/>
 				<Route path="wikipost/:pId" component={WikiPost}/>
-			</Route>
-			<Route path="solution" component={Solution}>
-				<Route path="solutionindex" component={SolutionIndex} />
-			</Route>
-			<Route path="project" component={Project}>
-				<Route path="projecttask" component={ProjectTask} />
 			</Route>
 		</Route>
 	);

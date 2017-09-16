@@ -19,6 +19,10 @@ type UpdatePostReq struct {
 	Tags     []string `json:"tags"`
 }
 
+type UpdatePostResp struct {
+	Id int `json:"id"`
+}
+
 // 更新post
 type UpdatePostDeal struct {
 }
@@ -109,5 +113,8 @@ func (this *UpdatePostDeal) DealReqWithSession(session *sessions.Session, c echo
 	db.DbConn.Save(post)
 
 	resp := resp.NewTlBaseResp(rtcode.SUCCESS)
+	resp.Data = &UpdatePostResp{
+		Id: post.ID,
+	}
 	c.JSON(http.StatusOK, resp)
 }

@@ -8,55 +8,56 @@ import WikiTagTree from "../wikitree/wikitagtree";
 import {loginSuccess} from "../../sagas/auth";
 import {querySpecPost} from "../../sagas/posts";
 
+// import {} from "./wiki.scss";
 require('./wiki.scss');
 
-interface StateProps {
+interface IStateProps {
 	children?: any; // 子组件
 	postsOfSpecTag: any[];
 }
 
-interface DispatchProps {
-	loginSuccess();
-	querySpecPost(postId: number);
+interface IDispatchProps {
+	loginSuccess(): any;
+	querySpecPost(postId: number): any;
 }
 
-type AppProps = StateProps & DispatchProps;
+type IAppProps = IStateProps & IDispatchProps;
 
-const mapStateToProps = (state) => {
+const mapStateToProps = (state: any): any => {
 	return {
 		postsOfSpecTag: state.wikiposts.postsOfSpecTag,
 	};
 };
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = (dispatch: any): any => {
 	return bindActionCreators({
-		loginSuccess: loginSuccess,
-		querySpecPost: querySpecPost,
-	}, dispatch)
+		loginSuccess,
+		querySpecPost,
+	}, dispatch);
 };
 
 interface IPost {
-	key: number,
+	key: number;
 	title: string;
 }
 
-const columns: TableColumnConfig<IPost>[] = [{
+const columns: Array<TableColumnConfig<IPost>> = [{
 	key: 'title',
 	title: '标题',
 	dataIndex: 'title',
 }];
 
-class Wiki extends React.Component<AppProps, any> {
+class Wiki extends React.Component<IAppProps, any> {
 
-	constructor(props) {
+	constructor(props: IAppProps) {
 		super(props);
 	}
 
-	componentDidMount() {
+	componentDidMount(): any {
 		this.props.loginSuccess();
 	}
 
-	onRowClick = (record, index) => {
+	onRowClick = (record: any, index: any): any => {
 		// 查询特定文章
 		this.props.querySpecPost(record.id);
 
@@ -64,12 +65,18 @@ class Wiki extends React.Component<AppProps, any> {
 		browserHistory.push('/wiki/wikipost/' + record.id);
 	};
 
-	createPost = () => {
+	createPost = (): any => {
 		browserHistory.push('/wiki/wikinew/0');
 	};
 
-	render() {
+	render(): any {
 		const postsOfSpecTag: IPost[] = this.props.postsOfSpecTag;
+		const wikiTreeStyle: any = {
+			height: 'calc(100vh - 64px)',
+			padding: '0px',
+			overflowX: 'hidden',
+			overflowY: 'auto',
+		};
 
 		return (
 			<Row>
@@ -78,12 +85,7 @@ class Wiki extends React.Component<AppProps, any> {
 					background: '#fff',
 				}}>
 					<Row>
-						<Col span={10} style={{
-							height: 'calc(100vh - 64px)',
-							padding: '0px',
-							overflowX: 'hidden',
-							overflowY: 'auto',
-						}}>
+						<Col span={10} style={wikiTreeStyle}>
 							<WikiTagTree />
 						</Col>
 						<Col span={14}>
@@ -91,7 +93,7 @@ class Wiki extends React.Component<AppProps, any> {
 								<Col style={{
 									padding: '0px 12px',
 								}}>
-									<Button type="primary" onClick={(event) => {
+									<Button type="primary" onClick={(event: any): any => {
 									this.createPost();
 								}}>创建</Button>
 								</Col>

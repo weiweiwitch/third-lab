@@ -5,7 +5,7 @@ const methods = ['get', 'post', 'put', 'patch', 'del'];
 
 // 构建URL
 // 这边涉及到跨域的问题,所以需要借助dev服务器的代理做转发。
-function formatUrl(path) {
+function formatUrl(path: string): any {
 	const adjuectedPath = path[0] !== '/' ? '/' + path : path;
 
 	return adjuectedPath;
@@ -17,8 +17,8 @@ export default class ApiClient {
 	constructor() {
 	}
 
-	post(path, r?: any) {
-		const p = new Promise((resolve, reject) => {
+	post(path: string, r?: any): any {
+		const p = new Promise((resolve: any, reject: any): any => {
 			const url = formatUrl(path);
 			const request = superagent['post'](url);
 
@@ -32,16 +32,16 @@ export default class ApiClient {
 				request.send(r.data);
 			}
 
-			request.end((err, response: any) => {
-				err ? reject(response.body || err) : resolve(response.body)
+			request.end((err: any, response: any) => {
+				err ? reject(response.body || err) : resolve(response.body);
 			});
 		});
 
 		return p;
 	}
 
-	get(path, r?: any) {
-		const p = new Promise((resolve, reject) => {
+	get(path: string, r?: any): any {
+		const p = new Promise((resolve: any, reject: any): any => {
 			const url = formatUrl(path);
 			const request = superagent['get'](url);
 
@@ -55,16 +55,16 @@ export default class ApiClient {
 				request.send(r.data);
 			}
 
-			request.end((err, response: any) => {
-				err ? reject(response.body || err) : resolve(response.body)
+			request.end((err: any, response: any) => {
+				err ? reject(response.body || err) : resolve(response.body);
 			});
 		});
 
 		return p;
 	}
 
-	put(path, r?: any) {
-		const p = new Promise((resolve, reject) => {
+	put(path: string, r?: any): any {
+		const p = new Promise((resolve: any, reject: any): any => {
 			const url = formatUrl(path);
 			const request = superagent['put'](url);
 
@@ -78,16 +78,16 @@ export default class ApiClient {
 				request.send(r.data);
 			}
 
-			request.end((err, response: any) => {
-				err ? reject(response.body || err) : resolve(response.body)
+			request.end((err: any, response: any) => {
+				err ? reject(response.body || err) : resolve(response.body);
 			});
 		});
 
 		return p;
 	}
 
-	del(path, r?: any) {
-		const p = new Promise((resolve, reject) => {
+	del(path: string, r?: any): any {
+		const p = new Promise((resolve: any, reject: any): any => {
 			const url = formatUrl(path);
 			const request = superagent['del'](url);
 
@@ -101,14 +101,14 @@ export default class ApiClient {
 				request.send(r.data);
 			}
 
-			request.end((err, response: any) => {
-				err ? reject(response.body || err) : resolve(response.body)
+			request.end((err: any, response: any) => {
+				err ? reject(response.body || err) : resolve(response.body);
 			});
 		});
 
 		return p;
 	}
 
-	empty() {
+	empty(): any {
 	}
 }

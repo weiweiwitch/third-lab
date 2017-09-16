@@ -6,53 +6,53 @@ import {bindActionCreators} from "redux";
 
 const TreeNode = Tree.TreeNode;
 
-interface StateProps {
+interface IStateProps {
 	wikitagtree: any[];
 	dirty: boolean;
 }
 
-interface DispatchProps {
-	querySpecTagPosts(tagId: number);
+interface IDispatchProps {
+	querySpecTagPosts(tagId: number): any;
 }
 
-type AppProps = StateProps & DispatchProps;
+type IAppProps = IStateProps & IDispatchProps;
 
-const mapStateToProps = (state) => {
+const mapStateToProps = (state: any): any => {
 	return {
 		wikitagtree: state.wikitags.wikitagtree,
-		dirty: state.wikiposts.dirty
+		dirty: state.wikiposts.dirty,
 	};
 };
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = (dispatch: any): any => {
 	return bindActionCreators({
-		querySpecTagPosts: querySpecTagPosts,
-	}, dispatch)
+		querySpecTagPosts,
+	}, dispatch);
 };
 
-interface AppStates {
+interface IAppStates {
 	nodeExpands: Map<any, any>;
 }
 
-class WikiTagTree extends React.Component<AppProps, AppStates> {
+class WikiTagTree extends React.Component<IAppProps, IAppStates> {
 
-	constructor(props) {
+	constructor(props: IAppProps) {
 		super(props);
 
 		this.state = {
-			nodeExpands: new Map()
+			nodeExpands: new Map(),
 		};
 	}
 
-	onExpand = (expandedKeys) => {
+	onExpand = (expandedKeys: any): any => {
 		// console.log('onExpand', arguments);
 	};
 
-	onCheck = (checkedKeys) => {
+	onCheck = (checkedKeys: any): any => {
 		// console.info(checkedKeys);
 	};
 
-	onSelect = (selectedKeys: string[], info) => {
+	onSelect = (selectedKeys: string[], info: any): any => {
 		if (selectedKeys.length === 0) {
 			return;
 		}
@@ -62,10 +62,10 @@ class WikiTagTree extends React.Component<AppProps, AppStates> {
 		this.props.querySpecTagPosts(nodeId);
 	};
 
-	render() {
+	render(): any {
 		const wikitagtree = this.props.wikitagtree;
 
-		const loop = data => data.map((item) => {
+		const loop = (data: any): any => data.map((item: any) => {
 			if (item.nodes) {
 				const treeNodeTitle = (
 					<div>

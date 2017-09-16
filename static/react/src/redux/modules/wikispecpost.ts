@@ -6,30 +6,27 @@ const initialState = {
 		tags: [],
 	},
 	modifySuccess: false,
-	dirty: false
+	dirty: false,
 };
 
-export default function reducer(state = initialState, action: any = {}) {
+export default function reducer(state: any = initialState, action: any = {}): any {
 	switch (action.type) {
 		case CLEAR_MODIFY_MARK:
 			return {
 				...state,
-				modifySuccess: false
+				modifySuccess: false,
 			};
 		case QUERY_WIKI_SPECPOST_SUCCESS:
-			console.info('reducer query spec post success');
-
 			return {
 				...state,
 				wikipost: action.payload,
-				dirty: false
+				dirty: false,
 			};
 		case CHG_WIKI_SPECPOST_SUCCESS:
-			console.info('reducer chg spec post success');
 			return {
 				...state,
 				modifySuccess: true,
-				dirty: true
+				dirty: true,
 			};
 		default:
 			return state;

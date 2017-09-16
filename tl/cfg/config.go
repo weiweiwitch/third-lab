@@ -3,7 +3,7 @@ package cfg
 import (
 	"encoding/json"
 	"io/ioutil"
-	"thirdlab/th/comm"
+	"thirdlab/tl/comm"
 )
 
 // 配置文件

@@ -3,9 +3,9 @@
   "logLv": "INFO",
   "createTable": 0,
   "gormLogLv": 0,
-  "dbhost": "127.0.0.1",
+  "dbhost": "localhost",
   "dbport": 3306,
-  "dbname": "th",
+  "dbname": "tl",
   "dbuser": "root",
   "dbpassword": "123456"
 }

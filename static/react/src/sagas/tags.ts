@@ -17,38 +17,37 @@ export const DEL_WIKI_SPECTAG = 'DEL_WIKI_SPECTAG';
 export const DEL_WIKI_SPECTAG_SUCCESS = 'DEL_WIKI_SPECTAG_SUCCESS';
 export const DEL_WIKI_SPECTAG_FAILED = 'DEL_WIKI_SPECTAG_FAILED';
 
-export function queryTags() {
+export function queryTags(): any {
 	return {
-		type: QUERY_WIKI_TAGS
+		type: QUERY_WIKI_TAGS,
 	};
 }
 
-function* queryTagsDeal(action) {
-	console.info('queryTagsDeal');
+function* queryTagsDeal(action: any): any {
 	try {
 		// 发送请求查询
 		const result = yield call(() => {
-			return client.get('/api/tags')
+			return client.get('/api/tags');
 		});
 
 		if (result.rt !== 1) {
-			yield put({type: QUERY_WIKI_TAGS_FAILED,});
+			yield put({type: QUERY_WIKI_TAGS_FAILED});
 		} else {
 			yield put({
 				type: QUERY_WIKI_TAGS_SUCCESS,
 				payload: {
 					tagTree: result.data.tree,
 					tagList: result.data.list,
-				}
+				},
 			});
 		}
 
 	} catch (e) {
-		yield put({type: QUERY_WIKI_TAGS_FAILED,});
+		yield put({type: QUERY_WIKI_TAGS_FAILED});
 	}
 }
 
-export function addTag(data) {
+export function addTag(data: any): any {
 	data.state = parseInt(data.state, 10);
 
 	return {
@@ -57,7 +56,7 @@ export function addTag(data) {
 	};
 }
 
-function* addTagDeal(action) {
+function* addTagDeal(action: any): any {
 	try {
 		// 发送请求查询
 		const result = yield call(() => {
@@ -67,46 +66,46 @@ function* addTagDeal(action) {
 		});
 
 		if (result.rt !== 1) {
-			yield put({type: ADD_WIKI_SPECTAG_FAILED,});
+			yield put({type: ADD_WIKI_SPECTAG_FAILED});
 		} else {
-			yield put({type: ADD_WIKI_SPECTAG_SUCCESS, payload: result.data,});
+			yield put({type: ADD_WIKI_SPECTAG_SUCCESS, payload: result.data});
 		}
 
 	} catch (e) {
-		yield put({type: ADD_WIKI_SPECTAG_FAILED,});
+		yield put({type: ADD_WIKI_SPECTAG_FAILED});
 	}
 }
 
-export function deleteTag(id: number) {
+export function deleteTag(id: number): any {
 	return {
 		type: DEL_WIKI_SPECTAG,
 		payload: {
-			id: id,
-		}
+			id,
+		},
 	};
 }
 
-function* deleteTagDeal(action) {
+function* deleteTagDeal(action: any): any {
 	try {
 		// 发送请求查询
 		const result = yield call(() => {
 			return client.del('/api/tags/' + action.payload.id, {
-				params: {}
+				params: {},
 			});
 		});
 
 		if (result.rt !== 1) {
-			yield put({type: DEL_WIKI_SPECTAG_FAILED,});
+			yield put({type: DEL_WIKI_SPECTAG_FAILED});
 		} else {
-			yield put({type: DEL_WIKI_SPECTAG_SUCCESS, payload: result.data,});
+			yield put({type: DEL_WIKI_SPECTAG_SUCCESS, payload: result.data});
 		}
 
 	} catch (e) {
-		yield put({type: DEL_WIKI_SPECTAG_FAILED,});
+		yield put({type: DEL_WIKI_SPECTAG_FAILED});
 	}
 }
 
-export function* refreshPostsDeal() {
+export function* refreshPostsDeal(): any {
 	while (true) {
 		yield race({
 			login: take(LOGIN_SUCCESS),
@@ -119,7 +118,7 @@ export function* refreshPostsDeal() {
 	}
 }
 
-export function* tagsSaga() {
+export function* tagsSaga(): any {
 	yield all([
 		takeEvery(QUERY_WIKI_TAGS, queryTagsDeal),
 		takeEvery(ADD_WIKI_SPECTAG, addTagDeal),

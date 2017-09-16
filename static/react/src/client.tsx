@@ -6,6 +6,7 @@ import ApiClient from "./helpers/apiclient";
 import myCreateStore from "./redux/create";
 import getRoutes from "./routes";
 
+//import {} from "./app.scss";
 require('./app.scss');
 
 export const client = new ApiClient();
@@ -15,8 +16,8 @@ const store = myCreateStore();
 export const styles = {
 	codeStyle: {
 		fontFamily: 'Monaco, Menlo, Consolas, monospace',
-		fontSize: '12px'
-	}
+		fontSize: '12px',
+	},
 };
 
 // 组件
@@ -31,5 +32,5 @@ ReactDOM.render(
 	<Provider store={store}>
 		{component}
 	</Provider>,
-	dest
+	dest,
 );

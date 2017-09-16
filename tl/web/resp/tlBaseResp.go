@@ -1,9 +1,9 @@
 package resp
 
 type TlBaseResp struct {
-	Rt int
+	Rt int `json:"rt"`
 
-	Data interface{}
+	Data interface{} `json:"data"`
 }
 
 func NewTlBaseResp(rt int) *TlBaseResp {

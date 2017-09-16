@@ -8,7 +8,7 @@ export const sagaMiddleware = createSagaMiddleware();
 
 // 创建store的方法
 // data是最原始的state
-export default function myCreateStore() {
+export default function myCreateStore(): any {
 	// 创建store, 这里绑定了reducer和原始state
 	const store = createStore(reducer, applyMiddleware(sagaMiddleware));
 
@@ -16,4 +16,3 @@ export default function myCreateStore() {
 
 	return store;
 }
-

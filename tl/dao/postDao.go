@@ -34,3 +34,10 @@ func FindPostsByIds(db *gorm.DB, ids []int) []*domain.Post {
 		Find(&posts)
 	return posts
 }
+
+func FindPostsUntagged(db *gorm.DB) []*domain.Post {
+	posts := make([]*domain.Post, 0)
+	db.Where("no_tags = ?", 0).
+		Find(&posts)
+	return posts
+}

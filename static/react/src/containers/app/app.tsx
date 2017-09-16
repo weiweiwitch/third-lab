@@ -8,37 +8,37 @@ const {Header, Footer, Sider, Content} = Layout;
 const RadioButton = Radio.Button;
 const RadioGroup = Radio.Group;
 
-interface StateProps {
+interface IStateProps {
 	children?: any;
 }
 
-interface DispatchProps {
+interface IDispatchProps {
 }
 
-type AppProps = StateProps & DispatchProps;
+type IAppProps = IStateProps & IDispatchProps;
 
-function mapStateToProps(state) {
+function mapStateToProps(state: any): any {
 	return {};
 }
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch: any): any => {
 	return bindActionCreators({
-	}, dispatch)
+	}, dispatch);
 };
 
-class App extends React.Component<AppProps, any> {
+class App extends React.Component<IAppProps, any> {
 
-	constructor(props) {
+	constructor(props: IAppProps) {
 		super(props);
 	}
 
-	onChange = (e) => {
+	onChange = (e: any): any => {
 		const path = e.target.value;
 
 		browserHistory.push(path);
 	};
 
-	render() {
+	render(): any {
 		return (
 			<div style={{padding: '0px'}}>
 				<Header className="header">
@@ -49,8 +49,6 @@ class App extends React.Component<AppProps, any> {
 						<Col span={4}>
 							<RadioGroup onChange={this.onChange} defaultValue="/wiki/wikiindex">
 								<RadioButton value="/wiki/wikiindex">Wiki</RadioButton>
-								<RadioButton value="/solution/solutionindex">解决方案</RadioButton>
-								<RadioButton value="/project/projecttask">任务管理</RadioButton>
 							</RadioGroup>
 						</Col>
 					</Row>
