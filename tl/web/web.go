@@ -42,9 +42,13 @@ func start(port int) {
 		RegisterGet(api, "/posts", NewSessionActionDeal(new(ctrl.PostsDeal)))
 
 		// 根据条件查询文章
+		RegisterGet(api, "/whichpost", NewSessionActionDeal(new(ctrl.QuerySomePostDeal)))
 
 		// 获取特定文章
 		RegisterGet(api, "/posts/:id", NewSessionActionDeal(new(ctrl.QuerySpecPostDeal)))
+
+		// 查询特定tag的文章
+		RegisterGet(api, "/tags/:tagId/posts", NewSessionActionDeal(new(ctrl.QueryTagPostDeal)))
 
 		// 添加post
 		RegisterPost(api, "/posts", NewSessionActionDeal(new(ctrl.AddPostDeal)))

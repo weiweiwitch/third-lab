@@ -11,3 +11,10 @@ func FindPostTagRelationByPostId(db *gorm.DB, postId int) []*domain.PostTagRelat
 		Find(&relations)
 	return relations
 }
+
+func FindPostTagRelationByTagId(db *gorm.DB, tagId int) []*domain.PostTagRelation {
+	relations := make([]*domain.PostTagRelation, 0)
+	db.Where(&domain.PostTagRelation{TagId: tagId}).
+		Find(&relations)
+	return relations
+}
