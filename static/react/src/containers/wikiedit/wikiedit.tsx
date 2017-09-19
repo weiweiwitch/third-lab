@@ -1,6 +1,6 @@
 import * as React from "react";
 import {connect} from "react-redux";
-import {browserHistory} from "react-router";
+import {History} from 'history';
 import {AutoComplete, Button, Col, Form, Input, Row, Tabs, Tag} from "antd";
 
 import * as hljs from "highlight.js";
@@ -9,6 +9,7 @@ import {chgPost, clearModifyMark} from "../../sagas/posts";
 import {styles} from "../../client";
 import {bindActionCreators} from "redux";
 import {isNullOrUndefined} from "util";
+import {withRouter} from "react-router";
 
 const TabPane = Tabs.TabPane;
 const FormItem = Form.Item;
@@ -29,6 +30,7 @@ const md = new MarkdownIt({
 });
 
 interface IStateProps {
+	history: History;
 	wikipost: any;
 	wikitaglist: any[];
 	modifySuccess: boolean;
@@ -93,7 +95,7 @@ class WikiEdit extends React.Component<IAppProps, any> {
 		if (nextProps.modifySuccess === true) {
 			// 修改成功, 切换到文章页, 并刷新
 			const post = this.props.wikipost;
-			browserHistory.push('/wiki/wikipost/' + post.id);
+			this.props.history.push('/wiki/wikipost/' + post.id);
 		}
 
 		const tags = this.props.wikipost.tags.map((tag: any) => {
@@ -143,7 +145,7 @@ class WikiEdit extends React.Component<IAppProps, any> {
 		event.preventDefault();
 
 		const post = this.props.wikipost;
-		browserHistory.push('/wiki/wikipost/' + post.id);
+		this.props.history.push('/wiki/wikipost/' + post.id);
 	};
 
 	onTagSelect = (value: any): any => {
@@ -298,7 +300,7 @@ class WikiEdit extends React.Component<IAppProps, any> {
 								<Tabs defaultActiveKey="1">
 									<TabPane tab="Markdown" key="1">
 										<FormItem {...formItemLayout2}>
-											<Input style={styles.codeStyle} type="textarea" autosize
+											<Input style={styles.codeStyle} type="textarea"
 												   className="edit-text textarea-height"
 												   placeholder="内容" onChange={this.updateText}
 												   value={this.state.postText}
@@ -327,4 +329,4 @@ class WikiEdit extends React.Component<IAppProps, any> {
 	}
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(WikiEdit);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(WikiEdit));

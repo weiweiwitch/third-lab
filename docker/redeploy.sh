@@ -6,8 +6,6 @@ docker rm -v thirdlab
 
 docker rmi weiweiwitch/thirdlab
 
-cp -f ../build/libs/thirdlab.jar .
-
-bash builddocker.sh
+bash builddocker4react.sh
 
 bash rundocker.sh

@@ -30,7 +30,7 @@ module.exports = {
     path: assetsPath,
     filename: '[name].js', // 输出文件名
     chunkFilename: '[name]-[chunkhash].js', // 非entry的文件名
-    publicPath: '/' // 指定公共URL地址
+    publicPath: '' // 指定公共URL地址
   },
 
   module: {

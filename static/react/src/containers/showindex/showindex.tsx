@@ -1,9 +1,10 @@
 import * as React from "react";
 import {connect} from "react-redux";
-import {browserHistory} from "react-router";
 import {bindActionCreators} from "redux";
+import {History} from 'history';
 
 interface IStateProps {
+	history: History;
 }
 
 interface IDispatchProps {
@@ -27,7 +28,8 @@ class ShowIndex extends React.Component<IAppProps, any> {
 
 	componentDidMount(): any {
 		// 查询账号列表
-		browserHistory.push('/wiki/wikiindex');
+		console.info('跳转 ', '/wiki/wikiindex');
+		this.props.history.push('/wiki/wikiindex');
 	}
 
 	render(): any {

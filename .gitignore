@@ -13,9 +13,13 @@ src/main/resources/react/static
 build
 .gradle
 
-docker/application.properties
-docker/thirdlab.jar
+bin/thirdlab
+docker/cfg
+docker/static
+docker/thirdlab
 
 vendor
 static/react/static
 static/react/node_modules
+
+static/tlng

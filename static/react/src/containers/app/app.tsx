@@ -1,15 +1,20 @@
 import * as React from "react";
 import {bindActionCreators} from "redux";
 import {connect} from "react-redux";
-import {browserHistory} from "react-router";
+import {match, Switch, Route} from "react-router";
+import {History} from 'history';
 import {Col, Layout, Radio, Row} from "antd";
+
+import ShowIndex from "../showindex/showindex";
+import Wiki from "../wiki/wiki";
 
 const {Header, Footer, Sider, Content} = Layout;
 const RadioButton = Radio.Button;
 const RadioGroup = Radio.Group;
 
 interface IStateProps {
-	children?: any;
+	match: match<any>;
+	history: History;
 }
 
 interface IDispatchProps {
@@ -35,10 +40,12 @@ class App extends React.Component<IAppProps, any> {
 	onChange = (e: any): any => {
 		const path = e.target.value;
 
-		browserHistory.push(path);
+		this.props.history.push(path);
 	};
 
 	render(): any {
+		console.info('match ', this.props.match.path, this.props.match.url);
+
 		return (
 			<div style={{padding: '0px'}}>
 				<Header className="header">
@@ -54,7 +61,10 @@ class App extends React.Component<IAppProps, any> {
 					</Row>
 				</Header>
 				<div>
-					{this.props.children}
+					<Switch>
+						<Route exact path={`/`} component={ShowIndex}/>
+						<Route path={`/wiki`} component={Wiki}/>
+					</Switch>
 				</div>
 			</div>
 		);

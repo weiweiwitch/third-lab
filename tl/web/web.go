@@ -27,7 +27,7 @@ func start(port int) {
 	gob.Register(&data.ThData{})
 
 	// 静态目录
-	router.Static("/static", "./static/react/static/dist/")
+	router.Static("/static", "./static/dist/")
 
 	router.GET("/", func(c echo.Context) error {
 		c.Redirect(http.StatusMovedPermanently, "/static/")

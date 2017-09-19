@@ -1,10 +1,12 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import {Provider} from "react-redux";
-import {Router, browserHistory} from "react-router";
+import {Router} from "react-router";
+import { BrowserRouter } from 'react-router-dom';
 import ApiClient from "./helpers/apiclient";
 import myCreateStore from "./redux/create";
 import getRoutes from "./routes";
+import history from './appHistory';
 
 //import {} from "./app.scss";
 require('./app.scss');
@@ -20,11 +22,13 @@ export const styles = {
 	},
 };
 
+console.info('__webpack_public_path__ ', __webpack_public_path__);
+
 // 组件
 const component = (
-	<Router history={browserHistory}>
+	<BrowserRouter basename={__webpack_public_path__}>
 		{getRoutes()}
-	</Router>
+	</BrowserRouter>
 );
 
 const dest = document.getElementById('content'); // 获取根元素

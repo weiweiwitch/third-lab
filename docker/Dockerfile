@@ -7,12 +7,13 @@ RUN echo "Asia/Shanghai" > /etc/timezone; \
 
 WORKDIR /data
 
-COPY thirdlab.jar thirdlab.jar
-COPY application.properties application.properties
+COPY thirdlab thirdlab
+COPY static static
+COPY cfg cfg
 
 EXPOSE 8181
 
 VOLUME ["/data/log"]
 
-CMD java -jar thirdlab.jar > log/thirdlab.log
+CMD ./thirdlab > log/thirdlab.log
 	

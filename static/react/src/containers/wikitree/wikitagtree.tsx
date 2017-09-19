@@ -3,6 +3,7 @@ import {connect} from "react-redux";
 import {Tree} from "antd";
 import {querySpecTagPosts} from "../../sagas/posts";
 import {bindActionCreators} from "redux";
+import {withRouter} from "react-router";
 
 const TreeNode = Tree.TreeNode;
 
@@ -95,4 +96,4 @@ class WikiTagTree extends React.Component<IAppProps, IAppStates> {
 	}
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(WikiTagTree);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(WikiTagTree));

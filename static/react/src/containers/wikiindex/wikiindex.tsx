@@ -1,12 +1,14 @@
 import * as React from "react";
 import {connect} from "react-redux";
-import {browserHistory} from "react-router";
+import {History} from 'history';
 import {bindActionCreators} from "redux";
 import {Input, Col, Row, Table} from "antd";
 
 import {queryPosts, querySpecPost} from "../../sagas/posts";
+import {withRouter} from "react-router";
 
 interface IStateProps {
+	history: History;
 	wikiposts: any[];
 }
 
@@ -72,13 +74,13 @@ class WikiIndex extends React.Component<IAppProps, any> {
 		this.props.querySpecPost(record.id);
 
 		// 切换页面
-		browserHistory.push('/wiki/wikipost/' + record.id);
+		this.props.history.push('/wiki/wikipost/' + record.id);
 	};
 
 	showPost = (chosenRequest: any, index: any): any => {
 		if (index !== -1) {
 			const post = this.state.searchSource[index].value;
-			browserHistory.push('/wiki/wikipost/' + post.id);
+			this.props.history.push('/wiki/wikipost/' + post.id);
 		}
 	};
 
@@ -109,4 +111,4 @@ class WikiIndex extends React.Component<IAppProps, any> {
 	}
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(WikiIndex);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(WikiIndex));

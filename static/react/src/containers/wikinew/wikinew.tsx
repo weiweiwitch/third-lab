@@ -1,13 +1,13 @@
 import * as React from "react";
 import {connect} from "react-redux";
-import {browserHistory} from "react-router";
-import {Button, Form, Input, Row, Col} from "antd";
-import {Tabs} from 'antd';
+import {History} from 'history';
+import {Button, Col, Form, Input, Row, Tabs} from "antd";
 import {bindActionCreators} from "redux";
 import * as hljs from "highlight.js";
 import * as MarkdownIt from 'markdown-it';
+import {match, withRouter} from "react-router";
 import {styles} from "../../client";
-import {clearCreateMark, addPost} from "../../sagas/posts";
+import {addPost, clearCreateMark} from "../../sagas/posts";
 
 const TabPane = Tabs.TabPane;
 const FormItem = Form.Item;
@@ -28,8 +28,9 @@ const md = new MarkdownIt({
 });
 
 interface IStateProps {
+	history: History;
+	match: match<any>;
 	createSuccess: boolean;
-	params: any;
 }
 
 interface IDispatchProps {
@@ -58,7 +59,7 @@ class WikiNew extends React.Component<IAppProps, any> {
 		super(props);
 
 		this.state = {
-			parentId: parseInt(this.props.params.parentId, 10),
+			parentId: parseInt(this.props.match.params.parentId, 10),
 			postTitle: '',
 			postText: '',
 		};
@@ -71,7 +72,7 @@ class WikiNew extends React.Component<IAppProps, any> {
 	componentWillReceiveProps(nextProps: IAppProps): any {
 		// 当将会接收到属性时处理
 		if (nextProps.createSuccess === true) {
-			browserHistory.push('/wiki/wikiindex');
+			this.props.history.push('/wiki/wikiindex');
 		}
 	}
 
@@ -102,7 +103,7 @@ class WikiNew extends React.Component<IAppProps, any> {
 	cancelCreate = (event: any): any => {
 		event.preventDefault();
 
-		browserHistory.push('/wiki/wikiindex');
+		this.props.history.push('/wiki/wikiindex');
 	};
 
 	render(): any {
@@ -136,7 +137,7 @@ class WikiNew extends React.Component<IAppProps, any> {
 								<Tabs defaultActiveKey="1">
 									<TabPane tab="Markdown" key="1">
 										<FormItem {...formItemLayout2}>
-											<Input style={styles.codeStyle} type="textarea" autosize
+											<Input style={styles.codeStyle} type="textarea"
 												   className="edit-text textarea-height"
 												   placeholder="内容" onChange={this.updateText}
 												   value={this.state.postText}
@@ -168,4 +169,4 @@ class WikiNew extends React.Component<IAppProps, any> {
 	}
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(WikiNew);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(WikiNew));

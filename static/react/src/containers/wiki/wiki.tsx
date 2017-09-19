@@ -1,10 +1,17 @@
 import * as React from "react";
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
-import {browserHistory} from "react-router";
+import {match, Route, Switch, withRouter} from "react-router";
 import {Button, Col, Row, Table} from "antd";
 import {TableColumnConfig} from "antd/lib/table/Table";
+import {History} from 'history';
+
 import WikiTagTree from "../wikitree/wikitagtree";
+import WikiIndex from "../wikiindex/wikiindex";
+import WikiNew from "../wikinew/wikinew";
+import WikiEdit from "../wikiedit/wikiedit";
+import WikiPost from "../wikipost/wikipost";
+
 import {loginSuccess} from "../../sagas/auth";
 import {querySpecPost} from "../../sagas/posts";
 
@@ -12,12 +19,14 @@ import {querySpecPost} from "../../sagas/posts";
 require('./wiki.scss');
 
 interface IStateProps {
-	children?: any; // 子组件
+	match: match<any>;
+	history: History;
 	postsOfSpecTag: any[];
 }
 
 interface IDispatchProps {
 	loginSuccess(): any;
+
 	querySpecPost(postId: number): any;
 }
 
@@ -62,14 +71,16 @@ class Wiki extends React.Component<IAppProps, any> {
 		this.props.querySpecPost(record.id);
 
 		// 切换页面
-		browserHistory.push('/wiki/wikipost/' + record.id);
+		this.props.history.push('/wiki/wikipost/' + record.id);
 	};
 
 	createPost = (): any => {
-		browserHistory.push('/wiki/wikinew/0');
+		this.props.history.push('/wiki/wikinew/0');
 	};
 
 	render(): any {
+		console.info('match2 ', this.props.match.path);
+
 		const postsOfSpecTag: IPost[] = this.props.postsOfSpecTag;
 		const wikiTreeStyle: any = {
 			height: 'calc(100vh - 64px)',
@@ -86,7 +97,7 @@ class Wiki extends React.Component<IAppProps, any> {
 				}}>
 					<Row>
 						<Col span={10} style={wikiTreeStyle}>
-							<WikiTagTree />
+							<WikiTagTree/>
 						</Col>
 						<Col span={14}>
 							<Row>
@@ -94,8 +105,8 @@ class Wiki extends React.Component<IAppProps, any> {
 									padding: '0px 12px',
 								}}>
 									<Button type="primary" onClick={(event: any): any => {
-									this.createPost();
-								}}>创建</Button>
+										this.createPost();
+									}}>创建</Button>
 								</Col>
 							</Row>
 							<Row>
@@ -120,11 +131,16 @@ class Wiki extends React.Component<IAppProps, any> {
 					padding: '12px 24px',
 					overflowY: 'auto',
 				}}>
-					{this.props.children}
+					<Switch>
+						<Route path={`${this.props.match.path}/wikiindex`} component={WikiIndex}/>
+						<Route path={`${this.props.match.path}/wikinew/:parentId`} component={WikiNew}/>
+						<Route path={`${this.props.match.path}/wikiedit`} component={WikiEdit}/>
+						<Route path={`${this.props.match.path}/wikipost/:pId`} component={WikiPost}/>
+					</Switch>
 				</Col>
 			</Row>
 		);
 	}
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Wiki);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Wiki));
