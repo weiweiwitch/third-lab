@@ -63,5 +63,8 @@ func apiRoute(router *echo.Echo) {
 
 		// 查询所有的tag
 		RegisterGet(api, "/tags", NewSessionActionDeal(new(ctrl.PostTagsDeal)))
+
+		// 更新tag
+		RegisterPut(api, "/tags/:id", NewSessionActionDeal(new(ctrl.UpdateTagDeal)))
 	}
 }

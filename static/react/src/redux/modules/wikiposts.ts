@@ -5,7 +5,7 @@ import {
 	QUERY_SPEC_TAG_POSTS_SUCCESS,
 } from "../../sagas/posts";
 
-class WikiPostsState {
+export class WikiPostsState {
 	wikiposts: any[];
 	postsOfSpecTag: any[];
 	specTagId: number;

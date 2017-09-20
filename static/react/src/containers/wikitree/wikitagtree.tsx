@@ -42,16 +42,6 @@ class WikiTagTree extends React.Component<IAppProps, IStates> {
 		};
 	}
 
-	onSelect = (selectedKeys: string[], info: any): any => {
-		if (selectedKeys.length === 0) {
-			return;
-		}
-
-		// 查询特定tag下的所有文章
-		const nodeId = parseInt(selectedKeys[0], 10);
-		this.props.querySpecTagPosts(nodeId);
-	};
-
 	onClick = (e: any): any => {
 		const nodeId = parseInt(e.key, 10);
 		this.props.querySpecTagPosts(nodeId);
@@ -63,7 +53,7 @@ class WikiTagTree extends React.Component<IAppProps, IStates> {
 		const parseMenuItems = (data: any): any => data.map((item: any) => {
 			if (!isNullOrUndefined(item.nodes) && item.nodes.length > 0) {
 				return (
-					<SubMenu key={item.id} title={item.tagName}>
+					<SubMenu key={item.id} title={item.tagName} onTitleClick={this.onClick}>
 						{parseMenuItems(item.nodes)}
 					</SubMenu>
 				);

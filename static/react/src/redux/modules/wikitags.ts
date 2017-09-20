@@ -11,7 +11,7 @@ export function getSpecTagId(state: any): number {
 	return state.wikitags.specTagId;
 }
 
-class WikiTagsState {
+export class WikiTagsState {
 	wikitagtree: any[];
 	wikitaglist: any[];
 	specTagId: number;

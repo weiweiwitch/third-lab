@@ -2,7 +2,7 @@ import {all, call, put, takeEvery, fork, race, take} from "redux-saga/effects";
 
 import {ADD_WIKI_SPECPOST_SUCCESS, CHG_WIKI_SPECPOST_SUCCESS} from './posts';
 import {LOGIN_SUCCESS} from './auth';
-
+import history from '../appHistory';
 import {client} from "../client";
 
 export const QUERY_WIKI_TAGS = 'QUERY_WIKI_TAGS';
@@ -16,6 +16,10 @@ export const ADD_WIKI_SPECTAG_FAILED = 'ADD_WIKI_SPECTAG_FAILED';
 export const DEL_WIKI_SPECTAG = 'DEL_WIKI_SPECTAG';
 export const DEL_WIKI_SPECTAG_SUCCESS = 'DEL_WIKI_SPECTAG_SUCCESS';
 export const DEL_WIKI_SPECTAG_FAILED = 'DEL_WIKI_SPECTAG_FAILED';
+
+export const CHANGE_WIKI_SPEC_TAG = 'CHANGE_WIKI_SPEC_TAG';
+export const CHANGE_WIKI_SPEC_TAG_SUCCESS = 'CHANGE_WIKI_SPEC_TAG_SUCCESS';
+export const CHANGE_WIKI_SPEC_TAG_FAILED = 'CHANGE_WIKI_SPEC_TAG_FAILED';
 
 export function queryTags(): any {
 	return {
@@ -105,12 +109,47 @@ function* deleteTagDeal(action: any): any {
 	}
 }
 
+// 修改标签
+export function changeTag(id: number, data: any): any {
+	return {
+		type: CHANGE_WIKI_SPEC_TAG,
+		payload: {
+			id,
+			data,
+		},
+	};
+}
+
+function* changeTagDeal(action: any): any {
+	try {
+		// 发送请求查询
+		const result = yield call(() => {
+			return client.put('/api/tags/' + action.payload.id, {
+				data: action.payload.data,
+			});
+		});
+
+		if (result.rt !== 1) {
+			yield put({type: CHANGE_WIKI_SPEC_TAG_FAILED});
+		} else {
+			yield put({type: CHANGE_WIKI_SPEC_TAG_SUCCESS, payload: result.data});
+
+			// 跳转
+			yield call((path: string): any => history.push(path), '/wiki/wikiindex');
+		}
+
+	} catch (e) {
+		yield put({type: CHANGE_WIKI_SPEC_TAG_FAILED});
+	}
+}
+
 export function* refreshPostsDeal(): any {
 	while (true) {
 		yield race({
 			login: take(LOGIN_SUCCESS),
 			addPost: take(ADD_WIKI_SPECPOST_SUCCESS),
 			modifyPost: take(CHG_WIKI_SPECPOST_SUCCESS),
+			modifyTag: take(CHANGE_WIKI_SPEC_TAG_SUCCESS),
 		});
 
 		// 触发查询
@@ -123,6 +162,7 @@ export function* tagsSaga(): any {
 		takeEvery(QUERY_WIKI_TAGS, queryTagsDeal),
 		takeEvery(ADD_WIKI_SPECTAG, addTagDeal),
 		takeEvery(DEL_WIKI_SPECTAG, deleteTagDeal),
+		takeEvery(CHANGE_WIKI_SPEC_TAG, changeTagDeal),
 
 		fork(refreshPostsDeal),
 	]);

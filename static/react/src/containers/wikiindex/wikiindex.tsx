@@ -69,7 +69,7 @@ class WikiIndex extends React.Component<IAppProps, IState> {
 			if (post.title.includes(keyword)) {
 				filterPosts.push({
 					id: post.id,
-					text: post.title,
+					title: post.title,
 					value: post,
 				});
 			}
@@ -94,7 +94,7 @@ class WikiIndex extends React.Component<IAppProps, IState> {
 	render(): any {
 		const columns = [{
 			title: '标题',
-			dataIndex: 'text',
+			dataIndex: 'title',
 		}];
 
 		return (
