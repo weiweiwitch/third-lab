@@ -22,8 +22,8 @@ npm run build
 
 cd $CURRENT_DIR
 cp ../bin/thirdlab .
-mkdir -p static
-cp -r ../static/react/static/dist ./static/
+mkdir -p static/react/static
+cp -r ../static/react/static/dist ./static/react/static/
 mkdir -p cfg
 cp ../cfg/config.json.tpl ./cfg/config.json
 python3 modifycfg.py -f ./cfg/config.json

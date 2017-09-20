@@ -26,9 +26,9 @@ console.info('__webpack_public_path__ ', __webpack_public_path__);
 
 // 组件
 const component = (
-	<BrowserRouter basename={__webpack_public_path__}>
+	<Router history={history}>
 		{getRoutes()}
-	</BrowserRouter>
+	</Router>
 );
 
 const dest = document.getElementById('content'); // 获取根元素

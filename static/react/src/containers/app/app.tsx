@@ -40,12 +40,11 @@ class App extends React.Component<IAppProps, any> {
 	onChange = (e: any): any => {
 		const path = e.target.value;
 
+		// 切换到特定界面
 		this.props.history.push(path);
 	};
 
 	render(): any {
-		console.info('match ', this.props.match.path, this.props.match.url);
-
 		return (
 			<div style={{padding: '0px'}}>
 				<Header className="header">

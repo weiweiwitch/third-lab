@@ -2,9 +2,9 @@ import * as React from "react";
 import {connect} from "react-redux";
 import {History} from 'history';
 import {bindActionCreators} from "redux";
-import {Input, Col, Row, Table} from "antd";
+import {Col, Input, Row, Table} from "antd";
 
-import {queryPosts, querySpecPost} from "../../sagas/posts";
+import {querySpecPost, showPost} from "../../sagas/posts";
 import {withRouter} from "react-router";
 
 interface IStateProps {
@@ -14,6 +14,8 @@ interface IStateProps {
 
 interface IDispatchProps {
 	querySpecPost(postId: number): any;
+
+	showPost(postId: number): any;
 }
 
 type IAppProps = IStateProps & IDispatchProps;
@@ -27,10 +29,15 @@ const mapStateToProps = (state: any): any => {
 const mapDispatchToProps = (dispatch: any): any => {
 	return bindActionCreators({
 		querySpecPost,
+		showPost,
 	}, dispatch);
 };
 
-class WikiIndex extends React.Component<IAppProps, any> {
+interface IState {
+	searchSource: any[];
+}
+
+class WikiIndex extends React.Component<IAppProps, IState> {
 
 	constructor(props: IAppProps) {
 		super(props);
@@ -74,13 +81,13 @@ class WikiIndex extends React.Component<IAppProps, any> {
 		this.props.querySpecPost(record.id);
 
 		// 切换页面
-		this.props.history.push('/wiki/wikipost/' + record.id);
+		this.props.showPost(record.id);
 	};
 
 	showPost = (chosenRequest: any, index: any): any => {
 		if (index !== -1) {
-			const post = this.state.searchSource[index].value;
-			this.props.history.push('/wiki/wikipost/' + post.id);
+			const postId = this.state.searchSource[index].value.id;
+			this.props.showPost(postId);
 		}
 	};
 

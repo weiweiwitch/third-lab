@@ -11,7 +11,7 @@ COPY thirdlab thirdlab
 COPY static static
 COPY cfg cfg
 
-EXPOSE 8181
+EXPOSE 8282
 
 VOLUME ["/data/log"]
 

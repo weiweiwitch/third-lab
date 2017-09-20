@@ -9,7 +9,7 @@ args = parser.parse_args()
 
 with open(args.configfile, 'r') as f:
 	data = json.load(f)
-	data['httpPort'] = 8181
+	data['httpPort'] = 8282
 	data['dbhost'] = '172.18.0.57'
 	data['dbport'] = 3306
 	data['dbname'] = 'tl'

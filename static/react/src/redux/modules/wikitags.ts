@@ -11,15 +11,19 @@ export function getSpecTagId(state: any): number {
 	return state.wikitags.specTagId;
 }
 
-const initialState = {
-	wikitagtree: [],
-	wikitaglist: [],
-	specTagId: 0,
-	createSuccess: false,
-	dirty: false,
-};
+class WikiTagsState {
+	wikitagtree: any[];
+	wikitaglist: any[];
+	specTagId: number;
 
-export default function reducer(state: any = initialState, action: any = {}): any {
+	constructor() {
+		this.wikitagtree = [];
+		this.wikitaglist = [];
+		this.specTagId = 0;
+	}
+}
+
+export default function reducer(state: WikiTagsState = new WikiTagsState(), action: any = {}): WikiTagsState {
 	switch (action.type) {
 		case QUERY_SPEC_TAG_POSTS:
 			return {
@@ -38,18 +42,14 @@ export default function reducer(state: any = initialState, action: any = {}): an
 				...state,
 				wikitagtree,
 				wikitaglist: action.payload.tagList,
-				dirty: false,
 			};
 		case ADD_WIKI_SPECTAG_SUCCESS:
 			return {
 				...state,
-				createSuccess: true,
-				dirty: true,
 			};
 		case DEL_WIKI_SPECTAG_SUCCESS:
 			return {
 				...state,
-				dirty: true,
 			};
 		default:
 			return state;

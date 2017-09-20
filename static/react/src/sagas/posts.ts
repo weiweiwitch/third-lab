@@ -1,9 +1,8 @@
 import {all, call, put, takeEvery, fork, race, take, select} from "redux-saga/effects";
 import {LOGIN_SUCCESS} from './auth';
+import history from '../appHistory';
 import {client} from "../client";
 import {getSpecTagId} from "../redux/modules/wikitags";
-
-export const CLEAR_CREATE_MARK = 'CLEAR_CREATE_MARK';
 
 export const QUERY_WIKI_POSTS = 'QUERY_WIKI_POSTS';
 export const QUERY_WIKI_POSTS_SUCCESS = 'QUERY_WIKI_POSTS_SUCCESS';
@@ -21,8 +20,6 @@ export const DEL_WIKI_SPECPOST = 'DEL_WIKI_SPECPOST';
 export const DEL_WIKI_SPECPOST_SUCCESS = 'DEL_WIKI_SPECPOST_SUCCESS';
 export const DEL_WIKI_SPECPOST_FAILED = 'DEL_WIKI_SPECPOST_FAILED';
 
-export const CLEAR_MODIFY_MARK = 'CLEAR_MODIFY_MARK';
-
 export const QUERY_WIKI_SPECPOST = 'QUERY_WIKI_SPECPOST';
 export const QUERY_WIKI_SPECPOST_SUCCESS = 'QUERY_WIKI_SPECPOST_SUCCESS';
 export const QUERY_WIKI_SPECPOST_FAILED = 'QUERY_WIKI_SPECPOST_FAILED';
@@ -31,10 +28,33 @@ export const CHG_WIKI_SPECPOST = 'CHG_WIKI_SPECPOST';
 export const CHG_WIKI_SPECPOST_SUCCESS = 'CHG_WIKI_SPECPOST_SUCCESS';
 export const CHG_WIKI_SPECPOST_FAILED = 'CHG_WIKI_SPECPOST_FAILED';
 
-export function clearCreateMark(): any {
+const SHOW_POST = 'SHOW_POST';
+const PREPARE_CREATE_POST = 'PREPARE_CREATE_POST';
+
+// 切换到显示文章页面
+export function showPost(postId: number): any {
 	return {
-		type: CLEAR_CREATE_MARK,
+		type: SHOW_POST,
+		payload: {postId},
 	};
+}
+
+function* showPostDeal(action: any): any {
+	// 跳转
+	yield call((path: string): any => history.push(path), '/wiki/wikipost/' + action.payload.parentId);
+}
+
+// 切换到创建文章页面
+export function prepareCreatePost(parentId: number): any {
+	return {
+		type: PREPARE_CREATE_POST,
+		payload: {parentId},
+	};
+}
+
+function* prepareCreatePostDeal(action: any): any {
+	// 跳转
+	yield call((path: string): any => history.push(path), '/wiki/wikinew/' + action.payload.parentId);
 }
 
 export function queryPosts(): any {
@@ -44,7 +64,6 @@ export function queryPosts(): any {
 }
 
 function* queryPostsDeal(action: any): any {
-	console.info('queryPostsDeal');
 	try {
 		// 发送请求查询
 		const result = yield call(() => {
@@ -117,6 +136,9 @@ function* addPostDeal(action: any): any {
 			yield put({type: ADD_WIKI_SPECPOST_FAILED});
 		} else {
 			yield put({type: ADD_WIKI_SPECPOST_SUCCESS, payload: result.data});
+
+			// 跳转
+			yield call((path: string): any => history.push(path), '/wiki/wikiindex');
 		}
 
 	} catch (e) {
@@ -151,12 +173,6 @@ function* deletePostDeal(action: any): any {
 	} catch (e) {
 		yield put({type: DEL_WIKI_SPECPOST_FAILED});
 	}
-}
-
-export function clearModifyMark(): any {
-	return {
-		type: CLEAR_MODIFY_MARK,
-	};
 }
 
 export function querySpecPost(postId: number): any {
@@ -199,8 +215,9 @@ export function chgPost(id: any, data: any): any {
 function* chgPostDeal(action: any): any {
 	try {
 		// 发送请求查询
+		const postId = action.payload.id;
 		const result = yield call(() => {
-			return client.put('/api/posts/' + action.payload.id, {
+			return client.put('/api/posts/' + postId, {
 				data: action.payload.data,
 			});
 		});
@@ -209,6 +226,9 @@ function* chgPostDeal(action: any): any {
 			yield put({type: CHG_WIKI_SPECPOST_FAILED});
 		} else {
 			yield put({type: CHG_WIKI_SPECPOST_SUCCESS, payload: result.data});
+
+			// 跳转
+			yield call((path: string): any => history.push(path), '/wiki/wikipost/' + postId);
 		}
 
 	} catch (e) {
@@ -240,7 +260,6 @@ export function* refreshSpecPostDeal(): any {
 		});
 
 		// 触发查询
-		console.info('refresh ', change);
 		yield put(querySpecPost(change.payload.id)); // 刷新特定文章
 
 	}
@@ -248,6 +267,8 @@ export function* refreshSpecPostDeal(): any {
 
 export function* postsSaga(): any {
 	yield all([
+		takeEvery(SHOW_POST, showPostDeal),
+		takeEvery(PREPARE_CREATE_POST, prepareCreatePostDeal),
 		takeEvery(QUERY_WIKI_POSTS, queryPostsDeal),
 		takeEvery(ADD_WIKI_SPECPOST, addPostDeal),
 		takeEvery(DEL_WIKI_SPECPOST, deletePostDeal),

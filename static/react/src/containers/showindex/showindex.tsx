@@ -28,7 +28,6 @@ class ShowIndex extends React.Component<IAppProps, any> {
 
 	componentDidMount(): any {
 		// 查询账号列表
-		console.info('跳转 ', '/wiki/wikiindex');
 		this.props.history.push('/wiki/wikiindex');
 	}
 

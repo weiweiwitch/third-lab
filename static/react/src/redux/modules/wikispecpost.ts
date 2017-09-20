@@ -1,21 +1,27 @@
-import {CHG_WIKI_SPECPOST_SUCCESS, CLEAR_MODIFY_MARK, QUERY_WIKI_SPECPOST_SUCCESS} from "../../sagas/posts";
+import {CHG_WIKI_SPECPOST_SUCCESS, QUERY_WIKI_SPECPOST_SUCCESS} from "../../sagas/posts";
 
-const initialState = {
-	wikipost: {
-		postText: '',
-		tags: [],
-	},
-	modifySuccess: false,
-	dirty: false,
-};
+class WikiPost {
+	postText: string;
+	tags: any[];
 
-export default function reducer(state: any = initialState, action: any = {}): any {
+	constructor() {
+		this.postText = '';
+		this.tags = [];
+	}
+}
+
+class WikiSpecPostState {
+	wikipost: WikiPost;
+	dirty: boolean;
+
+	constructor() {
+		this.wikipost = new WikiPost();
+		this.dirty = false;
+	}
+}
+
+export default function reducer(state: WikiSpecPostState = new WikiSpecPostState(), action: any = {}): WikiSpecPostState {
 	switch (action.type) {
-		case CLEAR_MODIFY_MARK:
-			return {
-				...state,
-				modifySuccess: false,
-			};
 		case QUERY_WIKI_SPECPOST_SUCCESS:
 			return {
 				...state,
@@ -25,7 +31,6 @@ export default function reducer(state: any = initialState, action: any = {}): an
 		case CHG_WIKI_SPECPOST_SUCCESS:
 			return {
 				...state,
-				modifySuccess: true,
 				dirty: true,
 			};
 		default:

@@ -141,9 +141,9 @@ ansi-styles@^3.1.0:
   dependencies:
     color-convert "^1.9.0"
 
-antd@2.12.7:
-  version "2.12.7"
-  resolved "http://192.168.189.9:7001/antd/download/antd-2.12.7.tgz#6031e24b28bde70a180a352ccf59ac380bb09508"
+antd@2.12.8:
+  version "2.12.8"
+  resolved "http://192.168.189.9:7001/antd/download/antd-2.12.8.tgz#7efd1c7d2b0c452b7c40de57453ca506fb26dafa"
   dependencies:
     array-tree-filter "~1.0.0"
     babel-runtime "6.x"
@@ -167,14 +167,14 @@ antd@2.12.7:
     rc-input-number "~3.6.0"
     rc-menu "~5.0.10"
     rc-notification "~2.0.0"
-    rc-pagination "~1.10.0"
+    rc-pagination "~1.11.0"
     rc-progress "~2.2.2"
     rc-rate "~2.1.1"
     rc-select "~6.8.6"
     rc-slider "~8.2.0"
     rc-steps "~2.5.1"
     rc-switch "~1.5.1"
-    rc-table "~5.4.0"
+    rc-table "~5.6.1"
     rc-tabs "~9.1.2"
     rc-time-picker "~2.4.1"
     rc-tooltip "~3.4.6"
@@ -5451,9 +5451,9 @@ rc-notification@~2.0.0:
     rc-animate "2.x"
     rc-util "^4.0.4"
 
-rc-pagination@~1.10.0:
-  version "1.10.6"
-  resolved "http://192.168.189.9:7001/rc-pagination/download/rc-pagination-1.10.6.tgz#396a21e826584ac739b5c3c15496def1d80c2710"
+rc-pagination@~1.11.0:
+  version "1.11.0"
+  resolved "http://192.168.189.9:7001/rc-pagination/download/rc-pagination-1.11.0.tgz#b30d0f068e29ef009ac64de654d68654659e1b3e"
   dependencies:
     babel-runtime "6.x"
     prop-types "^15.5.7"
@@ -5515,11 +5515,11 @@ rc-switch@~1.5.1:
     classnames "^2.2.1"
     prop-types "^15.5.6"
 
-rc-table@~5.4.0:
-  version "5.4.2"
-  resolved "http://192.168.189.9:7001/rc-table/download/rc-table-5.4.2.tgz#b7c2ecfeee962bedc0b83000e3512c024f2e04eb"
+rc-table@~5.6.1:
+  version "5.6.10"
+  resolved "http://192.168.189.9:7001/rc-table/download/rc-table-5.6.10.tgz#253fc5ef884c8e59c079de6e9ae476064f482d91"
   dependencies:
-    babel-runtime "^6.23.0"
+    babel-runtime "6.x"
     component-classes "^1.2.6"
     lodash.get "^4.4.2"
     prop-types "^15.5.8"

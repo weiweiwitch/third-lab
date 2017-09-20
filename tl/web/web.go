@@ -5,7 +5,6 @@ import (
 	"github.com/gorilla/sessions"
 	"github.com/labstack/echo"
 	"github.com/labstack/echo/middleware"
-	"net/http"
 	"strconv"
 	"thirdlab/tl/data"
 	"thirdlab/tl/web/ctrl"
@@ -27,13 +26,16 @@ func start(port int) {
 	gob.Register(&data.ThData{})
 
 	// 静态目录
-	router.Static("/static", "./static/dist/")
+	router.Use(middleware.Static("./static/react/static/dist/"))
 
-	router.GET("/", func(c echo.Context) error {
-		c.Redirect(http.StatusMovedPermanently, "/static/")
-		return nil
-	})
+	apiRoute(router)
 
+	// 运行服务器
+	httpPortStr := ":" + strconv.Itoa(port)
+	router.Start(httpPortStr)
+}
+
+func apiRoute(router *echo.Echo) {
 	// 下面是功能的路由
 	api := router.Group("/api")
 
@@ -62,8 +64,4 @@ func start(port int) {
 		// 查询所有的tag
 		RegisterGet(api, "/tags", NewSessionActionDeal(new(ctrl.PostTagsDeal)))
 	}
-
-	// 运行服务器
-	httpPortStr := ":" + strconv.Itoa(port)
-	router.Start(httpPortStr)
 }

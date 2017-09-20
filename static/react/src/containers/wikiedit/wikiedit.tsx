@@ -2,14 +2,13 @@ import * as React from "react";
 import {connect} from "react-redux";
 import {History} from 'history';
 import {AutoComplete, Button, Col, Form, Input, Row, Tabs, Tag} from "antd";
-
 import * as hljs from "highlight.js";
 import * as MarkdownIt from "markdown-it";
-import {chgPost, clearModifyMark} from "../../sagas/posts";
-import {styles} from "../../client";
 import {bindActionCreators} from "redux";
 import {isNullOrUndefined} from "util";
 import {withRouter} from "react-router";
+import {chgPost, showPost} from "../../sagas/posts";
+import {styles} from "../../client";
 
 const TabPane = Tabs.TabPane;
 const FormItem = Form.Item;
@@ -33,12 +32,12 @@ interface IStateProps {
 	history: History;
 	wikipost: any;
 	wikitaglist: any[];
-	modifySuccess: boolean;
 }
 
 interface IDispatchProps {
 	chgPost(postId: number, post: any): any;
-	clearModifyMark(): any;
+
+	showPost(postId: number): any;
 }
 
 type IAppProps = IStateProps & IDispatchProps;
@@ -47,18 +46,28 @@ const mapStateToProps = (state: any): any => {
 	return {
 		wikipost: state.wikispecpost.wikipost,
 		wikitaglist: state.wikitags.wikitaglist,
-		modifySuccess: state.wikispecpost.modifySuccess,
 	};
 };
 
 const mapDispatchToProps = (dispatch: any): any => {
 	return bindActionCreators({
 		chgPost,
-		clearModifyMark,
+		showPost,
 	}, dispatch);
 };
 
-class WikiEdit extends React.Component<IAppProps, any> {
+interface IState {
+	postTitle: string;
+	postText: string;
+	postParentId: number;
+	maxTagId: number;
+	postTags: any[];
+	tagSearchResult: any[];
+	selectedTag: string;
+	inputTag: string;
+}
+
+class WikiEdit extends React.Component<IAppProps, IState> {
 
 	constructor(props: IAppProps) {
 		super(props);
@@ -86,19 +95,9 @@ class WikiEdit extends React.Component<IAppProps, any> {
 		};
 	}
 
-	componentDidMount(): any {
-		this.props.clearModifyMark();
-	}
-
-	componentWillReceiveProps(nextProps: any): any {
-		// 当将会接收到属性时处理
-		if (nextProps.modifySuccess === true) {
-			// 修改成功, 切换到文章页, 并刷新
-			const post = this.props.wikipost;
-			this.props.history.push('/wiki/wikipost/' + post.id);
-		}
-
-		const tags = this.props.wikipost.tags.map((tag: any) => {
+	componentWillReceiveProps(nextProps: IAppProps): any {
+		// 更新tag表
+		const tags = nextProps.wikipost.tags.map((tag: any) => {
 			return {
 				id: tag.id,
 				tagName: tag.tagName,
@@ -118,34 +117,33 @@ class WikiEdit extends React.Component<IAppProps, any> {
 	};
 
 	updateParentId = (event: any): any => {
-		this.setState({postParentId: event.target.value});
+		const postParentId = parseInt(event.target.value, 10);
+		this.setState({postParentId});
 	};
 
 	confirmModify = (event: any): any => {
 		event.preventDefault();
 
-		const post = this.props.wikipost;
+		const postId = this.props.wikipost.id;
 		const postTags = [];
 		this.state.postTags.map((postTag: any) => {
 			postTags.push(postTag.tagName);
 		});
 
 		const updatedPost = {
-			id: post.id,
-			user: post.user,
 			title: this.state.postTitle,
 			postText: this.state.postText,
-			parentId: parseInt(this.state.postParentId, 10),
+			parentId: this.state.postParentId,
 			tags: postTags,
 		};
-		this.props.chgPost(post.id, updatedPost);
+		this.props.chgPost(postId, updatedPost);
 	};
 
 	cancelModify = (event: any): any => {
 		event.preventDefault();
 
-		const post = this.props.wikipost;
-		this.props.history.push('/wiki/wikipost/' + post.id);
+		const postId = this.props.wikipost.id;
+		this.props.showPost(postId);
 	};
 
 	onTagSelect = (value: any): any => {

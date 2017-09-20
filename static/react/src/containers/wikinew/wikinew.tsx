@@ -7,7 +7,7 @@ import * as hljs from "highlight.js";
 import * as MarkdownIt from 'markdown-it';
 import {match, withRouter} from "react-router";
 import {styles} from "../../client";
-import {addPost, clearCreateMark} from "../../sagas/posts";
+import {addPost} from "../../sagas/posts";
 
 const TabPane = Tabs.TabPane;
 const FormItem = Form.Item;
@@ -30,11 +30,9 @@ const md = new MarkdownIt({
 interface IStateProps {
 	history: History;
 	match: match<any>;
-	createSuccess: boolean;
 }
 
 interface IDispatchProps {
-	clearCreateMark(): any;
 	addPost(data: any): any;
 }
 
@@ -42,18 +40,22 @@ type IAppProps = IStateProps & IDispatchProps;
 
 const mapStateToProps = (state: any): any => {
 	return {
-		createSuccess: state.wikiposts.createSuccess,
 	};
 };
 
 const mapDispatchToProps = (dispatch: any): any => {
 	return bindActionCreators({
-		clearCreateMark,
 		addPost,
 	}, dispatch);
 };
 
-class WikiNew extends React.Component<IAppProps, any> {
+interface IState {
+	parentId: number;
+	postTitle: string;
+	postText: string;
+}
+
+class WikiNew extends React.Component<IAppProps, IState> {
 
 	constructor(props: IAppProps) {
 		super(props);
@@ -63,17 +65,6 @@ class WikiNew extends React.Component<IAppProps, any> {
 			postTitle: '',
 			postText: '',
 		};
-	}
-
-	componentDidMount(): any {
-		this.props.clearCreateMark();
-	}
-
-	componentWillReceiveProps(nextProps: IAppProps): any {
-		// 当将会接收到属性时处理
-		if (nextProps.createSuccess === true) {
-			this.props.history.push('/wiki/wikiindex');
-		}
 	}
 
 	updateTitle = (event: any): any => {
