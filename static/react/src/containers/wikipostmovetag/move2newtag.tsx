@@ -1,114 +1,78 @@
 import * as React from "react";
 import {connect} from "react-redux";
 import {History} from 'history';
-import {AutoComplete, Button, Col, Form, Input, Row, Tabs, Tag} from "antd";
+import {AutoComplete, Button, Col, Form, Row, Tabs, Tag} from "antd";
 import {bindActionCreators} from "redux";
 import {isNullOrUndefined} from "util";
 import {withRouter} from "react-router";
-import {changeTag, deleteTag} from "../../sagas/tags";
-import {WikiTagsState} from "../../redux/modules/wikitags";
-
-const TabPane = Tabs.TabPane;
-const FormItem = Form.Item;
+import {move2NewTag} from "../../sagas/posts";
+import {WikiTagData, WikiTagsState} from "../../redux/modules/wikitags";
+import {SpecPostData, WikiSpecPostState} from "../../redux/modules/wikispecpost";
 
 interface IStateProps {
 	history: History;
-	specTagId: number;
-	wikitaglist: any[];
+	wikipost: SpecPostData;
+	wikitaglist: WikiTagData[];
 }
 
 interface IDispatchProps {
-	changeTag(tagId: number, data: any): any;
-
-	deleteTag(tagId: number): any;
+	move2NewTag(postId: number, oldTagId: number, tagId: number): any;
 }
 
 type IAppProps = IStateProps & IDispatchProps;
 
 const mapStateToProps = (state: any): any => {
+	const wikispecpost: WikiSpecPostState = state.wikispecpost;
 	const wikitags: WikiTagsState = state.wikitags;
 
 	return {
-		specTagId: wikitags.specTagId,
+		wikipost: wikispecpost.wikipost,
 		wikitaglist: wikitags.wikitaglist,
 	};
 };
 
 const mapDispatchToProps = (dispatch: any): any => {
 	return bindActionCreators({
-		changeTag,
-		deleteTag,
+		move2NewTag,
 	}, dispatch);
 };
 
 interface IState {
-	tagName: string;
-	parentTagId: number;
+	postTag: WikiTagData;
 	showedParentTag: any[];
 	tagSearchResult: any[];
 	selectedTag: string;
 	inputTag: string;
 }
 
-class WikiTagEdit extends React.Component<IAppProps, IState> {
+class WikiPostMove2NewTag extends React.Component<IAppProps, IState> {
 
 	constructor(props: IAppProps) {
 		super(props);
 
-		this.init(props);
-	}
-
-	componentWillReceiveProps(nextProps: IAppProps): any {
-		this.init(nextProps);
-	}
-
-	init(props: IAppProps): any {
-		let tagName = '';
-		let parentTagId = 0;
-		props.wikitaglist.filter((tag: any): any => {
-			if (tag.id === props.specTagId) {
-				tagName = tag.tagName;
-				parentTagId = tag.parentTagId;
-				return true;
-			} else {
-				return false;
-			}
-		});
-
-		// 筛选出父tag表
-		const showedParentTag = this.props.wikitaglist.filter((tag: any): any => {
-			if (tag.id === parentTagId) {
-				return true;
-			} else {
-				return false;
+		let postTag = new WikiTagData();
+		const postTagId = this.props.wikipost.tagId;
+		props.wikitaglist.map((tag: any): any => {
+			if (tag.id === postTagId) {
+				postTag = tag;
 			}
 		});
 
 		this.state = {
-			tagName,
-			parentTagId,
-			showedParentTag,
+			postTag,
+			showedParentTag: [],
 			tagSearchResult: [],
 			selectedTag: '',
 			inputTag: '',
 		};
 	}
 
-	// 更新tag名
-	updateTagName = (event: any): any => {
-		this.setState({tagName: event.target.value});
-	};
-
 	confirmModify = (event: any): any => {
 		event.preventDefault();
 
-		const tagId = this.props.specTagId;
-		const updatedTag = {
-			name: this.state.tagName,
-			parentTagId: this.state.parentTagId,
-		};
-
-		this.props.changeTag(tagId, updatedTag);
+		const postId = this.props.wikipost.id;
+		const oldTagId = this.props.wikipost.tagId;
+		this.props.move2NewTag(postId, oldTagId, this.state.postTag.id);
 	};
 
 	cancelModify = (event: any): any => {
@@ -129,17 +93,21 @@ class WikiTagEdit extends React.Component<IAppProps, IState> {
 		this.state.showedParentTag.map((postTag: any) => {
 			existTagMap[postTag.tagName] = true;
 		});
-		this.props.wikitaglist.filter((value: any) => {
-			if (isNullOrUndefined(existTagMap[value.tagName]) === false) {
-				// 过滤掉已经添加给目标的tag
+		this.props.wikitaglist.filter((tag: WikiTagData) => {
+			if (tag.nodes.length > 0) {
+				// 过滤掉不是叶子标签的
 				return false;
 			}
-			if (value.tagName.indexOf(inputValue) === -1) {
-				// 过滤掉和总tag表不符的。
+			if (isNullOrUndefined(existTagMap[tag.tagName]) === false) {
+				// 过滤掉已经添加给目标的标签
+				return false;
+			}
+			if (tag.tagName.indexOf(inputValue) === -1) {
+				// 过滤掉总标签表中和当前输入不符的。
 				return false;
 			}
 
-			searchResult.push(value.tagName);
+			searchResult.push(tag.tagName);
 			return true;
 		});
 
@@ -182,7 +150,7 @@ class WikiTagEdit extends React.Component<IAppProps, IState> {
 			}
 
 			this.setState({
-				parentTagId: newParentTag.id,
+				postTag: newParentTag,
 				showedParentTag: [newParentTag],
 				selectedTag: '', // 清空选择
 				inputTag: '',
@@ -199,27 +167,12 @@ class WikiTagEdit extends React.Component<IAppProps, IState> {
 		}
 
 		this.setState({
-			parentTagId: 0,
+			postTag: new WikiTagData(),
 			showedParentTag: [],
 		});
 	};
 
-	deleteTag = (): any => {
-		this.props.deleteTag(this.props.specTagId);
-	};
-
 	render(): any {
-		const post = this.props.specTagId;
-
-		const formItemLayout = {
-			labelCol: {span: 6},
-			wrapperCol: {span: 14},
-		};
-		const formItemLayout2 = {
-			labelCol: {span: 0},
-			wrapperCol: {span: 24},
-		};
-
 		const tags = this.state.showedParentTag.map((tag: any) => {
 			return (
 				<Tag key={tag.id} closable afterClose={(): any => this.tagClose(tag)}>{tag.tagName}</Tag>
@@ -233,19 +186,7 @@ class WikiTagEdit extends React.Component<IAppProps, IState> {
 				<Col span={24}>
 					<Form>
 						<Row>
-							<Col span={22} style={{padding: '12px 0px'}}>
-								<Input placeholder="请输入标签名"
-									   onChange={this.updateTagName} value={this.state.tagName}
-								/>
-							</Col>
-							<Col span={2} style={{padding: '12px 0px'}}>
-								<Button type="danger" onClick={this.deleteTag}>删除</Button>
-							</Col>
-						</Row>
-
-						<Row>
 							<Col span={24}>
-								<span>上级标签：</span>
 								<AutoComplete
 									allowClear={true}
 									dataSource={allTags}
@@ -274,4 +215,4 @@ class WikiTagEdit extends React.Component<IAppProps, IState> {
 	}
 }
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(WikiTagEdit));
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(WikiPostMove2NewTag));

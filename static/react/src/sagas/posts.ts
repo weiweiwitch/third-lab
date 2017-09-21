@@ -3,6 +3,7 @@ import {LOGIN_SUCCESS} from './auth';
 import history from '../appHistory';
 import {client} from "../client";
 import {getSpecTagId} from "../redux/modules/wikitags";
+import {isNullOrUndefined} from "util";
 
 export const QUERY_WIKI_POSTS = 'QUERY_WIKI_POSTS';
 export const QUERY_WIKI_POSTS_SUCCESS = 'QUERY_WIKI_POSTS_SUCCESS';
@@ -28,6 +29,10 @@ export const CHG_WIKI_SPECPOST = 'CHG_WIKI_SPECPOST';
 export const CHG_WIKI_SPECPOST_SUCCESS = 'CHG_WIKI_SPECPOST_SUCCESS';
 export const CHG_WIKI_SPECPOST_FAILED = 'CHG_WIKI_SPECPOST_FAILED';
 
+export const MOVE_WIKI_POST_2_NEW_TAG = 'MOVE_WIKI_POST_2_NEW_TAG';
+export const MOVE_WIKI_POST_2_NEW_TAG_SUCCESS = 'MOVE_WIKI_POST_2_NEW_TAG_SUCCESS';
+export const MOVE_WIKI_POST_2_NEW_TAG_FAILED = 'MOVE_WIKI_POST_2_NEW_TAG_FAILED';
+
 const SHOW_POST = 'SHOW_POST';
 const PREPARE_CREATE_POST = 'PREPARE_CREATE_POST';
 
@@ -41,7 +46,7 @@ export function showPost(postId: number): any {
 
 function* showPostDeal(action: any): any {
 	// 跳转
-	yield call((path: string): any => history.push(path), '/wiki/wikipost/' + action.payload.parentId);
+	yield call((path: string): any => history.push(path), '/wiki/wikipost/' + action.payload.postId);
 }
 
 // 切换到创建文章页面
@@ -236,6 +241,42 @@ function* chgPostDeal(action: any): any {
 	}
 }
 
+export function move2NewTag(id: number, oldTagId: number, tagId: number): any {
+	return {
+		type: MOVE_WIKI_POST_2_NEW_TAG,
+		payload: {
+			id,
+			oldTagId,
+			tagId,
+		},
+	};
+}
+
+function* move2NewTagDeal(action: any): any {
+	try {
+		// 发送请求查询
+		const postId = action.payload.id;
+		const oldTagId = action.payload.oldTagId;
+		const tagId = action.payload.tagId;
+		const result = yield call(() => {
+			return client.put('/api/posts/' + postId + '/tags/' + tagId);
+		});
+
+		if (result.rt !== 1) {
+			yield put({type: MOVE_WIKI_POST_2_NEW_TAG_FAILED});
+		} else {
+			yield put({type: MOVE_WIKI_POST_2_NEW_TAG_SUCCESS, payload: result.data});
+			yield put(querySpecTagPosts(oldTagId)); // 刷新特定标签的文章
+
+			// 跳转
+			yield call((path: string): any => history.push(path), '/wiki/wikipost/' + postId);
+		}
+
+	} catch (e) {
+		yield put({type: MOVE_WIKI_POST_2_NEW_TAG_FAILED});
+	}
+}
+
 export function* refreshPostsDeal(): any {
 	while (true) {
 		yield race({
@@ -255,12 +296,15 @@ export function* refreshPostsDeal(): any {
 
 export function* refreshSpecPostDeal(): any {
 	while (true) {
-		const {change} = yield race({
+		const {change, move2NewTag} = yield race({
 			change: take(CHG_WIKI_SPECPOST_SUCCESS),
+			move2NewTag: take(MOVE_WIKI_POST_2_NEW_TAG_SUCCESS),
 		});
-
-		// 触发查询
-		yield put(querySpecPost(change.payload.id)); // 刷新特定文章
+		if (change) {
+			yield put(querySpecPost(change.payload.id)); // 刷新特定文章
+		} else if (move2NewTag) {
+			yield put(querySpecPost(move2NewTag.payload.id)); // 刷新特定文章
+		}
 
 	}
 }
@@ -275,6 +319,7 @@ export function* postsSaga(): any {
 		takeEvery(QUERY_WIKI_SPECPOST, querySpecPostDeal),
 		takeEvery(QUERY_SPEC_TAG_POSTS, querySpecTagPostsDeal),
 		takeEvery(CHG_WIKI_SPECPOST, chgPostDeal),
+		takeEvery(MOVE_WIKI_POST_2_NEW_TAG, move2NewTagDeal),
 
 		fork(refreshPostsDeal),
 		fork(refreshSpecPostDeal),

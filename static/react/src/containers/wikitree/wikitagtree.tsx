@@ -61,7 +61,9 @@ class WikiTagTree extends React.Component<IAppProps, IStates> {
 					</SubMenu>
 				);
 			} else {
-				return (<Menu.Item key={item.id}>{item.tagName}</Menu.Item>);
+				return (
+					<Menu.Item key={item.id}>{item.tagName}</Menu.Item>
+				);
 			}
 		});
 

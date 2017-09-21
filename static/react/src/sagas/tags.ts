@@ -73,6 +73,9 @@ function* addTagDeal(action: any): any {
 			yield put({type: ADD_WIKI_SPECTAG_FAILED});
 		} else {
 			yield put({type: ADD_WIKI_SPECTAG_SUCCESS, payload: result.data});
+
+			// 跳转
+			yield call((path: string): any => history.push(path), '/wiki/wikiindex');
 		}
 
 	} catch (e) {
@@ -102,6 +105,9 @@ function* deleteTagDeal(action: any): any {
 			yield put({type: DEL_WIKI_SPECTAG_FAILED});
 		} else {
 			yield put({type: DEL_WIKI_SPECTAG_SUCCESS, payload: result.data});
+
+			// 跳转
+			yield call((path: string): any => history.push(path), '/wiki/wikiindex');
 		}
 
 	} catch (e) {
@@ -143,13 +149,13 @@ function* changeTagDeal(action: any): any {
 	}
 }
 
-export function* refreshPostsDeal(): any {
+export function* refreshTagsDeal(): any {
 	while (true) {
 		yield race({
 			login: take(LOGIN_SUCCESS),
-			addPost: take(ADD_WIKI_SPECPOST_SUCCESS),
-			modifyPost: take(CHG_WIKI_SPECPOST_SUCCESS),
+			addTag: take(ADD_WIKI_SPECTAG_SUCCESS),
 			modifyTag: take(CHANGE_WIKI_SPEC_TAG_SUCCESS),
+			delTag: take(DEL_WIKI_SPECTAG_SUCCESS),
 		});
 
 		// 触发查询
@@ -164,6 +170,6 @@ export function* tagsSaga(): any {
 		takeEvery(DEL_WIKI_SPECTAG, deleteTagDeal),
 		takeEvery(CHANGE_WIKI_SPEC_TAG, changeTagDeal),
 
-		fork(refreshPostsDeal),
+		fork(refreshTagsDeal),
 	]);
 }

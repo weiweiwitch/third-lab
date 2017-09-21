@@ -18,8 +18,7 @@ type PostDetailResp struct {
 
 	ParentId int `json:"parentId"`
 	Status   int `json:"status"`
-
-	Tags []*PostDetailTagResp `json:"tags"`
+	TagId    int `json:"tagId"`
 }
 
 type PostDetailTagResp struct {
@@ -51,25 +50,7 @@ func (this *QuerySpecPostDeal) DealReqWithSession(session *sessions.Session, c e
 		PostText: post.Post,
 		ParentId: post.ParentId,
 		Status:   post.Status,
-		Tags:     make([]*PostDetailTagResp, 0),
-	}
-
-	relations := dao.FindPostTagRelationByPostId(db.DbConn, id)
-	tagIds := make([]int, 0, len(relations))
-	for _, eachRelation := range relations {
-		tagIds = append(tagIds, eachRelation.TagId)
-	}
-	if len(tagIds) > 0 {
-		tags := dao.FindPostTagByTagIds(db.DbConn, tagIds)
-		if len(tags) > 0 {
-			for _, eachPostTag := range tags {
-				tagResp := &PostDetailTagResp{
-					Id:      eachPostTag.ID,
-					TagName: eachPostTag.Tag,
-				}
-				detail.Tags = append(detail.Tags, tagResp)
-			}
-		}
+		TagId:    post.TagId,
 	}
 
 	resp := resp.NewTlBaseResp(rtcode.SUCCESS)

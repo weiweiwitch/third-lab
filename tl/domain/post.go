@@ -13,4 +13,5 @@ type Post struct {
 	LastModifiedTime time.Time `gorm:"not null;type:datetime"`
 	Status           int       `gorm:"not null"`
 	NoTags           int       `gorm:"not null"`
+	TagId            int       `gorm:"not null"`
 }

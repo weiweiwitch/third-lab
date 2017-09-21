@@ -12,12 +12,15 @@ import WikiNew from "../wikinew/wikinew";
 import WikiEdit from "../wikiedit/wikiedit";
 import WikiPost from "../wikipost/wikipost";
 import WikiTagEdit from '../wikitagedit/wikitagedit';
+import WikiTagCreate from '../wikitagcreate/wikitagcreate';
+import WikiPostMove2NewTag from '../wikipostmovetag/move2newtag';
 
 import {loginSuccess} from "../../sagas/auth";
 import {querySpecPost, prepareCreatePost, showPost} from "../../sagas/posts";
 import {IPostsOfSpecTagData, WikiPostsState} from "../../redux/modules/wikiposts";
 import {WikiTagsState} from "../../redux/modules/wikitags";
 import {changeTag} from "../../sagas/tags";
+import {isNullOrUndefined} from "util";
 
 // import {} from "./wiki.scss";
 require('./wiki.scss');
@@ -85,8 +88,7 @@ class Wiki extends React.Component<IAppProps, IState> {
 	constructor(props: IAppProps) {
 		super(props);
 
-		this.state = {
-		};
+		this.state = {};
 	}
 
 	componentDidMount(): any {
@@ -106,13 +108,40 @@ class Wiki extends React.Component<IAppProps, IState> {
 		this.props.prepareCreatePost(0);
 	};
 
+	showCreateTagPage = (): any => {
+		this.props.history.push('/wiki/wikitagcreate');
+	};
+
 	// 显示编辑TAG的对话框，修改TAG的关联关系
 	showEditTagPage = (): any => {
 		this.props.history.push('/wiki/wikitagedit');
 	};
 
+	listToTree(list: any[]): any {
+		const map = new Map<number, any>();
+		const rootPosts = [];
+		for (const eachNode of list) {
+			map[eachNode.id] = eachNode; // initialize the map
+			eachNode.children = []; // initialize the children
+		}
+		for (const eachNode of list) {
+			if (eachNode.parentId !== 0) {
+				const parentPost = map[eachNode.parentId];
+				if (!isNullOrUndefined(parentPost)) {
+					parentPost.children.push(eachNode);
+				} else {
+					rootPosts.push(eachNode);
+				}
+			} else {
+				rootPosts.push(eachNode);
+			}
+		}
+		return rootPosts;
+	}
+
 	render(): any {
 		const postsOfSpecTag = this.props.postsOfSpecTag;
+		const postTreeOfSpecTag = this.listToTree(postsOfSpecTag);
 
 		let specTag = '';
 		this.props.wikitaglist.map((tag: any): any => {
@@ -138,6 +167,7 @@ class Wiki extends React.Component<IAppProps, IState> {
 								padding: '0px 12px',
 							}}>
 								<Button type="primary" onClick={this.showCreatePostPage}>创建</Button>
+								<Button type="primary" onClick={this.showCreateTagPage}>创建标签</Button>
 								<Button type="primary" onClick={this.showEditTagPage}
 										disabled={this.props.specTagId === 0}>编辑标签：{specTag}</Button>
 							</Col>
@@ -151,7 +181,7 @@ class Wiki extends React.Component<IAppProps, IState> {
 							}}>
 								<Table size="small" pagination={false} onRowClick={this.onRowClick}
 									   columns={columns}
-									   dataSource={postsOfSpecTag} rowKey="id"/>
+									   dataSource={postTreeOfSpecTag} rowKey="id"/>
 							</Col>
 						</Row>
 					</Col>
@@ -168,6 +198,8 @@ class Wiki extends React.Component<IAppProps, IState> {
 							<Route path={`${this.props.match.path}/wikiedit`} component={WikiEdit}/>
 							<Route path={`${this.props.match.path}/wikipost/:pId`} component={WikiPost}/>
 							<Route path={`${this.props.match.path}/wikitagedit`} component={WikiTagEdit}/>
+							<Route path={`${this.props.match.path}/wikitagcreate`} component={WikiTagCreate}/>
+							<Route path={`${this.props.match.path}/wikipostmove2tag`} component={WikiPostMove2NewTag}/>
 						</Switch>
 					</Col>
 				</Row>

@@ -58,13 +58,22 @@ func apiRoute(router *echo.Echo) {
 		// 更新post
 		RegisterPut(api, "/posts/:id", NewSessionActionDeal(new(ctrl.UpdatePostDeal)))
 
+		// 移动post到新的tag下
+		RegisterPut(api, "/posts/:id/tags/:tagId", NewSessionActionDeal(new(ctrl.Move2NewTagDeal)))
+
 		// 删除post
 		RegisterDel(api, "/posts/:id", NewSessionActionDeal(new(ctrl.DelPostsDeal)))
 
 		// 查询所有的tag
 		RegisterGet(api, "/tags", NewSessionActionDeal(new(ctrl.PostTagsDeal)))
 
+		// 添加标签
+		RegisterPost(api, "/tags", NewSessionActionDeal(new(ctrl.AddTagDeal)))
+
 		// 更新tag
 		RegisterPut(api, "/tags/:id", NewSessionActionDeal(new(ctrl.UpdateTagDeal)))
+
+		// 删除标签
+		RegisterDel(api, "/tags/:id", NewSessionActionDeal(new(ctrl.DelPostTagDeal)))
 	}
 }

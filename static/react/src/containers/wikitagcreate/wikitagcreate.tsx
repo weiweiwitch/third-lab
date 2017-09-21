@@ -5,7 +5,7 @@ import {AutoComplete, Button, Col, Form, Input, Row, Tabs, Tag} from "antd";
 import {bindActionCreators} from "redux";
 import {isNullOrUndefined} from "util";
 import {withRouter} from "react-router";
-import {changeTag, deleteTag} from "../../sagas/tags";
+import {addTag} from "../../sagas/tags";
 import {WikiTagsState} from "../../redux/modules/wikitags";
 
 const TabPane = Tabs.TabPane;
@@ -13,14 +13,11 @@ const FormItem = Form.Item;
 
 interface IStateProps {
 	history: History;
-	specTagId: number;
 	wikitaglist: any[];
 }
 
 interface IDispatchProps {
-	changeTag(tagId: number, data: any): any;
-
-	deleteTag(tagId: number): any;
+	addTag(data: any): any;
 }
 
 type IAppProps = IStateProps & IDispatchProps;
@@ -29,15 +26,13 @@ const mapStateToProps = (state: any): any => {
 	const wikitags: WikiTagsState = state.wikitags;
 
 	return {
-		specTagId: wikitags.specTagId,
 		wikitaglist: wikitags.wikitaglist,
 	};
 };
 
 const mapDispatchToProps = (dispatch: any): any => {
 	return bindActionCreators({
-		changeTag,
-		deleteTag,
+		addTag,
 	}, dispatch);
 };
 
@@ -50,44 +45,15 @@ interface IState {
 	inputTag: string;
 }
 
-class WikiTagEdit extends React.Component<IAppProps, IState> {
+class WikiTagCreate extends React.Component<IAppProps, IState> {
 
 	constructor(props: IAppProps) {
 		super(props);
 
-		this.init(props);
-	}
-
-	componentWillReceiveProps(nextProps: IAppProps): any {
-		this.init(nextProps);
-	}
-
-	init(props: IAppProps): any {
-		let tagName = '';
-		let parentTagId = 0;
-		props.wikitaglist.filter((tag: any): any => {
-			if (tag.id === props.specTagId) {
-				tagName = tag.tagName;
-				parentTagId = tag.parentTagId;
-				return true;
-			} else {
-				return false;
-			}
-		});
-
-		// 筛选出父tag表
-		const showedParentTag = this.props.wikitaglist.filter((tag: any): any => {
-			if (tag.id === parentTagId) {
-				return true;
-			} else {
-				return false;
-			}
-		});
-
 		this.state = {
-			tagName,
-			parentTagId,
-			showedParentTag,
+			tagName: '',
+			parentTagId: 0,
+			showedParentTag: [],
 			tagSearchResult: [],
 			selectedTag: '',
 			inputTag: '',
@@ -102,13 +68,12 @@ class WikiTagEdit extends React.Component<IAppProps, IState> {
 	confirmModify = (event: any): any => {
 		event.preventDefault();
 
-		const tagId = this.props.specTagId;
-		const updatedTag = {
+		const newTag = {
 			name: this.state.tagName,
 			parentTagId: this.state.parentTagId,
 		};
 
-		this.props.changeTag(tagId, updatedTag);
+		this.props.addTag(newTag);
 	};
 
 	cancelModify = (event: any): any => {
@@ -204,22 +169,7 @@ class WikiTagEdit extends React.Component<IAppProps, IState> {
 		});
 	};
 
-	deleteTag = (): any => {
-		this.props.deleteTag(this.props.specTagId);
-	};
-
 	render(): any {
-		const post = this.props.specTagId;
-
-		const formItemLayout = {
-			labelCol: {span: 6},
-			wrapperCol: {span: 14},
-		};
-		const formItemLayout2 = {
-			labelCol: {span: 0},
-			wrapperCol: {span: 24},
-		};
-
 		const tags = this.state.showedParentTag.map((tag: any) => {
 			return (
 				<Tag key={tag.id} closable afterClose={(): any => this.tagClose(tag)}>{tag.tagName}</Tag>
@@ -233,20 +183,16 @@ class WikiTagEdit extends React.Component<IAppProps, IState> {
 				<Col span={24}>
 					<Form>
 						<Row>
-							<Col span={22} style={{padding: '12px 0px'}}>
+							<Col span={24} style={{padding: '12px 0px'}}>
 								<Input placeholder="请输入标签名"
 									   onChange={this.updateTagName} value={this.state.tagName}
 								/>
-							</Col>
-							<Col span={2} style={{padding: '12px 0px'}}>
-								<Button type="danger" onClick={this.deleteTag}>删除</Button>
 							</Col>
 						</Row>
 
 						<Row>
 							<Col span={24}>
-								<span>上级标签：</span>
-								<AutoComplete
+								<span>上级标签：</span><AutoComplete
 									allowClear={true}
 									dataSource={allTags}
 									style={{width: 200, padding: '0px 12px 0px 0px'}}
@@ -262,7 +208,7 @@ class WikiTagEdit extends React.Component<IAppProps, IState> {
 
 						<Row>
 							<Col span={12}>
-								<Button type="primary" onClick={this.confirmModify}>更新</Button>
+								<Button type="primary" onClick={this.confirmModify}>创建</Button>
 								<Button onClick={this.cancelModify}>取消</Button>
 							</Col>
 						</Row>
@@ -274,4 +220,4 @@ class WikiTagEdit extends React.Component<IAppProps, IState> {
 	}
 }
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(WikiTagEdit));
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(WikiTagCreate));

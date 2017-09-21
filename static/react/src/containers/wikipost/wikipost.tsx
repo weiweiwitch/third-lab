@@ -8,6 +8,7 @@ import {bindActionCreators} from "redux";
 import {withRouter} from "react-router";
 import {deletePost, prepareCreatePost} from "../../sagas/posts";
 import {SpecPostData, WikiSpecPostState} from "../../redux/modules/wikispecpost";
+import {WikiTagData, WikiTagsState} from "../../redux/modules/wikitags";
 
 // import {} from "./wikiPost.scss";
 require('./wikiPost.scss');
@@ -33,6 +34,7 @@ const md = new MarkdownIt({
 interface IStateProps {
 	history: History;
 	wikipost: SpecPostData;
+	wikitaglist: WikiTagData[];
 }
 
 interface IDispatchProps {
@@ -44,9 +46,11 @@ type IAppProps = IStateProps & IDispatchProps;
 
 const mapStateToProps = (state: any): any => {
 	const wikispecpost: WikiSpecPostState = state.wikispecpost;
+	const wikitags: WikiTagsState = state.wikitags;
 
 	return {
 		wikipost: wikispecpost.wikipost,
+		wikitaglist: wikitags.wikitaglist,
 	};
 };
 
@@ -64,7 +68,7 @@ class HeaderNode {
 	content: string;
 }
 
-class WikiPost extends React.Component<IAppProps, any> {
+class WikiPostMove2NewTag extends React.Component<IAppProps, any> {
 
 	constructor(props: IAppProps) {
 		super(props);
@@ -94,6 +98,10 @@ class WikiPost extends React.Component<IAppProps, any> {
 	// 返回首页
 	transToIndex = (event: any): any => {
 		this.props.history.push('/wiki/wikiindex');
+	};
+
+	move2NewTag = (): any => {
+		this.props.history.push('/wiki/wikipostmove2tag');
 	};
 
 	render(): any {
@@ -144,10 +152,11 @@ class WikiPost extends React.Component<IAppProps, any> {
 			);
 		});
 
-		const tags = post.tags.map((tag: any) => {
-			return (
-				<Tag key={tag.id}>{tag.tagName}</Tag>
-			);
+		let postTag = new WikiTagData();
+		this.props.wikitaglist.map((tag: WikiTagData): any => {
+			if (tag.id === post.tagId) {
+				postTag = tag;
+			}
 		});
 
 		return (
@@ -159,6 +168,7 @@ class WikiPost extends React.Component<IAppProps, any> {
 							<Button type="primary" onClick={this.edit}>编辑</Button>
 							<Button onClick={this.createSubPost}>添加子级文章</Button>
 							<Button onClick={this.transToIndex}>搜索</Button>
+							<Button onClick={this.move2NewTag}>移动标签</Button>
 						</Col>
 						<Col span={2}>
 							<Button type="danger" onClick={this.deletePost}>删除</Button>
@@ -173,7 +183,7 @@ class WikiPost extends React.Component<IAppProps, any> {
 								</div>
 								<div>
 									<span>标签：</span>
-									{tags}
+									<Tag key={postTag.id}>{postTag.tagName}</Tag>
 								</div>
 								<div className="inner_topic">
 									<div className="markdown-text" dangerouslySetInnerHTML={result} />
@@ -192,4 +202,4 @@ class WikiPost extends React.Component<IAppProps, any> {
 	}
 }
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(WikiPost));
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(WikiPostMove2NewTag));

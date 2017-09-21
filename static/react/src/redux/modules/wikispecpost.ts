@@ -11,11 +11,10 @@ export class SpecPostData {
 	postText: string;
 	parentId: number;
 	status: number;
-	tags: TagOfSpecPostData[];
+	tagId: number;
 
 	constructor() {
 		this.postText = '';
-		this.tags = [];
 	}
 }
 

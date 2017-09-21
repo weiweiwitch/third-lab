@@ -11,9 +11,16 @@ export function getSpecTagId(state: any): number {
 	return state.wikitags.specTagId;
 }
 
+export class WikiTagData {
+	id: number;
+	tagName: string;
+	parentTagId: number;
+	nodes: WikiTagData[];
+}
+
 export class WikiTagsState {
 	wikitagtree: any[];
-	wikitaglist: any[];
+	wikitaglist: WikiTagData[];
 	specTagId: number;
 
 	constructor() {
