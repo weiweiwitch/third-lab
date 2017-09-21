@@ -6,6 +6,7 @@ import {bindActionCreators} from "redux";
 import {isNullOrUndefined} from "util";
 import {withRouter} from "react-router";
 import {changeTag} from "../../sagas/tags";
+import {WikiTagsState} from "../../redux/modules/wikitags";
 
 const TabPane = Tabs.TabPane;
 const FormItem = Form.Item;
@@ -23,9 +24,11 @@ interface IDispatchProps {
 type IAppProps = IStateProps & IDispatchProps;
 
 const mapStateToProps = (state: any): any => {
+	const wikitags: WikiTagsState = state.wikitags;
+
 	return {
-		specTagId: state.wikitags.specTagId,
-		wikitaglist: state.wikitags.wikitaglist,
+		specTagId: wikitags.specTagId,
+		wikitaglist: wikitags.wikitaglist,
 	};
 };
 

@@ -5,6 +5,7 @@ import {querySpecTagPosts} from "../../sagas/posts";
 import {bindActionCreators} from "redux";
 import {withRouter} from "react-router";
 import {isNullOrUndefined} from "util";
+import {WikiTagsState} from "../../redux/modules/wikitags";
 
 const SubMenu = Menu.SubMenu;
 
@@ -19,8 +20,10 @@ interface IDispatchProps {
 type IAppProps = IStateProps & IDispatchProps;
 
 const mapStateToProps = (state: any): any => {
+	const wikitags: WikiTagsState = state.wikitags;
+
 	return {
-		wikitagtree: state.wikitags.wikitagtree,
+		wikitagtree: wikitags.wikitagtree,
 	};
 };
 

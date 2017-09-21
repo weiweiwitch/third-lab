@@ -7,6 +7,7 @@ import * as MarkdownIt from "markdown-it";
 import {bindActionCreators} from "redux";
 import {withRouter} from "react-router";
 import {deletePost, prepareCreatePost} from "../../sagas/posts";
+import {SpecPostData, WikiSpecPostState} from "../../redux/modules/wikispecpost";
 
 // import {} from "./wikiPost.scss";
 require('./wikiPost.scss');
@@ -31,7 +32,7 @@ const md = new MarkdownIt({
 
 interface IStateProps {
 	history: History;
-	wikipost: any;
+	wikipost: SpecPostData;
 }
 
 interface IDispatchProps {
@@ -42,8 +43,10 @@ interface IDispatchProps {
 type IAppProps = IStateProps & IDispatchProps;
 
 const mapStateToProps = (state: any): any => {
+	const wikispecpost: WikiSpecPostState = state.wikispecpost;
+
 	return {
-		wikipost: state.wikispecpost.wikipost,
+		wikipost: wikispecpost.wikipost,
 	};
 };
 

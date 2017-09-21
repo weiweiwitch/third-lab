@@ -10,6 +10,7 @@ import (
 	"thirdlab/tl/domain"
 	"thirdlab/tl/rtcode"
 	"thirdlab/tl/web/resp"
+	"time"
 )
 
 type UpdatePostReq struct {
@@ -53,6 +54,7 @@ func (this *UpdatePostDeal) DealReqWithSession(session *sessions.Session, c echo
 	post.ParentId = req.ParentId
 	post.Title = req.Title
 	post.Post = req.PostText
+	post.LastModifiedTime = time.Now()
 
 	// 更新tag
 	postTags := dao.FindPostTags(db.DbConn)

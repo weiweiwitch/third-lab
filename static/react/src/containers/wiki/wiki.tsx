@@ -15,7 +15,7 @@ import WikiTagEdit from '../wikitagedit/wikitagedit';
 
 import {loginSuccess} from "../../sagas/auth";
 import {querySpecPost, prepareCreatePost, showPost} from "../../sagas/posts";
-import {WikiPostsState} from "../../redux/modules/wikiposts";
+import {IPostsOfSpecTagData, WikiPostsState} from "../../redux/modules/wikiposts";
 import {WikiTagsState} from "../../redux/modules/wikitags";
 import {changeTag} from "../../sagas/tags";
 
@@ -26,7 +26,7 @@ interface IStateProps {
 	match: match<any>;
 	history: History;
 
-	postsOfSpecTag: any[];
+	postsOfSpecTag: IPostsOfSpecTagData[];
 	specTagId: number;
 	wikitaglist: any[];
 }
@@ -112,7 +112,7 @@ class Wiki extends React.Component<IAppProps, IState> {
 	};
 
 	render(): any {
-		const postsOfSpecTag: IPost[] = this.props.postsOfSpecTag;
+		const postsOfSpecTag = this.props.postsOfSpecTag;
 
 		let specTag = '';
 		this.props.wikitaglist.map((tag: any): any => {

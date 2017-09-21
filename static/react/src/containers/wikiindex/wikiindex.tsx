@@ -6,10 +6,11 @@ import {Col, Input, Row, Table} from "antd";
 
 import {querySpecPost, showPost} from "../../sagas/posts";
 import {withRouter} from "react-router";
+import {IPostData, WikiPostsState} from "../../redux/modules/wikiposts";
 
 interface IStateProps {
 	history: History;
-	wikiposts: any[];
+	wikiposts: IPostData[];
 }
 
 interface IDispatchProps {
@@ -21,8 +22,10 @@ interface IDispatchProps {
 type IAppProps = IStateProps & IDispatchProps;
 
 const mapStateToProps = (state: any): any => {
+	const wikiposts: WikiPostsState = state.wikiposts;
+
 	return {
-		wikiposts: state.wikiposts.wikiposts,
+		wikiposts: wikiposts.wikiposts,
 	};
 };
 

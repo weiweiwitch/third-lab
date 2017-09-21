@@ -1,8 +1,17 @@
 import {CHG_WIKI_SPECPOST_SUCCESS, QUERY_WIKI_SPECPOST_SUCCESS} from "../../sagas/posts";
 
-class WikiPost {
+export class TagOfSpecPostData {
+	id: number;
+	tagName: string;
+}
+
+export class SpecPostData {
+	id: number;
+	title: string;
 	postText: string;
-	tags: any[];
+	parentId: number;
+	status: number;
+	tags: TagOfSpecPostData[];
 
 	constructor() {
 		this.postText = '';
@@ -10,13 +19,11 @@ class WikiPost {
 	}
 }
 
-class WikiSpecPostState {
-	wikipost: WikiPost;
-	dirty: boolean;
+export class WikiSpecPostState {
+	wikipost: SpecPostData;
 
 	constructor() {
-		this.wikipost = new WikiPost();
-		this.dirty = false;
+		this.wikipost = new SpecPostData();
 	}
 }
 
@@ -26,12 +33,10 @@ export default function reducer(state: WikiSpecPostState = new WikiSpecPostState
 			return {
 				...state,
 				wikipost: action.payload,
-				dirty: false,
 			};
 		case CHG_WIKI_SPECPOST_SUCCESS:
 			return {
 				...state,
-				dirty: true,
 			};
 		default:
 			return state;

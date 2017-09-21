@@ -9,6 +9,8 @@ import {isNullOrUndefined} from "util";
 import {withRouter} from "react-router";
 import {chgPost, showPost} from "../../sagas/posts";
 import {styles} from "../../client";
+import {WikiTagsState} from "../../redux/modules/wikitags";
+import {SpecPostData, WikiSpecPostState} from "../../redux/modules/wikispecpost";
 
 const TabPane = Tabs.TabPane;
 const FormItem = Form.Item;
@@ -30,7 +32,7 @@ const md = new MarkdownIt({
 
 interface IStateProps {
 	history: History;
-	wikipost: any;
+	wikipost: SpecPostData;
 	wikitaglist: any[];
 }
 
@@ -43,9 +45,12 @@ interface IDispatchProps {
 type IAppProps = IStateProps & IDispatchProps;
 
 const mapStateToProps = (state: any): any => {
+	const wikispecpost: WikiSpecPostState = state.wikispecpost;
+	const wikitags: WikiTagsState = state.wikitags;
+
 	return {
-		wikipost: state.wikispecpost.wikipost,
-		wikitaglist: state.wikitags.wikitaglist,
+		wikipost: wikispecpost.wikipost,
+		wikitaglist: wikitags.wikitaglist,
 	};
 };
 
@@ -97,13 +102,18 @@ class WikiEdit extends React.Component<IAppProps, IState> {
 
 	componentWillReceiveProps(nextProps: IAppProps): any {
 		// 更新tag表
+		let maxTagId = 0;
 		const tags = nextProps.wikipost.tags.map((tag: any) => {
+			if (tag.id > maxTagId) {
+				maxTagId = tag.id;
+			}
 			return {
 				id: tag.id,
 				tagName: tag.tagName,
 			};
 		});
 		this.setState({
+			maxTagId,
 			postTags: tags,
 		});
 	}

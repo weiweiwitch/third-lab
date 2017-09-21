@@ -5,17 +5,34 @@ import {
 	QUERY_SPEC_TAG_POSTS_SUCCESS,
 } from "../../sagas/posts";
 
+export interface IPostData {
+	id: number;
+	title: string;
+	parentId: number;
+	status: number;
+}
+
+export interface IPostsOfSpecTagData {
+	tagId: number;
+	posts: IPostOfTagData[];
+}
+
+export interface IPostOfTagData {
+	id: number;
+	title: string;
+	parentId: number;
+	status: number;
+}
+
 export class WikiPostsState {
-	wikiposts: any[];
-	postsOfSpecTag: any[];
+	wikiposts: IPostData[];
+	postsOfSpecTag: IPostsOfSpecTagData[];
 	specTagId: number;
-	dirty: boolean;
 
 	constructor() {
 		this.wikiposts = [];
 		this.postsOfSpecTag = [];
 		this.specTagId = 0;
-		this.dirty = false;
 	}
 }
 
@@ -25,24 +42,20 @@ export default function reducer(state: WikiPostsState = new WikiPostsState(), ac
 			return {
 				...state,
 				wikiposts: action.payload,
-				dirty: false,
 			};
 		case QUERY_SPEC_TAG_POSTS_SUCCESS:
 			return {
 				...state,
 				postsOfSpecTag: action.payload.posts,
 				specTagId: action.payload.tagId,
-				dirty: false,
 			};
 		case ADD_WIKI_SPECPOST_SUCCESS:
 			return {
 				...state,
-				dirty: true,
 			};
 		case DEL_WIKI_SPECPOST_SUCCESS:
 			return {
 				...state,
-				dirty: true,
 			};
 		default:
 			return state;
