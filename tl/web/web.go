@@ -75,5 +75,11 @@ func apiRoute(router *echo.Echo) {
 
 		// 删除标签
 		RegisterDel(api, "/tags/:id", NewSessionActionDeal(new(ctrl.DelPostTagDeal)))
+
+		// 查询Summary
+		RegisterGet(api, "/summary", NewSessionActionDeal(new(ctrl.SummaryDeal)))
+
+		// 更新Summary
+		RegisterPut(api, "/summary", NewSessionActionDeal(new(ctrl.UpdateSummaryDeal)))
 	}
 }

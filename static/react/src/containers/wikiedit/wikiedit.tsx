@@ -11,6 +11,7 @@ import {chgPost, showPost} from "../../sagas/posts";
 import {styles} from "../../client";
 import {WikiTagData, WikiTagsState} from "../../redux/modules/wikitags";
 import {SpecPostData, WikiSpecPostState} from "../../redux/modules/wikispecpost";
+import {IPostData, WikiPostsState} from "../../redux/modules/wikiposts";
 
 const TabPane = Tabs.TabPane;
 const FormItem = Form.Item;
@@ -32,6 +33,7 @@ const md = new MarkdownIt({
 
 interface IStateProps {
 	history: History;
+	posts: IPostData[];
 	wikipost: SpecPostData;
 	wikitaglist: WikiTagData[];
 }
@@ -45,10 +47,12 @@ interface IDispatchProps {
 type IAppProps = IStateProps & IDispatchProps;
 
 const mapStateToProps = (state: any): any => {
+	const wikiposts: WikiPostsState = state.wikiposts;
 	const wikispecpost: WikiSpecPostState = state.wikispecpost;
 	const wikitags: WikiTagsState = state.wikitags;
 
 	return {
+		posts: wikiposts.wikiposts,
 		wikipost: wikispecpost.wikipost,
 		wikitaglist: wikitags.wikitaglist,
 	};
@@ -64,8 +68,13 @@ const mapDispatchToProps = (dispatch: any): any => {
 interface IState {
 	postTitle: string;
 	postText: string;
-	postParentId: number;
 	postTag: WikiTagData;
+
+	parentPost: IPostData;
+	showedParentPost: any[];
+	parentPostSearchResult: any[];
+	selectedParentPost: string;
+	inputPost: string;
 }
 
 class WikiEdit extends React.Component<IAppProps, IState> {
@@ -73,6 +82,7 @@ class WikiEdit extends React.Component<IAppProps, IState> {
 	constructor(props: IAppProps) {
 		super(props);
 
+		// 所属标签
 		let postTag = new WikiTagData();
 		const postTagId = props.wikipost.tagId;
 		props.wikitaglist.map((tag: any) => {
@@ -81,11 +91,28 @@ class WikiEdit extends React.Component<IAppProps, IState> {
 			}
 		});
 
+		// 上级文章
+		let parentPost = null;
+		let showedParentPost = [];
+		if (props.wikipost.parentId > 0) {
+			props.posts.map((post: IPostData): any => {
+				if (post.id === props.wikipost.parentId) {
+					parentPost = post;
+					showedParentPost = [post];
+				}
+			});
+		}
+
 		this.state = {
 			postTitle: props.wikipost.title,
 			postText: props.wikipost.postText,
-			postParentId: props.wikipost.parentId,
 			postTag,
+
+			parentPost,
+			showedParentPost,
+			parentPostSearchResult: [],
+			selectedParentPost: '',
+			inputPost: '',
 		};
 	}
 
@@ -97,11 +124,6 @@ class WikiEdit extends React.Component<IAppProps, IState> {
 		this.setState({postText: event.target.value});
 	};
 
-	updateParentId = (event: any): any => {
-		const postParentId = parseInt(event.target.value, 10);
-		this.setState({postParentId});
-	};
-
 	confirmModify = (event: any): any => {
 		event.preventDefault();
 
@@ -109,7 +131,7 @@ class WikiEdit extends React.Component<IAppProps, IState> {
 		const updatedPost = {
 			title: this.state.postTitle,
 			postText: this.state.postText,
-			parentId: this.state.postParentId,
+			parentId: this.state.parentPost === null ? 0 : this.state.parentPost.id,
 		};
 		this.props.chgPost(postId, updatedPost);
 	};
@@ -119,6 +141,97 @@ class WikiEdit extends React.Component<IAppProps, IState> {
 
 		const postId = this.props.wikipost.id;
 		this.props.showPost(postId);
+	};
+
+	onPostSelect = (value: any): any => {
+		this.setState({
+			selectedParentPost: value,
+		});
+	};
+
+	onPostSearch = (inputValue: any): any => {
+		const searchResult = [];
+		const existPostMap = new Map<string, boolean>();
+		this.state.showedParentPost.map((post: IPostData) => {
+			existPostMap[post.title] = true;
+		});
+		this.props.posts.filter((post: IPostData) => {
+			if (isNullOrUndefined(existPostMap[post.title]) === false) {
+				// 过滤掉已经添加给目标的标签
+				return false;
+			}
+			if (post.tagId !== this.props.wikipost.tagId) {
+				// 过滤掉不属于一个标签的
+				return false;
+			}
+			if (post.title.indexOf(inputValue) === -1) {
+				// 过滤掉总标签表中和当前输入不符的。
+				return false;
+			}
+
+			searchResult.push(post.title);
+			return true;
+		});
+
+		this.setState({
+			parentPostSearchResult: searchResult,
+			inputPost: inputValue,
+		});
+	};
+
+	onPostEnterPress = (event: any): any => {
+		if (event.key === 'Enter') {
+			// 按了回车
+			const existPostMap = new Map<string, number>();
+			this.state.showedParentPost.map((post: IPostData) => {
+				existPostMap[post.title] = post;
+			});
+
+			let newParentPost = null;
+			let selectedNewParentPost = false;
+			const selectedPostName = this.state.selectedParentPost;
+			if (selectedPostName !== '') {
+				// 判断这个post是否已经存在
+				if (isNullOrUndefined(existPostMap[selectedPostName]) === false) {
+					// 已经存在了
+					return;
+				}
+
+				this.props.posts.map((post: IPostData): any => {
+					if (post.title === selectedPostName) {
+						newParentPost = post;
+						selectedNewParentPost = true;
+					}
+				});
+				if (selectedNewParentPost === false) {
+					return;
+				}
+
+			} else {
+				return;
+			}
+
+			this.setState({
+				parentPost: newParentPost,
+				showedParentPost: [newParentPost],
+				selectedParentPost: '', // 清空选择
+				inputPost: '',
+			});
+		}
+	};
+
+	postClose = (post: IPostData): any => {
+		const remainings = this.state.showedParentPost.filter((record: any, index: any) => {
+			return record === post ? false : true;
+		});
+		if (remainings.length > 0) {
+			return;
+		}
+
+		this.setState({
+			parentPost: null,
+			showedParentPost: [],
+		});
 	};
 
 	render(): any {
@@ -135,6 +248,14 @@ class WikiEdit extends React.Component<IAppProps, IState> {
 			wrapperCol: {span: 24},
 		};
 
+		const parentPosts = this.state.showedParentPost.map((post: IPostData) => {
+			return (
+				<Tag key={post.id} closable afterClose={(): any => this.postClose(post)}>{post.title}</Tag>
+			);
+		});
+
+		const allPosts = this.state.parentPostSearchResult;
+
 		return (
 			<Row>
 				<Col span={24}>
@@ -148,8 +269,21 @@ class WikiEdit extends React.Component<IAppProps, IState> {
 						</Row>
 
 						<Row>
-							<Col span={24}>
+							<Col span={12}>
 								<span>{this.state.postTag.tagName}</span>
+							</Col>
+							<Col span={12}>
+								<AutoComplete
+									allowClear={true}
+									dataSource={allPosts}
+									style={{width: 300, padding: '0px 12px 0px 0px'}}
+									onSelect={this.onPostSelect}
+									onSearch={this.onPostSearch}
+									placeholder="选择上级"
+								>
+									<input onKeyPress={this.onPostEnterPress}/>
+								</AutoComplete>
+								{parentPosts}
 							</Col>
 						</Row>
 

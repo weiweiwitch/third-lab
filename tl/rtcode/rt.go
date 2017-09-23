@@ -11,6 +11,8 @@ const (
 	CANT_DEL_PARENT_TAG   int = 21 // 无法删除拥有子标签的标签
 	CANT_DEL_NO_EMPTY_TAG int = 22 // 无法删除非空标签
 
+	SUMMARY_NOT_FOUND = 30 // 找不到SUMMARY
+
 	NOT_FOUND_PRE_TASK      int = 100 // 找不到前置任务
 	NOT_FOUND_STUDY_PROJECT int = 101 // 找不到学习计划
 

@@ -11,11 +11,11 @@ import (
 )
 
 type PostResp struct {
-	Id    int    `json:"id"`
-	Title string `json:"title"`
-
-	ParentId int `json:"parentId"`
-	Status   int `json:"status"`
+	Id       int    `json:"id"`
+	Title    string `json:"title"`
+	ParentId int    `json:"parentId"`
+	Status   int    `json:"status"`
+	TagId    int    `json:"tagId"`
 }
 
 // 查询所有的post
@@ -32,6 +32,7 @@ func (this *PostsDeal) DealReqWithSession(session *sessions.Session, c echo.Cont
 			Title:    eachPost.Title,
 			ParentId: eachPost.ParentId,
 			Status:   eachPost.Status,
+			TagId:    eachPost.TagId,
 		}
 		postResps = append(postResps, postResp)
 	}

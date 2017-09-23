@@ -2,7 +2,7 @@ import * as React from "react";
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
 import {match, Route, Switch, withRouter} from "react-router";
-import {Button, Input, Col, Row, Table, Modal} from "antd";
+import {Button, Col, Row, Table} from "antd";
 import {TableColumnConfig} from "antd/lib/table/Table";
 import {History} from 'history';
 
@@ -14,10 +14,8 @@ import WikiPost from "../wikipost/wikipost";
 import WikiTagEdit from '../wikitagedit/wikitagedit';
 import WikiTagCreate from '../wikitagcreate/wikitagcreate';
 import WikiPostMove2NewTag from '../wikipostmovetag/move2newtag';
-
-import {loginSuccess} from "../../sagas/auth";
-import {querySpecPost, prepareCreatePost, showPost} from "../../sagas/posts";
-import {IPostsOfSpecTagData, WikiPostsState} from "../../redux/modules/wikiposts";
+import {prepareCreatePost, querySpecPost, showPost} from "../../sagas/posts";
+import {IPostOfTagData, WikiPostsState} from "../../redux/modules/wikiposts";
 import {WikiTagsState} from "../../redux/modules/wikitags";
 import {changeTag} from "../../sagas/tags";
 import {isNullOrUndefined} from "util";
@@ -29,14 +27,12 @@ interface IStateProps {
 	match: match<any>;
 	history: History;
 
-	postsOfSpecTag: IPostsOfSpecTagData[];
+	postsOfSpecTag: IPostOfTagData[];
 	specTagId: number;
 	wikitaglist: any[];
 }
 
 interface IDispatchProps {
-	loginSuccess(): any;
-
 	querySpecPost(postId: number): any;
 
 	prepareCreatePost(parentId: number): any;
@@ -61,7 +57,6 @@ const mapStateToProps = (state: any): any => {
 
 const mapDispatchToProps = (dispatch: any): any => {
 	return bindActionCreators({
-		loginSuccess,
 		querySpecPost,
 		prepareCreatePost,
 		showPost,
@@ -92,7 +87,6 @@ class Wiki extends React.Component<IAppProps, IState> {
 	}
 
 	componentDidMount(): any {
-		this.props.loginSuccess();
 	}
 
 	onRowClick = (record: any, index: any): any => {
@@ -150,6 +144,11 @@ class Wiki extends React.Component<IAppProps, IState> {
 			}
 		});
 
+		const expandedRowKeys = [];
+		postsOfSpecTag.map((post: IPostOfTagData): any => {
+			expandedRowKeys.push(post.id);
+		});
+
 		return (
 			<div>
 				<Row>
@@ -180,7 +179,7 @@ class Wiki extends React.Component<IAppProps, IState> {
 								overflowY: 'auto',
 							}}>
 								<Table size="small" pagination={false} onRowClick={this.onRowClick}
-									   columns={columns}
+									   columns={columns} expandedRowKeys={expandedRowKeys}
 									   dataSource={postTreeOfSpecTag} rowKey="id"/>
 							</Col>
 						</Row>

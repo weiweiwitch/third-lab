@@ -2,34 +2,17 @@ import * as React from "react";
 import {connect} from "react-redux";
 import {History} from 'history';
 import {Button, Col, Row, Tag, Tree} from "antd";
-import * as hljs from "highlight.js";
-import * as MarkdownIt from "markdown-it";
 import {bindActionCreators} from "redux";
 import {withRouter} from "react-router";
 import {deletePost, prepareCreatePost} from "../../sagas/posts";
 import {SpecPostData, WikiSpecPostState} from "../../redux/modules/wikispecpost";
 import {WikiTagData, WikiTagsState} from "../../redux/modules/wikitags";
+import md from '../md';
 
 // import {} from "./wikiPost.scss";
 require('./wikiPost.scss');
 
 const TreeNode = Tree.TreeNode;
-
-const md = new MarkdownIt({
-	html: true,
-	highlight: (str: any, lang: any): any => {
-		if (lang && hljs.getLanguage(lang)) {
-			try {
-				return hljs.highlight(lang, str).value;
-			} catch (e) {
-				// console.info('hightlight');
-				// console.info(e);
-			}
-		}
-
-		return ''; // use external default escaping
-	},
-});
 
 interface IStateProps {
 	history: History;
@@ -68,7 +51,7 @@ class HeaderNode {
 	content: string;
 }
 
-class WikiPostMove2NewTag extends React.Component<IAppProps, any> {
+class WikiPost extends React.Component<IAppProps, any> {
 
 	constructor(props: IAppProps) {
 		super(props);
@@ -202,4 +185,4 @@ class WikiPostMove2NewTag extends React.Component<IAppProps, any> {
 	}
 }
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(WikiPostMove2NewTag));
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(WikiPost));

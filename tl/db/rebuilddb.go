@@ -48,6 +48,7 @@ func RebuildDatabase(jsonConfig *cfg.JsonConfig) error {
 func createTables(dbConn *gorm.DB) error {
 	dbConn.Set("gorm:table_options", "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4").CreateTable(&domain.Post{})
 	dbConn.Set("gorm:table_options", "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4").CreateTable(&domain.PostTag{})
+	dbConn.Set("gorm:table_options", "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4").CreateTable(&domain.Summary{})
 
 	return nil
 }

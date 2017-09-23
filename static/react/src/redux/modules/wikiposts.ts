@@ -10,11 +10,7 @@ export interface IPostData {
 	title: string;
 	parentId: number;
 	status: number;
-}
-
-export interface IPostsOfSpecTagData {
 	tagId: number;
-	posts: IPostOfTagData[];
 }
 
 export interface IPostOfTagData {
@@ -26,7 +22,7 @@ export interface IPostOfTagData {
 
 export class WikiPostsState {
 	wikiposts: IPostData[];
-	postsOfSpecTag: IPostsOfSpecTagData[];
+	postsOfSpecTag: IPostOfTagData[];
 	specTagId: number;
 
 	constructor() {

@@ -1,10 +1,5 @@
 import {CHG_WIKI_SPECPOST_SUCCESS, QUERY_WIKI_SPECPOST_SUCCESS} from "../../sagas/posts";
 
-export class TagOfSpecPostData {
-	id: number;
-	tagName: string;
-}
-
 export class SpecPostData {
 	id: number;
 	title: string;
