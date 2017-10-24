@@ -203,4 +203,20 @@ div .header {
   h5 {
     font-size: 12px;
   }
+
+  table {
+    border: 1px solid $light-gray;
+    border-collapse: collapse;
+  }
+
+  table th {
+    background-color: $gray;
+    border: 1px solid $light-gray;
+    font-weight: bold;
+  }
+
+  table td {
+    border: 1px solid $light-gray;
+    padding: 4px;
+  }
 }

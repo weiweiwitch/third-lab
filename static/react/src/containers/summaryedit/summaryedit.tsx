@@ -41,6 +41,10 @@ interface IState {
 	summary: string;
 }
 
+const showStyle = {
+	margin: '20px 100px',
+};
+
 class SummaryEdit extends React.Component<IAppProps, IState> {
 
 	constructor(props: IAppProps) {
@@ -76,7 +80,7 @@ class SummaryEdit extends React.Component<IAppProps, IState> {
 		};
 
 		return (
-			<Row>
+			<Row style={showStyle}>
 				<Col span={24}>
 
 					<Row>
