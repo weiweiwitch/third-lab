@@ -18,7 +18,7 @@ GOOS=linux GOARCH=amd64 go build -o thirdlab ../tl
 
 cd $CURRENT_DIR
 cd ../static/react
-npm run build
+npm run prod_build
 
 cd $CURRENT_DIR
 cp ../bin/thirdlab .
