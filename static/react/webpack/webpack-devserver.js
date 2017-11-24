@@ -1,6 +1,6 @@
-import WebpackDevServer from "webpack-dev-server";
-import webpack from "webpack";
-import path from "path";
+const WebpackDevServer = require('webpack-dev-server');
+const webpack = require('webpack');
+const path = require('path');
 
 const config = require('./dev.config.js');
 
@@ -28,7 +28,7 @@ const server = new WebpackDevServer(compiler, {
   },
 });
 
-server.listen(port, function onAppListening(err) {
+server.listen(port, (err) => {
   if (err) {
     console.error(err);
   } else {

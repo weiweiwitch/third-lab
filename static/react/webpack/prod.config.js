@@ -1,9 +1,9 @@
 // Webpack config for creating the production bundle.
-import path from 'path';
-import webpack from 'webpack';
-import CleanPlugin from 'clean-webpack-plugin';
-import ExtractTextPlugin from 'extract-text-webpack-plugin';
-import HtmlWebpackPlugin from 'html-webpack-plugin';
+const path = require('path');
+const webpack = require('webpack');
+const CleanPlugin = require('clean-webpack-plugin');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 const contextPath = path.resolve(__dirname, '..');
 const assetsPath = path.resolve(contextPath, 'static', 'dist');
@@ -13,7 +13,6 @@ module.exports = {
   // 构建时输出多少信息
   stats: {
     errorDetails: true,
-    verbose: true,
     colors: true
   },
 
@@ -22,8 +21,8 @@ module.exports = {
   context: contextPath,
 
   entry: {
-    'main': [
-      './src/index.js'
+    main: [
+      './src/client.tsx'
     ]
   },
 
@@ -36,22 +35,6 @@ module.exports = {
 
   module: {
     rules: [
-      {
-        test: /\.jsx?$/,
-        exclude: /node_modules/,
-        use: {
-          loader: 'babel-loader',
-          options: {
-            presets: ['es2015', 'react', 'stage-0'],
-            plugins: [
-              ['import', {
-                "libraryName": "antd",
-                "style": true,   // or 'css'
-              }]
-            ]
-          },
-        }
-      },
       {
         test: /\.tsx?$/,
         use: 'awesome-typescript-loader',
@@ -99,14 +82,10 @@ module.exports = {
       },
       {
         test: /\.css$/,
-        use: [
-          {
-            loader: 'style-loader'
-          },
-          {
-            loader: 'css-loader',
-          }
-        ]
+        use: ExtractTextPlugin.extract({
+          fallback: 'style-loader',
+          use: 'css-loader'
+        }),
       },
     ]
   },
@@ -161,13 +140,13 @@ module.exports = {
 
     new webpack.optimize.CommonsChunkPlugin({
       name: 'vendor',
-      minChunks: function (module) {
+      minChunks: (module) => {
         // 该配置假定你引入的 vendor 存在于 node_modules 目录中
         return module.context && module.context.indexOf('node_modules') !== -1;
       }
     }),
     new webpack.optimize.CommonsChunkPlugin({
-      name: 'manifest' //But since there are no more common modules between them we end up with just the runtime code included in the manifest file
+      name: 'manifest' // But since there are no more common modules between them we end up with just the runtime code included in the manifest file
     }),
   ]
 };

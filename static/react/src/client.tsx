@@ -2,14 +2,13 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 import {Provider} from "react-redux";
 import {Router} from "react-router";
-import { BrowserRouter } from 'react-router-dom';
 import ApiClient from "./helpers/apiclient";
 import myCreateStore from "./redux/create";
 import getRoutes from "./routes";
 import history from './appHistory';
 
-//import {} from "./app.scss";
-require('./app.scss');
+import 'antd/dist/antd.css';
+import './app.scss';
 
 export const client = new ApiClient();
 

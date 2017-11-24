@@ -4,6 +4,7 @@
     <title><%= htmlWebpackPlugin.options.title %></title>
     <link rel="shortcut icon" href="/favicon.ico"/>
     <meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1"/>
+    <link href="<%= htmlWebpackPlugin.options.basename %><%= htmlWebpackPlugin.files.chunks.vendor.css %>" rel="stylesheet">
     <link href="<%= htmlWebpackPlugin.options.basename %><%= htmlWebpackPlugin.files.chunks.main.css %>" rel="stylesheet"></head>
 </head>
 <body>

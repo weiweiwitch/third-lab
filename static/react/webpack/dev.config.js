@@ -1,6 +1,6 @@
-import path from "path";
-import webpack from "webpack";
-import HtmlWebpackPlugin from "html-webpack-plugin";
+const path = require('path');
+const webpack = require('webpack');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 const contextPath = path.resolve(__dirname, '..');
 const assetsPath = path.resolve(contextPath, 'static', 'dev');
@@ -18,10 +18,10 @@ module.exports = {
 
   // 入口
   entry: {
-    'main': [
+    main: [
       'webpack/hot/dev-server',
       'webpack-dev-server/client?http://localhost:' + port,
-      './src/index.js'
+      './src/client.tsx'
     ]
   },
 
@@ -35,21 +35,6 @@ module.exports = {
 
   module: {
     rules: [
-      {
-        test: /\.jsx?$/,
-        exclude: /node_modules/,
-        use: {
-          loader: 'babel-loader',
-          options: {
-            presets: ['es2015', 'react', 'stage-0'],
-            plugins: [
-              ['import', {
-                "libraryName": "antd",
-                "style": true,   // or 'css'
-              }]]
-          },
-        },
-      },
       {
         test: /\.tsx?$/,
         use: 'awesome-typescript-loader',
@@ -84,13 +69,13 @@ module.exports = {
         test: /\.scss$/,
         use: [
           {
-            loader: "style-loader",
+            loader: 'style-loader',
           },
           {
-            loader: "css-loader",
+            loader: 'css-loader',
           },
           {
-            loader: "sass-loader"
+            loader: 'sass-loader'
           },
         ]
       },
@@ -124,13 +109,13 @@ module.exports = {
 
     new webpack.optimize.CommonsChunkPlugin({
       name: 'vendor',
-      minChunks: function (module) {
+      minChunks: (module) => {
         // 该配置假定你引入的 vendor 存在于 node_modules 目录中
         return module.context && module.context.indexOf('node_modules') !== -1;
       }
     }),
     new webpack.optimize.CommonsChunkPlugin({
-      name: 'manifest' //But since there are no more common modules between them we end up with just the runtime code included in the manifest file
+      name: 'manifest' // But since there are no more common modules between them we end up with just the runtime code included in the manifest file
     }),
   ]
 };

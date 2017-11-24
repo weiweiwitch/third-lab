@@ -1,5 +1,5 @@
-import webpack from 'webpack';
-import webpackProConfig from './prod.config';
+const webpack = require('webpack');
+const webpackProConfig = require('./prod.config');
 
 // webpack --verbose --colors --display-error-details --config webpack/prod.config.js
 
@@ -16,4 +16,4 @@ function build() {
 
 build();
 
-export default build;
+module.exports = build;
