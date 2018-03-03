@@ -160,4 +160,4 @@ class WikiNew extends React.Component<IAppProps, IState> {
 	}
 }
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(WikiNew));
+export default connect(mapStateToProps, mapDispatchToProps)(WikiNew);

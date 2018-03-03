@@ -118,4 +118,4 @@ class SummaryEdit extends React.Component<IAppProps, IState> {
 	}
 }
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(SummaryEdit));
+export default connect(mapStateToProps, mapDispatchToProps)(SummaryEdit);

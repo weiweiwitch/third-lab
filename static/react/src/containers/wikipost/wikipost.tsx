@@ -185,4 +185,4 @@ class WikiPost extends React.Component<IAppProps, any> {
 	}
 }
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(WikiPost));
+export default connect(mapStateToProps, mapDispatchToProps)(WikiPost);

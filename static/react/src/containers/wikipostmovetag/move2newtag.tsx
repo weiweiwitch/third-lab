@@ -215,4 +215,4 @@ class WikiPostMove2NewTag extends React.Component<IAppProps, IState> {
 	}
 }
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(WikiPostMove2NewTag));
+export default connect(mapStateToProps, mapDispatchToProps)(WikiPostMove2NewTag);

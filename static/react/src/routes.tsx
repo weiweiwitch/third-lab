@@ -5,7 +5,6 @@ import App from "./containers/app/app";
 export default (): any => {
 	// 返回路由组件
 	return (
-		<Route path={'/'} component={App}>
-		</Route>
+		<Route path={'/'} component={App} />
 	);
 };

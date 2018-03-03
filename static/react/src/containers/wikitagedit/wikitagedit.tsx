@@ -274,4 +274,4 @@ class WikiTagEdit extends React.Component<IAppProps, IState> {
 	}
 }
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(WikiTagEdit));
+export default connect(mapStateToProps, mapDispatchToProps)(WikiTagEdit);

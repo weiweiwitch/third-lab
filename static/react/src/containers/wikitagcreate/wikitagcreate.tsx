@@ -220,4 +220,4 @@ class WikiTagCreate extends React.Component<IAppProps, IState> {
 	}
 }
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(WikiTagCreate));
+export default connect(mapStateToProps, mapDispatchToProps)(WikiTagCreate);

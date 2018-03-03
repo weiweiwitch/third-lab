@@ -4,6 +4,10 @@ const path = require('path');
 
 const config = require('./dev.config.js');
 
+process.env.APIPORT = 8080;
+process.env.PORT = 3000;
+process.env.NODE_ENV = 'development';
+
 const apiPort = process.env.APIPORT;
 const port = process.env.PORT;
 
@@ -18,13 +22,13 @@ const server = new WebpackDevServer(compiler, {
   lazy: false,
   publicPath: config.output.publicPath,
   stats: {
-    colors: true
+    colors: true,
   },
   proxy: {
     '/api/*': {
       target: 'http://localhost:' + apiPort,
-      ws: true
-    }
+      ws: true,
+    },
   },
 });
 

@@ -121,4 +121,4 @@ class WikiIndex extends React.Component<IAppProps, IState> {
 	}
 }
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(WikiIndex));
+export default connect(mapStateToProps, mapDispatchToProps)(WikiIndex);

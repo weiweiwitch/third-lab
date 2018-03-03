@@ -321,4 +321,4 @@ class WikiEdit extends React.Component<IAppProps, IState> {
 	}
 }
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(WikiEdit));
+export default connect(mapStateToProps, mapDispatchToProps)(WikiEdit);
