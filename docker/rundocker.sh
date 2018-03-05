@@ -1,3 +1,3 @@
 #!/usr/bin/env bash
 
-docker run --name="thirdlab" --restart=always -p 8282:8282 --network="my-bridge-network" --ip="172.18.0.10" -v /Users/ariane/docker/thirdlab:/data/log -d weiweiwitch/thirdlab
+docker run --name="thirdlab-kt" --restart=always -p 8181:8080 --network="my-bridge-network" --ip="172.18.0.100" -v /home/ariane/tl2/docker/log:/data/log -d weiweiwitch/thirdlab-kt

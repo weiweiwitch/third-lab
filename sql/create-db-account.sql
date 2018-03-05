@@ -1,1 +1,0 @@
-grant select, update, insert, delete, create, drop, alter, lock tables on thirdlab.* to 'thirdlab'@'localhost' identified by '123456';

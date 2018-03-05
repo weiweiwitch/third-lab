@@ -3,26 +3,16 @@ target
 .idea
 .externalToolBuilders
 
-accesslog
+out/production
 
-src/main/resources/react/.idea
-src/main/resources/react/builds
-src/main/resources/react/node_modules
 src/main/resources/react/static
 
 build
 .gradle
 
-bin/thirdlab
-docker/cfg
-docker/static
-docker/thirdlab
-
-vendor
-static/react/static
-static/react/node_modules
-
-static/tlng
+node_modules
 
 yarn-error.log
 yarn.lock
+
+thirdlab.iml

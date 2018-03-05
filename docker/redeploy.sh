@@ -1,11 +1,13 @@
 #!/bin/sh
 
-docker stop thirdlab
+docker stop thirdlab-kt
 
-docker rm -v thirdlab
+docker rm -v thirdlab-kt
 
-docker rmi weiweiwitch/thirdlab
+docker rmi weiweiwitch/thirdlab-kt
 
-bash builddocker4react.sh
+# cp -f ../build/libs/thirdlab.jar .
+
+bash builddocker.sh
 
 bash rundocker.sh

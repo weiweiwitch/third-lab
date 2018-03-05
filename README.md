@@ -1,7 +1,8 @@
-# ThirdLab
-一个个人知识库工具。后端为Java，前端为reactjs，数据库为mysql。支持markdown，支持基本的语法高亮。
+## 特性
+参考了`https://github.com/sdeleuze/spring-boot-kotlin-demo`
+* 使用gradle构建
+* 通过springboot 2实现了基本的web请求处理
+* 使用kotlin语言实现
+* 加入jpa访问数据的特性
 
-顺带用于实验和演示一些前后端特性。
-
-# License
- [MIT](/LICENSE)
+## 注意

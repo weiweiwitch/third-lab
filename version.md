@@ -1,3 +1,6 @@
+## 0.3.0-snapshot
+更换为kotlin
+
 ## 0.2.0-snapshot
 * 添加、删除、修改发布
 
