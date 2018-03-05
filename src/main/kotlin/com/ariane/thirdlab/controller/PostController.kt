@@ -129,7 +129,7 @@ open class PostController() {
         return resp
     }
 
-    @PostMapping("/posts/{id}")
+    @PutMapping("/posts/{id}")
     open fun updatePost(@PathVariable id: Long, @RequestBody req: UpdatePostReq): TlBaseResp<UpdatePostResp?> {
         val postVal = postRepository.findById(id)
         if (!postVal.isPresent) {
