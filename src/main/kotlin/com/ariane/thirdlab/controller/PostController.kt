@@ -86,7 +86,7 @@ open class PostController() {
         val posts = if (tagId != 0L) {
             postRepository.findByTagId(tagId)
         } else {
-            postRepository.findByNoTags(0)
+            postRepository.findByTagId(0)
         }
 
         val postListResp = mutableListOf<TagPostResp>()
