@@ -1,6 +1,30 @@
 @import "../../generic.scss";
 
-.edit-text {
-  font-family: $code-font;
-  font-size: 13px;
+//.edit-text {
+//  font-family: $code-font;
+//  font-size: 13px;
+//}
+
+.wiki-left-panel {
+  padding: 0 12px;
+  background: #fff;
+}
+
+.wiki-right-panel {
+  height: calc(100vh - 112px);
+  //display: inline-block;
+  padding: 12px 24px;
+  overflow-y: auto;
+}
+
+.wiki-ops {
+  //padding: 0px 12px;
+  margin: 12px;
+}
+
+.wiki-topic-table {
+  height: calc(100vh - 170px);
+  padding: 12px;
+  overflow-x: hidden;
+  overflow-y: auto;
 }

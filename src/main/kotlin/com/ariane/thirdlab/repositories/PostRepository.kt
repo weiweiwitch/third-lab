@@ -11,6 +11,4 @@ interface PostRepository : CrudRepository<Post, Long> {
 
     fun findByTagId(tagId: Long): List<Post>
 
-    fun findByNoTags(noTags: Int): Iterable<Post>
-
 }

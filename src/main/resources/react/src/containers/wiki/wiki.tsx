@@ -19,10 +19,8 @@ import { IPostOfTagData, WikiPostsState } from "../../redux/modules/wikiposts";
 import { WikiTagsState } from "../../redux/modules/wikitags";
 import { changeTag } from "../../sagas/tags";
 import { isNullOrUndefined } from "util";
-import App from "../app/app";
 
-// import {} from "./wiki.scss";
-import {} from "./wiki.scss";
+import "./wiki.scss";
 
 interface IStateProps {
     match: match<any>;
@@ -162,49 +160,39 @@ class Wiki extends React.Component<IAppProps, IState> {
                     </Col>
                 </Row>
                 <Row>
-                    <Col span={6} style={{
-                        padding: '0px 12px',
-                        background: '#fff',
-                    }}>
-                        <Row>
-                            <Col style={{
-                                padding: '0px 12px',
-                            }}>
-                                <Button type="primary" onClick={this.showCreatePostPage}>创建</Button>
-                                <Button type="primary" onClick={this.showCreateTagPage}>创建标签</Button>
-                                <Button type="primary" onClick={this.showEditTagPage}
-                                        disabled={this.props.specTagId === 0}>编辑标签：{specTag}</Button>
-                            </Col>
-                        </Row>
-                        <Row>
-                            <Col style={{
-                                height: 'calc(100vh - 164px)',
-                                padding: '12px 12px',
-                                overflowX: 'hidden',
-                                overflowY: 'auto',
-                            }}>
-                                <Table size="small" pagination={false} onRow={this.onRow}
-                                       columns={columns} expandedRowKeys={expandedRowKeys}
-                                       dataSource={postTreeOfSpecTag} rowKey="id"/>
-                            </Col>
-                        </Row>
+                    <Col span={6}>
+                        <div className="wiki-left-panel">
+                            <Row>
+                                <Col className="wiki-ops">
+                                    <Button type="primary" onClick={this.showCreatePostPage}>创建</Button>
+                                    <Button type="primary" onClick={this.showCreateTagPage}>创建标签</Button>
+                                    <Button type="primary" onClick={this.showEditTagPage}
+                                            disabled={this.props.specTagId === 0}>编辑标签：{specTag}</Button>
+                                </Col>
+                            </Row>
+                            <Row>
+                                <Col className="wiki-topic-table">
+                                    <Table size="small" pagination={false} onRow={this.onRow}
+                                           columns={columns} expandedRowKeys={expandedRowKeys}
+                                           dataSource={postTreeOfSpecTag} rowKey="id"/>
+                                </Col>
+                            </Row>
+                        </div>
                     </Col>
 
-                    <Col span={18} style={{
-                        height: 'calc(100vh - 112px)',
-                        display: 'inline-block',
-                        padding: '12px 24px',
-                        overflowY: 'auto',
-                    }}>
-                        <Switch>
-                            <Route path={`${this.props.match.path}/wikiindex`} component={WikiIndex}/>
-                            <Route path={`${this.props.match.path}/wikinew/:parentId`} component={WikiNew}/>
-                            <Route path={`${this.props.match.path}/wikiedit`} component={WikiEdit}/>
-                            <Route path={`${this.props.match.path}/wikipost/:pId`} component={WikiPost}/>
-                            <Route path={`${this.props.match.path}/wikitagedit`} component={WikiTagEdit}/>
-                            <Route path={`${this.props.match.path}/wikitagcreate`} component={WikiTagCreate}/>
-                            <Route path={`${this.props.match.path}/wikipostmove2tag`} component={WikiPostMove2NewTag}/>
-                        </Switch>
+                    <Col span={18}>
+                        <div className="wiki-right-panel">
+                            <Switch>
+                                <Route path={`${this.props.match.path}/wikiindex`} component={WikiIndex}/>
+                                <Route path={`${this.props.match.path}/wikinew/:parentId`} component={WikiNew}/>
+                                <Route path={`${this.props.match.path}/wikiedit`} component={WikiEdit}/>
+                                <Route path={`${this.props.match.path}/wikipost/:pId`} component={WikiPost}/>
+                                <Route path={`${this.props.match.path}/wikitagedit`} component={WikiTagEdit}/>
+                                <Route path={`${this.props.match.path}/wikitagcreate`} component={WikiTagCreate}/>
+                                <Route path={`${this.props.match.path}/wikipostmove2tag`}
+                                       component={WikiPostMove2NewTag}/>
+                            </Switch>
+                        </div>
                     </Col>
                 </Row>
             </div>

@@ -12,7 +12,7 @@ body {
   height: 100%;
   font-size: 12px;
   margin: 0;
-  padding:0;
+  padding: 0;
   background-color: #f8f8f8;
 }
 
@@ -97,8 +97,22 @@ div .header {
   text-decoration: none;
 }
 
-.textarea-height {
-  height: calc(100vh - 276px) !important;
+.tab-edit-panel {
+  margin-bottom: 16px;
+}
+
+.summaryedit-textarea-height {
+  height: calc(100vh - 226px) !important;
+  overflow: auto;
+}
+
+.postedit-textarea-height {
+  height: calc(100vh - 336px) !important;
+  overflow: auto;
+}
+
+.postnew-textarea-height {
+  height: calc(100vh - 286px) !important;
   overflow: auto;
 }
 

@@ -25,6 +25,14 @@ open class PostController() {
     @Autowired
     lateinit var postTagRepository: PostTagRepository
 
+    data class PostResp(
+        val id: Long,
+        val title: String,
+        val parentId: Long,
+        val status: Int,
+        val tagId: Long
+    )
+
     @GetMapping("/posts")
     open fun findAll(): TlBaseResp<List<PostResp>> {
         val posts = postRepository.findAll()
@@ -39,6 +47,9 @@ open class PostController() {
 
         return resp
     }
+
+    data class PostPositionResp(val postInfos: List<PostInfoResp>)
+    data class PostInfoResp(val id: Long, val title: String)
 
     @GetMapping("/whichpost")
     open fun findByPostParam(@RequestParam postParam: String): TlBaseResp<PostPositionResp> {
@@ -57,6 +68,15 @@ open class PostController() {
 
         return resp
     }
+
+    data class PostDetailResp(
+        val id: Long,
+        val title: String,
+        val postText: String,
+        val parentId: Long,
+        val status: Int,
+        val tagId: Long
+    )
 
     @GetMapping("/posts/{id}")
     open fun findSpecPost(@PathVariable id: Long): TlBaseResp<PostDetailResp?> {
@@ -80,6 +100,9 @@ open class PostController() {
         resp.data = detail
         return resp
     }
+
+    data class SpecTagPostsResp(val tagId: Long, val posts: List<TagPostResp>)
+    data class TagPostResp(val id: Long, val title: String, val parentId: Long, val status: Int)
 
     @GetMapping("/tags/{tagId}/posts")
     open fun findPostsOfSpecTag(@PathVariable tagId: Long): TlBaseResp<SpecTagPostsResp> {
@@ -109,6 +132,8 @@ open class PostController() {
         return resp
     }
 
+    data class AddPostReq(val parentId: Long, val title: String, val postText: String)
+
     @PostMapping("/posts")
     open fun addPost(@RequestBody post: AddPostReq): TlBaseResp<Int?> {
         val newPost = Post()
@@ -129,6 +154,9 @@ open class PostController() {
         return resp
     }
 
+    data class UpdatePostReq(val parentId: Long, val title: String, val postText: String)
+    data class UpdatePostResp(val id: Long)
+
     @PutMapping("/posts/{id}")
     open fun updatePost(@PathVariable id: Long, @RequestBody req: UpdatePostReq): TlBaseResp<UpdatePostResp?> {
         val postVal = postRepository.findById(id)
@@ -146,6 +174,8 @@ open class PostController() {
         resp.data = UpdatePostResp(post.id)
         return resp
     }
+
+    data class Move2NewTagResp(val id: Long)
 
     @PutMapping("/posts/{id}/tags/{tagId}")
     open fun movePost2NewTag(@PathVariable id: Long, @PathVariable tagId: Long): TlBaseResp<Move2NewTagResp?> {
@@ -199,33 +229,3 @@ open class PostController() {
         return resp
     }
 }
-
-data class PostResp(
-    val id: Long,
-    val title: String,
-    val parentId: Long,
-    val status: Int,
-    val tagId: Long
-)
-
-data class PostInfoResp(val id: Long, val title: String)
-data class PostPositionResp(val postInfos: List<PostInfoResp>)
-
-data class PostDetailResp(
-    val id: Long,
-    val title: String,
-    val postText: String,
-    val parentId: Long,
-    val status: Int,
-    val tagId: Long
-)
-
-data class SpecTagPostsResp(val tagId: Long, val posts: List<TagPostResp>)
-data class TagPostResp(val id: Long, val title: String, val parentId: Long, val status: Int)
-
-data class AddPostReq(val parentId: Long, val title: String, val postText: String)
-
-data class UpdatePostReq(val parentId: Long, val title: String, val postText: String)
-data class UpdatePostResp(val id: Long)
-
-data class Move2NewTagResp(val id: Long)

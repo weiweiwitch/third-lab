@@ -1,7 +1,7 @@
 import * as React from "react";
 import { connect } from "react-redux";
 import { History } from 'history';
-import { AutoComplete, Button, Col, Form, Input, Row, Tabs, Tag } from "antd";
+import { AutoComplete, Button, Col, Form, Input, Row, Tabs, Tag, Card } from "antd";
 import * as hljs from "highlight.js";
 import * as MarkdownIt from "markdown-it";
 import { bindActionCreators } from "redux";
@@ -223,7 +223,7 @@ class WikiEdit extends React.Component<IAppProps, IState> {
 
     postClose = (post: IPostData): any => {
         const remainings = this.state.showedParentPost.filter((record: any, index: any) => {
-            return record === post ? false : true;
+            return record !== post;
         });
         if (remainings.length > 0) {
             return;
@@ -236,18 +236,7 @@ class WikiEdit extends React.Component<IAppProps, IState> {
     };
 
     render(): any {
-        const post = this.props.wikipost;
-
         const postText = {__html: md.render(this.state.postText)};
-
-        const formItemLayout = {
-            labelCol: {span: 6},
-            wrapperCol: {span: 14},
-        };
-        const formItemLayout2 = {
-            labelCol: {span: 0},
-            wrapperCol: {span: 24},
-        };
 
         const parentPosts = this.state.showedParentPost.map((post: IPostData) => {
             return (
@@ -261,6 +250,7 @@ class WikiEdit extends React.Component<IAppProps, IState> {
             <Row>
                 <Col span={24}>
                     <Form>
+                        {/*标题编辑*/}
                         <Row>
                             <Col span={24} style={{padding: '12px 0px'}}>
                                 <Input placeholder="请输入标题"
@@ -269,6 +259,7 @@ class WikiEdit extends React.Component<IAppProps, IState> {
                             </Col>
                         </Row>
 
+                        {/*标签和结构编辑*/}
                         <Row>
                             <Col span={12}>
                                 <span>{this.state.postTag.tagName}</span>
@@ -292,17 +283,18 @@ class WikiEdit extends React.Component<IAppProps, IState> {
                             <Col span={24}>
                                 <Tabs defaultActiveKey="1">
                                     <TabPane tab="Markdown" key="1">
-                                        <FormItem {...formItemLayout2}>
+                                        <div className="tab-edit-panel">
                                             <TextArea style={styles.codeStyle}
-                                                   className="edit-text textarea-height"
-                                                   placeholder="内容" onChange={this.updateText}
-                                                   value={this.state.postText}
-                                            />
-                                        </FormItem>
+                                                      className="edit-text postedit-textarea-height"
+                                                      placeholder="内容" onChange={this.updateText}
+                                                      value={this.state.postText}/>
+                                        </div>
                                     </TabPane>
                                     <TabPane tab="预览" key="2">
-                                        <div className="inner_topic markdown-text textarea-height"
-                                             dangerouslySetInnerHTML={postText}/>
+                                        <div className="tab-edit-panel">
+                                            <div className="inner_topic markdown-text postedit-textarea-height"
+                                                 dangerouslySetInnerHTML={postText}/>
+                                        </div>
                                     </TabPane>
                                 </Tabs>
                             </Col>

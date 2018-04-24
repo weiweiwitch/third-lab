@@ -91,7 +91,7 @@ class SummaryEdit extends React.Component<IAppProps, IState> {
                                     <Form>
                                         <FormItem {...formItemLayout2}>
 											<TextArea style={styles.codeStyle}
-                                                      className="edit-text textarea-height"
+                                                      className="edit-text summaryedit-textarea-height"
                                                       placeholder="内容" onChange={this.updateSummary}
                                                       value={this.state.summary}
                                             />
@@ -99,7 +99,7 @@ class SummaryEdit extends React.Component<IAppProps, IState> {
                                     </Form>
                                 </TabPane>
                                 <TabPane tab="预览" key="2">
-                                    <div className="inner_topic markdown-text textarea-height"
+                                    <div className="inner_topic markdown-text summaryedit-textarea-height"
                                          dangerouslySetInnerHTML={postText}/>
                                 </TabPane>
                             </Tabs>

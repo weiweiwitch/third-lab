@@ -100,15 +100,6 @@ class WikiNew extends React.Component<IAppProps, IState> {
     render(): any {
         const postText = {__html: md.render(this.state.postText)};
 
-        const formItemLayout = {
-            labelCol: {span: 2},
-            wrapperCol: {span: 18},
-        };
-        const formItemLayout2 = {
-            labelCol: {span: 0},
-            wrapperCol: {span: 24},
-        };
-
         return (
             <Row>
                 <Col span={24}>
@@ -127,17 +118,18 @@ class WikiNew extends React.Component<IAppProps, IState> {
                             <Col span={24}>
                                 <Tabs defaultActiveKey="1">
                                     <TabPane tab="Markdown" key="1">
-                                        <FormItem {...formItemLayout2}>
+                                        <div className="tab-edit-panel">
 											<TextArea style={styles.codeStyle}
-                                                      className="edit-text textarea-height"
+                                                      className="edit-text postnew-textarea-height"
                                                       placeholder="内容" onChange={this.updateText}
-                                                      value={this.state.postText}
-                                            />
-                                        </FormItem>
+                                                      value={this.state.postText}/>
+                                        </div>
                                     </TabPane>
                                     <TabPane tab="预览" key="2">
-                                        <div className="inner_topic markdown-text textarea-height"
-                                             dangerouslySetInnerHTML={postText}/>
+                                        <div className="tab-edit-panel">
+                                            <div className="inner_topic markdown-text postnew-textarea-height"
+                                                 dangerouslySetInnerHTML={postText}/>
+                                        </div>
                                     </TabPane>
                                 </Tabs>
                             </Col>
