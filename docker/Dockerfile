@@ -10,7 +10,7 @@ WORKDIR /data
 COPY thirdlab.jar thirdlab.jar
 COPY application.properties application.properties
 
-EXPOSE 8181
+EXPOSE 8080
 
 VOLUME ["/data/log"]
 
