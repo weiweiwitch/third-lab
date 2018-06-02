@@ -104,8 +104,8 @@ open class PostTagController() {
         if (parentTagId != 0L) {
             val newTagId = postTag.id
             val postTagsOwnedByParent = postRepository.findByTagId(parentTagId)
-            for (postTag in postTagsOwnedByParent) {
-                postTag.tagId = newTagId
+            for (eachPostTag in postTagsOwnedByParent) {
+                eachPostTag.tagId = newTagId
             }
         }
 
