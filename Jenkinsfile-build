@@ -19,22 +19,9 @@ pipeline {
                 }
             }
             steps {
-                withCredentials(bindings: [sshUserPrivateKey(credentialsId: 'testvm-20', keyFileVariable: 'keyfile')]) {
+                withCredentials(bindings: [sshUserPrivateKey(credentialsId: 'ariane-inner', keyFileVariable: 'keyfile')]) {
                     sh 'sh -x ci/build_frontend.sh'
                     sh 'sh -x ci/build_backend.sh '
-                }
-            }
-        }
-        stage('Prepare Latest Release') {
-            agent {
-                docker {
-                    image 'williamyeh/ansible:ubuntu16.04'
-                }
-
-            }
-            steps {
-                withCredentials(bindings: [sshUserPrivateKey(credentialsId: 'testvm-20', keyFileVariable: 'keyfile')]) {
-                    sh 'sh -x ci/prepareLatestRelease.sh'
                 }
             }
         }
