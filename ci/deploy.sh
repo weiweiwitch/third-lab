@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+pwd
+
 # 停止容器
 RUNNING_TARGET_CONTAINER=$(docker ps -aq -f ancestor=weiweiwitch/thirdlab-kt -f status=running)
 if [ "$RUNNING_TARGET_CONTAINER" != "" ]; then

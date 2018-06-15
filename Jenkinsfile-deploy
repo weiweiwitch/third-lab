@@ -21,7 +21,7 @@ pipeline {
             steps {
                 withCredentials(bindings: [sshUserPrivateKey(credentialsId: 'ariane-inner', keyFileVariable: 'keyfile')]) {
                     sh '''
-                    bash -x deploy.sh
+                    bash -x ci/deploy.sh
                     '''
                 }
             }
