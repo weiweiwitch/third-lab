@@ -1,0 +1,30 @@
+pipeline {
+    agent any
+    stages {
+        stage('Test docker') {
+            agent {
+                docker {
+                    image 'williamyeh/ansible:ubuntu16.04'
+                }
+
+            }
+            steps {
+                echo 'Show Some Message'
+            }
+        }
+        stage('Deploy') {
+            agent {
+                docker {
+                    image 'weiweiwitch/jdk8-nodejs:0.1.0'
+                }
+            }
+            steps {
+                withCredentials(bindings: [sshUserPrivateKey(credentialsId: 'ariane-inner', keyFileVariable: 'keyfile')]) {
+                    sh '''
+                    bash -x deploy.sh
+                    '''
+                }
+            }
+        }
+    }
+}
