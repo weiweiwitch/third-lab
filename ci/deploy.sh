@@ -25,9 +25,9 @@ wget http://192.168.11.160:10000/thirdlab/thirdlab.tar.gz .
 cp -f ci/dockerimages/jdk8-thirdlab/Dockerfile .
 cp -f ci/application.properties .
 
-docker build -t="weiweiwitch/thirdlab-kt:0.1.0" .
+docker build -t="weiweiwitch/thirdlab-kt" .
 
 # 启动容器
 docker run --name="thirdlab-kt" --restart=always \
     -p 8181:8080 --network="my-bridge-network" --ip="172.18.0.20" \
-    -v /home/ariane/tl2/docker/log:/data/log -d weiweiwitch/thirdlab-kt:0.1.0
+    -v /home/ariane/tl2/docker/log:/data/log -d weiweiwitch/thirdlab-kt
