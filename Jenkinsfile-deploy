@@ -13,11 +13,11 @@ pipeline {
             }
         }
         stage('Deploy') {
-            agent {
-                docker {
-                    image 'weiweiwitch/jdk8-nodejs:0.1.0'
-                }
-            }
+//            agent {
+//                docker {
+//                    image 'weiweiwitch/jdk8-nodejs:0.1.0'
+//                }
+//            }
             steps {
                 withCredentials(bindings: [sshUserPrivateKey(credentialsId: 'ariane-inner', keyFileVariable: 'keyfile')]) {
                     sh '''
