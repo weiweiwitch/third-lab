@@ -144,7 +144,14 @@ open class PostController() {
         newPost.lastModifiedTime = Date()
         newPost.status = PREPARE
         newPost.noTags = 0
-        newPost.tagId = 0
+        if (post.parentId != 0L) {
+            val parentPost = postRepository.findById(post.parentId)
+            if (parentPost.isPresent) {
+                newPost.tagId = parentPost.get().tagId
+            }
+        } else {
+            newPost.tagId = 0
+        }
 
         postRepository.save(newPost)
 
