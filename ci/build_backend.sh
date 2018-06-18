@@ -9,6 +9,9 @@ ls -al
 
 # 构建游戏服
 sh gradlew clean assembleBootDist
+if [ $? != 0 ];then
+    echo "构建失败"
+fi
 
 # 复制发布文件到文件服务器
 DISTRIBUTION_SERVER=192.168.11.160
