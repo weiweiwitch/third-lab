@@ -11,8 +11,10 @@ const port = process.env.PORT;
 const tslintConfig = require('../tslint.json');
 
 module.exports = {
+  mode: 'development',
+
   // 内联调试信息
-  devtool: 'source-map',
+  devtool: 'inline-source-map',
 
   context: contextPath,
 
@@ -20,17 +22,17 @@ module.exports = {
   entry: {
     main: [
       'webpack/hot/dev-server',
-      'webpack-dev-server/client?http://localhost:' + port,
-      './src/client.tsx'
-    ]
+      // 'webpack-dev-server/client?http://localhost:' + port,
+      './src/client.tsx',
+    ],
   },
 
   // 输出
   output: {
     path: assetsPath,
-    filename: '[name].js', // 输出文件名
+    filename: '[name]-[hash].js', // 输出文件名
     chunkFilename: '[name]-[chunkhash].js', // 非entry的文件名
-    publicPath: '' // 指定公共URL地址
+    publicPath: '', // 指定公共URL地址
   },
 
   module: {
@@ -40,7 +42,7 @@ module.exports = {
         use: 'awesome-typescript-loader',
         include: [
           sourcePath,
-        ]
+        ],
       },
       {
         enforce: 'pre',
@@ -50,9 +52,9 @@ module.exports = {
           loader: 'tslint-loader',
           options: {
             failOnHint: true,
-            configuration: tslintConfig
-          }
-        }
+            configuration: tslintConfig,
+          },
+        },
       },
       {
         test: /\.css$/,
@@ -62,8 +64,8 @@ module.exports = {
           },
           {
             loader: 'css-loader',
-          }
-        ]
+          },
+        ],
       },
       {
         test: /\.scss$/,
@@ -75,20 +77,33 @@ module.exports = {
             loader: 'css-loader',
           },
           {
-            loader: 'sass-loader'
+            loader: 'sass-loader',
           },
-        ]
+        ],
       },
-    ]
+    ],
   },
 
   // 哪些后缀的文件会被解析为模块文件
   resolve: {
     modules: [
       sourcePath,
-      'node_modules'
+      'node_modules',
     ],
-    extensions: ['.json', '.js', '.jsx', '.ts', '.tsx']
+    extensions: ['.json', '.js', '.jsx', '.ts', '.tsx'],
+  },
+
+  optimization: {
+    splitChunks: {
+      chunks: 'initial',
+      cacheGroups: {
+        commons: {
+          chunks: 'all',
+          test: /[\\/]node_modules[\\/]/,
+          name: 'vendors',
+        },
+      },
+    },
   },
 
   plugins: [
@@ -99,23 +114,12 @@ module.exports = {
       __CLIENT__: true,
       __SERVER__: false,
       __DEVELOPMENT__: true,
-      __DEVTOOLS__: true // <-------- DISABLE redux-devtools HERE
+      __DEVTOOLS__: true, // <-------- DISABLE redux-devtools HERE
     }),
     new HtmlWebpackPlugin({
       title: 'third-lab',
       template: 'src/index.html', // Load a custom template
-      inject: false // Inject all scripts into the body
+      inject: false, // Inject all scripts into the body
     }),
-
-    new webpack.optimize.CommonsChunkPlugin({
-      name: 'vendor',
-      minChunks: (module) => {
-        // 该配置假定你引入的 vendor 存在于 node_modules 目录中
-        return module.context && module.context.indexOf('node_modules') !== -1;
-      }
-    }),
-    new webpack.optimize.CommonsChunkPlugin({
-      name: 'manifest' // But since there are no more common modules between them we end up with just the runtime code included in the manifest file
-    }),
-  ]
+  ],
 };

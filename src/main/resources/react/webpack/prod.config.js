@@ -10,6 +10,8 @@ const assetsPath = path.resolve(contextPath, 'static', 'dist');
 const sourcePath = path.resolve(contextPath, 'src');
 
 module.exports = {
+  mode: 'production',
+
   // 构建时输出多少信息
   stats: {
     errorDetails: true,
@@ -98,6 +100,19 @@ module.exports = {
     extensions: ['.json', '.js', '.jsx', '.ts', '.tsx']
   },
 
+  optimization: {
+    splitChunks: {
+      chunks: 'initial',
+      cacheGroups: {
+        commons: {
+          chunks: 'all',
+          test: /[\\/]node_modules[\\/]/,
+          name: 'vendors',
+        },
+      },
+    },
+  },
+
   plugins: [
     new CleanPlugin([assetsPath], {
       root: contextPath
@@ -125,28 +140,17 @@ module.exports = {
 
     // optimizations
     new webpack.optimize.OccurrenceOrderPlugin(),
-    new webpack.optimize.UglifyJsPlugin({
-      compress: {
-        warnings: false
-      }
-    }),
+    // new webpack.optimize.UglifyJsPlugin({
+    //   compress: {
+    //     warnings: false
+    //   }
+    // }),
 
     new HtmlWebpackPlugin({
       title: 'third-lab',
       basename: '',
       template: 'src/index.html', // Load a custom template
       inject: false // Inject all scripts into the body
-    }),
-
-    new webpack.optimize.CommonsChunkPlugin({
-      name: 'vendor',
-      minChunks: (module) => {
-        // 该配置假定你引入的 vendor 存在于 node_modules 目录中
-        return module.context && module.context.indexOf('node_modules') !== -1;
-      }
-    }),
-    new webpack.optimize.CommonsChunkPlugin({
-      name: 'manifest' // But since there are no more common modules between them we end up with just the runtime code included in the manifest file
     }),
   ]
 };
