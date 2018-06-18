@@ -9,8 +9,10 @@ ls -al
 
 # 构建游戏服
 sh gradlew clean assembleBootDist
-if [ $? != 0 ];then
+GRADLE_RT=$?
+if [ $GRADLE_RT != 0 ];then
     echo "构建失败"
+    exit $GRADLE_RT
 fi
 
 # 复制发布文件到文件服务器
