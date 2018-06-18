@@ -23,12 +23,12 @@ fi
 if [ -f thirdlab.tar.gz ]; then
     rm -f thirdlab.tar.gz
 fi
-wget http://192.168.11.160:10000/thirdlab/thirdlab.tar.gz .
+wget http://192.168.11.160:10000/thirdlab/thirdlab.tar.gz
 
 if [ -f jdk-8u162-linux-x64.tar.gz ]; then
     rm -f jdk-8u162-linux-x64.tar.gz
 fi
-wget http://192.168.11.160:10000/tools/jdk-8u162-linux-x64.tar.gz .
+wget http://192.168.11.160:10000/tools/jdk-8u162-linux-x64.tar.gz
 
 cp -f ci/dockerimages/jdk8-thirdlab/Dockerfile .
 cp -f ci/application.properties .
