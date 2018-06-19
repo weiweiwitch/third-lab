@@ -20,8 +20,10 @@ pipeline {
             }
             steps {
                 withCredentials(bindings: [sshUserPrivateKey(credentialsId: 'ariane-inner', keyFileVariable: 'keyfile')]) {
-                    sh 'sh -x ci/build_frontend.sh'
-                    sh 'sh -x ci/build_backend.sh '
+                    sh '''
+                    sh -x ci/build_frontend.sh
+                    sh -x ci/build_backend.sh 
+                    '''
                 }
             }
         }
