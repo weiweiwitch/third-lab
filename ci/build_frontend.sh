@@ -6,5 +6,7 @@ echo $PATH
 
 cp -f .yarnrc.tpl .yarnrc
 
-yarn install
+rm -rf node_modules
+yarn cache clean
+yarn install --verbose
 yarn run prod_build
