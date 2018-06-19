@@ -8,5 +8,5 @@ cp -f .yarnrc.tpl .yarnrc
 
 rm -rf node_modules
 yarn cache clean
-yarn install --verbose
+yarn install
 yarn run prod_build
