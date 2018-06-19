@@ -6,6 +6,7 @@ java -version
 echo $JAVA_HOME
 pwd
 ls -al
+ls src/main/resources/react/static/
 
 # 构建游戏服
 sh gradlew clean assembleBootDist
