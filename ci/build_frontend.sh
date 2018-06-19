@@ -4,6 +4,8 @@ cd src/main/resources/react
 
 echo $PATH
 
+ls -al
+
 cp -f .yarnrc.tpl .yarnrc
 
 rm -rf node_modules
