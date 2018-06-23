@@ -4,7 +4,7 @@ task wrapper(type: Wrapper) {
 
 buildscript {
     ext {
-        kotlin_version = '1.2.41'
+        kotlin_version = '1.2.50'
         spring_boot_version = '2.0.1.RELEASE'
         hibernate_version = '4.3.11.Final'
         druid_version = '1.0.9'

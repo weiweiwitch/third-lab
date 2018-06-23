@@ -1,11 +1,9 @@
 import * as React from "react";
-import { connect } from "react-redux";
-import { Menu } from "antd";
-import { querySpecTagPosts } from "../../sagas/posts";
-import { bindActionCreators } from "redux";
-import { withRouter } from "react-router";
-import { isNullOrUndefined } from "util";
-import { WikiTagsState } from "../../redux/modules/wikitags";
+import {connect} from "react-redux";
+import {Menu} from "antd";
+import {querySpecTagPosts} from "../../sagas/posts";
+import {bindActionCreators} from "redux";
+import {WikiTagsState} from "../../redux/modules/wikitags";
 
 const SubMenu = Menu.SubMenu;
 
@@ -53,7 +51,7 @@ class WikiTagTree extends React.Component<IAppProps, IStates> {
         const wikitagtree = this.props.wikitagtree;
 
         const parseMenuItems = (data: any): any => data.map((item: any) => {
-            if (!isNullOrUndefined(item.nodes) && item.nodes.length > 0) {
+            if (item.nodes !== null && item.nodes !== undefined && item.nodes.length > 0) {
                 return (
                     <SubMenu key={item.id} title={item.tagName} onTitleClick={this.onClick}>
                         {parseMenuItems(item.nodes)}

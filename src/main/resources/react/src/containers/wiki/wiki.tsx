@@ -1,10 +1,10 @@
 import * as React from "react";
-import { connect } from "react-redux";
-import { bindActionCreators } from "redux";
-import { match, Route, Switch } from "react-router";
-import { Button, Col, Row, Table } from "antd";
-import { History } from 'history';
-import { ColumnProps } from 'antd/lib/table';
+import {connect} from "react-redux";
+import {bindActionCreators} from "redux";
+import {match, Route, Switch} from "react-router";
+import {Button, Col, Dropdown, Menu, Row, Table} from "antd";
+import {History} from 'history';
+import {ColumnProps} from 'antd/lib/table';
 
 import WikiTagTree from "../wikitree/wikitagtree";
 import WikiIndex from "../wikiindex/wikiindex";
@@ -14,13 +14,13 @@ import WikiPost from "../wikipost/wikipost";
 import WikiTagEdit from '../wikitagedit/wikitagedit';
 import WikiTagCreate from '../wikitagcreate/wikitagcreate';
 import WikiPostMove2NewTag from '../wikipostmovetag/move2newtag';
-import { prepareCreatePost, querySpecPost, showPost } from "../../sagas/posts";
-import { IPostOfTagData, WikiPostsState } from "../../redux/modules/wikiposts";
-import { WikiTagsState } from "../../redux/modules/wikitags";
-import { changeTag } from "../../sagas/tags";
-import { isNullOrUndefined } from "util";
+import {prepareCreatePost, querySpecPost, showPost} from "../../sagas/posts";
+import {IPostOfTagData, WikiPostsState} from "../../redux/modules/wikiposts";
+import {WikiTagsState} from "../../redux/modules/wikitags";
+import {changeTag} from "../../sagas/tags";
 
 import "./wiki.scss";
+import {ReactNode} from "react";
 
 interface IStateProps {
     match: match<any>;
@@ -68,12 +68,6 @@ interface IPost {
     title: string;
 }
 
-const columns: Array<ColumnProps<IPost>> = [{
-    key: 'title',
-    title: '标题',
-    dataIndex: 'title',
-}];
-
 interface IState {
 }
 
@@ -88,7 +82,19 @@ class Wiki extends React.Component<IAppProps, IState> {
     componentDidMount(): any {
     }
 
-    onRow = (record: any, index: any): any => {
+    // onRow = (record: any): any => {
+    //     return {
+    //         onClick: (): any => {
+    //             // 查询特定文章
+    //             this.props.querySpecPost(record.id);
+    //
+    //             // 切换页面
+    //             this.props.showPost(record.id);
+    //         },
+    //     };
+    // };
+
+    onCell = (record: any): any => {
         return {
             onClick: (): any => {
                 // 查询特定文章
@@ -124,7 +130,7 @@ class Wiki extends React.Component<IAppProps, IState> {
         for (const eachNode of list) {
             if (eachNode.parentId !== 0) {
                 const parentPost = map[eachNode.parentId];
-                if (!isNullOrUndefined(parentPost)) {
+                if (parentPost !== null && parentPost !== undefined) {
                     parentPost.children.push(eachNode);
                 } else {
                     rootPosts.push(eachNode);
@@ -136,7 +142,39 @@ class Wiki extends React.Component<IAppProps, IState> {
         return rootPosts;
     }
 
+    addSubPost = (record: IPostOfTagData): any => {
+        //console.info('addSubPost');
+
+        const postId = record.id;
+        this.props.prepareCreatePost(postId);
+    };
+
     render(): any {
+
+        const columns: Array<ColumnProps<IPost>> = [{
+            key: 'title',
+            title: '标题',
+            dataIndex: 'title',
+            onCell: this.onCell,
+        }, {
+            key: 'op',
+            title: '操作',
+            width: 50,
+            render: (text: any, record: any): ReactNode => {
+                const menu = (
+                    <Menu>
+                        <Menu.Item><a onClick={(): any => this.addSubPost(record)}>添加</a></Menu.Item>
+                    </Menu>
+                );
+
+                return (
+                    <Dropdown overlay={menu}>
+                        <a> 设置 </a>
+                    </Dropdown>
+                );
+            },
+        }];
+
         const postsOfSpecTag = this.props.postsOfSpecTag;
         const postTreeOfSpecTag = this.listToTree(postsOfSpecTag);
 
@@ -172,7 +210,7 @@ class Wiki extends React.Component<IAppProps, IState> {
                             </Row>
                             <Row>
                                 <Col className="wiki-topic-table">
-                                    <Table size="small" pagination={false} onRow={this.onRow}
+                                    <Table size="small" pagination={false} showHeader={false} bordered
                                            columns={columns} expandedRowKeys={expandedRowKeys}
                                            dataSource={postTreeOfSpecTag} rowKey="id"/>
                                 </Col>

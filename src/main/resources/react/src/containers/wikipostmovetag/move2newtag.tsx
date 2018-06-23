@@ -1,10 +1,8 @@
 import * as React from "react";
 import {connect} from "react-redux";
 import {History} from 'history';
-import {AutoComplete, Button, Col, Form, Row, Tabs, Tag} from "antd";
+import {AutoComplete, Button, Col, Form, Row, Tag} from "antd";
 import {bindActionCreators} from "redux";
-import {isNullOrUndefined} from "util";
-import {withRouter} from "react-router";
 import {move2NewTag} from "../../sagas/posts";
 import {WikiTagData, WikiTagsState} from "../../redux/modules/wikitags";
 import {SpecPostData, WikiSpecPostState} from "../../redux/modules/wikispecpost";
@@ -98,7 +96,7 @@ class WikiPostMove2NewTag extends React.Component<IAppProps, IState> {
 				// 过滤掉不是叶子标签的
 				return false;
 			}
-			if (isNullOrUndefined(existTagMap[tag.tagName]) === false) {
+			if (existTagMap[tag.tagName] !== null && existTagMap[tag.tagName] !== undefined) {
 				// 过滤掉已经添加给目标的标签
 				return false;
 			}
@@ -130,7 +128,7 @@ class WikiPostMove2NewTag extends React.Component<IAppProps, IState> {
 			const selectedTagName = this.state.selectedTag;
 			if (selectedTagName !== '') {
 				// 判断这个tag是否已经存在
-				if (isNullOrUndefined(existTagMap[selectedTagName]) === false) {
+				if (existTagMap[selectedTagName] !== null && existTagMap[selectedTagName] !== undefined) {
 					// 已经存在了
 					return;
 				}

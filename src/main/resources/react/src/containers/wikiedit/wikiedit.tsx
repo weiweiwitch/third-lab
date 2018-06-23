@@ -1,17 +1,15 @@
 import * as React from "react";
-import { connect } from "react-redux";
-import { History } from 'history';
-import { AutoComplete, Button, Col, Form, Input, Row, Tabs, Tag, Card } from "antd";
+import {connect} from "react-redux";
+import {History} from 'history';
+import {AutoComplete, Button, Col, Form, Input, Row, Tabs, Tag} from "antd";
 import * as hljs from "highlight.js";
 import * as MarkdownIt from "markdown-it";
-import { bindActionCreators } from "redux";
-import { isNullOrUndefined } from "util";
-import { withRouter } from "react-router";
-import { chgPost, showPost } from "../../sagas/posts";
-import { styles } from "../../client";
-import { WikiTagData, WikiTagsState } from "../../redux/modules/wikitags";
-import { SpecPostData, WikiSpecPostState } from "../../redux/modules/wikispecpost";
-import { IPostData, WikiPostsState } from "../../redux/modules/wikiposts";
+import {bindActionCreators} from "redux";
+import {chgPost, showPost} from "../../sagas/posts";
+import {styles} from "../../client";
+import {WikiTagData, WikiTagsState} from "../../redux/modules/wikitags";
+import {SpecPostData, WikiSpecPostState} from "../../redux/modules/wikispecpost";
+import {IPostData, WikiPostsState} from "../../redux/modules/wikiposts";
 
 const TabPane = Tabs.TabPane;
 const FormItem = Form.Item;
@@ -157,7 +155,7 @@ class WikiEdit extends React.Component<IAppProps, IState> {
             existPostMap[post.title] = true;
         });
         this.props.posts.filter((post: IPostData) => {
-            if (isNullOrUndefined(existPostMap[post.title]) === false) {
+            if (existPostMap[post.title] !== null && existPostMap[post.title] !== undefined) {
                 // 过滤掉已经添加给目标的标签
                 return false;
             }
@@ -193,7 +191,7 @@ class WikiEdit extends React.Component<IAppProps, IState> {
             const selectedPostName = this.state.selectedParentPost;
             if (selectedPostName !== '') {
                 // 判断这个post是否已经存在
-                if (isNullOrUndefined(existPostMap[selectedPostName]) === false) {
+                if (existPostMap[selectedPostName] !== null && existPostMap[selectedPostName] !== undefined) {
                     // 已经存在了
                     return;
                 }

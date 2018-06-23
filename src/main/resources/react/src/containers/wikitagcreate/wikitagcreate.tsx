@@ -3,8 +3,6 @@ import {connect} from "react-redux";
 import {History} from 'history';
 import {AutoComplete, Button, Col, Form, Input, Row, Tabs, Tag} from "antd";
 import {bindActionCreators} from "redux";
-import {isNullOrUndefined} from "util";
-import {withRouter} from "react-router";
 import {addTag} from "../../sagas/tags";
 import {WikiTagsState} from "../../redux/modules/wikitags";
 
@@ -95,7 +93,7 @@ class WikiTagCreate extends React.Component<IAppProps, IState> {
 			existTagMap[postTag.tagName] = true;
 		});
 		this.props.wikitaglist.filter((value: any) => {
-			if (isNullOrUndefined(existTagMap[value.tagName]) === false) {
+			if (existTagMap[value.tagName] !== null && existTagMap[value.tagName] !== undefined) {
 				// 过滤掉已经添加给目标的tag
 				return false;
 			}
@@ -127,7 +125,7 @@ class WikiTagCreate extends React.Component<IAppProps, IState> {
 			const selectedTagName = this.state.selectedTag;
 			if (selectedTagName !== '') {
 				// 判断这个tag是否已经存在
-				if (isNullOrUndefined(existTagMap[selectedTagName]) === false) {
+				if (existTagMap[selectedTagName] !== null && existTagMap[selectedTagName] !== undefined) {
 					// 已经存在了
 					return;
 				}
