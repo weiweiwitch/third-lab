@@ -9,7 +9,7 @@ docker rmi weiweiwitch/thirdlab-kt
 # 复制目标文件到发布目录
 cp -f ../build/libs/thirdlab*.jar thirdlab.jar
 cp -f ../application.properties.tpl application.properties
-sed -i '/spring.datasource.url/c\spring.datasource.url=jdbc:mysql://172.18.0.200/tl?useUnicode=true&characterEncoding=utf8' application.properties
+sed -i '/spring.datasource.url/c\spring.datasource.url=jdbc:mysql://172.99.0.200/tl?useUnicode=true&characterEncoding=utf8' application.properties
 sed -i '/spring.datasource.username/c\spring.datasource.username=root' application.properties
 sed -i '/spring.datasource.password/c\spring.datasource.password=123456' application.properties
 
