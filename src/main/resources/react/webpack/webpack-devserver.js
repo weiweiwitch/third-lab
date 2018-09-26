@@ -6,7 +6,7 @@ process.env.APIPORT = 8080;
 process.env.PORT = 3000;
 process.env.NODE_ENV = 'development';
 
-const config = require('./dev.config.js');
+const config = require('./webpack.renderer.dev.config');
 
 const apiPort = process.env.APIPORT;
 const port = process.env.PORT;

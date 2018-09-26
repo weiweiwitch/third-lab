@@ -6,71 +6,74 @@ import {Button, Col, Row} from "antd";
 import md from '../md';
 import {SummaryState} from "../../redux/modules/summary";
 import {loginSuccess} from "../../sagas/auth";
+import {match} from "react-router";
 
 interface IStateProps {
-	history: History;
-	summary: string;
+    match: match<any>;
+    history: History;
+
+    summary: string;
 }
 
 interface IDispatchProps {
-	loginSuccess(): any;
+    loginSuccess(): any;
 }
 
 type IAppProps = IStateProps & IDispatchProps;
 
 const mapStateToProps = (state: any): any => {
-	const summary: SummaryState =  state.summary;
+    const summary: SummaryState = state.summary;
 
-	return {
-		summary: summary.summary,
-	};
+    return {
+        summary: summary.summary,
+    };
 };
 
 const mapDispatchToProps = (dispatch: any): any => {
-	return bindActionCreators({
-		loginSuccess,
-	}, dispatch);
+    return bindActionCreators({
+        loginSuccess,
+    }, dispatch);
 };
 
 const showStyle = {
-	margin: '20px 100px',
+    margin: '20px 100px',
 };
 
 class Summary extends React.Component<IAppProps, any> {
 
-	constructor(props: IAppProps) {
-		super(props);
-	}
+    constructor(props: IAppProps) {
+        super(props);
+    }
 
-	componentDidMount(): any {
-		this.props.loginSuccess();
-	}
+    componentDidMount(): any {
+        this.props.loginSuccess();
+    }
 
-	onEdit = (): any => {
-		this.props.history.push('/summaryedit');
-	};
+    onEdit = (): any => {
+        this.props.history.push('/summaryedit');
+    };
 
-	render(): any {
-		const summary = this.props.summary;
-		const result = {__html: md.render(summary)};
+    render(): any {
+        const summary = this.props.summary;
+        const result = {__html: md.render(summary)};
 
-		return (
-			<div style={showStyle}>
-				<Row>
-					<Col span={24}>
-						<Row>
-							<Col span={23}>
-								<div className="markdown-text" dangerouslySetInnerHTML={result} />
-							</Col>
-							<Col span={1}>
-								<Button shape="circle" icon="edit" onClick={this.onEdit}></Button>
-							</Col>
-						</Row>
-					</Col>
-				</Row>
-			</div>
-		);
-	}
+        return (
+            <div style={showStyle}>
+                <Row>
+                    <Col span={24}>
+                        <Row>
+                            <Col span={23}>
+                                <div className="markdown-text" dangerouslySetInnerHTML={result}/>
+                            </Col>
+                            <Col span={1}>
+                                <Button shape="circle" icon="edit" onClick={this.onEdit} />
+                            </Col>
+                        </Row>
+                    </Col>
+                </Row>
+            </div>
+        );
+    }
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Summary);

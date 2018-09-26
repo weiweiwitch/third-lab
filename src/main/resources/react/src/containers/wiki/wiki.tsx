@@ -79,21 +79,6 @@ class Wiki extends React.Component<IAppProps, IState> {
         this.state = {};
     }
 
-    componentDidMount(): any {
-    }
-
-    // onRow = (record: any): any => {
-    //     return {
-    //         onClick: (): any => {
-    //             // 查询特定文章
-    //             this.props.querySpecPost(record.id);
-    //
-    //             // 切换页面
-    //             this.props.showPost(record.id);
-    //         },
-    //     };
-    // };
-
     onCell = (record: any): any => {
         return {
             onClick: (): any => {
@@ -220,16 +205,14 @@ class Wiki extends React.Component<IAppProps, IState> {
 
                     <Col span={18}>
                         <div className="wiki-right-panel">
-                            <Switch>
-                                <Route path={`${this.props.match.path}/wikiindex`} component={WikiIndex}/>
-                                <Route path={`${this.props.match.path}/wikinew/:parentId`} component={WikiNew}/>
-                                <Route path={`${this.props.match.path}/wikiedit`} component={WikiEdit}/>
-                                <Route path={`${this.props.match.path}/wikipost/:pId`} component={WikiPost}/>
-                                <Route path={`${this.props.match.path}/wikitagedit`} component={WikiTagEdit}/>
-                                <Route path={`${this.props.match.path}/wikitagcreate`} component={WikiTagCreate}/>
-                                <Route path={`${this.props.match.path}/wikipostmove2tag`}
-                                       component={WikiPostMove2NewTag}/>
-                            </Switch>
+                            <Route path={`${this.props.match.path}/wikiindex`} component={WikiIndex}/>
+                            <Route path={`${this.props.match.path}/wikinew/:parentId`} component={WikiNew}/>
+                            <Route path={`${this.props.match.path}/wikiedit`} component={WikiEdit}/>
+                            <Route path={`${this.props.match.path}/wikipost/:pId`} component={WikiPost}/>
+                            <Route path={`${this.props.match.path}/wikitagedit`} component={WikiTagEdit}/>
+                            <Route path={`${this.props.match.path}/wikitagcreate`} component={WikiTagCreate}/>
+                            <Route path={`${this.props.match.path}/wikipostmove2tag`}
+                                   component={WikiPostMove2NewTag}/>
                         </div>
                     </Col>
                 </Row>

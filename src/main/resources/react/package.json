@@ -1,13 +1,47 @@
 {
   "name": "third-lab",
-  "version": "0.5.0",
+  "version": "0.6.0",
   "description": "A notebook",
   "author": "Jack Zhu",
   "homepage": "https://github.com/weiweiwitch/third-lab",
-  "main": "index.js",
+  "main": "./static/dist/main.js",
   "scripts": {
-    "dev_build": "node webpack/webpack-devserver.js",
-    "prod_build": "node webpack/build.js"
+    "build-main-prod": "webpack --config webpack/webpack.main.prod.config.js",
+    "build-renderer-prod": "webpack --config webpack/webpack.renderer.prod.config.js",
+    "build-prod": "npm run build-renderer-prod && npm run build-main-prod",
+    "start-main-dev": "webpack --config webpack/webpack.main.dev.config.js && electron --inspect ./static/dev/main.js",
+    "start-renderer-dev": "node webpack/webpack-devserver.js",
+    "run-prod": "electron ./static/dist/main.js",
+    "pack": "electron-builder --dir",
+    "dist": "electron-builder"
+  },
+  "build": {
+    "productName": "thirdlab",
+    "appId": "xyz.ariane.thirdlab",
+    "mac": {
+      "category": "your.app.category.type"
+    },
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "static/dist/",
+      "node_modules/",
+      "package.json"
+    ],
+    "linux": {
+      "target": "deb"
+    },
+    "win": {
+      "target": "nsis"
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": false,
+      "allowElevation": true,
+      "allowToChangeInstallationDirectory": true,
+      "runAfterFinish": false
+    }
   },
   "license": "MIT",
   "dependencies": {
@@ -44,6 +78,8 @@
     "babel-preset-stage-0": "^6.5.0",
     "compression": "^1.6.0",
     "css-loader": "^0.23.1",
+    "electron": "2.0.10",
+    "electron-builder": "^20.28.4",
     "eslint": "^4.11.0",
     "eslint-config-airbnb": "^16.1.0",
     "eslint-loader": "^1.0.0",
@@ -83,8 +119,10 @@
     "typescript": "2.8.4",
     "url-loader": "^0.5.7",
     "webpack": "^4.10.2",
+    "webpack-cli": "^3.1.1",
     "webpack-dev-middleware": "^3.1.3",
     "webpack-dev-server": "^3.1.4",
-    "webpack-hot-middleware": "^2.22.2"
+    "webpack-hot-middleware": "^2.22.2",
+    "webpack-merge": "^4.1.4"
   }
 }

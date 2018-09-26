@@ -1,17 +1,32 @@
 const webpack = require('webpack');
-const webpackProConfig = require('./prod.config');
+const webpackRendererProdConfig = require('./webpack.renderer.prod.config');
+const webpackMainProdConfig = require('./webpack.main.prod.config');
 
-// webpack --verbose --colors --display-error-details --config webpack/prod.config.js
+function buildRenderer() {
+    webpack(webpackRendererProdConfig)
+        .run((err, stats) => {
+            if (err) {
+                console.error(`执行 webpack renderer 出错 ${err}`);
+            }
+
+            console.log(stats.toString(webpackRendererProdConfig.stats));
+        });
+}
+
+function buildMain() {
+    webpack(webpackMainProdConfig)
+        .run((err, stats) => {
+            if (err) {
+                console.error(`执行 webpack main 出错 ${err}`);
+            }
+
+            console.log(stats.toString(webpackMainProdConfig.stats));
+        });
+}
 
 function build() {
-  webpack(webpackProConfig)
-    .run((err, stats) => {
-      if (err) {
-        console.error('执行webpack出错 ' + err);
-      }
-
-      console.log(stats.toString(webpackProConfig.stats));
-    });
+    buildRenderer();
+    buildMain();
 }
 
 build();

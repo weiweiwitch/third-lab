@@ -43,9 +43,10 @@ class App extends React.Component<IAppProps, any> {
         this.props.history.push(path);
     };
 
-    onClick = (path: string): any => {
+    onClick = (): any => {
         // 切换到特定界面
-        this.props.history.push(path);
+        console.info(`${this.props.match.path}`);
+        this.props.history.push('/wiki/wikiindex');
     };
 
     render(): any {
@@ -58,16 +59,16 @@ class App extends React.Component<IAppProps, any> {
                         </Col>
                         <Col span={4}>
                             <ButtonGroup>
-                                <Button onClick={(): any => this.onClick("/wiki/wikiindex")}>Wiki</Button>
+                                <Button onClick={(): any => this.onClick()}>Wiki</Button>
                             </ButtonGroup>
                         </Col>
                     </Row>
                 </Header>
                 <div>
                     <Switch>
-                        <Route exact path={`/`} component={Summary}/>
-                        <Route path={`/summaryedit`} component={SummaryEdit}/>
-                        <Route path={`/wiki`} component={Wiki}/>
+                        <Route path={`${this.props.match.path}summaryedit`} component={SummaryEdit}/>
+                        <Route path={`${this.props.match.path}wiki`} component={Wiki}/>
+                        <Route component={Summary}/>
                     </Switch>
                 </div>
             </div>

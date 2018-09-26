@@ -1,9 +1,7 @@
-import {all, call, put, takeEvery, fork, race, take, select} from "redux-saga/effects";
+import {all, call, fork, put, race, take, takeEvery} from "redux-saga/effects";
 import {LOGIN_SUCCESS} from './auth';
 import history from '../appHistory';
 import {client} from "../client";
-import {getSpecTagId} from "../redux/modules/wikitags";
-import {isNullOrUndefined} from "util";
 
 export const QUERY_SUMMARY = 'QUERY_SUMMARY';
 export const QUERY_SUMMARY_SUCCESS = 'QUERY_SUMMARY_SUCCESS';
