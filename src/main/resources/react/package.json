@@ -13,7 +13,7 @@
     "start-renderer-dev": "node webpack/webpack-devserver.js",
     "run-prod": "electron ./static/dist/main.js",
     "pack": "electron-builder --dir",
-    "dist": "electron-builder"
+    "dist": "electron-builder -l --x64 && electron-builder -w --x64"
   },
   "build": {
     "productName": "thirdlab",

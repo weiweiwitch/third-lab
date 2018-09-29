@@ -21,6 +21,8 @@ DISTRIBUTION_SERVER=192.168.11.160
 DISTRIBUTION_SERVER_USER=ariane
 
 mkdir -p ~/.ssh/
-ssh-keyscan -H ${DISTRIBUTION_SERVER} | tee -a ~/.ssh/known_hosts
+
+# 构建前端时，已经添加过了，这里不需要了。
+# ssh-keyscan -H ${DISTRIBUTION_SERVER} | tee -a ~/.ssh/known_hosts
 scp -i ${keyfile} ${WORKSPACE}/build/distributions/thirdlab.tar.gz \
     ${DISTRIBUTION_SERVER_USER}@${DISTRIBUTION_SERVER}:/home/${DISTRIBUTION_SERVER_USER}/docker/nginx/thirdlab/
