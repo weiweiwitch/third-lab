@@ -3,7 +3,7 @@ import * as MarkdownIt from "markdown-it";
 
 const md = new MarkdownIt({
     html: true,
-    highlight: (str: any, lang: any): any => {
+    highlight: (str: any, lang: any) => {
         if (lang && hljs.getLanguage(lang)) {
             try {
                 return hljs.highlight(lang, str).value;

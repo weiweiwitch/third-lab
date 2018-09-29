@@ -14,12 +14,12 @@ interface IStateProps {
 }
 
 interface IDispatchProps {
-	move2NewTag(postId: number, oldTagId: number, tagId: number): any;
+	move2NewTag(postId: number, oldTagId: number, tagId: number);
 }
 
 type IAppProps = IStateProps & IDispatchProps;
 
-const mapStateToProps = (state: any): any => {
+const mapStateToProps = (state: any) => {
 	const wikispecpost: WikiSpecPostState = state.wikispecpost;
 	const wikitags: WikiTagsState = state.wikitags;
 
@@ -29,7 +29,7 @@ const mapStateToProps = (state: any): any => {
 	};
 };
 
-const mapDispatchToProps = (dispatch: any): any => {
+const mapDispatchToProps = (dispatch: any) => {
 	return bindActionCreators({
 		move2NewTag,
 	}, dispatch);
@@ -50,7 +50,7 @@ class WikiPostMove2NewTag extends React.Component<IAppProps, IState> {
 
 		let postTag = new WikiTagData();
 		const postTagId = this.props.wikipost.tagId;
-		props.wikitaglist.map((tag: any): any => {
+		props.wikitaglist.map((tag: any) => {
 			if (tag.id === postTagId) {
 				postTag = tag;
 			}
@@ -65,7 +65,7 @@ class WikiPostMove2NewTag extends React.Component<IAppProps, IState> {
 		};
 	}
 
-	confirmModify = (event: any): any => {
+	confirmModify = (event: any) => {
 		event.preventDefault();
 
 		const postId = this.props.wikipost.id;
@@ -73,19 +73,19 @@ class WikiPostMove2NewTag extends React.Component<IAppProps, IState> {
 		this.props.move2NewTag(postId, oldTagId, this.state.postTag.id);
 	};
 
-	cancelModify = (event: any): any => {
+	cancelModify = (event: any) => {
 		event.preventDefault();
 
 		this.props.history.push('/wiki/wikiindex');
 	};
 
-	onTagSelect = (value: any): any => {
+	onTagSelect = (value: any) => {
 		this.setState({
 			selectedTag: value,
 		});
 	};
 
-	onTagSearch = (inputValue: any): any => {
+	onTagSearch = (inputValue: any) => {
 		const searchResult = [];
 		const existTagMap = new Map<string, boolean>();
 		this.state.showedParentTag.map((postTag: any) => {
@@ -115,7 +115,7 @@ class WikiPostMove2NewTag extends React.Component<IAppProps, IState> {
 		});
 	};
 
-	onTagEnterPress = (event: any): any => {
+	onTagEnterPress = (event: any) => {
 		if (event.key === 'Enter') {
 			// 按了回车
 			const existTagMap = new Map<string, number>();
@@ -133,7 +133,7 @@ class WikiPostMove2NewTag extends React.Component<IAppProps, IState> {
 					return;
 				}
 
-				this.props.wikitaglist.map((tag: any): any => {
+				this.props.wikitaglist.map((tag: any) => {
 					if (tag.tagName === selectedTagName) {
 						newParentTag = tag;
 						selectedNewParentTag = true;
@@ -156,7 +156,7 @@ class WikiPostMove2NewTag extends React.Component<IAppProps, IState> {
 		}
 	};
 
-	tagClose = (tag: any): any => {
+	tagClose = (tag: any) => {
 		const remainings = this.state.showedParentTag.filter((record: any, index: any) => {
 			return record === tag ? false : true;
 		});
@@ -170,10 +170,10 @@ class WikiPostMove2NewTag extends React.Component<IAppProps, IState> {
 		});
 	};
 
-	render(): any {
+	render() {
 		const tags = this.state.showedParentTag.map((tag: any) => {
 			return (
-				<Tag key={tag.id} closable afterClose={(): any => this.tagClose(tag)}>{tag.tagName}</Tag>
+				<Tag key={tag.id} closable afterClose={() => this.tagClose(tag)}>{tag.tagName}</Tag>
 			);
 		});
 

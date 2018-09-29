@@ -14,14 +14,14 @@ interface IStateProps {
 }
 
 interface IDispatchProps {
-	querySpecPost(postId: number): any;
+	querySpecPost(postId: number);
 
-	showPost(postId: number): any;
+	showPost(postId: number);
 }
 
 type IAppProps = IStateProps & IDispatchProps;
 
-const mapStateToProps = (state: any): any => {
+const mapStateToProps = (state: any) => {
 	const wikiposts: WikiPostsState = state.wikiposts;
 
 	return {
@@ -29,7 +29,7 @@ const mapStateToProps = (state: any): any => {
 	};
 };
 
-const mapDispatchToProps = (dispatch: any): any => {
+const mapDispatchToProps = (dispatch: any) => {
 	return bindActionCreators({
 		querySpecPost,
 		showPost,
@@ -50,7 +50,7 @@ class WikiIndex extends React.Component<IAppProps, IState> {
 		};
 	}
 
-	handleUpdateInput = (event: any): any => {
+	handleUpdateInput = (event: any) => {
 		const keyword = event.target.value;
 		if (keyword.trim() === '') {
 			this.setState({
@@ -67,7 +67,7 @@ class WikiIndex extends React.Component<IAppProps, IState> {
 		}
 	};
 
-	searchEachNode(keyword: any, wikiposts: any, filterPosts: any): any {
+	searchEachNode(keyword: any, wikiposts: any, filterPosts: any) {
 		for (const post of wikiposts) {
 			if (post.title.includes(keyword)) {
 				filterPosts.push({
@@ -79,9 +79,9 @@ class WikiIndex extends React.Component<IAppProps, IState> {
 		}
 	}
 
-    onRow = (record: any, index: any): any => {
+    onRow = (record: any, index: any) => {
 		return {
-			onClick: (): any => {
+			onClick: () => {
                 // 查询特定文章
                 this.props.querySpecPost(record.id);
 
@@ -91,14 +91,14 @@ class WikiIndex extends React.Component<IAppProps, IState> {
 		};
 	};
 
-	showPost = (chosenRequest: any, index: any): any => {
+	showPost = (chosenRequest: any, index: any) => {
 		if (index !== -1) {
 			const postId = this.state.searchSource[index].value.id;
 			this.props.showPost(postId);
 		}
 	};
 
-	render(): any {
+	render() {
 		const columns = [{
 			title: '标题',
 			dataIndex: 'title',

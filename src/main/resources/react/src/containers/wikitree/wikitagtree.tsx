@@ -12,12 +12,12 @@ interface IStateProps {
 }
 
 interface IDispatchProps {
-    querySpecTagPosts(tagId: number): any;
+    querySpecTagPosts(tagId: number);
 }
 
 type IAppProps = IStateProps & IDispatchProps;
 
-const mapStateToProps = (state: any): any => {
+const mapStateToProps = (state: any) => {
     const wikitags: WikiTagsState = state.wikitags;
 
     return {
@@ -25,7 +25,7 @@ const mapStateToProps = (state: any): any => {
     };
 };
 
-const mapDispatchToProps = (dispatch: any): any => {
+const mapDispatchToProps = (dispatch: any) => {
     return bindActionCreators({
         querySpecTagPosts,
     }, dispatch);
@@ -42,15 +42,15 @@ class WikiTagTree extends React.Component<IAppProps, IStates> {
         this.state = {};
     }
 
-    onClick = (e: any): any => {
+    onClick = (e: any) => {
         const nodeId = parseInt(e.key, 10);
         this.props.querySpecTagPosts(nodeId);
     };
 
-    render(): any {
-        const wikitagtree = this.props.wikitagtree;
+    render() {
+        const wikiTagTree = this.props.wikitagtree;
 
-        const parseMenuItems = (data: any): any => data.map((item: any) => {
+        const parseMenuItems = (data: any) => data.map((item: any) => {
             if (item.nodes !== null && item.nodes !== undefined && item.nodes.length > 0) {
                 return (
                     <SubMenu key={item.id} title={item.tagName} onTitleClick={this.onClick}>
@@ -67,7 +67,7 @@ class WikiTagTree extends React.Component<IAppProps, IStates> {
         return (
             <div>
                 <Menu onClick={this.onClick} mode="horizontal">
-                    {parseMenuItems(wikitagtree)}
+                    {parseMenuItems(wikiTagTree)}
                 </Menu>
             </div>
         );

@@ -21,14 +21,14 @@ interface IStateProps {
 }
 
 interface IDispatchProps {
-    deletePost(postId: number): any;
+    deletePost(postId: number);
 
-    prepareCreatePost(parentId: number): any;
+    prepareCreatePost(parentId: number);
 }
 
 type IAppProps = IStateProps & IDispatchProps;
 
-const mapStateToProps = (state: any): any => {
+const mapStateToProps = (state: any) => {
     const wikispecpost: WikiSpecPostState = state.wikispecpost;
     const wikitags: WikiTagsState = state.wikitags;
 
@@ -38,7 +38,7 @@ const mapStateToProps = (state: any): any => {
     };
 };
 
-const mapDispatchToProps = (dispatch: any): any => {
+const mapDispatchToProps = (dispatch: any) => {
     return bindActionCreators({
         deletePost,
         prepareCreatePost,
@@ -59,18 +59,18 @@ class WikiPost extends React.Component<IAppProps, any> {
     }
 
     // 编辑文章
-    edit = (event: any): any => {
+    edit = (event: any) => {
         this.props.history.push('/wiki/wikiedit');
     };
 
     // 创建子文章
-    createSubPost = (event: any): any => {
+    createSubPost = (event: any) => {
         const postId = this.props.wikipost.id;
         this.props.prepareCreatePost(postId);
     };
 
     // 删除文章
-    deletePost = (event: any): any => {
+    deletePost = (event: any) => {
         // 删除特定post
         const post = this.props.wikipost;
         this.props.deletePost(post.id);
@@ -80,15 +80,15 @@ class WikiPost extends React.Component<IAppProps, any> {
     };
 
     // 返回首页
-    transToIndex = (event: any): any => {
+    transToIndex = (event: any) => {
         this.props.history.push('/wiki/wikiindex');
     };
 
-    move2NewTag = (): any => {
+    move2NewTag = () => {
         this.props.history.push('/wiki/wikipostmove2tag');
     };
 
-    render(): any {
+    render() {
         const post = this.props.wikipost;
 
         const result = {__html: md.render(post.postText)};
@@ -137,7 +137,7 @@ class WikiPost extends React.Component<IAppProps, any> {
         });
 
         let postTag = new WikiTagData();
-        this.props.wikitaglist.map((tag: WikiTagData): any => {
+        this.props.wikitaglist.map((tag: WikiTagData) => {
             if (tag.id === post.tagId) {
                 postTag = tag;
             }

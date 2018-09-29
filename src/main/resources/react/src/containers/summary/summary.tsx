@@ -16,12 +16,12 @@ interface IStateProps {
 }
 
 interface IDispatchProps {
-    loginSuccess(): any;
+    loginSuccess();
 }
 
 type IAppProps = IStateProps & IDispatchProps;
 
-const mapStateToProps = (state: any): any => {
+const mapStateToProps = (state: any) => {
     const summary: SummaryState = state.summary;
 
     return {
@@ -29,7 +29,7 @@ const mapStateToProps = (state: any): any => {
     };
 };
 
-const mapDispatchToProps = (dispatch: any): any => {
+const mapDispatchToProps = (dispatch: any) => {
     return bindActionCreators({
         loginSuccess,
     }, dispatch);
@@ -45,15 +45,15 @@ class Summary extends React.Component<IAppProps, any> {
         super(props);
     }
 
-    componentDidMount(): any {
+    componentDidMount() {
         this.props.loginSuccess();
     }
 
-    onEdit = (): any => {
+    onEdit = () => {
         this.props.history.push('/summaryedit');
     };
 
-    render(): any {
+    render() {
         const summary = this.props.summary;
         const result = {__html: md.render(summary)};
 

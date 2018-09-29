@@ -15,12 +15,12 @@ interface IStateProps {
 }
 
 interface IDispatchProps {
-	addTag(data: any): any;
+	addTag(data: any);
 }
 
 type IAppProps = IStateProps & IDispatchProps;
 
-const mapStateToProps = (state: any): any => {
+const mapStateToProps = (state: any) => {
 	const wikitags: WikiTagsState = state.wikitags;
 
 	return {
@@ -28,7 +28,7 @@ const mapStateToProps = (state: any): any => {
 	};
 };
 
-const mapDispatchToProps = (dispatch: any): any => {
+const mapDispatchToProps = (dispatch: any) => {
 	return bindActionCreators({
 		addTag,
 	}, dispatch);
@@ -59,11 +59,11 @@ class WikiTagCreate extends React.Component<IAppProps, IState> {
 	}
 
 	// 更新tag名
-	updateTagName = (event: any): any => {
+	updateTagName = (event: any) => {
 		this.setState({tagName: event.target.value});
 	};
 
-	confirmModify = (event: any): any => {
+	confirmModify = (event: any) => {
 		event.preventDefault();
 
 		const newTag = {
@@ -74,19 +74,19 @@ class WikiTagCreate extends React.Component<IAppProps, IState> {
 		this.props.addTag(newTag);
 	};
 
-	cancelModify = (event: any): any => {
+	cancelModify = (event: any) => {
 		event.preventDefault();
 
 		this.props.history.push('/wiki/wikiindex');
 	};
 
-	onTagSelect = (value: any): any => {
+	onTagSelect = (value: any) => {
 		this.setState({
 			selectedTag: value,
 		});
 	};
 
-	onTagSearch = (inputValue: any): any => {
+	onTagSearch = (inputValue: any) => {
 		const searchResult = [];
 		const existTagMap = new Map<string, boolean>();
 		this.state.showedParentTag.map((postTag: any) => {
@@ -112,7 +112,7 @@ class WikiTagCreate extends React.Component<IAppProps, IState> {
 		});
 	};
 
-	onTagEnterPress = (event: any): any => {
+	onTagEnterPress = (event: any) => {
 		if (event.key === 'Enter') {
 			// 按了回车
 			const existTagMap = new Map<string, number>();
@@ -130,7 +130,7 @@ class WikiTagCreate extends React.Component<IAppProps, IState> {
 					return;
 				}
 
-				this.props.wikitaglist.map((tag: any): any => {
+				this.props.wikitaglist.map((tag: any) => {
 					if (tag.tagName === selectedTagName) {
 						newParentTag = tag;
 						selectedNewParentTag = true;
@@ -153,7 +153,7 @@ class WikiTagCreate extends React.Component<IAppProps, IState> {
 		}
 	};
 
-	tagClose = (tag: any): any => {
+	tagClose = (tag: any) => {
 		const remainings = this.state.showedParentTag.filter((record: any, index: any) => {
 			return record === tag ? false : true;
 		});
@@ -167,10 +167,10 @@ class WikiTagCreate extends React.Component<IAppProps, IState> {
 		});
 	};
 
-	render(): any {
+	render() {
 		const tags = this.state.showedParentTag.map((tag: any) => {
 			return (
-				<Tag key={tag.id} closable afterClose={(): any => this.tagClose(tag)}>{tag.tagName}</Tag>
+				<Tag key={tag.id} closable afterClose={() => this.tagClose(tag)}>{tag.tagName}</Tag>
 			);
 		});
 

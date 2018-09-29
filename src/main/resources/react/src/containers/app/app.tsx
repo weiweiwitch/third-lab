@@ -22,11 +22,11 @@ interface IDispatchProps {
 
 type IAppProps = IStateProps & IDispatchProps;
 
-function mapStateToProps(state: any): any {
+function mapStateToProps(state: any) {
     return {};
 }
 
-const mapDispatchToProps = (dispatch: any): any => {
+const mapDispatchToProps = (dispatch: any) => {
     return bindActionCreators({}, dispatch);
 };
 
@@ -36,20 +36,25 @@ class App extends React.Component<IAppProps, any> {
         super(props);
     }
 
-    onChange = (e: any): any => {
+    onChange = (e: any) => {
         const path = e.target.value;
 
         // 切换到特定界面
         this.props.history.push(path);
     };
 
-    onClick = (): any => {
+    showSummary = () => {
+        console.info(`${this.props.match.path}`);
+        this.props.history.push('/');
+    };
+
+    showWiki = () => {
         // 切换到特定界面
         console.info(`${this.props.match.path}`);
         this.props.history.push('/wiki/wikiindex');
     };
 
-    render(): any {
+    render() {
         return (
             <div style={{padding: '0px'}}>
                 <Header className="header">
@@ -59,7 +64,8 @@ class App extends React.Component<IAppProps, any> {
                         </Col>
                         <Col span={4}>
                             <ButtonGroup>
-                                <Button onClick={(): any => this.onClick()}>Wiki</Button>
+                                <Button onClick={() => this.showSummary()}>Summary</Button>
+                                <Button onClick={() => this.showWiki()}>Wiki</Button>
                             </ButtonGroup>
                         </Col>
                     </Row>

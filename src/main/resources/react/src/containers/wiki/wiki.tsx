@@ -1,4 +1,5 @@
 import * as React from "react";
+import {ReactNode} from "react";
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
 import {match, Route, Switch} from "react-router";
@@ -20,7 +21,7 @@ import {WikiTagsState} from "../../redux/modules/wikitags";
 import {changeTag} from "../../sagas/tags";
 
 import "./wiki.scss";
-import {ReactNode} from "react";
+import WikiTopicTree from "../wikitopictree/wikiTopicTree";
 
 interface IStateProps {
     match: match<any>;
@@ -32,18 +33,18 @@ interface IStateProps {
 }
 
 interface IDispatchProps {
-    querySpecPost(postId: number): any;
+    querySpecPost(postId: number);
 
-    prepareCreatePost(parentId: number): any;
+    prepareCreatePost(parentId: number);
 
-    showPost(postId: number): any;
+    showPost(postId: number);
 
-    changeTag(tagId: number, data: any): any;
+    changeTag(tagId: number, data: any);
 }
 
 type IAppProps = IStateProps & IDispatchProps;
 
-const mapStateToProps = (state: any): any => {
+const mapStateToProps = (state: any) => {
     const wikiposts: WikiPostsState = state.wikiposts;
     const wikitags: WikiTagsState = state.wikitags;
 
@@ -54,7 +55,7 @@ const mapStateToProps = (state: any): any => {
     };
 };
 
-const mapDispatchToProps = (dispatch: any): any => {
+const mapDispatchToProps = (dispatch: any) => {
     return bindActionCreators({
         querySpecPost,
         prepareCreatePost,
@@ -79,9 +80,9 @@ class Wiki extends React.Component<IAppProps, IState> {
         this.state = {};
     }
 
-    onCell = (record: any): any => {
+    onCell = (record: any) => {
         return {
-            onClick: (): any => {
+            onClick: () => {
                 // 查询特定文章
                 this.props.querySpecPost(record.id);
 
@@ -91,21 +92,29 @@ class Wiki extends React.Component<IAppProps, IState> {
         };
     };
 
+    onShowPost = (postId: number) => {
+        // 查询特定文章
+        this.props.querySpecPost(postId);
+
+        // 切换页面
+        this.props.showPost(postId);
+    };
+
     // 切换到创建post的页面
-    showCreatePostPage = (): any => {
+    showCreatePostPage = () => {
         this.props.prepareCreatePost(0);
     };
 
-    showCreateTagPage = (): any => {
+    showCreateTagPage = () => {
         this.props.history.push('/wiki/wikitagcreate');
     };
 
     // 显示编辑TAG的对话框，修改TAG的关联关系
-    showEditTagPage = (): any => {
+    showEditTagPage = () => {
         this.props.history.push('/wiki/wikitagedit');
     };
 
-    listToTree(list: any[]): any {
+    listToTree = (list: any[]) => {
         const map = new Map<number, any>();
         const rootPosts = [];
         for (const eachNode of list) {
@@ -125,16 +134,16 @@ class Wiki extends React.Component<IAppProps, IState> {
             }
         }
         return rootPosts;
-    }
+    };
 
-    addSubPost = (record: IPostOfTagData): any => {
+    addSubPost = (record: IPostOfTagData) => {
         //console.info('addSubPost');
 
         const postId = record.id;
         this.props.prepareCreatePost(postId);
     };
 
-    render(): any {
+    render() {
 
         const columns: Array<ColumnProps<IPost>> = [{
             key: 'title',
@@ -148,7 +157,7 @@ class Wiki extends React.Component<IAppProps, IState> {
             render: (text: any, record: any): ReactNode => {
                 const menu = (
                     <Menu>
-                        <Menu.Item><a onClick={(): any => this.addSubPost(record)}>添加</a></Menu.Item>
+                        <Menu.Item><a onClick={() => this.addSubPost(record)}>添加</a></Menu.Item>
                     </Menu>
                 );
 
@@ -164,15 +173,15 @@ class Wiki extends React.Component<IAppProps, IState> {
         const postTreeOfSpecTag = this.listToTree(postsOfSpecTag);
 
         let specTag = '';
-        this.props.wikitaglist.map((tag: any): any => {
+        this.props.wikitaglist.map((tag: any) => {
             if (tag.id === this.props.specTagId) {
                 specTag = tag.tagName;
             }
         });
 
         const expandedRowKeys = [];
-        postsOfSpecTag.map((post: IPostOfTagData): any => {
-            expandedRowKeys.push(post.id);
+        postsOfSpecTag.map((post: IPostOfTagData) => {
+            expandedRowKeys.push(`${post.id}`);
         });
 
         return (
@@ -195,9 +204,8 @@ class Wiki extends React.Component<IAppProps, IState> {
                             </Row>
                             <Row>
                                 <Col className="wiki-topic-table">
-                                    <Table size="small" pagination={false} showHeader={false} bordered
-                                           columns={columns} expandedRowKeys={expandedRowKeys}
-                                           dataSource={postTreeOfSpecTag} rowKey="id"/>
+                                    <WikiTopicTree dataSource={postTreeOfSpecTag} expandedRowKeys={expandedRowKeys}
+                                                   onShowPost={this.onShowPost}/>
                                 </Col>
                             </Row>
                         </div>

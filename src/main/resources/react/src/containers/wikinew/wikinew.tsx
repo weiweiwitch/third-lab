@@ -15,7 +15,7 @@ const {TextArea} = Input;
 
 const md = new MarkdownIt({
     html: true,
-    highlight: (str: any, lang: any): any => {
+    highlight: (str: any, lang: any) => {
         if (lang && hljs.getLanguage(lang)) {
             try {
                 return hljs.highlight(lang, str).value;
@@ -34,16 +34,16 @@ interface IStateProps {
 }
 
 interface IDispatchProps {
-    addPost(data: any): any;
+    addPost(data: any);
 }
 
 type IAppProps = IStateProps & IDispatchProps;
 
-const mapStateToProps = (state: any): any => {
+const mapStateToProps = (state: any) => {
     return {};
 };
 
-const mapDispatchToProps = (dispatch: any): any => {
+const mapDispatchToProps = (dispatch: any) => {
     return bindActionCreators({
         addPost,
     }, dispatch);
@@ -67,11 +67,11 @@ class WikiNew extends React.Component<IAppProps, IState> {
         };
     }
 
-    updateTitle = (event: any): any => {
+    updateTitle = (event: any) => {
         this.setState({postTitle: event.target.value});
     };
 
-    updateText = (event: any): any => {
+    updateText = (event: any) => {
         let text = event.target.value;
         if (text === null) {
             text = '';
@@ -79,7 +79,7 @@ class WikiNew extends React.Component<IAppProps, IState> {
         this.setState({postText: text});
     };
 
-    createPost = (event: any): any => {
+    createPost = (event: any) => {
         event.preventDefault();
         const post = {
             id: 0,
@@ -91,13 +91,13 @@ class WikiNew extends React.Component<IAppProps, IState> {
         this.props.addPost(post);
     };
 
-    cancelCreate = (event: any): any => {
+    cancelCreate = (event: any) => {
         event.preventDefault();
 
         this.props.history.push('/wiki/wikiindex');
     };
 
-    render(): any {
+    render() {
         const postText = {__html: md.render(this.state.postText)};
 
         return (
@@ -138,7 +138,7 @@ class WikiNew extends React.Component<IAppProps, IState> {
                         <Row>
                             <Col span={12}>
                                 <Button type="primary" onClick={this.createPost}>新建</Button>
-                                <Button onClick={(event: any): any => {
+                                <Button onClick={(event: any) => {
                                     this.cancelCreate(event);
                                 }}>取消</Button>
                             </Col>

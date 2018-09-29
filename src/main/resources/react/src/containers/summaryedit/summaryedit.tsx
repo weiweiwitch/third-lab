@@ -19,12 +19,12 @@ interface IStateProps {
 }
 
 interface IDispatchProps {
-    modifySummary(data: string): any;
+    modifySummary(data: string);
 }
 
 type IAppProps = IStateProps & IDispatchProps;
 
-const mapStateToProps = (state: any): any => {
+const mapStateToProps = (state: any) => {
     const summary: SummaryState = state.summary;
 
     return {
@@ -32,7 +32,7 @@ const mapStateToProps = (state: any): any => {
     };
 };
 
-const mapDispatchToProps = (dispatch: any): any => {
+const mapDispatchToProps = (dispatch: any) => {
     return bindActionCreators({
         modifySummary,
     }, dispatch);
@@ -56,23 +56,23 @@ class SummaryEdit extends React.Component<IAppProps, IState> {
         };
     }
 
-    updateSummary = (event: any): any => {
+    updateSummary = (event: any) => {
         this.setState({summary: event.target.value});
     };
 
-    confirmModify = (event: any): any => {
+    confirmModify = (event: any) => {
         event.preventDefault();
 
         this.props.modifySummary(this.state.summary);
     };
 
-    cancelModify = (event: any): any => {
+    cancelModify = (event: any) => {
         event.preventDefault();
 
         this.props.history.push('/');
     };
 
-    render(): any {
+    render() {
         const postText = {__html: md.render(this.state.summary)};
 
         const formItemLayout2 = {

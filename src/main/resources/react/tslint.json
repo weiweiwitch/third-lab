@@ -87,7 +87,6 @@
     ],
     "typedef": [
       true,
-      "arrow-call-signature",
       "parameter",
       "arrow-parameter",
       "property-declaration",

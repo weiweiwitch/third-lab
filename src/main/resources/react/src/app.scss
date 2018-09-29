@@ -10,6 +10,7 @@
 
 body {
   height: 100%;
+  font-family: $global-font; // 全局字体
   font-size: 12px;
   margin: 0;
   padding: 0;
@@ -38,17 +39,15 @@ body {
   text-transform: uppercase;
 }
 
-.air {
-  font-family: $global-font;
-}
-
 .air-nav {
   border-bottom: 1px solid #eee;
   margin-bottom: 5px;
 }
 
+// 编辑器内全部使用代码字体
 textarea {
   tab-size: 4;
+  font-family: $code-font !important;
 }
 
 button {
@@ -146,9 +145,16 @@ div .header {
   padding-left: 15px;
 }
 
-/* markdown */
+// 代码块内使用代码字体
+code {
+  font-family: $code-font;
+}
 
+/* markdown */
 .markdown-text {
+  // 文章内使用显示字体
+  font-family: $show-font;
+
   tab-size: 4;
 
   p > code {
@@ -168,7 +174,7 @@ div .header {
   }
 
   pre {
-    font-family: $code-font;
+    //font-family: $show-font;
     font-size: 13px;
     border: 0;
     border-left: 3px solid $green;
@@ -179,13 +185,13 @@ div .header {
   }
 
   p {
-    font-family: $show-font;
+    //font-family: $show-font;
     font-size: 12px;
     line-height: 1.8;
   }
 
   li {
-    font-family: $show-font;
+    //font-family: $show-font;
     font-size: 12px;
     line-height: 1.8;
   }

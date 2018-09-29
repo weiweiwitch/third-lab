@@ -17,7 +17,7 @@ const {TextArea} = Input;
 
 const md = new MarkdownIt({
     html: true,
-    highlight: (str: any, lang: any): any => {
+    highlight: (str: any, lang: any) => {
         if (lang && hljs.getLanguage(lang)) {
             try {
                 return hljs.highlight(lang, str).value;
@@ -38,14 +38,14 @@ interface IStateProps {
 }
 
 interface IDispatchProps {
-    chgPost(postId: number, post: any): any;
+    chgPost(postId: number, post: any);
 
-    showPost(postId: number): any;
+    showPost(postId: number);
 }
 
 type IAppProps = IStateProps & IDispatchProps;
 
-const mapStateToProps = (state: any): any => {
+const mapStateToProps = (state: any) => {
     const wikiposts: WikiPostsState = state.wikiposts;
     const wikispecpost: WikiSpecPostState = state.wikispecpost;
     const wikitags: WikiTagsState = state.wikitags;
@@ -57,7 +57,7 @@ const mapStateToProps = (state: any): any => {
     };
 };
 
-const mapDispatchToProps = (dispatch: any): any => {
+const mapDispatchToProps = (dispatch: any) => {
     return bindActionCreators({
         chgPost,
         showPost,
@@ -94,7 +94,7 @@ class WikiEdit extends React.Component<IAppProps, IState> {
         let parentPost = null;
         let showedParentPost = [];
         if (props.wikipost.parentId > 0) {
-            props.posts.map((post: IPostData): any => {
+            props.posts.map((post: IPostData) => {
                 if (post.id === props.wikipost.parentId) {
                     parentPost = post;
                     showedParentPost = [post];
@@ -115,15 +115,15 @@ class WikiEdit extends React.Component<IAppProps, IState> {
         };
     }
 
-    updateTitle = (event: any): any => {
+    updateTitle = (event: any) => {
         this.setState({postTitle: event.target.value});
     };
 
-    updateText = (event: any): any => {
+    updateText = (event: any) => {
         this.setState({postText: event.target.value});
     };
 
-    confirmModify = (event: any): any => {
+    confirmModify = (event: any) => {
         event.preventDefault();
 
         const postId = this.props.wikipost.id;
@@ -135,20 +135,20 @@ class WikiEdit extends React.Component<IAppProps, IState> {
         this.props.chgPost(postId, updatedPost);
     };
 
-    cancelModify = (event: any): any => {
+    cancelModify = (event: any) => {
         event.preventDefault();
 
         const postId = this.props.wikipost.id;
         this.props.showPost(postId);
     };
 
-    onPostSelect = (value: any): any => {
+    onPostSelect = (value: any) => {
         this.setState({
             selectedParentPost: value,
         });
     };
 
-    onPostSearch = (inputValue: any): any => {
+    onPostSearch = (inputValue: any) => {
         const searchResult = [];
         const existPostMap = new Map<string, boolean>();
         this.state.showedParentPost.map((post: IPostData) => {
@@ -178,7 +178,7 @@ class WikiEdit extends React.Component<IAppProps, IState> {
         });
     };
 
-    onPostEnterPress = (event: any): any => {
+    onPostEnterPress = (event: any) => {
         if (event.key === 'Enter') {
             // 按了回车
             const existPostMap = new Map<string, number>();
@@ -196,7 +196,7 @@ class WikiEdit extends React.Component<IAppProps, IState> {
                     return;
                 }
 
-                this.props.posts.map((post: IPostData): any => {
+                this.props.posts.map((post: IPostData) => {
                     if (post.title === selectedPostName) {
                         newParentPost = post;
                         selectedNewParentPost = true;
@@ -219,7 +219,7 @@ class WikiEdit extends React.Component<IAppProps, IState> {
         }
     };
 
-    postClose = (post: IPostData): any => {
+    postClose = (post: IPostData) => {
         const remainings = this.state.showedParentPost.filter((record: any, index: any) => {
             return record !== post;
         });
@@ -233,12 +233,12 @@ class WikiEdit extends React.Component<IAppProps, IState> {
         });
     };
 
-    render(): any {
+    render() {
         const postText = {__html: md.render(this.state.postText)};
 
         const parentPosts = this.state.showedParentPost.map((post: IPostData) => {
             return (
-                <Tag key={post.id} closable afterClose={(): any => this.postClose(post)}>{post.title}</Tag>
+                <Tag key={post.id} closable afterClose={() => this.postClose(post)}>{post.title}</Tag>
             );
         });
 

@@ -16,14 +16,14 @@ interface IStateProps {
 }
 
 interface IDispatchProps {
-	changeTag(tagId: number, data: any): any;
+	changeTag(tagId: number, data: any);
 
-	deleteTag(tagId: number): any;
+	deleteTag(tagId: number);
 }
 
 type IAppProps = IStateProps & IDispatchProps;
 
-const mapStateToProps = (state: any): any => {
+const mapStateToProps = (state: any) => {
 	const wikitags: WikiTagsState = state.wikitags;
 
 	return {
@@ -32,7 +32,7 @@ const mapStateToProps = (state: any): any => {
 	};
 };
 
-const mapDispatchToProps = (dispatch: any): any => {
+const mapDispatchToProps = (dispatch: any) => {
 	return bindActionCreators({
 		changeTag,
 		deleteTag,
@@ -56,14 +56,14 @@ class WikiTagEdit extends React.Component<IAppProps, IState> {
 		this.init(props);
 	}
 
-	componentWillReceiveProps(nextProps: IAppProps): any {
+	componentWillReceiveProps(nextProps: IAppProps) {
 		this.init(nextProps);
 	}
 
-	init(props: IAppProps): any {
+	init(props: IAppProps) {
 		let tagName = '';
 		let parentTagId = 0;
-		props.wikitaglist.filter((tag: any): any => {
+		props.wikitaglist.filter((tag: any) => {
 			if (tag.id === props.specTagId) {
 				tagName = tag.tagName;
 				parentTagId = tag.parentTagId;
@@ -74,7 +74,7 @@ class WikiTagEdit extends React.Component<IAppProps, IState> {
 		});
 
 		// 筛选出父tag表
-		const showedParentTag = this.props.wikitaglist.filter((tag: any): any => {
+		const showedParentTag = this.props.wikitaglist.filter((tag: any) => {
 			if (tag.id === parentTagId) {
 				return true;
 			} else {
@@ -93,11 +93,11 @@ class WikiTagEdit extends React.Component<IAppProps, IState> {
 	}
 
 	// 更新tag名
-	updateTagName = (event: any): any => {
+	updateTagName = (event: any) => {
 		this.setState({tagName: event.target.value});
 	};
 
-	confirmModify = (event: any): any => {
+	confirmModify = (event: any) => {
 		event.preventDefault();
 
 		const tagId = this.props.specTagId;
@@ -109,19 +109,19 @@ class WikiTagEdit extends React.Component<IAppProps, IState> {
 		this.props.changeTag(tagId, updatedTag);
 	};
 
-	cancelModify = (event: any): any => {
+	cancelModify = (event: any) => {
 		event.preventDefault();
 
 		this.props.history.push('/wiki/wikiindex');
 	};
 
-	onTagSelect = (value: any): any => {
+	onTagSelect = (value: any) => {
 		this.setState({
 			selectedTag: value,
 		});
 	};
 
-	onTagSearch = (inputValue: any): any => {
+	onTagSearch = (inputValue: any) => {
 		const searchResult = [];
 		const existTagMap = new Map<string, boolean>();
 		this.state.showedParentTag.map((postTag: any) => {
@@ -147,7 +147,7 @@ class WikiTagEdit extends React.Component<IAppProps, IState> {
 		});
 	};
 
-	onTagEnterPress = (event: any): any => {
+	onTagEnterPress = (event: any) => {
 		if (event.key === 'Enter') {
 			// 按了回车
 			const existTagMap = new Map<string, number>();
@@ -165,7 +165,7 @@ class WikiTagEdit extends React.Component<IAppProps, IState> {
 					return;
 				}
 
-				this.props.wikitaglist.map((tag: any): any => {
+				this.props.wikitaglist.map((tag: any) => {
 					if (tag.tagName === selectedTagName) {
 						newParentTag = tag;
 						selectedNewParentTag = true;
@@ -188,7 +188,7 @@ class WikiTagEdit extends React.Component<IAppProps, IState> {
 		}
 	};
 
-	tagClose = (tag: any): any => {
+	tagClose = (tag: any) => {
 		const remainings = this.state.showedParentTag.filter((record: any, index: any) => {
 			return record === tag ? false : true;
 		});
@@ -202,11 +202,11 @@ class WikiTagEdit extends React.Component<IAppProps, IState> {
 		});
 	};
 
-	deleteTag = (): any => {
+	deleteTag = () => {
 		this.props.deleteTag(this.props.specTagId);
 	};
 
-	render(): any {
+	render() {
 		const post = this.props.specTagId;
 
 		const formItemLayout = {
@@ -220,7 +220,7 @@ class WikiTagEdit extends React.Component<IAppProps, IState> {
 
 		const tags = this.state.showedParentTag.map((tag: any) => {
 			return (
-				<Tag key={tag.id} closable afterClose={(): any => this.tagClose(tag)}>{tag.tagName}</Tag>
+				<Tag key={tag.id} closable afterClose={() => this.tagClose(tag)}>{tag.tagName}</Tag>
 			);
 		});
 
