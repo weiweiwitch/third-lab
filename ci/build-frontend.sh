@@ -25,7 +25,7 @@ DISTRIBUTION_SERVER_USER=ariane
 
 mkdir -p ~/.ssh/
 ssh-keyscan -H ${DISTRIBUTION_SERVER} | tee -a ~/.ssh/known_hosts
-scp -i ${keyfile} ${WORKSPACE}/build/distributions/thirdlab.tar.gz \
+scp -i ${keyfile} ${WORKSPACE}/src/main/resources/react/dist/thirdlab*.exe \
     ${DISTRIBUTION_SERVER_USER}@${DISTRIBUTION_SERVER}:/home/${DISTRIBUTION_SERVER_USER}/docker/nginx/thirdlab/
 
 ls static/dist/
