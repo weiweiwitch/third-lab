@@ -1,23 +1,17 @@
 pipeline {
     agent any
     stages {
-        stage('Test docker') {
-            agent {
-                docker {
-                    image 'williamyeh/ansible:ubuntu16.04'
-                }
-
-            }
+        stage('Build') {
             steps {
-                echo 'Show Some Message'
+                withCredentials(bindings: [sshUserPrivateKey(credentialsId: 'ariane-inner', keyFileVariable: 'keyfile')]) {
+                    sh '''
+                    bash -x ci/build-frontend.sh
+                    bash -x ci/build-backend.sh
+                    '''
+                }
             }
         }
         stage('Deploy') {
-//            agent {
-//                docker {
-//                    image 'weiweiwitch/jdk8-nodejs:0.1.0'
-//                }
-//            }
             steps {
                 withCredentials(bindings: [sshUserPrivateKey(credentialsId: 'ariane-inner', keyFileVariable: 'keyfile')]) {
                     sh '''
