@@ -4,7 +4,7 @@ cd src/main/resources/react
 
 echo $PATH
 
-npm install --verbose
+npm install
 npm run build-prod
 BUILD_RT=$?
 if [ $BUILD_RT != 0 ];then
