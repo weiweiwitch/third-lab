@@ -1,12 +1,12 @@
 import * as React from "react";
-import { connect } from "react-redux";
-import { History } from 'history';
-import { Button, Col, Row, Tag, Tree } from "antd";
-import { bindActionCreators } from "redux";
-import { withRouter } from "react-router";
-import { deletePost, prepareCreatePost } from "../../sagas/posts";
-import { SpecPostData, WikiSpecPostState } from "../../redux/modules/wikispecpost";
-import { WikiTagData, WikiTagsState } from "../../redux/modules/wikitags";
+import {connect} from "react-redux";
+import {History} from 'history';
+import {Button, Col, Row, Tag, Tree} from "antd";
+import {bindActionCreators} from "redux";
+import {withRouter} from "react-router";
+import {deletePost, prepareCreatePost} from "../../sagas/posts";
+import {SpecPostData, WikiSpecPostState} from "../../redux/modules/wikispecpost";
+import {WikiTagData, WikiTagsState} from "../../redux/modules/wikitags";
 import md from '../md';
 
 import "./wikiPost.scss";
@@ -145,38 +145,40 @@ class WikiPost extends React.Component<IAppProps, any> {
 
         return (
             <Row>
-                <Col span={20}>
-                    {/* 编辑栏 */}
-                    <Row>
-                        <Col span={22}>
-                            <Button type="primary" onClick={this.edit}>编辑</Button>
-                            <Button onClick={this.createSubPost}>添加子级文章</Button>
-                            <Button onClick={this.transToIndex}>搜索</Button>
-                            <Button onClick={this.move2NewTag}>移动标签</Button>
-                        </Col>
-                        <Col span={2}>
-                            <Button type="danger" onClick={this.deletePost}>删除</Button>
-                        </Col>
-                    </Row>
-                    {/* 文章内容 */}
-                    <Row>
-                        <Col span={24}>
-                            <div className="inner_topic_container">
-                                <div className="topic_header">
-                                    <span className="topic_full_title">{post.title}</span>
+                <Col span={18}>
+                    <div className="wiki-postshow-panel">
+                        {/* 编辑栏 */}
+                        <Row>
+                            <Col span={22}>
+                                <Button type="primary" onClick={this.edit}>编辑</Button>
+                                <Button onClick={this.createSubPost}>添加子级文章</Button>
+                                <Button onClick={this.transToIndex}>搜索</Button>
+                                <Button onClick={this.move2NewTag}>移动标签</Button>
+                            </Col>
+                            <Col span={2}>
+                                <Button type="danger" onClick={this.deletePost}>删除</Button>
+                            </Col>
+                        </Row>
+                        {/* 文章内容 */}
+                        <Row>
+                            <Col span={24}>
+                                <div className="inner_topic_container">
+                                    <div className="topic_header">
+                                        <span className="topic_full_title">{post.title}</span>
+                                    </div>
+                                    <div>
+                                        <span>标签：</span>
+                                        <Tag key={postTag.id}>{postTag.tagName}</Tag>
+                                    </div>
+                                    <div className="inner_topic">
+                                        <div className="markdown-text" dangerouslySetInnerHTML={result}/>
+                                    </div>
                                 </div>
-                                <div>
-                                    <span>标签：</span>
-                                    <Tag key={postTag.id}>{postTag.tagName}</Tag>
-                                </div>
-                                <div className="inner_topic">
-                                    <div className="markdown-text" dangerouslySetInnerHTML={result}/>
-                                </div>
-                            </div>
-                        </Col>
-                    </Row>
+                            </Col>
+                        </Row>
+                    </div>
                 </Col>
-                <Col span={4}>
+                <Col span={6} className="wiki-topic-header-panel">
                     <Tree>
                         {headers}
                     </Tree>

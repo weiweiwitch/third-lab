@@ -1,3 +1,17 @@
 .testbg {
-	background-color: red;
+  background-color: red;
+}
+
+.wiki-postshow-panel {
+  height: calc(100vh - 136px);
+  overflow-y: auto;
+}
+
+.wiki-topic-header-panel {
+  //width: calc(100% - 8px);
+  overflow-x: auto;
+
+  //span {
+  //  white-space: normal;
+  //}
 }

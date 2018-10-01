@@ -31,7 +31,7 @@ fi
 wget http://192.168.11.160:10000/tools/jdk-8u162-linux-x64.tar.gz
 
 cp -f ci/dockerimages/jdk8-thirdlab/Dockerfile .
-cp -f ci/application.properties.deploy application.properties
+cp -f application.properties.deploy application.properties
 
 docker build -t="weiweiwitch/thirdlab-kt" .
 
