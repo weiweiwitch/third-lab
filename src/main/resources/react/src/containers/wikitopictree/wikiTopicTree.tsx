@@ -28,19 +28,30 @@ class WikiTopicTree extends React.Component<IAppProps, IStates> {
         }
     };
 
-    parseTreeNodes = (data: any) => data.map((item: any) => {
-        if (item.children !== null && item.children !== undefined && item.children.length > 0) {
-            return (
-                <TreeNode title={item.title} key={item.id} className="wikitopicli">
-                    {this.parseTreeNodes(item.children)}
-                </TreeNode>
-            );
-        } else {
-            return (
-                <TreeNode title={item.title} key={item.id} className="wikitopicli"/>
-            );
-        }
-    });
+    parseTreeNodes = (data: any) => {
+        const showData = data.sort((item1: any, item2: any) => {
+            if (item1.title > item2.title) {
+                return 1; // 如果是降序排序，返回-1。
+            } else if (item1.title === item2.title) {
+                return 0;
+            } else {
+                return -1; // 如果是降序排序，返回1。
+            }
+        });
+        return showData.map((item: any) => {
+            if (item.children !== null && item.children !== undefined && item.children.length > 0) {
+                return (
+                    <TreeNode title={item.title} key={item.id} className="wikitopicli">
+                        {this.parseTreeNodes(item.children)}
+                    </TreeNode>
+                );
+            } else {
+                return (
+                    <TreeNode title={item.title} key={item.id} className="wikitopicli"/>
+                );
+            }
+        });
+    };
 
     render() {
         return (

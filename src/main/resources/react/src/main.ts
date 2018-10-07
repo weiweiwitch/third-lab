@@ -29,7 +29,7 @@ function createWindow() {
         );
 
         // 打开调试工具界面
-        win.webContents.openDevTools();
+        // win.webContents.openDevTools();
     }
 
     win.on('closed', () => {

@@ -27,7 +27,7 @@ open class PostTagController() {
     data class PostTagResp(
         val id: Long,
         val tagName: String,
-        val num: Int,
+        val num: Long,
         val parentTagId: Long,
         val nodes: MutableList<PostTagResp>
     )
@@ -45,10 +45,11 @@ open class PostTagController() {
         val tmpList = mutableListOf<PostTagResp>()
         val tmpMap = mutableMapOf<Long, PostTagResp>()
         for (eachPostTag in postTags) {
+            val num = postRepository.countByTagId(eachPostTag.id)
             val postTagResp = PostTagResp(
                 eachPostTag.id,
                 eachPostTag.tag,
-                0,
+                    num,
                 eachPostTag.parentTagId,
                 mutableListOf<PostTagResp>()
             )

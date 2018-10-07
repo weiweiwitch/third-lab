@@ -50,24 +50,29 @@ class WikiTagTree extends React.Component<IAppProps, IStates> {
     render() {
         const wikiTagTree = this.props.wikitagtree;
 
-        const parseMenuItems = (data: any) => data.map((item: any) => {
+        const parseMenuItems = (data: any, showLv: number) => data.map((item: any) => {
+            let title = item.tagName;
+            if (showLv > 1 && item.num > 0) {
+                title = `${item.tagName}【${item.num}】`;
+            }
             if (item.nodes !== null && item.nodes !== undefined && item.nodes.length > 0) {
                 return (
-                    <SubMenu key={item.id} title={item.tagName} onTitleClick={this.onClick}>
-                        {parseMenuItems(item.nodes)}
+                    <SubMenu key={item.id} title={title} onTitleClick={this.onClick}>
+                        {parseMenuItems(item.nodes, showLv + 1)}
                     </SubMenu>
                 );
             } else {
                 return (
-                    <Menu.Item key={item.id}>{item.tagName}</Menu.Item>
+                    <Menu.Item key={item.id}>{title}</Menu.Item>
                 );
             }
         });
 
+        const showLv = 1;
         return (
             <div>
                 <Menu onClick={this.onClick} mode="horizontal">
-                    {parseMenuItems(wikiTagTree)}
+                    {parseMenuItems(wikiTagTree, showLv)}
                 </Menu>
             </div>
         );

@@ -11,4 +11,9 @@ interface PostRepository : CrudRepository<Post, Long> {
 
     fun findByTagId(tagId: Long): List<Post>
 
+    /**
+     * 统计特定tag的文章数量
+     */
+    fun countByTagId(tagId: Long): Long
+
 }
