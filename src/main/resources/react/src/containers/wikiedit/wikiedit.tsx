@@ -4,31 +4,33 @@ import {History} from 'history';
 import {AutoComplete, Button, Col, Form, Input, Row, Tabs, Tag} from "antd";
 import * as hljs from "highlight.js";
 import * as MarkdownIt from "markdown-it";
+import * as ReactMarkdown from "react-markdown";
 import {bindActionCreators} from "redux";
 import {chgPost, showPost} from "../../sagas/posts";
 import {styles} from "../../client";
 import {WikiTagData, WikiTagsState} from "../../redux/modules/wikitags";
 import {SpecPostData, WikiSpecPostState} from "../../redux/modules/wikispecpost";
 import {IPostData, WikiPostsState} from "../../redux/modules/wikiposts";
+import {ReactNode} from "react";
 
 const TabPane = Tabs.TabPane;
 const FormItem = Form.Item;
 const {TextArea} = Input;
 
-const md = new MarkdownIt({
-    html: true,
-    highlight: (str: any, lang: any) => {
-        if (lang && hljs.getLanguage(lang)) {
-            try {
-                return hljs.highlight(lang, str).value;
-            } catch (e) {
-                // console.error(e);
-            }
-        }
-
-        return ''; // use external default escaping
-    },
-});
+// const md = new MarkdownIt({
+//     html: true,
+//     highlight: (str: any, lang: any) => {
+//         if (lang && hljs.getLanguage(lang)) {
+//             try {
+//                 return hljs.highlight(lang, str).value;
+//             } catch (e) {
+//                 // console.error(e);
+//             }
+//         }
+//
+//         return ''; // use external default escaping
+//     },
+// });
 
 interface IStateProps {
     history: History;
@@ -234,8 +236,6 @@ class WikiEdit extends React.Component<IAppProps, IState> {
     };
 
     render() {
-        const postText = {__html: md.render(this.state.postText)};
-
         const parentPosts = this.state.showedParentPost.map((post: IPostData) => {
             return (
                 <Tag key={post.id} closable afterClose={() => this.postClose(post)}>{post.title}</Tag>
@@ -289,10 +289,8 @@ class WikiEdit extends React.Component<IAppProps, IState> {
                                         </div>
                                     </TabPane>
                                     <TabPane tab="预览" key="2">
-                                        <div className="tab-edit-panel">
-                                            <div className="inner_topic markdown-text postedit-textarea-height"
-                                                 dangerouslySetInnerHTML={postText}/>
-                                        </div>
+                                        <ReactMarkdown className="inner_topic markdown-text postedit-textarea-height"
+                                                       source={this.state.postText}/>
                                     </TabPane>
                                 </Tabs>
                             </Col>

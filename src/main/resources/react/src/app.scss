@@ -157,6 +157,13 @@ code {
 
   tab-size: 4;
 
+  blockquote {
+    //color: #666;
+    margin: 0;
+    padding-left: 1em;
+    border-left: 0.5em #eee solid;
+  }
+
   p > code {
     background: $white2;
     color: #666;

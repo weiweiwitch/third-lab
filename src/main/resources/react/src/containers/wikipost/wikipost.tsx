@@ -3,13 +3,13 @@ import {connect} from "react-redux";
 import {History} from 'history';
 import {Button, Col, Row, Tag, Tree} from "antd";
 import {bindActionCreators} from "redux";
-import {withRouter} from "react-router";
-import {deletePost, prepareCreatePost} from "../../sagas/posts";
+import {deletePost, prepareCreatePost, showPost} from "../../sagas/posts";
 import {SpecPostData, WikiSpecPostState} from "../../redux/modules/wikispecpost";
 import {WikiTagData, WikiTagsState} from "../../redux/modules/wikitags";
 import md from '../md';
 
 import "./wikiPost.scss";
+import * as ReactMarkdown from "react-markdown";
 // require('./wikiPost.scss');
 
 const TreeNode = Tree.TreeNode;
@@ -22,6 +22,8 @@ interface IStateProps {
 
 interface IDispatchProps {
     deletePost(postId: number);
+
+    showPost(postId: number);
 
     prepareCreatePost(parentId: number);
 }
@@ -41,6 +43,7 @@ const mapStateToProps = (state: any) => {
 const mapDispatchToProps = (dispatch: any) => {
     return bindActionCreators({
         deletePost,
+        showPost,
         prepareCreatePost,
     }, dispatch);
 };
@@ -91,7 +94,7 @@ class WikiPost extends React.Component<IAppProps, any> {
     render() {
         const post = this.props.wikipost;
 
-        const result = {__html: md.render(post.postText)};
+        // const result = {__html: md.render(post.postText)};
 
         // 解析markdown结构，提取出标题
         const headerNodes: HeaderNode[] = [];
@@ -171,7 +174,8 @@ class WikiPost extends React.Component<IAppProps, any> {
                                         <Tag key={postTag.id}>{postTag.tagName}</Tag>
                                     </div>
                                     <div className="inner_topic">
-                                        <div className="markdown-text" dangerouslySetInnerHTML={result}/>
+                                        <ReactMarkdown className="markdown-text"
+                                                       source={post.postText}/>
                                     </div>
                                 </div>
                             </Col>
