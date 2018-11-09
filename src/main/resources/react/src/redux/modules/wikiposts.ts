@@ -23,7 +23,7 @@ export interface IPostOfTagData {
 export class WikiPostsState {
 	wikiposts: IPostData[];
 	postsOfSpecTag: IPostOfTagData[];
-	specTagId: number;
+	specTagId: number; // 当前正在查看哪个Tag的文章群。
 
 	constructor() {
 		this.wikiposts = [];

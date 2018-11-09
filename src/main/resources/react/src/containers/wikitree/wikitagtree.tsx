@@ -43,8 +43,8 @@ class WikiTagTree extends React.Component<IAppProps, IStates> {
     }
 
     onClick = (e: any) => {
-        const nodeId = parseInt(e.key, 10);
-        this.props.querySpecTagPosts(nodeId);
+        const tagId = parseInt(e.key, 10);
+        this.props.querySpecTagPosts(tagId);
     };
 
     render() {

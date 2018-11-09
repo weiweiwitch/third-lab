@@ -132,7 +132,7 @@ open class PostController() {
         return resp
     }
 
-    data class AddPostReq(val parentId: Long, val title: String, val postText: String)
+    data class AddPostReq(val parentId: Long, val title: String, val postText: String, val tagId: Long)
 
     @PostMapping("/posts")
     open fun addPost(@RequestBody post: AddPostReq): TlBaseResp<Int?> {
@@ -150,7 +150,7 @@ open class PostController() {
                 newPost.tagId = parentPost.get().tagId
             }
         } else {
-            newPost.tagId = 0
+            newPost.tagId = post.tagId
         }
 
         postRepository.save(newPost)

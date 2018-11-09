@@ -8,9 +8,9 @@ import * as MarkdownIt from 'markdown-it';
 import { match, withRouter } from "react-router";
 import { styles } from "../../client";
 import { addPost } from "../../sagas/posts";
+import {WikiPostsState} from "../../redux/modules/wikiposts";
 
 const TabPane = Tabs.TabPane;
-const FormItem = Form.Item;
 const {TextArea} = Input;
 
 const md = new MarkdownIt({
@@ -31,6 +31,8 @@ const md = new MarkdownIt({
 interface IStateProps {
     history: History;
     match: match<any>;
+
+    specTagId: number;
 }
 
 interface IDispatchProps {
@@ -40,7 +42,10 @@ interface IDispatchProps {
 type IAppProps = IStateProps & IDispatchProps;
 
 const mapStateToProps = (state: any) => {
-    return {};
+    const wikiposts: WikiPostsState = state.wikiposts;
+    return {
+        specTagId: wikiposts.specTagId,
+    };
 };
 
 const mapDispatchToProps = (dispatch: any) => {
@@ -81,12 +86,14 @@ class WikiNew extends React.Component<IAppProps, IState> {
 
     createPost = (event: any) => {
         event.preventDefault();
+
         const post = {
             id: 0,
             user: '',
             title: this.state.postTitle,
             postText: this.state.postText,
             parentId: this.state.parentId,
+            tagId: this.props.specTagId,
         };
         this.props.addPost(post);
     };
