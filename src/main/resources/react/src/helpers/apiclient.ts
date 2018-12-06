@@ -13,6 +13,21 @@ function formatUrl(path: string): any {
     return adjuectedPath;
 }
 
+function findGetParameter(parameterName: string) {
+    let result = null;
+    let tmp = [];
+    location.search
+        .substr(1)
+        .split("&")
+        .forEach((item: string) => {
+            tmp = item.split('=');
+            if (tmp[0] === parameterName) {
+                result = decodeURIComponent(tmp[1]);
+            }
+        });
+    return result;
+}
+
 // 用于向API服务端发送请求的客户端
 export default class ApiClient {
 
@@ -20,9 +35,13 @@ export default class ApiClient {
     }
 
     post(path: string, r?: any): any {
+        let sUrl = findGetParameter('surl');
+        if (sUrl === null) {
+            sUrl = '';
+        }
         const p = new Promise((resolve: any, reject: any): any => {
             const url = formatUrl(path);
-            const request = superagent['post'](__SERVER_ADDR__ + path);
+            const request = superagent['post'](sUrl + path);
 
             // 设置参数
             if (r && r.params) {
@@ -43,9 +62,14 @@ export default class ApiClient {
     }
 
     get(path: string, r?: any): any {
+        let sUrl = findGetParameter('surl');
+        if (sUrl === null) {
+            sUrl = '';
+        }
+        console.info('surl ', sUrl);
         const p = new Promise((resolve: any, reject: any): any => {
             const url = formatUrl(path);
-            const request = superagent['get'](__SERVER_ADDR__ + path);
+            const request = superagent['get'](sUrl + path);
 
             // 设置参数
             if (r && r.params) {
@@ -66,9 +90,13 @@ export default class ApiClient {
     }
 
     put(path: string, r?: any): any {
+        let sUrl = findGetParameter('surl');
+        if (sUrl === null) {
+            sUrl = '';
+        }
         const p = new Promise((resolve: any, reject: any): any => {
             const url = formatUrl(path);
-            const request = superagent['put'](__SERVER_ADDR__ + path);
+            const request = superagent['put'](sUrl + path);
 
             // 设置参数
             if (r && r.params) {
@@ -89,9 +117,13 @@ export default class ApiClient {
     }
 
     del(path: string, r?: any): any {
+        let sUrl = findGetParameter('surl');
+        if (sUrl === null) {
+            sUrl = '';
+        }
         const p = new Promise((resolve: any, reject: any): any => {
             const url = formatUrl(path);
-            const request = superagent['del'](__SERVER_ADDR__ + path);
+            const request = superagent['del'](sUrl + path);
 
             // 设置参数
             if (r && r.params) {

@@ -1,6 +1,7 @@
 import {app, BrowserWindow} from 'electron';
 import * as path from 'path';
 import * as url from 'url';
+import * as fs from 'fs';
 
 let win: BrowserWindow | null;
 
@@ -11,22 +12,41 @@ function createWindow() {
         webPreferences: {webSecurity: false}, // 允许跨域请求
     });
 
+
     console.log('path：', path.join(__dirname));
 
     if (process.env.NODE_ENV !== 'production') {
-        win.loadURL('http://localhost:3000');
+        const pageUrl = url.format({
+            hostname: 'localhost',
+            port: 3000,
+            // query: {
+            //     surl: 'http://localhost:3000',
+            // },
+            protocol: 'http:',
+            slashes: true,
+        });
+        console.log(pageUrl);
+        win.loadURL(pageUrl);
 
         // 打开调试工具界面
         win.webContents.openDevTools();
 
     } else {
-        win.loadURL(
-            url.format({
-                pathname: path.join(__dirname, 'index.html'),
-                protocol: 'file:',
-                slashes: true,
-            }),
-        );
+        const userDataPath = app.getPath('userData');
+        const configFilePath = `${path.join(userDataPath, 'thirdlab.cfg')}`;
+        const cfgStr = fs.readFileSync(configFilePath);
+        console.info(`config file path: ${configFilePath}`);
+        console.info(`cfgStr: ${cfgStr}`);
+        const pageUrl = url.format({
+            pathname: path.join(__dirname, 'index.html'),
+            query: {
+                surl: cfgStr,
+            },
+            protocol: 'file:',
+            slashes: true,
+        });
+        console.log(pageUrl);
+        win.loadURL(pageUrl);
 
         // 打开调试工具界面
         // win.webContents.openDevTools();
